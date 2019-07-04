@@ -1,1 +1,31 @@
+From Project Proposal: 
+
+  User runs the program and starts up the game on the command line
+    
+  User will see a welcome message and be prompted to start a new game or load a saved game, e.g. with some kind of menu options or by entering “new” or “load” at prompt; any important instructions to the user can be displayed at this point as well
+
+  User will be able to start gameplay and see introductory narrative text, if any (e.g. description of setting/character/backstory/explanation of events leading up to the current point and why the character is in this dungeon)
+
+  User will see current room/feature/item descriptions, and exit descriptions with directions
+
+  User will be able to see event descriptions, if any occur while in a room
+
+  User will be able to interact with the game by entering actions and objects and seeing the results of their actions
+  
+  User will be able to interact with rooms/features/items by:
+
+    Entering/leaving rooms & seeing relevant descriptions
+    Examining features and items & seeing relevant descriptions
+    Picking up and dropping objects & receiving appropriate confirmation
+    Using items to perform some action & seeing relevant confirmation/description
+
+  User will receive appropriate feedback if the game is unable to perform a desired action (e.g. it doesn’t make sense linguistically) or an action is impossible in-game
+
+  User will be able to enter “help” to view a list of supported verbs
+
+  User will be able to enter “inventory” to see the contents of their inventory
+  
+  User will be able to save a game, which should then show up in their saves and be available for loading; user sees appropriate confirmation/prompting/feedback throughout
+
+  User will be able to quit the game; user should be asked if they want to save before quitting
 
