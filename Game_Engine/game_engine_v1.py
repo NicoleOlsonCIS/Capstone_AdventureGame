@@ -1,37 +1,17 @@
 # Game Engine Unit of Capstone Adventure Game Version 1 (Week 3)
 # 
-# 4 Rooms created (objects) 
-# 1 user created (object)
-# 
-# User location in room changes based on inputs "move n, move e, move s, move w"
-# 
-# Print rooms and user location after each move
-# Errors for invalid moves
-# Unit tests: test user has been moved correctly or that correct error message displayed
+# Adjacent Rooms is a list of size 8 and has the following meaning: 
+#	AdjacentRooms[0] represents north
+#	AdjacentRooms[1] represents north-east
+#	AdjacentRooms[2] represents east
+#   (and so on clockwise)
 # 
 #
-# Room topology:
-#    ____	  ____	
-#   |r1  |       |r2  |
-#   |    |-------|    |    
-#   |____|       |____|
-#      |	   |
-#      |	   |
-#    __|_	  _|__
-#   |r3  |       |r4  |
-#   |    |-------|    | 
-#   |____|       |____|
-#
-#
-
 # define the "Game" class
 class Game:
 	def __init__(self):
 		self.rooms = {}
 		self.isValid = {}
-	
-	def run(self):
-		print("Game ran")
 
 	def addRoom(self, room):
 		self.rooms[room.name] = room
@@ -49,7 +29,7 @@ class Game:
 		return None
 
 	# called after every change in game state in preparation for input from parser
-	def setListOfValidActions(self):
+	def setIsValid(self):
 		newdict={} 
 		user_room = self.user.getCurrentRoom()
 		adjacent_rooms = user_room.getAdjacentRooms()
@@ -59,14 +39,22 @@ class Game:
 		if adjacent_rooms[0] is not None:
 			valid_moves.append("n")
 		if adjacent_rooms[1] is not None:
-			valid_moves.append("e")
+			valid_moves.append("ne")
 		if adjacent_rooms[2] is not None:
-			valid_moves.append("s")
+			valid_moves.append("e")
 		if adjacent_rooms[3] is not None:
+			valid_moves.append("se")
+		if adjacent_rooms[4] is not None:
+			valid_moves.append("s")
+		if adjacent_rooms[5] is not None:
+			valid_moves.append("sw")
+		if adjacent_rooms[6] is not None:
 			valid_moves.append("w")
+		if adjacent_rooms[7] is not None:
+			valid_moves.append("nw")
 
 		# set the dictionary with key "move" to the array of valid moves
-		newdict = {"move": valid_moves}
+		newdict = {"move_user": valid_moves}
 
 		# -- other actions involving objects (future) -- #
 
@@ -75,17 +63,17 @@ class Game:
 
 	def checkIsValid(self, action, object, direction):
 		if action == "move_user":
-			v = self.isValid.get("move")
+			v = self.isValid.get("move_user")
 			for i in v:
 				if i == direction:
 					return True
 			print("No room in " + direction + " direction.")
 			return False
 		else:
-			print("Move_user + direction(n, e, s, w) is the only valid action in version 1")
+			print("Move_user + direction is the only valid action in version 1")
 	
 
-	# precondition: called only after it is determined to be a valid request
+	# Precondition: called after isValid()
 	def executeRequest(self, action, object, direction):
 		if action == "move_user":
 			self.moveUser(direction)
@@ -93,23 +81,35 @@ class Game:
 			print("Invalid action type for version 1")
 
 
-	# move the user based on "direction" input (room adjacency pre-validated)
+	# Precondition: room adjacency pre-validated
 	def moveUser(self, direction):
 		user_room = self.user.getCurrentRoom()
 		adjacent_rooms = user_room.getAdjacentRooms()
 
 		if direction == "n":
 			self.user.updateRoom(adjacent_rooms[0])
-			print("User moved to the north!")
-		elif direction == "e":
+			print("User moved north.")
+		elif direction == "ne":
 			self.user.updateRoom(adjacent_rooms[1])
-			print("User moved to the east!")
-		elif direction == "s":
+			print("User moved north-east.")
+		elif direction == "e":
 			self.user.updateRoom(adjacent_rooms[2])
-			print("User moved to the south!")
-		elif direction == "w":
+			print("User moved east.")
+		elif direction == "se":
 			self.user.updateRoom(adjacent_rooms[3])
-			print("User moved to the west!")
+			print("User moved south-east.")
+			lif direction == "s":
+			self.user.updateRoom(adjacent_rooms[4])
+			print("User moved south.")
+		elif direction == "sw":
+			self.user.updateRoom(adjacent_rooms[5])
+			print("User moved south-west.")
+		elif direction == "w":
+			self.user.updateRoom(adjacent_rooms[6])
+			print("User moved west.")
+		elif direction == "nw":
+			self.user.updateRoom(adjacent_rooms[6])
+			print("User moved north-west.")
 		else:
 			print("invalid direction")
 
@@ -122,7 +122,7 @@ class Room:
 		self.description = description
 		game.addRoom(self) # creates a map between name and room object in the game
 
-	# translates "door" array to "adjacentRooms" array after all Rooms created
+	# translates array to "adjacentRooms" array after all Rooms created
 	def setAdjacentRooms(self, game):
 		self.adjacentRooms = list(map(game.getRoom, self.adjacentRoomNames)) # <-- expands into calls to get room for each door
 
@@ -151,45 +151,6 @@ class User:
 	def printUser(self, game):
 		room = self.current_room
 		room_name = room.getRoomName()
-		print("Name: " + self.name)
-		print("Current Room: " + room_name)
+		print("Username: " + self.name + " Current Room: " + room_name)
 
 
-# placeholder until we start loading the game from file
-def createHardcodedGame():
-	game = Game()
-	room1 = Room(game, "room1", "This is room 1", [None,    "room2", "room3",  None])
-	room2 = Room(game, "room2", "This is room 2", [None,       None, "room4",  "room1"])
-	room3 = Room(game, "room3", "This is room 3", ["room1",    None, "room4",  None])
-	room4 = Room(game, "room4", "This is room 4", ["room2",    None,    None,  "room3"])
-
-	room1.setAdjacentRooms(game)
-	room2.setAdjacentRooms(game)
-	room3.setAdjacentRooms(game)
-	room4.setAdjacentRooms(game)
-
-	user = User(game, "FirstUser", "room1", False) # start in room1
-	game.setUser(user)
-	return game
-
-def main():
-	game = createHardcodedGame()
-
-	# sample run of game
-	moves = ["e", "s", "w", "n"]
-
-	for m in moves:
-		game.user.printUser(game)
-		game.setListOfValidActions()
-		direction = m
-		isValidRequest = game.checkIsValid("move_user", None, direction)
-		if(isValidRequest):
-			game.moveUser(direction)
-		else:
-			print("Cannot move user in direction " + direction)
-
-# run main
-main()
-
-# say goodbye
-print("\n\n\nGoodbye.")
