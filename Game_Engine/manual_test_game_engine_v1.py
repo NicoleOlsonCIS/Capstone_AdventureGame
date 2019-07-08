@@ -151,7 +151,7 @@ def main():
 		else:
 			print("Invalid request")
 
-	# invalid moves in topology # 1 (cannot do from Room 1)
+	# invalid moves in topology # 1 (cannot do  from Room 1)
 	invalid_moves = ["n", "w", "ne", "nw", "se", "sw"]
 
 	for m in invalid_moves:

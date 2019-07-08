@@ -98,7 +98,7 @@ class Game:
 		elif direction == "se":
 			self.user.updateRoom(adjacent_rooms[3])
 			print("User moved south-east.")
-			lif direction == "s":
+		elif direction == "s":
 			self.user.updateRoom(adjacent_rooms[4])
 			print("User moved south.")
 		elif direction == "sw":
@@ -122,7 +122,7 @@ class Room:
 		self.description = description
 		game.addRoom(self) # creates a map between name and room object in the game
 
-	# translates array to "adjacentRooms" array after all Rooms created
+	#  translates array to "adjacentRooms" array after all Rooms created
 	def setAdjacentRooms(self, game):
 		self.adjacentRooms = list(map(game.getRoom, self.adjacentRoomNames)) # <-- expands into calls to get room for each door
 
