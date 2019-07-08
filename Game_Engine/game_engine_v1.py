@@ -56,7 +56,7 @@ class Game:
 		# set the dictionary with key "move" to the array of valid moves
 		newdict = {"move_user": valid_moves}
 
-		# -- other actions involving objects (future) -- #
+		# --- other actions involving objects (future) --- #
 
 		# set the "is valid" attribute to the current dictionary of valid game operations
 		self.isValid = newdict
@@ -152,5 +152,3 @@ class User:
 		room = self.current_room
 		room_name = room.getRoomName()
 		print("Username: " + self.name + " Current Room: " + room_name)
-
-

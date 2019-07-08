@@ -39,47 +39,24 @@ def runTopologyOne():
 	game = Game()
 	
 	# has doors to the east and south
-	room1 = Room 
-	(
-		game, 
-		"Room 1", 
-		"Room 1 description", 
-		[None,  None, "Room 2", None, "Room 3", None, None, None]
-	)
+	room1 = Room (game, "Room 1", "Room 1 description", [None,  None, "Room 2", None, "Room 3", None, None, None])
 	
 	# has doors to the west and south
-	room2 = Room
-	(
-		game, 
-		"Room 2", 
-		"Room 2 description", 
-		[None, None, None, None, "Room 4",  None, "Room 1", None]
-	)
+	room2 = Room(game, "Room 2", "Room 2 description", [None, None, None, None, "Room 4",  None, "Room 1", None])
 
 	# has doors to the north and west
-	room3 = Room
-	(
-		game, 
-		"Room 3",
-		"Room 3 description", 
-		["Room 1", None, None, None, None, None, "Room 4", None]
-	)
+	room3 = Room(game, "Room 3", "Room 3 description", ["Room 1", None, None, None, None, None, "Room 4", None])
 
 	# has doors to the north and east
-	room4 = Room
-	(
-		game, 
-		"Room 4", 
-		"Room 4 description", 
-		["Room 2", None, "Room 3", None, None, None, None, None]
-    )
+	room4 = Room(game, "Room 4", "Room 4 description", ["Room 2", None, "Room 3", None, None, None, None, None])
 
-	user = User(game, "user1", "Room 1", False) # start in room1
+	user = User(game, "user1", "Room 1", False)
 
-    room1.setAdjacentRooms(game)
-    room2.setAdjacentRooms(game)
-    room3.setAdjacentRooms(game)
-    room4.setAdjacentRooms(game)
+	room1.setAdjacentRooms(game)
+
+	room2.setAdjacentRooms(game)
+	room3.setAdjacentRooms(game)
+	room4.setAdjacentRooms(game)
 
 	game.setUser(user)
 	return game
@@ -125,11 +102,11 @@ def runTopologyTwo():
 	)
 
 	room1.setAdjacentRooms(game)
-    room2.setAdjacentRooms(game)
-    room3.setAdjacentRooms(game)
-    room4.setAdjacentRooms(game)
+	room2.setAdjacentRooms(game)
+	room3.setAdjacentRooms(game)
+	room4.setAdjacentRooms(game)
 
-    user = User(game, "user1", "Room 1", False) # start in room1
+	user = User(game, "user1", "Room 1", False) # start in room1
 	game.setUser(user)
 	return game
 
