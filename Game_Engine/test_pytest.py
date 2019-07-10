@@ -1,8 +1,6 @@
 import game_engine_v1
 from game_engine_v1 import *
 
-
-
 ### --- Unit Testing of "Room" Class Constructor --- ###
 
 # Unit Test # 1 -- Target: Room Constructor & Attribute "name"
