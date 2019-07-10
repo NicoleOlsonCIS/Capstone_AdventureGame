@@ -44,3 +44,4 @@ def test_setStartingRoom():
 
     assert(user.current_room == game.getRoom("Room 1"))
 
+# Unit Test # 6
