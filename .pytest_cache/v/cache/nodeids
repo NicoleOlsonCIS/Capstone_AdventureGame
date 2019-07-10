@@ -1,7 +1,0 @@
-[
-  "Game_Engine/test_pytest.py::test_setRoomName",
-  "Game_Engine/test_pytest.py::test_setRoomDescription",
-  "Game_Engine/test_pytest.py::test_setRoomAdjacentNames",
-  "Game_Engine/test_pytest.py::test_setUserName",
-  "Game_Engine/test_pytest.py::test_setStartingRoom"
-]
