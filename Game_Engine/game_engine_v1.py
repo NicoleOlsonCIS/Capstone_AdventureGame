@@ -108,7 +108,7 @@ class Game:
 			self.user.updateRoom(adjacent_rooms[6])
 			print("User moved west.")
 		elif direction == "nw":
-			self.user.updateRoom(adjacent_rooms[6])
+			self.user.updateRoom(adjacent_rooms[7])
 			print("User moved north-west.")
 		else:
 			print("invalid direction")
