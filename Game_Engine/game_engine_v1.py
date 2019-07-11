@@ -62,7 +62,7 @@ class Game:
 		self.isValid = newdict
 
 	def checkIsValid(self, action, object, direction):
-		if action == "move_user":
+		if action.verb == "move_user":
 			v = self.isValid.get("move_user")
 			for i in v:
 				if i == direction:
@@ -75,7 +75,7 @@ class Game:
 
 	# Precondition: called after isValid()
 	def executeRequest(self, action, object, direction):
-		if action == "move_user":
+		if action.verb == "move_user":
 			self.moveUser(direction)
 		else:
 			print("Invalid action type for version 1")
