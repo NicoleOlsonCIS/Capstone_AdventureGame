@@ -223,11 +223,9 @@ class Place:
 	# new in v2 (correpond to take and drop)
 	def addThing(self, thing):
 		self.things.append(thing)
-		self.updateFeatureDictionary()
 
 	def removeThing(self, thing):
 		self.things.remove(thing)
-		self.updateFeatureDictionary()
 
 
 # define the User class
@@ -261,9 +259,9 @@ class User:
 	# new in v2
 	def dropObject(self, thing):
 		# remove from user array
-		self.things.remove(t)
+		self.things.remove(thing)
 		# add thing to the place the user is in
-		self.current_place.addThing(t)
+		self.current_place.addThing(thing)
 
 	# new in v2, for figuring out if user has an thing in possession
 	def userHasThing(self, thing):
