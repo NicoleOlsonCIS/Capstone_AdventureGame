@@ -2,6 +2,7 @@
 # 
 # v1.1 --> change "Room" class to "Place" and enable 3D movement (just "up/down")
 # v2  --> add "Thing" class
+# v3 --> add support and error handling for "look" action
 #
 # define the "Game" class
 
@@ -37,6 +38,46 @@ class Game:
 			return self.places[name]
 		return None
 
+	# prints the description of the current room
+	def printRoom(self):
+        	place_name = self.user.current_place.name 
+        	# get the description of the place based on the time
+        	place_description = self.user.current_place.getDescriptionBasedOnTime(self.time)
+        	output = place_name + "\n" + place_description
+        	print(output)
+
+	# prints the description of a feature or object 
+	def printThing(self, itemname):
+		for t in self.user.things:
+			if t.name == itemname:
+				print(t.description)
+				return
+		for t in self.user.current_place.things:
+			if t.name == itemname:
+				print(t.description)
+				return 
+
+        # takes the thing the user wants to examine
+        # prints appropriate outputs 
+	def handleLook(self, attemptedObj, canLook):
+		if canLook:
+                	# if nothing or "room" specified, examine current room 
+			if attemptedObj == None or attemptedObj == "room":
+        			self.printRoom()
+			# if current room name specified, examine current room
+			elif attemptedObj == self.user.current_place.name:
+				self.printRoom()
+			# print thing description if thing available for examining
+			else:
+				printThing(attemptedObj)
+		else:
+			# if user tries to examine a room that is not the current one, error
+			if attemptedObj in self.places.keys():
+				print("You are not currently in that location.")
+				return
+			# otherwise print generic error msg
+			print("You don't see anything like that here.")
+
 	# point of entry from parser, game takes care of input from this point
 	# either by updating the game or sending error messages
 	def fromParserToGame(self, action): 
@@ -51,33 +92,19 @@ class Game:
 			
 			# if the user was moved, re-orient user
 			if action.verb == "move_user":
-				place_name = self.user.current_place.name
-				# get the description of the place based on the time
-				place_description = self.user.current_place.getDescriptionBasedOnTime(self.time)
 				# get the users direction (maybe don't need this)
 				# direction = self.user.direction
-				output = place_name + "\n" + place_description
-				print(output) # print here now, eventually send info to the print module
-                       
-                        # user examines room if no thing specified, otherwise examines thing 
+                                self.printRoom()
+ 
 			if action.verb == "look":
-                                if action.direct_obj == None or action.direct_obj == "room":             
-                                    place_name = self.user.current_place.name
-                                    place_description = self.user.current_place.getDescriptionBasedOnTime(self.time)
-                                    # display room name and description 
-                                    output = place_name + "\n" + place_description
-                                    print(output)
-                                else:
-                                    for i in self.user.current_place.things:
-                                        # display thing description
-                                        if action.direct_obj == i.name:
-                                            print(i.description) 
+                        	handleLook(action.direct_obj, True)
 		else: 
-			# error message for input
-			print("Invalid action.")
 
 			if action.verb == "look":
-                            print("You don't see anything like that here.") 
+                        	handleLook(action.direct_obj, False)
+
+			else:
+				print("Invalid action")
 
 	# called after every change in game state in preparation for next input from parser
 	def setIsValid(self):
@@ -111,13 +138,13 @@ class Game:
 			valid_moves.append("down")
 
 		# new in v2 (build set of valid actions regarding objects)
-		valid_takes = [item for item in user_place.things if item.isTakeable] 
-		valid_drops = self.user.things
+		valid_takes = [item.name for item in user_place.things if item.isTakeable] 
+		valid_drops = [item.name for item in self.user.things]
                 # new in v3
                 # can examine things that are in the current place or in inventory
-		valid_looks = user_place.things
+		valid_looks = [item.name for item in user_place.things]
 		for item in self.user.things:
-                    valid_looks.append(item) 
+                    valid_looks.append(item.name) 
 
 		# set the dictionary with keys as actions and values as valid corresponding things
 		newdict = {"move_user": valid_moves, "take": valid_takes, "drop": valid_drops, "look": valid_looks}
@@ -137,13 +164,13 @@ class Game:
 		elif action.verb == "take":
 			v = self.isValid.get("take")
 			for i in v: 
-				if i.name == action.direct_obj:
+				if i == action.direct_obj:
 					return True
 			return False
 		elif action.verb == "drop":
 			v = self.isValid.get("drop")
 			for i in v: 
-				if i.name == action.direct_obj:
+				if i == action.direct_obj:
 					return True
 			print("User is not holding " + action.direct_obj) # eventually error messages sent elsewhere for printing
 			return False
@@ -152,11 +179,15 @@ class Game:
                         v = self.isValid.get("look")
                         # check if specified object can be examined (is in current place or inventory) 
                         for i in v:
-                                if i.name == action.direct_obj:
+                                if i == action.direct_obj:
                                       return True   
-                        # if no object specified, examine room
-                        if action.direct_obj == None or action.direct_obj == "room":
-                                      return True
+                        # if no object specified or current room specified, examine room
+                        if action.direct_obj == None:
+                            return True
+                        if action.direct_obj == "room":
+                            return True
+                        if action.direct_obj == self.user.current_place.name: 
+                            return True
                         return False
 		else:
 			print("Invalid game action")
