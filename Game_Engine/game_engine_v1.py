@@ -1,8 +1,9 @@
-# Game Engine Unit of Capstone Adventure Game Version 1 (Week 3)
+# Game Engine Unit of Capstone Adventure Game Version 1 (Week 4)
 # 
 # v1.1 --> change "Room" class to "Place" and enable 3D movement (just "up/down")
 # v2  --> add "Thing" class
 # v3 --> add support and error handling for "look" action
+# v4 --> finish support and error handling for "take", "drop", "look"
 #
 # define the "Game" class
 
@@ -38,7 +39,7 @@ class Game:
 			return self.places[name]
 		return None
 
-	# prints the description of the current room
+	# v3: prints the description of the current room
 	def printRoom(self):
         	place_name = self.user.current_place.name 
         	# get the description of the place based on the time
@@ -46,7 +47,7 @@ class Game:
         	output = place_name + "\n" + place_description
         	print(output)
 
-	# prints the description of a feature or object 
+	# v3: prints the description of a feature or object 
 	def printThing(self, itemname):
 		for t in self.user.things:
 			if t.name == itemname:
@@ -57,7 +58,7 @@ class Game:
 				print(t.description)
 				return 
 
-        # takes the thing the user wants to examine
+        # v3: takes the thing the user wants to examine
         # prints appropriate outputs 
 	def handleLook(self, attemptedObj, canLook):
 		if canLook:
@@ -73,10 +74,26 @@ class Game:
 		else:
 			# if user tries to examine a room that is not the current one, error
 			if attemptedObj in self.places.keys():
-				print("You are not currently in that location.")
+				print("You can\'t look around a room if you aren\'t in it.")
 				return
 			# otherwise print generic error msg
-			print("You don't see anything like that here.")
+			print("You don\'t see that here.")
+
+
+	# v4: handles output for "take" action
+	def handleTake(self, attemptedObj, takeable):
+		if takeable:
+			if self.user.userHasThing(attemptedObj):
+				print("You can\'t take what\'s already in your inventory.") 	
+			else:
+				print("You carefully take the %s .", attemptedObj)
+		else: 
+			# thing is in current room but not takeable
+			if self.user.current_place.roomHasThing(attemptedObj):
+				print("You can\'t put that in your inventory.") 
+			# thing is not in current room
+			else:
+				print("You don\'t see that here.")
 
 	# point of entry from parser, game takes care of input from this point
 	# either by updating the game or sending error messages
@@ -96,13 +113,14 @@ class Game:
 				# direction = self.user.direction
                                 self.printRoom()
  
-			if action.verb == "look":
-                        	handleLook(action.direct_obj, True)
 		else: 
 
 			if action.verb == "look":
-                        	handleLook(action.direct_obj, False)
-
+                        	self.handleLook(action.direct_obj, False)
+			elif action.verb == "take":
+				self.handleTake(action.direct_obj, False) 
+			elif action.verb == "drop":
+				print("That\'s not something in your inventory.")
 			else:
 				print("Invalid action")
 
@@ -138,13 +156,13 @@ class Game:
 			valid_moves.append("down")
 
 		# new in v2 (build set of valid actions regarding objects)
-		valid_takes = [item.name for item in user_place.things if item.isTakeable] 
+		valid_takes = [item.name for item in user_place.things if item.isTakeable()] 
 		valid_drops = [item.name for item in self.user.things]
                 # new in v3
                 # can examine things that are in the current place or in inventory
 		valid_looks = [item.name for item in user_place.things]
 		for item in self.user.things:
-                    valid_looks.append(item.name) 
+                	valid_looks.append(item.name) 
 
 		# set the dictionary with keys as actions and values as valid corresponding things
 		newdict = {"move_user": valid_moves, "take": valid_takes, "drop": valid_drops, "look": valid_looks}
@@ -166,15 +184,18 @@ class Game:
 			for i in v: 
 				if i == action.direct_obj:
 					return True
+			# new in v4: case where item is takeable but already in inventory
+			if self.user.userHasThing(action.direct_obj):
+				return True
 			return False
 		elif action.verb == "drop":
 			v = self.isValid.get("drop")
 			for i in v: 
 				if i == action.direct_obj:
 					return True
-			print("User is not holding " + action.direct_obj) # eventually error messages sent elsewhere for printing
 			return False
 
+		# new in v3
 		elif action.verb == "look":
                         v = self.isValid.get("look")
                         # check if specified object can be examined (is in current place or inventory) 
@@ -183,11 +204,11 @@ class Game:
                                       return True   
                         # if no object specified or current room specified, examine room
                         if action.direct_obj == None:
-                            return True
+                        	return True
                         if action.direct_obj == "room":
-                            return True
+                        	return True
                         if action.direct_obj == self.user.current_place.name: 
-                            return True
+                        	return True
                         return False
 		else:
 			print("Invalid game action")
@@ -201,6 +222,8 @@ class Game:
 			return
 
 		if action.verb == "take":
+			# v4: error handling
+			self.handleTake(action.direct_obj, True)
 			self.user.pickUpObject(action.direct_obj)
 			# time update of 1 hour 
 			self.updateTime(1)
@@ -213,9 +236,10 @@ class Game:
 			return
 
 		if action.verb == "look":
-                        # time update 
-                        self.updateTime(1)
-                        return 
+			self.handleLook(action.direct_obj, True)
+			self.updateTime(1)
+			return
+
 		else:
 			print("Invalid action type for version 1 or 2")
 
@@ -268,6 +292,9 @@ class Place:
 		self.name = name
 		self.adjacent_place_names = adjacentPlaceNames
 		self.things = things
+		
+		self.numTimesEntered = 0
+		self.numTimesLooked = 0	
 
 		timeDict = {"day" : descriptions[0], "night": descriptions[1]}
 		self.description = timeDict 
@@ -292,6 +319,12 @@ class Place:
 	def removeThing(self, thing):
 		self.things.remove(thing)
 
+	# check if a thing is in a room
+	def roomHasThing(self, itemname):
+		for t in self.things:
+			if t.name == itemname:
+				return True
+		return False	
 
 # define the User class
 class User:
@@ -316,10 +349,12 @@ class User:
 	
 	# new in v2
 	def pickUpObject(self, thing):
-		# add to user array
-		self.things.append(thing)
-		# remove the thing from the Place it is in
-		self.current_place.removeThing(thing)
+		# v4: only add to inventory if not already in it
+		if thing not in self.things: 
+			# add to user array
+			self.things.append(thing)
+			# remove the thing from the Place it is in
+			self.current_place.removeThing(thing)
 
 	# new in v2
 	def dropObject(self, thing):
@@ -329,10 +364,10 @@ class User:
 		self.current_place.addThing(thing)
 
 	# new in v2, for figuring out if user has an thing in possession
-	def userHasThing(self, thing):
+	def userHasThing(self, itemname):
 		found = False
 		for t in self.things: 
-			if t == thing:
+			if t.name == itemname:
 				found = True
 		return found
 
@@ -353,6 +388,8 @@ class Thing:
 		self.location = starting_location # place object
 		self.is_takeable = is_takeable # defines whether feature or object
 		self.with_user = False
+
+		self.numTimesExamined = 0
 
 		# when the user drops
 		def leaveUser(self, new_location):
