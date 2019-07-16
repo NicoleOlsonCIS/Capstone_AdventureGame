@@ -55,12 +55,29 @@ class Game:
 				# get the description of the place based on the time
 				place_description = self.user.current_place.getDescriptionBasedOnTime(self.time)
 				# get the users direction (maybe don't need this)
-				direction = self.user.direction
-				output = "You are in the " + place_name + ", " + place_description + ". You are facing " + direction  + ". "
+				# direction = self.user.direction
+				output = place_name + "\n" + place_description
 				print(output) # print here now, eventually send info to the print module
+                       
+                        # user examines room if no thing specified, otherwise examines thing 
+                        if action.verb == "look":
+                                if action.direct_obj == None or action.direct_obj == "room":             
+                                    place_name = self.user.current_place.name
+                                    place_description = self.user.current_place.getDescriptionBasedOnTime(self.time)
+                                    # display room name and description 
+                                    output = place_name + "\n" + place_description
+                                    print(output)
+                                else:
+                                    for i in self.user.current_place.things:
+                                        # display thing description
+                                        if action.direct_obj == i.name:
+                                            print(i.description) 
 		else: 
 			# error message for input
 			print("Invalid action.")
+
+                        if action.verb == "look":
+                            print("You don't see anything like that here.") 
 
 	# called after every change in game state in preparation for next input from parser
 	def setIsValid(self):
@@ -94,11 +111,16 @@ class Game:
 			valid_moves.append("down")
 
 		# new in v2 (build set of valid actions regarding objects)
-		valid_takes = user_place.things 
+		valid_takes = [item for item in user_place.things if item.isTakeable] 
 		valid_drops = self.user.things
+                # new in v3
+                # can examine things that are in the current place or in inventory
+                valid_looks = user_place.things
+                for item in self.user.things:
+                    valid_looks.append(item) 
 
 		# set the dictionary with keys as actions and values as valid corresponding things
-		newdict = {"move_user": valid_moves, "take": valid_takes, "drop": valid_drops}
+		newdict = {"move_user": valid_moves, "take": valid_takes, "drop": valid_drops, "look": valid_looks}
 
 		# set the "is valid" attribute to the current dictionary of valid game operations
 		self.isValid = newdict
@@ -115,19 +137,27 @@ class Game:
 		elif action.verb == "take":
 			v = self.isValid.get("take")
 			for i in v: 
-				if i == action.direct_obj:
+				if i.name == action.direct_obj:
 					return True
-			print("Object not present to take")
 			return False
 		elif action.verb == "drop":
 			v = self.isValid.get("drop")
 			for i in v: 
-				if i == action.direct_obj:
+				if i.name == action.direct_obj:
 					return True
 			print("User is not holding " + action.direct_obj) # eventually error messages sent elsewhere for printing
 			return False
 
-
+                elif action.verb == "look":
+                        v = self.isValid.get("look")
+                        # check if specified object can be examined (is in current place or inventory) 
+                        for i in v:
+                                if i.name == action.direct_obj:
+                                      return True   
+                        # if no object specified, examine room
+                        if action.direct_obj == None or action.direct_obj == "room":
+                                      return True
+                        return False
 		else:
 			print("Invalid game action")
 	
@@ -151,6 +181,10 @@ class Game:
 			self.updateTime(1)
 			return
 
+                if action.verb == "look":
+                        # time update 
+                        self.updateTime(1)
+                        return 
 		else:
 			print("Invalid action type for version 1 or 2")
 
@@ -282,11 +316,11 @@ class User:
 
 #define the "Thing" class
 class Thing: 
-	def __init__(self, name, description, starting_location, is_movable):
+	def __init__(self, name, description, starting_location, is_takeable):
 		self.name = name
 		self.description = description
 		self.location = starting_location # place object
-		self.is_movable = is_movable # defines whether feature or object
+		self.is_takeable = is_takeable # defines whether feature or object
 		self.with_user = False
 
 		# when the user drops
@@ -299,7 +333,7 @@ class Thing:
 			self.with_user = True
 
 		# differentiates object from feature
-		def isMovable(self):
-			return self.is_movable
+		def isTakeable(self):
+			return self.is_takeable
 
 
