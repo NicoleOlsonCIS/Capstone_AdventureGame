@@ -3,7 +3,7 @@
 # v1.1 --> change "Room" class to "Place" and enable 3D movement (just "up/down")
 # v2  --> add "Thing" class
 # v3 --> add support and error handling for "look" action
-# v4 --> finish support and error handling for "take", "drop", "look"
+# v4 --> finish support and error handling for "take", "drop", "look", "sleep"
 #
 # define the "Game" class
 
@@ -80,13 +80,13 @@ class Game:
 			print("You don\'t see that here.")
 
 
-	# v4: handles output for "take" action
+	# v4: handle output for "take", "drop", "sleep"
 	def handleTake(self, attemptedObj, takeable):
 		if takeable:
 			if self.user.userHasThing(attemptedObj):
 				print("You can\'t take what\'s already in your inventory.") 	
 			else:
-				print("You carefully take the %s .", attemptedObj)
+				print("You take the %s.", attemptedObj)
 		else: 
 			# thing is in current room but not takeable
 			if self.user.current_place.roomHasThing(attemptedObj):
@@ -94,6 +94,23 @@ class Game:
 			# thing is not in current room
 			else:
 				print("You don\'t see that here.")
+
+	def handleDrop(self, attemptedObj, canDrop):
+		if canDrop:
+			print("You drop the %s.", attemptedObj) 
+		else:
+			print("That\'s not something in your inventory.")	
+
+	def handleSleep(self, attemptedObj, canSleep):
+		if canSleep:
+			print("You sleep.")
+		else:
+			if self.user.current_place.name != "Spare Room":
+				print("You can only sleep in your room.")
+			elif attemptedObj != None and attemptedObj != "bed":
+				print("You need to sleep on a bed.") 
+			else:
+				print("You can\'t sleep right now.")
 
 	# point of entry from parser, game takes care of input from this point
 	# either by updating the game or sending error messages
@@ -120,7 +137,9 @@ class Game:
 			elif action.verb == "take":
 				self.handleTake(action.direct_obj, False) 
 			elif action.verb == "drop":
-				print("That\'s not something in your inventory.")
+				self.handleDrop(action.direct_obj, False)
+			elif action.verb == "sleep":
+				self.handleSleep(action.direct_obj, False)
 			else:
 				print("Invalid action")
 
@@ -210,6 +229,17 @@ class Game:
                         if action.direct_obj == self.user.current_place.name: 
                         	return True
                         return False
+
+		# new in v4 
+		elif action.verb == "sleep":
+			if self.user.current_place.name == "Spare Room":
+				if action.direct_obj == None or action.direct_obj == "bed":
+					return True
+				else:
+					return False
+			else:
+				return False
+	
 		else:
 			print("Invalid game action")
 	
@@ -230,6 +260,7 @@ class Game:
 			return
 
 		if action.verb == "drop":
+			self.handleDrop(action.direct_obj, True)
 			self.user.dropObject(action.direct_obj)
 			# add a time update
 			self.updateTime(1)
@@ -238,6 +269,12 @@ class Game:
 		if action.verb == "look":
 			self.handleLook(action.direct_obj, True)
 			self.updateTime(1)
+			return
+
+		if action.verb == "sleep":
+			self.handleSleep(action.direct_obj, True)
+			# move time by 8 hours
+			self.updateTime(8)
 			return
 
 		else:
@@ -350,7 +387,7 @@ class User:
 	# new in v2
 	def pickUpObject(self, thing):
 		# v4: only add to inventory if not already in it
-		if thing not in self.things: 
+		if self.userHasThing == False: 
 			# add to user array
 			self.things.append(thing)
 			# remove the thing from the Place it is in
@@ -358,10 +395,12 @@ class User:
 
 	# new in v2
 	def dropObject(self, thing):
-		# remove from user array
-		self.things.remove(thing)
-		# add thing to the place the user is in
-		self.current_place.addThing(thing)
+		# v4: drop item only if in inventory
+		if self.userHasThing:  
+			# remove from user array
+			self.things.remove(thing)
+			# add thing to the place the user is in
+			self.current_place.addThing(thing)
 
 	# new in v2, for figuring out if user has an thing in possession
 	def userHasThing(self, itemname):
