@@ -60,7 +60,7 @@ class Game:
 				print(output) # print here now, eventually send info to the print module
                        
                         # user examines room if no thing specified, otherwise examines thing 
-                        if action.verb == "look":
+			if action.verb == "look":
                                 if action.direct_obj == None or action.direct_obj == "room":             
                                     place_name = self.user.current_place.name
                                     place_description = self.user.current_place.getDescriptionBasedOnTime(self.time)
@@ -76,7 +76,7 @@ class Game:
 			# error message for input
 			print("Invalid action.")
 
-                        if action.verb == "look":
+			if action.verb == "look":
                             print("You don't see anything like that here.") 
 
 	# called after every change in game state in preparation for next input from parser
@@ -115,8 +115,8 @@ class Game:
 		valid_drops = self.user.things
                 # new in v3
                 # can examine things that are in the current place or in inventory
-                valid_looks = user_place.things
-                for item in self.user.things:
+		valid_looks = user_place.things
+		for item in self.user.things:
                     valid_looks.append(item) 
 
 		# set the dictionary with keys as actions and values as valid corresponding things
@@ -148,7 +148,7 @@ class Game:
 			print("User is not holding " + action.direct_obj) # eventually error messages sent elsewhere for printing
 			return False
 
-                elif action.verb == "look":
+		elif action.verb == "look":
                         v = self.isValid.get("look")
                         # check if specified object can be examined (is in current place or inventory) 
                         for i in v:
@@ -181,7 +181,7 @@ class Game:
 			self.updateTime(1)
 			return
 
-                if action.verb == "look":
+		if action.verb == "look":
                         # time update 
                         self.updateTime(1)
                         return 
