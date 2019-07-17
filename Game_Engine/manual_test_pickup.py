@@ -5,7 +5,7 @@
 # 2 objects that are pickupable, 1 object that is not
 # 1 user
 # 
-# Scenario 1: pick up objects --> check that user has that object
+# Scenario 1: pick up objects --> check that user has that object, and that room doesn't
 # Scenario 2: pick up objects that are not in room --> error
 # Scenario 3: pick up object you already have --> error
 # Scenario 4: pick up object that is not pickupable --> error
@@ -17,6 +17,8 @@ from action import *
 
 # Scenario 1: pick up objects --> check that user has that object
 def runScenario1():
+
+    print("\n Scenario 1: ")
 
     game = Game(1,1)
     descriptions = ["place during day", "place during night"]
@@ -49,6 +51,12 @@ def runScenario1():
     print("\nUser pre-action attempt:")
     game.user.printUser(game)
 
+    # print place
+    print("Things in room pre-action: ")
+    things = place1.things
+    for t in things:
+        print(t.name)
+
     # call game as though you are the parser
     game.fromParserToGame(action)
 
@@ -56,8 +64,17 @@ def runScenario1():
     print("\nUser post-action attempt:")
     game.user.printUser(game)
 
+    # check that room doesn't have object
+    print("Things in room post-action: ")
+    things = place1.things
+    for t in things:
+        print(t.name)
+
 # Scenario 2: pick up objects that are not in room --> error
 def runScenario2():
+
+    print("\n Scenario 2: ")
+
     game = Game(1,1)
     descriptions = ["place during day", "place during night"]
     adjacent_rooms = [None, None, None, None, None, None, None, None, None, None]
@@ -101,6 +118,8 @@ def runScenario2():
 # Scenario 3: pick up object you already have --> error
 def runScenario3():
 
+    print("\n Scenario 3: ")
+
     game = Game(1,1)
     descriptions = ["place during day", "place during night"]
     adjacent_rooms = [None, None, None, None, None, None, None, None, None, None]
@@ -143,6 +162,8 @@ def runScenario3():
 
 # Scenario 4: pick up object that is not pickupable --> error
 def runScenario4():
+
+    print("\n Scenario 4: ")
 
     game = Game(1,1)
     descriptions = ["place during day", "place during night"]
