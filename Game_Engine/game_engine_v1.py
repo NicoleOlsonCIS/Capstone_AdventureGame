@@ -450,10 +450,11 @@ class User:
 		self.current_place = place
 
 	def printUser(self, game):
-		print("\n\n")
-		place = self.current_place
 		print("Username: " + self.name + " Current place: " + self.current_place.name)
-		print("User things: ")
+		if self.things is None:
+			print("User has no things")
+		else:
+			print("User things:")
 		for t in self.things:
 			print(t.name + "   ")
 		
