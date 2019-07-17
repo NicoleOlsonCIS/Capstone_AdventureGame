@@ -182,7 +182,8 @@ class Game:
 			valid_moves.append("down")
 
 		# new in v2 (build set of valid actions regarding objects)
-		valid_takes = [item.name for item in user_place.things if item.isTakeable()] 
+		# valid_takes = [item.name for item in user_place.things if item.isTakeable()] 
+		valid_takes = [item.name for item in user_place.things if item.is_takeable]
 		valid_drops = [item.name for item in self.user.things]
                 # new in v3
                 # can examine things that are in the current place or in inventory
@@ -336,7 +337,12 @@ class Place:
 	def __init__(self, game, name, descriptions, adjacentPlaceNames, things = None):
 		self.name = name
 		self.adjacent_place_names = adjacentPlaceNames
-		self.things = things
+
+		# fixed constructor
+		if things is not None:
+			self.things = things
+		else:
+			self.things = []
 		
 		self.numTimesEntered = 0
 		self.numTimesLooked = 0	
@@ -410,13 +416,18 @@ class User:
 		self.direction = newDirection 
 	
 	# new in v2
-	def pickUpObject(self, thing):
-		# v4: only add to inventory if not already in it
-		if self.userHasThing(thing.name) == False: 
-			# add to user array
-			self.things.append(thing)
-			# remove the thing from the Place it is in
-			self.current_place.removeThing(thing)
+	def pickUpObject(self, thing_name):
+		# EDIT get actual thing obj reference 
+		room_things = self.current_place.things
+		for t in room_things:
+			if t.name == thing_name:
+				thing = t
+				# v4: only add to inventory if not already in it
+				if self.userHasThing(thing.name) == False: 
+					# add to user array
+					self.things.append(thing)
+					# remove the thing from the Place it is in
+					self.current_place.removeThing(thing)
 
 	# new in v2
 	def dropObject(self, thing):
@@ -441,8 +452,11 @@ class User:
 	def printUser(self, game):
 		print("\n\n")
 		place = self.current_place
-		place_name = place.name
-		print("Username: " + self.name + " Current place: " + place_name)
+		print("Username: " + self.name + " Current place: " + self.current_place.name)
+		print("User things: ")
+		for t in self.things:
+			print(t.name + "   ")
+		
 
 	# v5: check if user can access a thing 
 	def canAccessThing(self, itemname):
