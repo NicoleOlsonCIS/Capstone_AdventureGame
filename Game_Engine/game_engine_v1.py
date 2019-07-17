@@ -4,6 +4,7 @@
 # v2  --> add "Thing" class
 # v3 --> add support and error handling for "look" action
 # v4 --> finish support and error handling for "take", "drop", "look", "sleep"
+# v5 --> additional error handling. refine sleep action
 #
 # define the "Game" class
 
@@ -39,23 +40,19 @@ class Game:
 			return self.places[name]
 		return None
 
-	# v3: prints the description of the current room
-	def printRoom(self):
-        	place_name = self.user.current_place.name 
-        	# get the description of the place based on the time
-        	place_description = self.user.current_place.getDescriptionBasedOnTime(self.time)
-        	output = place_name + "\n" + place_description
-        	print(output)
 
 	# v3: prints the description of a feature or object 
-	def printThing(self, itemname):
+	def showThing(self, itemname):
 		for t in self.user.things:
 			if t.name == itemname:
 				print(t.description)
+				# update number of times this thing has been examined 
+				t.updateNumLooks()
 				return
 		for t in self.user.current_place.things:
 			if t.name == itemname:
 				print(t.description)
+				t.updateNumLooks()
 				return 
 
         # v3: takes the thing the user wants to examine
@@ -64,13 +61,16 @@ class Game:
 		if canLook:
                 	# if nothing or "room" specified, examine current room 
 			if attemptedObj == None or attemptedObj == "room":
-        			self.printRoom()
+				self.user.current_place.printRoom(self.time)
+				self.user.current_place.updateNumLooks()
 			# if current room name specified, examine current room
 			elif attemptedObj == self.user.current_place.name:
-				self.printRoom()
+				self.user.current_place.printRoom(self.time)
+				self.user.current_place.updateNumLooks()
 			# print thing description if thing available for examining
 			else:
-				printThing(attemptedObj)
+				self.showThing(attemptedObj)
+					
 		else:
 			# if user tries to examine a room that is not the current one, error
 			if attemptedObj in self.places.keys():
@@ -90,7 +90,7 @@ class Game:
 		else: 
 			# thing is in current room but not takeable
 			if self.user.current_place.roomHasThing(attemptedObj):
-				print("You can\'t put that in your inventory.") 
+				print("You can\'t put the %s in your inventory.", attemptedObj) 
 			# thing is not in current room
 			else:
 				print("You don\'t see that here.")
@@ -99,7 +99,7 @@ class Game:
 		if canDrop:
 			print("You drop the %s.", attemptedObj) 
 		else:
-			print("That\'s not something in your inventory.")	
+			print("You can\'t drop something that\'s not in your inventory.")	
 
 	def handleSleep(self, attemptedObj, canSleep):
 		if canSleep:
@@ -107,10 +107,12 @@ class Game:
 		else:
 			if self.user.current_place.name != "Spare Room":
 				print("You can only sleep in your room.")
+			elif self.time > 6 and self.time < 18: 
+				print("You can only sleep at night.")
 			elif attemptedObj != None and attemptedObj != "bed":
-				print("You need to sleep on a bed.") 
+				print("You can only sleep on a bed.") 
 			else:
-				print("You can\'t sleep right now.")
+				print("You aren\'t sleepy right now.")
 
 	# point of entry from parser, game takes care of input from this point
 	# either by updating the game or sending error messages
@@ -128,7 +130,8 @@ class Game:
 			if action.verb == "move_user":
 				# get the users direction (maybe don't need this)
 				# direction = self.user.direction
-                                self.printRoom()
+				self.printRoom()
+				self.user.current_place.updateNumEntries()
  
 		else: 
 
@@ -141,7 +144,11 @@ class Game:
 			elif action.verb == "sleep":
 				self.handleSleep(action.direct_obj, False)
 			else:
-				print("Invalid action")
+				# thing is present, but action.verb is not one of the thing's allowed verbs
+				if self.user.canAccessThing(action.direct_obj) and not self.user.canActOnThing(action.direct_obj, action.verb):
+					print("You can\'t %s the %s. Try doing something else with it.", action.verb, action.direct_obj)
+				else:
+					print("You\'re not sure how you would manage that.")
 
 	# called after every change in game state in preparation for next input from parser
 	def setIsValid(self):
@@ -232,17 +239,18 @@ class Game:
 
 		# new in v4 
 		elif action.verb == "sleep":
-			if self.user.current_place.name == "Spare Room":
-				if action.direct_obj == None or action.direct_obj == "bed":
-					return True
-				else:
-					return False
+			# can only sleep on bed in Spare Room at night
+			correctRoom = (self.user.current_place.name == "Spare Room")
+			correctObj = (action.direct_obj == None or action.direct_obj == "bed")
+			correctTime = (self.time >= 18 or self.time <= 6)
+			if correctRoom and (correctObj and correctTime):
+				return True
 			else:
 				return False
-	
+
 		else:
-			print("Invalid game action")
-	
+			#print("Invalid game action")
+			return False	
 
 	# Precondition: called after checkIsValid() returns True
 	def executeRequest(self, action):
@@ -278,8 +286,8 @@ class Game:
 			return
 
 		else:
-			print("Invalid action type for version 1 or 2")
-
+			#print("Invalid action type for version 1 or 2")
+			return
 
 	# Precondition: place adjacency pre-validated
 	def moveUser(self, direction):
@@ -363,6 +371,23 @@ class Place:
 				return True
 		return False	
 
+	# v5: updates number of times examined
+	def updateNumLooks(self):
+		self.numTimesLooked += 1
+
+	# v5: update number of entries
+	def updateNumEntries(self):
+		self.numTimesEntered += 1
+
+	# v5: display room description
+	def printRoom(self, time):
+                place_name = self.name
+                # get the description of the place based on the time
+                place_description = self.getDescriptionBasedOnTime(time)
+                output = place_name + "\n" + place_description
+                print(output)
+
+
 # define the User class
 class User:
 	# game(game object), name(string), place name (string), user direction(string), saved game(bool) 
@@ -387,7 +412,7 @@ class User:
 	# new in v2
 	def pickUpObject(self, thing):
 		# v4: only add to inventory if not already in it
-		if self.userHasThing == False: 
+		if self.userHasThing(thing.name) == False: 
 			# add to user array
 			self.things.append(thing)
 			# remove the thing from the Place it is in
@@ -396,7 +421,7 @@ class User:
 	# new in v2
 	def dropObject(self, thing):
 		# v4: drop item only if in inventory
-		if self.userHasThing:  
+		if self.userHasThing(thing.name):  
 			# remove from user array
 			self.things.remove(thing)
 			# add thing to the place the user is in
@@ -419,6 +444,28 @@ class User:
 		place_name = place.name
 		print("Username: " + self.name + " Current place: " + place_name)
 
+	# v5: check if user can access a thing 
+	def canAccessThing(self, itemname):
+		if self.userHasThing(itemname) or self.current_place.roomHasThing(itemname):
+			return True
+		return False		
+
+	# v5: check if user can perform a particular action on a thing 
+	def canActOnThing(self, itemname, verb):
+		if not self.canAccessThing(itemname):
+			return False
+		else:
+			for t in self.things:
+				if t.name == itemname:
+					if verb in t.permittedVerbs:
+						return True
+			for t in self.current_place.things:
+				if t.name == itemname:
+					if verb in t.permittedVerbs:
+						return True
+			return False 
+
+
 #define the "Thing" class
 class Thing: 
 	def __init__(self, name, description, starting_location, is_takeable):
@@ -427,8 +474,14 @@ class Thing:
 		self.location = starting_location # place object
 		self.is_takeable = is_takeable # defines whether feature or object
 		self.with_user = False
+		# keep track of allowed verbs for each thing
+		self.permittedVerbs = [] 
 
 		self.numTimesExamined = 0
+
+		# add a permitted verb for this thing 
+		def addVerb(self, verb):
+			self.permittedVerbs.append(verb)
 
 		# when the user drops
 		def leaveUser(self, new_location):
@@ -443,4 +496,6 @@ class Thing:
 		def isTakeable(self):
 			return self.is_takeable
 
-
+		# v5: updates number of times examined
+		def updateNumLooks(self):
+			self.numTimesExamined += 1
