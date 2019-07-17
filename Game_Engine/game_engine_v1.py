@@ -451,7 +451,7 @@ class User:
 
 	def printUser(self, game):
 		print("Username: " + self.name + " Current place: " + self.current_place.name)
-		if self.things is None:
+		if len(self.things) == 0:
 			print("User has no things")
 		else:
 			print("User things:")
