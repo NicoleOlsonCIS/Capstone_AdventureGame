@@ -8,6 +8,16 @@
 #
 # define the "Game" class
 
+# import sys
+# sys.path.insert(0, '/path/to/application/app/folder')
+#
+# import file
+#
+#
+#
+
+
+
 import action
 
 class Game:
@@ -130,7 +140,7 @@ class Game:
 			if action.verb == "move_user":
 				# get the users direction (maybe don't need this)
 				# direction = self.user.direction
-				self.printRoom()
+				self.user.current_place.printRoom(self.time)
 				self.user.current_place.updateNumEntries()
  
 		else: 
@@ -430,13 +440,17 @@ class User:
 					self.current_place.removeThing(thing)
 
 	# new in v2
-	def dropObject(self, thing):
-		# v4: drop item only if in inventory
-		if self.userHasThing(thing.name):  
-			# remove from user array
-			self.things.remove(thing)
-			# add thing to the place the user is in
-			self.current_place.addThing(thing)
+	def dropObject(self, thing_name):
+		# EDIT get actual thing obj reference, only remove if user has
+		if self.userHasThing(thing_name):
+			for t in self.things:
+				if t.name == thing_name:
+					thing = t
+					# remove from user array
+					self.things.remove(thing)
+					# add thing to the place the user is in
+					self.current_place.addThing(thing)
+					break
 
 	# new in v2, for figuring out if user has an thing in possession
 	def userHasThing(self, itemname):
