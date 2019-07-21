@@ -9,8 +9,43 @@ class Parser:
         "run": "move_user",
         "walk": "move_user",
         "head": "move_user",
+        "hurry": "move_user",
         "take": "take",
-        "grab": "take"
+        "grab": "take",
+        "get": "take",
+        "pick": "take",
+        "keep": "take",
+        "stow": "take",
+        "steal": "take",
+        "drop": "drop", 
+        "leave": "drop",
+        "abandon": "drop",
+        "discard": "drop",
+        "trash": "drop",
+        "sleep": "sleep",
+        "talk": "talk_npc",
+        "say": "talk_npc",
+        "greet": "talk_npc",
+        "ask": "talk_npc",
+        "yell": "talk_npc",
+        "scream": "talk_npc",
+        "shout": "talk_npc",
+        "tell": "talk_npc",
+        "call": "talk_npc",
+        "chat": "talk_npc",
+        "speak": "talk_npc",
+        "look": "look",
+        "examine": "look",
+        "x": "look",
+        "l": "look",
+        "study": "look",
+        "read": "look",
+        "touch": "look",
+        "find": "look",
+        "open": "open",
+        "unlock": "unlock",
+        "help": "show_help",
+        "inventory": "show_inventory",
     }
 
     directionDict = {
@@ -34,12 +69,14 @@ class Parser:
 
     articlesList = ["the", "an", "a"]
 
+    quantifiersList = ["all", "some", "few", "many", "little", "several", "both", "every", "each", "first", "last", "next", "other", "same"]
+
     prepositionsList = [
-        "above", "across", "against", "along", "among", "around", "at",
+        "about", "above", "across", "after", "against", "along", "among", "around", "at",
         "before", "behind", "below", "beneath", "beside", "between", "by",
-        "from", "in", "into", "near", "of", "off", "on", "to",
-        "toward", "under", "upon", "with", "within"
-    ] # Had 'down', removed to fix bug
+        "for", "from", "in", "inside", "into", "near", "of", "off", "on", "onto",
+        "through", "to", "toward", "towards", "under", "upon", "with", "within"
+    ] # removed 'down' - otherwise direction 'down' will be removed as preposition
 
     # Default constructor - no instance variables
 
@@ -53,45 +90,38 @@ class Parser:
         # Tokenize input
         tokens = input.split()
 
-        # FIXME - right now:
-        # Assume that there must be at least two tokens
-        if len(tokens) < 1:
-            return None
-        elif len(tokens) < 2:
-            return self.parseSingleToken(tokens[0])
-
         # Remove articles 
         tokens = [token for token in tokens if token not in self.articlesList]
 
-        # FIXME - right now:
+        # Remove quantifiers
+        tokens = [token for token in tokens if token not in self.quantifiersList] 
+
         # Remove prepositions
         tokens = [token for token in tokens if token not in self.prepositionsList]
 
-        # FIXME - right now:
-        # Assume first token in string is the verb
-        verb = self.parseVerb(tokens)
-        # Assume second token is the direction, if verb == "move_user"
-        if (verb == "move_user"):
-            direction = self.parseDirection(tokens[1])
-            return Action(verb, direction)
-        # If verb is something else, look for direct_obj
-        elif (verb != None):
-            if (len(tokens) > 1):
-                direct_obj = tokens[1]
-                return Action(verb, None, direct_obj)
-            else:
-                return None
-        else:
+        # Parse input depending on number of tokens
+        # There must be at least one token after stripping
+        if len(tokens) < 1:
             return None
 
-    # Convert user verb to valid form, return None on error
-    def parseVerb(self, tokens):
-        # Special case for 'pick up'
-        if (len(tokens) > 1 and tokens[0] == "pick" and tokens[1] == "up"):
-            del tokens[1]
-            return "take"
+        elif len(tokens) == 1:
+            return self.parseSingleToken(tokens[0])
+
+        elif len(tokens) == 2:
+            return self.parseTwoTokens(tokens)
+
         else:
-            return self.verbDict.get(tokens[0])
+            return self.parseThreeOrMoreTokens(tokens)
+
+    # Convert user verb to valid form, return None on error
+    def parseVerb(self, verb):
+        # Special case for 'pick up'
+        # if (len(tokens) > 1 and tokens[0] == "pick" and tokens[1] == "up"):
+        #     del tokens[1]
+        #     return "take"
+        # else:
+        #     return self.verbDict.get(tokens[0])
+        return self.verbDict.get(verb)
 
     # Convert user-desired direction to valid form, return None on error
     def parseDirection(self, direction):
@@ -103,4 +133,35 @@ class Parser:
             return Action("move_user", self.parseDirection(token))
         else:
             return None
+    
+    # Return Action from two token input
+    def parseTwoTokens(self, tokens):
+        # check first token for a verb 
+        verb = self.parseVerb(tokens[0])
 
+        # Determine what other token is used for, depending on verb
+        direction = None
+        directObj = None
+        # If invalid verb, return None
+        if (verb is None):
+            return None
+        # If verb is "move_user", second token is probably direction
+        elif (verb is "move_user"):
+            direction = self.parseDirection(tokens[1])
+        # Otherwise, the second token is probably a direct object
+        else:
+            directObj = tokens[1]
+
+        return Action(verb, direction, directObj)
+
+    def parseThreeOrMoreTokens(self, tokens):
+        action = self.parseTwoTokens(tokens[:2])    # parse first two tokens
+        if (action is None):                        # check if invalid
+            return None
+
+        # FIXME: right now, just assume next token is a direct_obj
+        # Should probably use a setter here...
+        action.direct_obj = tokens[2]
+
+        # Return action
+        return action
