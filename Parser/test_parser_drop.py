@@ -5,15 +5,15 @@ from action import Action
 parser = Parser()
 
 # Unit tests - basic function
-def test_take_thing():
+def test_drop_thing():
 
     errors = []
 
-    action = parser.parseInput("take thing")
+    action = parser.parseInput("drop thing")
 
     # Replace individual assertions with conditions
-    if not action.verb == "take":
-        errors.append("expected 'take', got " + str(action.verb))
+    if not action.verb == "drop":
+        errors.append("expected 'drop', got " + str(action.verb))
     if not action.direction == None:
         errors.append("expected 'None' type, got " + str(action.direction))
     if not action.direct_obj == "thing":
@@ -22,15 +22,15 @@ def test_take_thing():
     # Now assert there've been no errors, else print them
     assert not errors, "errors occurred:\n{}".format("\n".join(errors))
 
-def test_grab_thing():
+def test_discard_thing():
 
     errors = []
 
-    action = parser.parseInput("grab thing")
+    action = parser.parseInput("discard thing")
 
     # Replace individual assertions with conditions
-    if not action.verb == "take":
-        errors.append("expected 'take', got " + str(action.verb))
+    if not action.verb == "drop":
+        errors.append("expected 'drop', got " + str(action.verb))
     if not action.direction == None:
         errors.append("expected 'None' type, got " + str(action.direction))
     if not action.direct_obj == "thing":
@@ -39,15 +39,32 @@ def test_grab_thing():
     # Now assert there've been no errors, else print them
     assert not errors, "errors occurred:\n{}".format("\n".join(errors))
 
-def test_pick_up_thing():
+def test_abandon_thing():
 
     errors = []
 
-    action = parser.parseInput("pick up thing")
+    action = parser.parseInput("abandon thing")
 
     # Replace individual assertions with conditions
-    if not action.verb == "take":
-        errors.append("expected 'take', got " + str(action.verb))
+    if not action.verb == "drop":
+        errors.append("expected 'drop', got " + str(action.verb))
+    if not action.direction == None:
+        errors.append("expected 'None' type, got " + str(action.direction))
+    if not action.direct_obj == "thing":
+        errors.append("expected 'thing', got " + str(action.direct_obj))
+
+    # Now assert there've been no errors, else print them
+    assert not errors, "errors occurred:\n{}".format("\n".join(errors))
+
+def test_leave_out_thing():
+
+    errors = []
+
+    action = parser.parseInput("leave out thing")
+
+    # Replace individual assertions with conditions
+    if not action.verb == "drop":
+        errors.append("expected 'drop', got " + str(action.verb))
     if not action.direction == None:
         errors.append("expected 'None' type, got " + str(action.direction))
     if not action.direct_obj == "thing":
@@ -57,36 +74,38 @@ def test_pick_up_thing():
     assert not errors, "errors occurred:\n{}".format("\n".join(errors))
 
 # More complex phrases 
-def test_pick_up_thing_from_table():
+def test_leave_thing_on_table():
 
     errors = []
 
-    action = parser.parseInput("pick up thing from table")
+    action = parser.parseInput("leave thing on table")
 
     # Replace individual assertions with conditions
-    if not action.verb == "take":
-        errors.append("expected 'take', got " + str(action.verb))
+    if not action.verb == "drop":
+        errors.append("expected 'drop', got " + str(action.verb))
     if not action.direction == None:
         errors.append("expected 'None' type, got " + str(action.direction))
     if not action.direct_obj == "thing":
         errors.append("expected 'thing', got " + str(action.direct_obj))
+    # TODO: Indirect object - table?
 
     # Now assert there've been no errors, else print them
     assert not errors, "errors occurred:\n{}".format("\n".join(errors))
 
-def test_pick_thing_up_from_table():
+def test_drop_thing_from_inventory():
 
     errors = []
 
-    action = parser.parseInput("pick thing up from table")
+    action = parser.parseInput("drop thing from inventory")
 
     # Replace individual assertions with conditions
-    if not action.verb == "take":
-        errors.append("expected 'take', got " + str(action.verb))
+    if not action.verb == "drop":
+        errors.append("expected 'drop', got " + str(action.verb))
     if not action.direction == None:
         errors.append("expected 'None' type, got " + str(action.direction))
     if not action.direct_obj == "thing":
         errors.append("expected 'thing', got " + str(action.direct_obj))
+    # TODO: Indirect object - table?
 
     # Now assert there've been no errors, else print them
     assert not errors, "errors occurred:\n{}".format("\n".join(errors))

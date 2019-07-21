@@ -75,7 +75,8 @@ class Parser:
         "about", "above", "across", "after", "against", "along", "among", "around", "at",
         "before", "behind", "below", "beneath", "beside", "between", "by",
         "for", "from", "in", "inside", "into", "near", "of", "off", "on", "onto",
-        "through", "to", "toward", "towards", "under", "upon", "with", "within"
+        "through", "to", "toward", "towards", "under", "upon", "with", "within",
+        "out"
     ] # removed 'down' - otherwise direction 'down' will be removed as preposition
 
     # Default constructor - no instance variables
@@ -150,7 +151,10 @@ class Parser:
             direction = self.parseDirection(tokens[1])
         # Otherwise, the second token is probably a direct object
         else:
-            directObj = tokens[1]
+            # fix for verb "pairs" like "pick up":
+            # ignore token[1] here if it is also a direction
+            if (self.parseDirection(tokens[1]) is None):
+                directObj = tokens[1]
 
         return Action(verb, direction, directObj)
 
@@ -161,7 +165,10 @@ class Parser:
 
         # FIXME: right now, just assume next token is a direct_obj
         # Should probably use a setter here...
-        action.direct_obj = tokens[2]
+        if (action.direct_obj == None):
+            action.direct_obj = tokens[2]
+        else:
+            action.indirect_obj = tokens[2]
 
         # Return action
         return action
