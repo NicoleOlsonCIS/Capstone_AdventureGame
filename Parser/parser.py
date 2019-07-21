@@ -132,6 +132,8 @@ class Parser:
     def parseSingleToken(self, token):
         if (token in self.directionDict):
             return Action("move_user", self.parseDirection(token))
+        elif (token in self.verbDict):
+            return Action(self.parseVerb(token))
         else:
             return None
     
