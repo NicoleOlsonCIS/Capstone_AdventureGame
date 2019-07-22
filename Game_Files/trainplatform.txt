@@ -1,0 +1,5 @@
+You stand on a lonely train platform in the middle of nowhere, adorned only by a bench and a lamppost.
+There is a station-house to the west.
+END DAY DESCRIPTION
+It's too dark to see here.
+END NIGHT DESCRIPTION 

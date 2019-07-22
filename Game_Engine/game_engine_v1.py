@@ -518,7 +518,7 @@ class User:
                 if len(self.things) == 0:
                         print("You currently have nothing in your inventory.")
                 else:
-                        print("You have, in various locations on your person:")
+                	print("You have, in various locations on your person:")
                 	for t in self.things:
                         	print(t.name)
 
