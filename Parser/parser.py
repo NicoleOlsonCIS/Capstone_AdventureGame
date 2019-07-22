@@ -10,17 +10,19 @@ class Parser:
         "walk": "move_user",
         "head": "move_user",
         "hurry": "move_user",
-        "get": "take",
-        "pick": "take", 
-        "keep": "take",
         "take": "take",
         "grab": "take",
+        "get": "take",
+        "pick": "take",
+        "keep": "take",
+        "stow": "take",
         "steal": "take",
         "drop": "drop", 
         "abandon": "drop",
         "discard": "drop",
         "trash": "drop",
         "put": "drop",
+        "leave": "drop", # FIXME: Should this be here?
         "insert": "drop_inside_thing",
         "sleep": "sleep",
         "rest": "sleep",
@@ -55,26 +57,22 @@ class Parser:
     }
 
     directionDict = {
-        "north": "north",
-        "n": "north",
-        "east": "east",
-        "e": "east",
-        "south": "south",
-        "s": "south",
-        "west": "west",
-        "w": "west",
-        "northeast": "northeast",
-        "ne": "northeast",
-        "northwest": "northwest",
-        "nw": "northwest",
-        "se": "southeast",
-        "southeast": "southeast",
-        "sw": "southwest",
-        "southwest": "southwest",
-        "up": "up",
-        "down": "down",
-        "u": "up",
-        "d": "down" 
+        "north": "n",
+        "n": "n",
+        "east": "e",
+        "e": "e",
+        "right": "e",
+        "south": "s",
+        "s": "s",
+        "west": "w",
+        "w": "w",
+        "left": "w",
+        "up": "u",
+        "upstairs": "u",
+        "u": "u",
+        "down": "d",
+        "downstairs": "d",
+        "d": "d"
     }
 
     articlesList = ["the", "an", "a"]
@@ -90,10 +88,11 @@ class Parser:
 
     prepositionsList = [
         "about", "above", "across", "after", "against", "along", "among", "around", "at",
-        "before", "behind", "below", "beneath", "beside", "between", "beyond", "by",
-        "for", "from", "in", "inside", "into", "near", "of", "off", "on", "onto", "out", "outside",
-        "over", "past", "through", "to", "toward", "towards", "under", "upon", "with", "within"
-    ]
+        "before", "behind", "below", "beneath", "beside", "between", "by",
+        "for", "from", "in", "inside", "into", "near", "of", "off", "on", "onto",
+        "through", "to", "toward", "towards", "under", "upon", "with", "within",
+        "out"
+    ] # removed 'down' - otherwise direction 'down' will be removed as preposition
 
     # Default constructor - no instance variables
 
@@ -101,7 +100,7 @@ class Parser:
     def verbCount(self, tokens):
         numverbs = 0
         for token in tokens:
-            if token in verbDict.keys():
+            if token in self.verbDict.keys():
                 numverbs += 1
         return numverbs 
 
@@ -109,7 +108,7 @@ class Parser:
     def directionCount(self, tokens):
         numdirections = 0
         for token in tokens:
-            if token in directionDict.keys():
+            if token in self.directionDict.keys():
                 numdirections += 1 
         return numdirections
 
@@ -135,93 +134,115 @@ class Parser:
         # Remove prepositions
         tokens = [token for token in tokens if token not in self.prepositionsList]
 
+        # Parse input depending on number of tokens
         # There must be at least one token after stripping
         if len(tokens) < 1:
-            return Action() # return action with None verb, direction, direct obj to engine 
+            return Action() 
 
         elif len(tokens) == 1:
-            # if only one token, see if it is a verb, direction, or direct obj
-            verb = self.parseVerb(tokens[0])
-            direction = self.parseDirection(tokens[0]) 
-            directObj = None 
-            # if it is not an available verb or direction, assume it is a direct obj  
-            # TODO: (may want to expand this later to check a text file of common English verbs.
-                # that way if a word is a verb, just unavailable in the game, we can detect that.)  
-            if verb == None and direction == None:
-                directObj = tokens[0]
-            return Action(verb, direction, directObj)  
+            return self.parseSingleToken(tokens[0])
 
         elif len(tokens) == 2:
-            # there should not be more than one verb in tokens. return empty action if 2+ verbs
-            verbct = self.verbCount(tokens)
-            if verbct > 1:
-                return Action()
-            # there should not be more than one direction in tokens. return empty action if 2+ directions
-            directionct = self.directionCount(tokens)
-            if directionct > 1:
-                return Action()
-
-            # calculate number of objects in tokens
-            objct = 2 - verbct - directionct 
-            # if 2 objects and 2 tokens, that means both tokens are objs
-            if objct == 2:
-                return Action(None, None, tokens[0], tokens[1])
-            # 1 obj in tokens, so other token is a verb or direction
-            elif objct == 1:
-                verb = None
-                direction = None
-                directObj = None
-                # check if first token is a verb or direction
-                verb1 = self.parseVerb(tokens[0])
-                direction1 = self.parseDirection(tokens[0])
-                # check if second token is a verb or direction
-                verb2 = self.parseVerb(tokens[1]) 
-                direction2 = self.parseDirection(tokens[1])
-
-                # populate action correctly
-
-                # first token is verb, so second token is obj
-                if verb1 != None:
-                    verb = verb1
-                    directObj = tokens[1]
-                # second token is verb, so first token is obj
-                elif verb2 != None:
-                    verb = verb2
-                    directObj = tokens[0]
-                
-                # 1st token is direction, so 2nd token is obj 
-                if direction1 != None:
-                    direction = direction1
-                    directObj = tokens[1]
-                # 2nd token is direction so 1st token is obj 
-                elif direction2 != None:
-                    direction = direction2 
-                    directObj = tokens[0]
-               
-                return Action(verb, direction, directObj, None)
- 
-            # 0 objs in token, so there is 1 verb and 1 direction    
-            else:  
-                verb = self.parseVerb(tokens[0])
-                direction = None
-                # first token is verb, 2nd token is direction  
-                if verb != None:
-                    direction = self.parseDirection(tokens[1])
-                # 1st token is direction, 2nd is verb
-                else:
-                    direction = self.parseDirection(tokens[0])
-                    verb = self.parseVerb(tokens[1]) 
-                return Action(verb, direction, None, None) 
-
+            return self.parseTwoTokens(tokens)
         else:
-            # TODO: will need some extra handling if 3+ tokens 
-            return Action()
-
+            return self.parseThreeOrMoreTokens(tokens)
 
     # Convert user verb to valid form, return None on error
     def parseVerb(self, verb):
+        # Special case for 'pick up'
+        # if (len(tokens) > 1 and tokens[0] == "pick" and tokens[1] == "up"):
+        #     del tokens[1]
+        #     return "take"
+        # else:
+        #     return self.verbDict.get(tokens[0])
         return self.verbDict.get(verb)
 
     # Convert user-desired direction to valid form, return None on error
     def parseDirection(self, direction):
         return self.directionDict.get(direction)
+
+    # Return Action from single token input
+    def parseSingleToken(self, token):
+        if (token in self.directionDict):
+            return Action("move_user", self.parseDirection(token))
+        elif (token in self.verbDict):
+            return Action(self.parseVerb(token))
+        else:
+            return Action(None, None, token) 
+    
+    # Return Action from two token input
+    def parseTwoTokens(self, tokens):
+        # there should not be more than one verb in tokens. return empty action if 2+ verbs
+        verbct = self.verbCount(tokens)
+        if verbct > 1:
+            return Action()
+        # there should not be more than one direction in tokens. return empty action if 2+ directions
+        directionct = self.directionCount(tokens)
+        if directionct > 1:
+            return Action()
+
+        # calculate number of objects in tokens
+        objct = 2 - verbct - directionct 
+        # if 2 objects and 2 tokens, that means both tokens are objs
+        if objct == 2:
+            return Action(None, None, tokens[0], tokens[1])
+        # 1 obj in tokens, so other token is a verb or direction
+        elif objct == 1:
+            verb = None
+            direction = None
+            directObj = None
+            # check if first token is a verb or direction
+            verb1 = self.parseVerb(tokens[0])
+            direction1 = self.parseDirection(tokens[0])
+            # check if second token is a verb or direction
+            verb2 = self.parseVerb(tokens[1]) 
+            direction2 = self.parseDirection(tokens[1])
+
+            # populate action correctly
+
+            # first token is verb, so second token is obj
+            if verb1 != None:
+                verb = verb1
+                directObj = tokens[1]
+            # second token is verb, so first token is obj
+            elif verb2 != None:
+                verb = verb2
+                directObj = tokens[0]
+            
+            # 1st token is direction, so 2nd token is obj 
+            if direction1 != None:
+                direction = direction1
+                directObj = tokens[1]
+            # 2nd token is direction so 1st token is obj 
+            elif direction2 != None:
+                direction = direction2 
+                directObj = tokens[0]
+            
+            return Action(verb, direction, directObj, None)
+
+        # 0 objs in token, so there is 1 verb and 1 direction    
+        else:  
+            verb = self.parseVerb(tokens[0])
+            direction = None
+            # first token is verb "move_user", 2nd token is direction  
+            if (verb == "move_user"):
+                direction = self.parseDirection(tokens[1])
+                return Action(verb, direction, None, None)
+            # first token is verb other than "move_user", ignore direction
+            else:
+                return Action(verb, None, None, None) 
+
+    def parseThreeOrMoreTokens(self, tokens):
+        action = self.parseTwoTokens(tokens[:2])    # parse first two tokens
+        if (action.verb is None):                        # check if invalid
+            return action 
+
+        # FIXME: right now, just assume next token is a direct_obj
+        # Should probably use a setter here...
+        if (action.direct_obj == None):
+            action.direct_obj = tokens[2]
+        else:
+            action.indirect_obj = tokens[2]
+
+        # Return action
+        return action
