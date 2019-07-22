@@ -5,6 +5,7 @@
 # v3 --> add support and error handling for "look" action
 # v4 --> finish support and error handling for "take", "drop", "look", "sleep"
 # v5 --> additional error handling. refine sleep action
+# v6 --> implement show_help and show_inventory
 #
 # define the "Game" class
 
@@ -124,6 +125,15 @@ class Game:
 			else:
 				print("You aren\'t sleepy right now.")
 
+	# v6: displays list of supported verbs
+	def showHelp(self):
+		print("For moving around:\ngo\nmove\nrun\nwalk\nhead\nhurry\n")
+		print("For taking objects:\nget\npick up\nkeep\ntake\ngrab\nsteal\n")
+		print("For dropping objects:\ndrop\nabandon\ndiscard\ntrash\n")
+		print("For looking:\nlook\nl\nlook at\nstudy\nread\nexamine\nx\nsearch\n")
+		print("For speaking:\ntalk\nsay\ngreet\nask\nchat\nspeak\n")
+		print("Others:\nsleep\nrest\nrelax\nopen\nunlock\n")
+
 	# point of entry from parser, game takes care of input from this point
 	# either by updating the game or sending error messages
 	def fromParserToGame(self, action): 
@@ -158,7 +168,7 @@ class Game:
 				if self.user.canAccessThing(action.direct_obj) and not self.user.canActOnThing(action.direct_obj, action.verb):
 					print("You can\'t %s the %s. Try doing something else with it.", action.verb, action.direct_obj)
 				else:
-					print("You\'re not sure how you would manage that.")
+					print("You don\'t see the point of doing that right now.")
 
 	# called after every change in game state in preparation for next input from parser
 	def setIsValid(self):
@@ -201,8 +211,11 @@ class Game:
 		for item in self.user.things:
                 	valid_looks.append(item.name) 
 
+		# v7
+		valid_searches = [item.name for item in user_place.things if item.is_searchable]
+
 		# set the dictionary with keys as actions and values as valid corresponding things
-		newdict = {"move_user": valid_moves, "take": valid_takes, "drop": valid_drops, "look": valid_looks}
+		newdict = {"move_user": valid_moves, "take": valid_takes, "drop": valid_drops, "look": valid_looks, "search": valid_searches}
 
 		# set the "is valid" attribute to the current dictionary of valid game operations
 		self.isValid = newdict
@@ -259,9 +272,15 @@ class Game:
 			else:
 				return False
 
+		# v6
+		elif action.verb == "show_help":
+			return True 
+		elif action.verb == "show_inventory":
+			return True
 		else:
 			#print("Invalid game action")
 			return False	
+
 
 	# Precondition: called after checkIsValid() returns True
 	def executeRequest(self, action):
@@ -296,6 +315,13 @@ class Game:
 			self.updateTime(8)
 			return
 
+		if action.verb == "show_help":
+			self.showHelp()
+			return 
+
+		if action.verb == "show_inventory":
+			self.user.printInventory()
+			return
 		else:
 			#print("Invalid action type for version 1 or 2")
 			return
@@ -465,13 +491,6 @@ class User:
 
 	def printUser(self, game):
 		print("Username: " + self.name + " Current place: " + self.current_place.name)
-		if len(self.things) == 0:
-			print("User has no things")
-		else:
-			print("User things:")
-		for t in self.things:
-			print(t.name + "   ")
-		
 
 	# v5: check if user can access a thing 
 	def canAccessThing(self, itemname):
@@ -494,6 +513,14 @@ class User:
 						return True
 			return False 
 
+	# v6: show inventory contents
+	def printInventory(self):
+                if len(self.things) == 0:
+                        print("You currently have nothing in your inventory.")
+                else:
+                        print("You have, in various locations on your person:")
+                	for t in self.things:
+                        	print(t.name)
 
 #define the "Thing" class
 class Thing: 
@@ -503,6 +530,8 @@ class Thing:
 		self.location = starting_location # place object
 		self.is_takeable = is_takeable # defines whether feature or object
 		self.with_user = False
+		self.is_searchable = False
+
 		# keep track of allowed verbs for each thing
 		self.permittedVerbs = [] 
 
