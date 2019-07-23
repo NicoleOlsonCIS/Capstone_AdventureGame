@@ -6,8 +6,8 @@ import sys
 sys.path.insert(0, './Parser')
 sys.path.insert(0, './Game_Engine')
 import game_engine_v1 as g
-import action
-import parser
+import action as a
+import parser as p
 
 # playgame1.py works with v6 of the game engine
 
@@ -47,7 +47,7 @@ def loadPlaceDescriptions(place_obj, filename):
 
 def buildGame():
 
-    game = g.Game(1,1)
+    game = g.Game(1,9)
 
     descriptions = ["place during day", "place during night"]
 
@@ -122,16 +122,44 @@ def buildGame():
     #loadPlaceDescriptions(place3, "fields.txt")
     #loadPlaceDescriptions(place4, "frontmanorgrounds.txt")
 
-
     # associate user with game 
     game.setUser(user)
 
     return game
 
 
+
 def main():
 
-    game = buildGame()
-    game.setIsValid()
+    print("Welcome! Would you like to start a new game or load a saved game? new/load")
+    new_or_save = input("> ")
+
+    if "new" in new_or_save:  
+        game = buildGame()
+        game.setIsValid()
+       
+        # set up parser
+        playparser = p.Parser()
+
+        # start playing
+        while True:
+
+            game.user.printUser(game) 
+            received = input("> ")
+            if "quit" in received:
+                break      
+            else:
+                playaction = a.Action()
+                playaction = playparser.parseInput(received)
+                game.fromParserToGame(playaction)
+ 
+    elif "load" in new_or_save:
+        print("Checking for existing saves...")
+        # loading code here
+
+    else:
+        print("You did not choose to start a new game or load a saved game. Exiting...") 
+        return
+
 
 main()
