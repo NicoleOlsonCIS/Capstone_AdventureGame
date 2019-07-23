@@ -7,5 +7,5 @@ bench
 lamppost
 woman maude
 ***
-greenridge weekly gazette newspaper
+newspaper
 
