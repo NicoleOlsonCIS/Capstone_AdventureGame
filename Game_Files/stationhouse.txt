@@ -8,4 +8,4 @@ It's too dark to see here.
 benches
 ticket counter
 ***
-scrap of fabric 
+fabric scrap 

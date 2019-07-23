@@ -37,17 +37,21 @@ def loadPlaceData(place_obj, filename):
     if "no features" not in data_chunks[2]:
         featurenames = data_chunks[2].split("\n")
         for feature in featurenames:
-            feature = feature.rstrip("\n")
-            newthing = g.Thing(feature, feature + " descrip", place_obj, False)
-            place_obj.addThing(newthing)
+            feature = feature.rstrip()
+            feature = feature.lstrip()
+            if feature != "":
+                newthing = g.Thing(feature, feature + " descrip", place_obj, False)
+                place_obj.addThing(newthing)
 
     # load object information and create/add Things
     if "no objects" not in data_chunks[3]:
         objnames = data_chunks[3].split("\n")
-        for obj in data_chunks[3]:
-            obj = obj.rstrip("\n")
-            newthing = g.Thing(obj, obj + " descrip", place_obj, True)
-            place_obj.addThing(newthing)
+        for obj in objnames:
+            obj = obj.rstrip()
+            obj = obj.lstrip()
+            if obj != "":
+                newthing = g.Thing(obj, obj + " descrip", place_obj, True)
+                place_obj.addThing(newthing)
 
 
 def buildGame():

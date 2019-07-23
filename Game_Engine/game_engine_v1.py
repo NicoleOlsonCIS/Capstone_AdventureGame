@@ -6,6 +6,7 @@
 # v4 --> finish support and error handling for "take", "drop", "look", "sleep"
 # v5 --> additional error handling. refine sleep action
 # v6 --> implement show_help and show_inventory
+# v7 --> update "look"/"take"/"drop" and time with integration/gameplay issue fixes
 #
 # define the "Game" class
 
@@ -41,9 +42,9 @@ class Game:
 	def updateTime(self, timeChange):
 		self.time += timeChange
 		
-		# if we've crossed into a new day
-		if self.time > 23: 
-			self.time -= 23
+		# v7: if we've crossed into a new 40-hr day
+		if self.time > 39: 
+			self.time -= 39 
 			self.day = self.day + 1
 
 	def getPlace(self, name):
@@ -54,28 +55,33 @@ class Game:
 
 	# v3: prints the description of a feature or object 
 	def showThing(self, itemname):
+
 		for t in self.user.things:
-			if t.name == itemname:
+			if t.name.lower() == itemname:
 				print(t.description)
 				# update number of times this thing has been examined 
 				t.numTimesExamined += 1
 				return
 		for t in self.user.current_place.things:
-			if t.name == itemname:
+			if t.name.lower() == itemname:
 				print(t.description)
 				t.numTimesExamined += 1
 				return 
 
         # v3: takes the thing the user wants to examine
-        # prints appropriate outputs 
-	def handleLook(self, attemptedObj, canLook):
+        # prints appropriate outputs
+	# v7: handle two-word obj names
+	def handleLook(self, attemptedObj, indirObj, canLook):
+		if indirObj != None:
+			attemptedObj = attemptedObj + " " + indirObj
+
 		if canLook:
                 	# if nothing or "room" specified, examine current room 
 			if attemptedObj == None or attemptedObj == "room":
 				self.user.current_place.printRoom(self.time)
 				self.user.current_place.updateNumLooks()
 			# if current room name specified, examine current room
-			elif attemptedObj == self.user.current_place.name:
+			elif attemptedObj == self.user.current_place.name.lower():
 				self.user.current_place.printRoom(self.time)
 				self.user.current_place.updateNumLooks()
 			# print thing description if thing available for examining
@@ -84,41 +90,55 @@ class Game:
 					
 		else:
 			# if user tries to examine a room that is not the current one, error
-			if attemptedObj in self.places.keys():
-				print("You can\'t look around a room if you aren\'t in it.")
-				return
+			for placename in self.places.keys():
+				if attemptedObj == placename.lower():
+					print("You can\'t look around a room if you aren\'t in it.")
+					return
 			# otherwise print generic error msg
 			print("You don\'t see that here.")
 
 
 	# v4: handle output for "take", "drop", "sleep"
-	def handleTake(self, attemptedObj, takeable):
-		if takeable:
-			if self.user.userHasThing(attemptedObj):
-				print("You can\'t take what\'s already in your inventory.") 	
-			else:
-				print("You take the %s.", attemptedObj)
-		else: 
-			# thing is in current room but not takeable
-			if self.user.current_place.roomHasThing(attemptedObj):
-				print("You can\'t put the %s in your inventory.", attemptedObj) 
-			# thing is not in current room
-			else:
-				print("You don\'t see that here.")
+	# v7: handle two-word obj names
+	def handleTake(self, attemptedObj, indirObj, takeable):
+		if indirObj != None:
+			attemptedObj = attemptedObj + " " + indirObj
 
-	def handleDrop(self, attemptedObj, canDrop):
-		if canDrop:
-			print("You drop the %s.", attemptedObj) 
+		if takeable:
+			if self.user.userHasThing(attemptedObj): 
+				print("You can\'t take what\'s already in your inventory.")
+			else:
+				print("You take the {}.".format(attemptedObj))
 		else:
-			print("You can\'t drop something that\'s not in your inventory.")	
+			if attemptedObj == None:
+				print("Try being more specific about what you want to take.")
+				return 
+			# thing is in current room but not takeable
+			if self.user.current_place.roomHasThing(attemptedObj): 
+				print("You can\'t put that in your inventory.")
+				return
+			# thing is not in current room
+			print("You don\'t see a {} that you can take.".format(attemptedObj))
+
+	def handleDrop(self, attemptedObj, indirObj, canDrop):
+		if indirObj != None:
+			attemptedObj = attemptedObj + " " + indirObj
+
+		if canDrop:
+			print("You drop the {}.".format(attemptedObj)) 
+		else:
+			if attemptedObj == None:
+				print("Try being more specific about what you want to drop.")
+			else:
+				print("You can\'t drop something that\'s not in your inventory.")	
 
 	def handleSleep(self, attemptedObj, canSleep):
 		if canSleep:
 			print("You sleep.")
 		else:
 			if self.user.current_place.name != "Spare Room":
-				print("You can only sleep in your room.")
-			elif self.time > 6 and self.time < 18: 
+				print("You can only sleep in your room. You are not in your room at the moment.")
+			elif self.time > 5 and self.time < 25: 
 				print("You can only sleep at night.")
 			elif attemptedObj != None and attemptedObj != "bed":
 				print("You can only sleep on a bed.") 
@@ -127,12 +147,12 @@ class Game:
 
 	# v6: displays list of supported verbs
 	def showHelp(self):
-		print("For moving around:\ngo\nmove\nrun\nwalk\nhead\nhurry\n")
-		print("For taking objects:\nget\npick up\nkeep\ntake\ngrab\nsteal\n")
-		print("For dropping objects:\ndrop\nabandon\ndiscard\ntrash\n")
-		print("For looking:\nlook\nl\nlook at\nstudy\nread\nexamine\nx\nsearch\n")
-		print("For speaking:\ntalk\nsay\ngreet\nask\nchat\nspeak\n")
-		print("Others:\nsleep\nrest\nrelax\nopen\nunlock\n")
+		print("go\nmove\nrun\nwalk\nhead\nhurry\n")
+		print("get\npick up\nkeep\ntake\ngrab\nsteal\n")
+		print("drop\nabandon\ndiscard\ntrash\n")
+		print("look\nl\nlook at\nstudy\nread\nexamine\nx\nsearch\n")
+		print("talk\nsay\ngreet\nask\nchat\nspeak\n")
+		print("sleep\nrest\nrelax\nopen\nunlock\n")
 
 	# point of entry from parser, game takes care of input from this point
 	# either by updating the game or sending error messages
@@ -156,17 +176,19 @@ class Game:
 		else: 
 
 			if action.verb == "look":
-                        	self.handleLook(action.direct_obj, False)
+                        	self.handleLook(action.direct_obj, action.indirect_obj, False)
 			elif action.verb == "take":
-				self.handleTake(action.direct_obj, False) 
+				self.handleTake(action.direct_obj, action.indirect_obj, False) 
+			elif action.verb == "move_user":
+				print("You can\'t move in that direction. Try another.")
 			elif action.verb == "drop":
-				self.handleDrop(action.direct_obj, False)
+				self.handleDrop(action.direct_obj, action.indirect_obj, False)
 			elif action.verb == "sleep":
 				self.handleSleep(action.direct_obj, False)
 			else:
 				# thing is present, but action.verb is not one of the thing's allowed verbs
 				if self.user.canAccessThing(action.direct_obj) and not self.user.canActOnThing(action.direct_obj, action.verb):
-					print("You can\'t %s the %s. Try doing something else with it.", action.verb, action.direct_obj)
+					print("You can\'t {} the {}. Try doing something else with it.".format(action.verb, action.direct_obj))
 				else:
 					print("You don\'t see the point of doing that right now.")
 
@@ -227,46 +249,69 @@ class Game:
 			for i in v:
 				if i == action.direction:
 					return True
-			print("No place in " + action.direction + " direction.")
+			#print("No place in " + action.direction + " direction.")
 			return False
 		elif action.verb == "take":
+			# v7: make sure direct_obj is not None to avoid crash 
+			if action.direct_obj == None:
+				return False
 			v = self.isValid.get("take")
-			for i in v: 
-				if i == action.direct_obj:
+			for i in v:
+				if i.lower() == action.direct_obj:
 					return True
+				if action.indirect_obj != None:
+					objName = action.direct_obj + " " + action.indirect_obj
+					if objName == i.lower():
+						return True
 			# new in v4: case where item is takeable but already in inventory
 			if self.user.userHasThing(action.direct_obj):
 				return True
+			# v7
+			if action.indirect_obj != None:
+				objName = action.direct_obj + " " + action.indirect_obj
+				if self.user.userHasThing(objName): 
+					return True 
 			return False
 		elif action.verb == "drop":
+			if action.direct_obj == None:
+				return False
 			v = self.isValid.get("drop")
 			for i in v: 
-				if i == action.direct_obj:
+				if i.lower() == action.direct_obj:
 					return True
+				if action.indirect_obj != None:
+					objName = action.direct_obj + " " + action.indirect_obj
+					if objName == i.lower():
+						return True 
 			return False
 
 		# new in v3
 		elif action.verb == "look":
-                        v = self.isValid.get("look")
-                        # check if specified object can be examined (is in current place or inventory) 
-                        for i in v:
-                                if i == action.direct_obj:
-                                      return True   
+			v = self.isValid.get("look")
+			# check if specified object can be examined (is in current place or inventory)
+			for i in v:
+				if action.direct_obj != None:
+					if i.lower() == action.direct_obj:
+                                		return True
+				if action.indirect_obj != None:
+					objName = action.direct_obj + " " + action.indirect_obj
+					if objName == i.lower():
+						return True
                         # if no object specified or current room specified, examine room
-                        if action.direct_obj == None:
+			if action.direct_obj == None:
                         	return True
-                        if action.direct_obj == "room":
+			if action.direct_obj == "room":
                         	return True
-                        if action.direct_obj == self.user.current_place.name: 
+			if action.direct_obj == self.user.current_place.name.lower(): 
                         	return True
-                        return False
+			return False
 
 		# new in v4 
 		elif action.verb == "sleep":
 			# can only sleep on bed in Spare Room at night
 			correctRoom = (self.user.current_place.name == "Spare Room")
 			correctObj = (action.direct_obj == None or action.direct_obj == "bed")
-			correctTime = (self.time >= 18 or self.time <= 6)
+			correctTime = (self.time >= 25 or self.time <= 5)
 			if correctRoom and (correctObj and correctTime):
 				return True
 			else:
@@ -291,28 +336,39 @@ class Game:
 
 		if action.verb == "take":
 			# v4: error handling
-			self.handleTake(action.direct_obj, True)
-			self.user.pickUpObject(action.direct_obj)
+			self.handleTake(action.direct_obj, action.indirect_obj, True)
+			# v7: two-word object names
+			if action.indirect_obj != None:
+				obj_name = action.direct_obj + " " + action.indirect_obj
+			else:
+				obj_name = action.direct_obj
+			self.user.pickUpObject(obj_name)
 			# time update of 1 hour 
 			self.updateTime(1)
 			return
 
 		if action.verb == "drop":
-			self.handleDrop(action.direct_obj, True)
-			self.user.dropObject(action.direct_obj)
+			self.handleDrop(action.direct_obj, action.indirect_obj, True)
+			if action.indirect_obj != None:
+				obj_name = action.direct_obj + " " + action.indirect_obj
+			else:
+				obj_name = action.direct_obj
+			self.user.dropObject(obj_name)
 			# add a time update
 			self.updateTime(1)
 			return
 
+		# updated to handle two-word object names 
 		if action.verb == "look":
-			self.handleLook(action.direct_obj, True)
+			self.handleLook(action.direct_obj, action.indirect_obj, True)
 			self.updateTime(1)
 			return
 
 		if action.verb == "sleep":
 			self.handleSleep(action.direct_obj, True)
-			# move time by 8 hours
-			self.updateTime(8)
+			# move time to start of next day 
+			self.time = 6
+			self.day += 1
 			return
 
 		if action.verb == "show_help":
@@ -365,7 +421,7 @@ class Game:
 			print("User moved down.")
 
 		else:
-			print("invalid direction")
+			print("Invalid direction.")
 
 # define the "Place" class
 class Place:
@@ -393,8 +449,8 @@ class Place:
 		self.adjacent_places = list(map(game.getPlace, self.adjacent_place_names))
 
 	def getDescriptionBasedOnTime(self, time): 
-		# between 6 am and 6 pm is currently considered "day"
-		if time > 6 and time < 18: 
+		# v7: longer clock (40 hours) to allow more moves per day 
+		if time > 5 and time < 25: 
 			return self.description.get("day")
 		else:
 			return self.description.get("night")
@@ -407,9 +463,10 @@ class Place:
 		self.things.remove(thing)
 
 	# check if a thing is in a room
+	# v7: made this check more permissive to accommodate input e.g. "counter" when the object name is "ticket counter"
 	def roomHasThing(self, itemname):
 		for t in self.things:
-			if t.name == itemname:
+			if t.name.lower() == itemname: 
 				return True
 		return False	
 
@@ -479,10 +536,11 @@ class User:
 					break
 
 	# new in v2, for figuring out if user has an thing in possession
+	# v7: made check more permissive to accommodate variety of user inputs
 	def userHasThing(self, itemname):
 		found = False
 		for t in self.things: 
-			if t.name == itemname:
+			if t.name.lower() == itemname: 
 				found = True
 		return found
 
