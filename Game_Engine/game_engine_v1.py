@@ -423,11 +423,11 @@ class Place:
 
 	# v5: display room description
 	def printRoom(self, time):
-                place_name = self.name
+		place_name = self.name
                 # get the description of the place based on the time
-                place_description = self.getDescriptionBasedOnTime(time)
-                output = place_name + "\n" + place_description
-                print(output)
+		place_description = self.getDescriptionBasedOnTime(time)
+		print(place_name)
+		print(place_description)
 
 
 # define the User class
