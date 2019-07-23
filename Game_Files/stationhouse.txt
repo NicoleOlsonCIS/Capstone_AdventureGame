@@ -2,6 +2,10 @@ The rickety station-house door is unlocked and offers no resistance. You step in
 The station-house has seen better days, but you can imagine it was charming once, before it
 acquired a permanently damp, neglected appearance. It’s deserted, and empty except for a few
 benches and a ticket counter. The door to the platform lies east.
-END DAY DESCRIPTION
+***
 It's too dark to see here.
-END NIGHT DESCRIPTION 
+***
+benches
+ticket counter
+***
+scrap of fabric 

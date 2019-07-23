@@ -58,12 +58,12 @@ class Game:
 			if t.name == itemname:
 				print(t.description)
 				# update number of times this thing has been examined 
-				t.updateNumLooks()
+				t.numTimesExamined += 1
 				return
 		for t in self.user.current_place.things:
 			if t.name == itemname:
 				print(t.description)
-				t.updateNumLooks()
+				t.numTimesExamined += 1
 				return 
 
         # v3: takes the thing the user wants to examine
@@ -554,6 +554,3 @@ class Thing:
 		def isTakeable(self):
 			return self.is_takeable
 
-		# v5: updates number of times examined
-		def updateNumLooks(self):
-			self.numTimesExamined += 1

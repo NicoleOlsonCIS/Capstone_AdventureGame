@@ -11,43 +11,49 @@ import parser as p
 
 # playgame1.py works with v6 of the game engine
 
-# reads in day and night descriptions from room file
-def loadPlaceDescriptions(place_obj, filename):
+# reads in place information from room file
+def loadPlaceData(place_obj, filename):
 
     dayDescrip = ""
     nightDescrip = ""
-    daydescription_done = False
-    nightdescription_done = False
-
+ 
     # build path to data file
     fpath = "./Game_Files/" + filename
  
     # read file line by line
     with open(fpath) as f:
-        for line in f:
-            if "END DAY DESCRIPTION" in line:
-                daydescription_done = True
-                continue
-            elif "END NIGHT DESCRIPTION" in line:
-                nightdescription_done = True
-                continue
-
-            if daydescription_done == False:
-                dayDescrip = dayDescrip + line
-            elif not nightdescription_done == False:
-                nightDescrip = nightDescrip + line 
-            else:
-                break
+        read_data = f.read()
+        data_chunks = read_data.split("***\n")
     
+    # day and night descriptions
+    dayDescrip = data_chunks[0].rstrip("\n")
+    nightDescrip = data_chunks[1].rstrip("\n")
+
     # add descriptions to place_obj dictionary
     place_obj.description["day"] = dayDescrip
     place_obj.description["night"] = nightDescrip 
-    #print(place_obj.description["day"])
-    #print(place_obj.description["night"])  
+
+    # load feature information and create/add Things
+    if "no features" not in data_chunks[2]:
+        featurenames = data_chunks[2].split("\n")
+        for feature in featurenames:
+            feature = feature.rstrip("\n")
+            newthing = g.Thing(feature, feature + " descrip", place_obj, False)
+            place_obj.addThing(newthing)
+
+    # load object information and create/add Things
+    if "no objects" not in data_chunks[3]:
+        objnames = data_chunks[3].split("\n")
+        for obj in data_chunks[3]:
+            obj = obj.rstrip("\n")
+            newthing = g.Thing(obj, obj + " descrip", place_obj, True)
+            place_obj.addThing(newthing)
+
 
 def buildGame():
 
-    game = g.Game(1,9)
+    # start game at 7 am
+    game = g.Game(1,7)
 
     descriptions = ["place during day", "place during night"]
 
@@ -116,11 +122,11 @@ def buildGame():
     place28.setAdjacentPlaces(game)
     place29.setAdjacentPlaces(game)
 
-    # load room descriptions from files
-    loadPlaceDescriptions(place1, "trainplatform.txt") 
-    loadPlaceDescriptions(place2, "stationhouse.txt")
-    #loadPlaceDescriptions(place3, "fields.txt")
-    #loadPlaceDescriptions(place4, "frontmanorgrounds.txt")
+    # load room data from files
+    loadPlaceData(place1, "trainplatform.txt") 
+    loadPlaceData(place2, "stationhouse.txt")
+    #loadPlaceData(place3, "fields.txt")
+    #loadPlaceData(place4, "frontmanorgrounds.txt")
 
     # associate user with game 
     game.setUser(user)
@@ -151,6 +157,7 @@ def main():
             else:
                 playaction = a.Action()
                 playaction = playparser.parseInput(received)
+                print(playaction.verb, playaction.direction, playaction.direct_obj, playaction.indirect_obj) 
                 game.fromParserToGame(playaction)
  
     elif "load" in new_or_save:
