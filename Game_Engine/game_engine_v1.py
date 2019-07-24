@@ -535,6 +535,7 @@ class Place:
 
 	# v5: display room description
 	def printRoom(self, time):
+		print("Trace 2")
 		place_name = self.name
 		place_description = self.getDescriptionBasedOnTime(time)
 		# v9: call output function to orient user 
