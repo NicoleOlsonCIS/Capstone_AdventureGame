@@ -1,6 +1,15 @@
 You stand on a lonely train platform in the middle of nowhere, adorned only by a bench and a lamppost.
 There is a station-house to the west.
 ***
+You stand on a lonely train platform with one bench and a single lamppost. 
+The station-house lies to the west. A woman waits on the platform.
+***
+You stand on a deserted train platform. There is a bench and a lamppost. The station-house lies to the west.
+***
+It's too dark to see here.
+***
+It's too dark to see here.
+***
 It's too dark to see here.
 ***
 bench

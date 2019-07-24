@@ -468,10 +468,13 @@ class Game:
 
 # define the "Place" class
 class Place:
-	# game(game object), name(string), descriptions[day, night], adjacentPaceNames[10 strings], things[strings], doors{ })
-	def __init__(self, game, name, descriptions, adjacentPlaceNames, things = None, doors = None):
+	# game(game object), name(string), day[], night[], adjacentPaceNames[10 strings], things[strings], doors{ })
+	def __init__(self, game, name, day, night, adjacentPlaceNames, things = None, doors = None):
 		self.name = name
 		self.adjacent_place_names = adjacentPlaceNames
+
+		# new in v11: a way to tackle "subsequent" in Game Text
+		self.userVisitCount = 0
 
 		# new in v9: a dictionary of doors tracking: whether there is a door, and whether it is locked or unlocked
 		# dictionary: key is direction, value is either 'locked', 'unlocked', or None
@@ -486,8 +489,9 @@ class Place:
 		self.numTimesEntered = 0
 		self.numTimesLooked = 0	
 
-		timeDict = {"day" : descriptions[0], "night": descriptions[1]}
-		self.description = timeDict 
+		# v11 day and night are arrays with different values based on "userVisitCount"
+		self.day = day
+		self.night = night
 
 		game.addPlace(self) # creates a map between name and place object in the game
 
@@ -503,12 +507,16 @@ class Place:
 	def setAdjacentPlaces(self, game):
 		self.adjacent_places = list(map(game.getPlace, self.adjacent_place_names))
 
-	def getDescriptionBasedOnTime(self, time): 
+	# v11 return a description that also considers the how many times the user has been there
+	def getDescriptionBasedOnTimeAndVisitCount(self, time): 
 		# v7: longer clock (40 hours) to allow more moves per day 
+		uvc = self.userVisitCount
+		if uvc > 2:
+			uvc = 2
 		if time > 5 and time < 25: 
-			return self.description.get("day")
+			return self.day[uvc]
 		else:
-			return self.description.get("night")
+			return self.night[uvc]
 	
 	# new in v2 (correpond to take and drop)
 	def addThing(self, thing):
@@ -537,7 +545,7 @@ class Place:
 	def printRoom(self, time):
 		print("Trace 2")
 		place_name = self.name
-		place_description = self.getDescriptionBasedOnTime(time)
+		place_description = self.getDescriptionBasedOnTimeAndVisitCount(time)
 		# v9: call output function to orient user 
 		Output.orientUser(place_name, place_description)
 
