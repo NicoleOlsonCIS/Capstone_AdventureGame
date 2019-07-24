@@ -60,15 +60,10 @@ class Output(object):
     def print_error(self, error_message):
 
         length = len(error_message)
-        print("length of input message: ")
-        print(length)
 
         # if message is long, break up into lines of ~60 characters 
         if length > 60:
-            print("Message too long")
             error_message = Output.break_up_long_message(error_message)
-            print("Error message gotten back: ")
-            print(error_message)
 
         # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
         if sys.stdin.isatty():
