@@ -145,7 +145,7 @@ class Output(object):
         time.sleep(0.5)
         Output.clearEntryWriting()
         sys.stdout.write(u"\u001b[0m") # reset
-        print("\n\n")
+        # print("\n\n")
 
     @classmethod
     def approachDoor(self,_approachDoor):
@@ -326,12 +326,12 @@ class Output(object):
         welcome = "You are now in the " + placeName
 
         if sys.stdin.isatty():
-            sys.stdout.write(u'\u001b[38;5;$147m')
-            for elem in welcome:
-                time.sleep(0.05)
-                sys.stdout.write(elem)
-                sys.stdout.flush()
-            print("\n")
+            #sys.stdout.write(u'\u001b[38;5;$147m')
+            #for elem in welcome:
+            #    time.sleep(0.05)
+            #    sys.stdout.write(elem)
+            #    sys.stdout.flush()
+            #sys.stdout.write("\n")
             sys.stdout.write(u'\u001b[38;5;$146m')
             for elem in placeDescription:
                 time.sleep(0.05)
