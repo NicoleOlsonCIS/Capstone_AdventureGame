@@ -264,3 +264,79 @@ def test_fly_to_the_north():
 
     # Now assert there've been no errors, else print them
     assert not errors, "errors occurred:\n{}".format("\n".join(errors))
+
+# Unit tests - ordinal directions
+def test_go_north_east():
+
+    errors = []
+
+    action = parser.parseInput("go north east")
+
+    # Replace individual assertions with conditions
+    if not action.verb == "move_user":
+        errors.append("expected 'move_user', got " + str(action.verb))
+    if not action.direction == "ne":
+        errors.append("expected 'ne', got " + str(action.direction))
+
+    # Now assert there've been no errors, else print them
+    assert not errors, "errors occurred:\n{}".format("\n".join(errors))
+
+def test_north_east():
+
+    errors = []
+
+    action = parser.parseInput("north east")
+
+    # Replace individual assertions with conditions
+    if not action.verb == "move_user":
+        errors.append("expected 'move_user', got " + str(action.verb))
+    if not action.direction == "ne":
+        errors.append("expected 'ne', got " + str(action.direction))
+
+    # Now assert there've been no errors, else print them
+    assert not errors, "errors occurred:\n{}".format("\n".join(errors))
+
+def test_east_north():
+
+    errors = []
+
+    action = parser.parseInput("east north")
+
+    # Replace individual assertions with conditions
+    if not action.verb == None:
+        errors.append("expected 'None' type, got " + str(action.verb))
+    if not action.direction == None: 
+        errors.append("expected 'None' type, got " + str(action.direction))
+
+    # Now assert there've been no errors, else print them
+    assert not errors, "errors occurred:\n{}".format("\n".join(errors))
+
+def test_go_east_north():
+
+    errors = []
+
+    action = parser.parseInput("go east north")
+
+    # Replace individual assertions with conditions
+    if not action.verb == "move_user":
+        errors.append("expected 'move_user', got " + str(action.verb))
+    if not action.direction == None: 
+        errors.append("expected 'None' type, got " + str(action.direction))
+
+    # Now assert there've been no errors, else print them
+    assert not errors, "errors occurred:\n{}".format("\n".join(errors))
+
+def test_ne():
+
+    errors = []
+
+    action = parser.parseInput("ne")
+
+    # Replace individual assertions with conditions
+    if not action.verb == "move_user":
+        errors.append("expected 'move_user', got " + str(action.verb))
+    if not action.direction == "ne":
+        errors.append("expected 'ne', got " + str(action.direction))
+
+    # Now assert there've been no errors, else print them
+    assert not errors, "errors occurred:\n{}".format("\n".join(errors))

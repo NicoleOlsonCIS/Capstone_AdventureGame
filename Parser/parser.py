@@ -118,7 +118,6 @@ class Parser:
                 numdirections += 1 
         return numdirections
 
-
     # Parse user input into action object
     # TODO - add "context" parameter so engine can talk *to* parser?
     def parseInput(self, input):
@@ -139,6 +138,9 @@ class Parser:
         tokens = [token for token in tokens if token not in self.conjunctionsList] 
         # Remove prepositions
         tokens = [token for token in tokens if token not in self.prepositionsList]
+
+        # Combine directions
+        tokens = self.combineDirections(tokens)
 
         # Parse input depending on number of tokens
         # There must be at least one token after stripping
@@ -252,3 +254,19 @@ class Parser:
 
         # Return action
         return action
+
+    # Combines all directions in a user's input into one string
+    def combineDirections(self, tokens):
+        index = -1
+        for i, token in enumerate(tokens):
+            if token in self.directionDict.keys():
+                if (index < 0):
+                    index = i
+                else:
+                    tokens[index] += token
+                    tokens.remove(token)
+        return tokens
+
+# Debug
+parser = Parser()
+parser.parseInput("go north east")
