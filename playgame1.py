@@ -41,8 +41,8 @@ def loadPlaceData(place_obj, filename):
 
     # v11 implement visit related descriptions
     # add descriptions to place_obj dictionary
-    place_obj.day[0] = day
-    place_obj.night[0] = night 
+    place_obj.day = day
+    place_obj.night = night 
 
     # load feature information and create/add Things
     if "no features" not in data_chunks[6]:
