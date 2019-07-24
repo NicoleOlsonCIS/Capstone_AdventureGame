@@ -220,34 +220,34 @@ class Game:
 		# create a list of available move locations
 		# new in v9, update to account for locked opposing doors (if going north, check place north south door is not locked)
 		valid_moves = []
-		if adjacent_places[0] is not None
+		if adjacent_places[0] is not None:
 			if adjacent_places[0].doors["s"] is not "locked":
 				valid_moves.append("n")
-		if adjacent_places[1] is not None 
+		if adjacent_places[1] is not None: 
 			if adjacent_places[1].doors["sw"] is not "locked":
 				valid_moves.append("ne")
-		if adjacent_places[2] is not None
+		if adjacent_places[2] is not None:
 			if adjacent_places[2].doors["w"] is not "locked":
 				valid_moves.append("e")
-		if adjacent_places[3] is not None 
+		if adjacent_places[3] is not None: 
 			if adjacent_places[3].doors["nw"] is not "locked":
 				valid_moves.append("se")
-		if adjacent_places[4] is not None 
+		if adjacent_places[4] is not None: 
 			if adjacent_places[4].doors["n"] is not "locked":
 				valid_moves.append("s")
-		if adjacent_places[5] is not None 
+		if adjacent_places[5] is not None: 
 			if adjacent_places[5].doors["ne"] is not "locked":
 				valid_moves.append("sw")
-		if adjacent_places[6] is not None 
+		if adjacent_places[6] is not None: 
 			if adjacent_places[6].doors["e"] is not "locked":
 				valid_moves.append("w")
-		if adjacent_places[7] is not None 
+		if adjacent_places[7] is not None: 
 			if adjacent_places[7].doors["se"] is not "locked":
 				valid_moves.append("nw")
-		if adjacent_places[8] is not None 
+		if adjacent_places[8] is not None: 
 			if adjacent_places[8].doors["down"] is not "locked":
 				valid_moves.append("up")
-		if adjacent_places[9] is not None 
+		if adjacent_places[9] is not None: 
 			if adjacent_places[9].doors["up"] is not "locked":
 				valid_moves.append("down")
 
