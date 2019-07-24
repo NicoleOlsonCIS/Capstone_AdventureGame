@@ -9,7 +9,7 @@
 # v7 --> update "look"/"take"/"drop" and time with integration/gameplay issue fixes
 # v8 --> change print statements to incorporate formatted output
 # v9 --> implement "doors" on places that have doors (changes in playgame.py as well)
-#
+# v10 --> change 'up' and 'down' to 'u' and 'd' to match parser
 # define the "Game" class
 
 # import sys
@@ -245,11 +245,11 @@ class Game:
 			if adjacent_places[7].doors["se"] is not "locked":
 				valid_moves.append("nw")
 		if adjacent_places[8] is not None: 
-			if adjacent_places[8].doors["down"] is not "locked":
-				valid_moves.append("up")
+			if adjacent_places[8].doors["d"] is not "locked":
+				valid_moves.append("u")
 		if adjacent_places[9] is not None: 
-			if adjacent_places[9].doors["up"] is not "locked":
-				valid_moves.append("down")
+			if adjacent_places[9].doors["u"] is not "locked":
+				valid_moves.append("d")
 
 		# new in v2 (build set of valid actions regarding objects)
 		# valid_takes = [item.name for item in user_place.things if item.isTakeable()] 
@@ -448,13 +448,13 @@ class Game:
 			self.user.updatePlace(adjacent_places[7])
 			if adjacent_places[7].doors["se"] == "unlocked":
 				is_door = True
-		elif direction == "up":
+		elif direction == "u":
 			self.user.updatePlace(adjacent_places[8])
-			if adjacent_places[8].doors["down"] == "unlocked":
+			if adjacent_places[8].doors["d"] == "unlocked":
 				is_door = True
-		elif direction == "down":
+		elif direction == "d":
 			self.user.updatePlace(adjacent_places[9])
-			if adjacent_places[9].doors["up"] == "unlocked":
+			if adjacent_places[9].doors["u"] == "unlocked":
 				is_door = True
 
 		# new in v9
