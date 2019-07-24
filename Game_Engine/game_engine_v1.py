@@ -459,8 +459,9 @@ class Game:
 
 		# new in v9
 		# print door animation if there is a door
+		new_place = self.user.current_place
 		if (is_door):
-			Output.newPlaceWithDoor(user_place.name)
+			Output.newPlaceWithDoor(new_place.name)
 		else: # not a door
 			print("User moved " + direction)
 
