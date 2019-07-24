@@ -7,6 +7,8 @@
 # v5 --> additional error handling. refine sleep action
 # v6 --> implement show_help and show_inventory
 # v7 --> update "look"/"take"/"drop" and time with integration/gameplay issue fixes
+# v8 --> change print statements to incorporate formatted output
+# v9 --> implement "doors" on places that have doors (changes in playgame.py as well)
 #
 # define the "Game" class
 
@@ -17,10 +19,8 @@
 #
 #
 #
-
-
-
 import action
+import output
 
 class Game:
 
@@ -106,19 +106,19 @@ class Game:
 
 		if takeable:
 			if self.user.userHasThing(attemptedObj): 
-				print("You can\'t take what\'s already in your inventory.")
+				Output.print_error("You can\'t take what\'s already in your inventory.")
 			else:
 				print("You take the {}.".format(attemptedObj))
 		else:
 			if attemptedObj == None:
-				print("Try being more specific about what you want to take.")
+				Output.print_input_hint("Try being more specific about what you want to take.")
 				return 
 			# thing is in current room but not takeable
 			if self.user.current_place.roomHasThing(attemptedObj): 
-				print("You can\'t put that in your inventory.")
+				Output.print_error("You can\'t put that in your inventory.")
 				return
 			# thing is not in current room
-			print("You don\'t see a {} that you can take.".format(attemptedObj))
+			Output.print_error("You don\'t see a " + attemptedObj + " that you can take.")
 
 	def handleDrop(self, attemptedObj, indirObj, canDrop):
 		if indirObj != None:
@@ -128,22 +128,35 @@ class Game:
 			print("You drop the {}.".format(attemptedObj)) 
 		else:
 			if attemptedObj == None:
-				print("Try being more specific about what you want to drop.")
+				Output.print_input_hint("Try being more specific about what you want to drop.")
 			else:
-				print("You can\'t drop something that\'s not in your inventory.")	
+				Output.print_error("You can\'t drop something that\'s not in your inventory.")	
 
 	def handleSleep(self, attemptedObj, canSleep):
 		if canSleep:
 			print("You sleep.")
 		else:
 			if self.user.current_place.name != "Spare Room":
-				print("You can only sleep in your room. You are not in your room at the moment.")
+				Output.print_input_hint("You can only sleep in your room. You are not in your room at the moment.")
 			elif self.time > 5 and self.time < 25: 
-				print("You can only sleep at night.")
+				Output.print_input_hint("You can only sleep at night.")
 			elif attemptedObj != None and attemptedObj != "bed":
-				print("You can only sleep on a bed.") 
+				Output.print_input_hint("You can only sleep on a bed.") 
 			else:
-				print("You aren\'t sleepy right now.")
+				Output.print_input_hint("You aren\'t sleepy right now.")
+
+	# new in v9: print special error message for locked door
+	def handleLockedDoor(self, direction):
+
+		doors = self.user.current_place.doors
+
+		# if there is a door, and the move is invalid, then "locked"
+		if doors[direction] == "locked":
+			Output.doorIsLocked(self.user.current_place.name)
+
+		# otherwise, there is no place in that direction
+		else:
+			Output.print_error("There is no place in the " + direction + " direction")
 
 	# v6: displays list of supported verbs
 	def showHelp(self):
@@ -157,6 +170,7 @@ class Game:
 	# point of entry from parser, game takes care of input from this point
 	# either by updating the game or sending error messages
 	def fromParserToGame(self, action): 
+		
 		valid = self.checkIsValid(action)
 
 		if(valid):
@@ -168,19 +182,18 @@ class Game:
 			
 			# if the user was moved, re-orient user
 			if action.verb == "move_user":
-				# get the users direction (maybe don't need this)
-				# direction = self.user.direction
 				self.user.current_place.printRoom(self.time)
 				self.user.current_place.updateNumEntries()
  
 		else: 
-
-			if action.verb == "look":
-                        	self.handleLook(action.direct_obj, action.indirect_obj, False)
+			if action.verb == "move_user": # new in v9: check if move is invalid due to locked door
+				self.handleLockedDoor(action.direction)
+			elif action.verb == "look":
+				self.handleLook(action.direct_obj, action.indirect_obj, False)
 			elif action.verb == "take":
 				self.handleTake(action.direct_obj, action.indirect_obj, False) 
 			elif action.verb == "move_user":
-				print("You can\'t move in that direction. Try another.")
+				Output.print_error("You can\'t move in that direction. Try another.")
 			elif action.verb == "drop":
 				self.handleDrop(action.direct_obj, action.indirect_obj, False)
 			elif action.verb == "sleep":
@@ -188,40 +201,55 @@ class Game:
 			else:
 				# thing is present, but action.verb is not one of the thing's allowed verbs
 				if self.user.canAccessThing(action.direct_obj) and not self.user.canActOnThing(action.direct_obj, action.verb):
-					print("You can\'t {} the {}. Try doing something else with it.".format(action.verb, action.direct_obj))
+					Output.print_error("You can\'t " + action.verb + " the " + action.direct_obj + " Try doing something else with it.")
 				else:
-					print("You don\'t see the point of doing that right now.")
+					Output.print_error("You don\'t see the point of doing that right now.")
 
 	# called after every change in game state in preparation for next input from parser
 	def setIsValid(self):
+		
 		newdict={} 
+		
 		user_place = self.user.current_place
+
+		# new in v9: a dictionary of the doors of the users place
+		doors = user_place.doors
+		
 		adjacent_places = self.user.current_place.adjacent_places
    
 		# create a list of available move locations
+		# new in v9, update to account for locked opposing doors (if going north, check place north south door is not locked)
 		valid_moves = []
-		if adjacent_places[0] is not None:
-			valid_moves.append("n")
-		if adjacent_places[1] is not None:
-			valid_moves.append("ne")
-		if adjacent_places[2] is not None:
-			valid_moves.append("e")
-		if adjacent_places[3] is not None:
-			valid_moves.append("se")
-		if adjacent_places[4] is not None:
-			valid_moves.append("s")
-		if adjacent_places[5] is not None:
-			valid_moves.append("sw")
-		if adjacent_places[6] is not None:
-			valid_moves.append("w")
-		if adjacent_places[7] is not None:
-			valid_moves.append("nw")
-
-		# new in v1.1
-		if adjacent_places[8] is not None:
-			valid_moves.append("up")
-		if adjacent_places[9] is not None:
-			valid_moves.append("down")
+		if adjacent_places[0] is not None
+			if adjacent_places[0].doors["s"] is not "locked":
+				valid_moves.append("n")
+		if adjacent_places[1] is not None 
+			if adjacent_places[1].doors["sw"] is not "locked":
+				valid_moves.append("ne")
+		if adjacent_places[2] is not None
+			if adjacent_places[2].doors["w"] is not "locked":
+				valid_moves.append("e")
+		if adjacent_places[3] is not None 
+			if adjacent_places[3].doors["nw"] is not "locked":
+				valid_moves.append("se")
+		if adjacent_places[4] is not None 
+			if adjacent_places[4].doors["n"] is not "locked":
+				valid_moves.append("s")
+		if adjacent_places[5] is not None 
+			if adjacent_places[5].doors["ne"] is not "locked":
+				valid_moves.append("sw")
+		if adjacent_places[6] is not None 
+			if adjacent_places[6].doors["e"] is not "locked":
+				valid_moves.append("w")
+		if adjacent_places[7] is not None 
+			if adjacent_places[7].doors["se"] is not "locked":
+				valid_moves.append("nw")
+		if adjacent_places[8] is not None 
+			if adjacent_places[8].doors["down"] is not "locked":
+				valid_moves.append("up")
+		if adjacent_places[9] is not None 
+			if adjacent_places[9].doors["up"] is not "locked":
+				valid_moves.append("down")
 
 		# new in v2 (build set of valid actions regarding objects)
 		# valid_takes = [item.name for item in user_place.things if item.isTakeable()] 
@@ -249,7 +277,6 @@ class Game:
 			for i in v:
 				if i == action.direction:
 					return True
-			#print("No place in " + action.direction + " direction.")
 			return False
 		elif action.verb == "take":
 			# v7: make sure direct_obj is not None to avoid crash 
@@ -383,52 +410,55 @@ class Game:
 			return
 
 	# Precondition: place adjacency pre-validated
+	# new in v9: it has also been verified that if there is a door, it is not locked
 	def moveUser(self, direction):
 		user_place = self.user.current_place
 		adjacent_places = user_place.adjacent_places
+		is_door = False
+
+		# new in v9: checking if it is a door or just an open path/connection
+		doors = user_place.doors
+		if doors[direction] == "unlocked":
+			is_door = True
 
 		if direction == "n":
 			self.user.updatePlace(adjacent_places[0])
-			print("User moved north.")
 		elif direction == "ne":
 			self.user.updatePlace(adjacent_places[1])
-			print("User moved north-east.")
 		elif direction == "e":
 			self.user.updatePlace(adjacent_places[2])
-			print("User moved east.")
 		elif direction == "se":
 			self.user.updatePlace(adjacent_places[3])
-			print("User moved south-east.")
 		elif direction == "s":
 			self.user.updatePlace(adjacent_places[4])
-			print("User moved south.")
 		elif direction == "sw":
 			self.user.updatePlace(adjacent_places[5])
-			print("User moved south-west.")
 		elif direction == "w":
 			self.user.updatePlace(adjacent_places[6])
-			print("User moved west.")
 		elif direction == "nw":
 			self.user.updatePlace(adjacent_places[7])
-			print("User moved north-west.")
-
-			# new in v1.1
 		elif direction == "up":
 			self.user.updatePlace(adjacent_places[8])
-			print("User moved up.")
 		elif direction == "down":
 			self.user.updatePlace(adjacent_places[9])
-			print("User moved down.")
 
-		else:
-			print("Invalid direction.")
+		# new in v9
+		# print door animation if there is a door
+		if (is_door):
+			Output.newPlaceWithDoor(user_place.name)
+		else: # not a door
+			print("User moved " + direction)
 
 # define the "Place" class
 class Place:
-	# game(game object), name(string), descriptions[day, night], adjacentPaceNames[10 strings])
-	def __init__(self, game, name, descriptions, adjacentPlaceNames, things = None):
+	# game(game object), name(string), descriptions[day, night], adjacentPaceNames[10 strings], things[strings], doors{ })
+	def __init__(self, game, name, descriptions, adjacentPlaceNames, things = None, doors = None):
 		self.name = name
 		self.adjacent_place_names = adjacentPlaceNames
+
+		# new in v9: a dictionary of doors tracking: whether there is a door, and whether it is locked or unlocked
+		# dictionary: key is direction, value is either 'locked', 'unlocked', or None
+		self.doors = doors
 
 		# fixed constructor
 		if things is not None:
@@ -443,6 +473,14 @@ class Place:
 		self.description = timeDict 
 
 		game.addPlace(self) # creates a map between name and place object in the game
+
+	# new in v9 update the doors dictionary when a door becomes locked
+	def lockDoor(self, direction):
+		self.doors[direction] = "locked"
+
+	# new in v9 update the doors dictionary when a door becomes unlocked
+	def unlockDoor(self, direction):
+		self.doors[direction] = "unlocked"
 
 	#  translates array to "adjacentplaces" array after all places created
 	def setAdjacentPlaces(self, game):
@@ -481,11 +519,9 @@ class Place:
 	# v5: display room description
 	def printRoom(self, time):
 		place_name = self.name
-                # get the description of the place based on the time
 		place_description = self.getDescriptionBasedOnTime(time)
-		print(place_name)
-		print(place_description)
-
+		# v9: call output function to orient user 
+		Output.orientUser(place_name, place_description)
 
 # define the User class
 class User:
