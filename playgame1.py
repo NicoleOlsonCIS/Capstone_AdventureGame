@@ -170,7 +170,7 @@ def main():
     if "new" in new_or_save:  
         game = buildGame()
         game.setIsValid()
-        Output.welcomeToGame(game.user.current_place.day[0])
+        Output.welcomeToGame(game.user.current_place.day[0]) # start day first visit
        
         # set up parser
         playparser = p.Parser()
