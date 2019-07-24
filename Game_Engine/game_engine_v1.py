@@ -416,31 +416,46 @@ class Game:
 		adjacent_places = user_place.adjacent_places
 		is_door = False
 
-		# new in v9: checking if it is a door or just an open path/connection
-		doors = user_place.doors
-		if doors[direction] == "unlocked":
-			is_door = True
-
 		if direction == "n":
 			self.user.updatePlace(adjacent_places[0])
+			if adjacent_places[0].doors["s"] == "unlocked":
+				is_door = True
 		elif direction == "ne":
 			self.user.updatePlace(adjacent_places[1])
+			if adjacent_places[1].doors["sw"] == "unlocked":
+				is_door = True
 		elif direction == "e":
 			self.user.updatePlace(adjacent_places[2])
+			if adjacent_places[2].doors["w"] == "unlocked":
+				is_door = True
 		elif direction == "se":
 			self.user.updatePlace(adjacent_places[3])
+			if adjacent_places[3].doors["nw"] == "unlocked":
+				is_door = True
 		elif direction == "s":
 			self.user.updatePlace(adjacent_places[4])
+			if adjacent_places[4].doors["n"] == "unlocked":
+				is_door = True
 		elif direction == "sw":
 			self.user.updatePlace(adjacent_places[5])
+			if adjacent_places[5].doors["ne"] == "unlocked":
+				is_door = True
 		elif direction == "w":
 			self.user.updatePlace(adjacent_places[6])
+			if adjacent_places[6].doors["e"] == "unlocked":
+				is_door = True
 		elif direction == "nw":
 			self.user.updatePlace(adjacent_places[7])
+			if adjacent_places[7].doors["se"] == "unlocked":
+				is_door = True
 		elif direction == "up":
 			self.user.updatePlace(adjacent_places[8])
+			if adjacent_places[8].doors["down"] == "unlocked":
+				is_door = True
 		elif direction == "down":
 			self.user.updatePlace(adjacent_places[9])
+			if adjacent_places[9].doors["up"] == "unlocked":
+				is_door = True
 
 		# new in v9
 		# print door animation if there is a door
