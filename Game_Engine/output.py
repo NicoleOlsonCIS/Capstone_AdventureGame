@@ -345,21 +345,3 @@ class Output(object):
         else:
             print(welcome)
             print(placeDescription)
-
-def main():
-
-    Output.print_error("Print error")
-    
-    Output.print_input_hint("Print input hint")
-    
-    print("Testing long input lines")
-
-    Output.newPlaceWithDoor("Barn")
-
-    Output.orientUser("Store", "A place where you buy things.")
-
-    print("Testing door is locked")
-
-    Output.doorIsLocked("kitchen", True)
-
-main()
