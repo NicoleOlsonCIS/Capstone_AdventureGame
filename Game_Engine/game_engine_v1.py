@@ -473,9 +473,6 @@ class Place:
 		self.name = name
 		self.adjacent_place_names = adjacentPlaceNames
 
-		# new in v11: a way to tackle "subsequent" in Game Text
-		self.userVisitCount = 0
-
 		# new in v9: a dictionary of doors tracking: whether there is a door, and whether it is locked or unlocked
 		# dictionary: key is direction, value is either 'locked', 'unlocked', or None
 		self.doors = doors
@@ -510,7 +507,7 @@ class Place:
 	# v11 return a description that also considers the how many times the user has been there
 	def getDescriptionBasedOnTimeAndVisitCount(self, time): 
 		# v7: longer clock (40 hours) to allow more moves per day 
-		uvc = self.userVisitCount
+		uvc = self.numTimesEntered
 		if uvc > 2:
 			uvc = 2
 		if time > 5 and time < 25: 
@@ -608,6 +605,8 @@ class User:
 
 	def updatePlace(self, place):
 		self.current_place = place
+		# new in v11: num times entered
+		self.current_place.updateNumEntries()
 
 	def printUser(self, game):
 		print("Username: " + self.name + " Current place: " + self.current_place.name)
