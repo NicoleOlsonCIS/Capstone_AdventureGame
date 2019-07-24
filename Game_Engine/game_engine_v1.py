@@ -182,6 +182,7 @@ class Game:
 			
 			# if the user was moved, re-orient user
 			if action.verb == "move_user":
+				print("trace 1")
 				self.user.current_place.printRoom(self.time)
 				self.user.current_place.updateNumEntries()
  
