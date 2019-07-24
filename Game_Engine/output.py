@@ -94,8 +94,6 @@ class Output(object):
     @classmethod
     # helper functions, called if a line is > 60 characters
     def break_up_long_message(self, extended_message):
-    
-        print("break up called!")
 
         # split at white space, turn it into an array of words
         words = extended_message.split()
