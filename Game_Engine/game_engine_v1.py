@@ -152,7 +152,7 @@ class Game:
 
 		# if there is a door, and the move is invalid, then "locked"
 		if doors[direction] == "locked":
-			Output.doorIsLocked(self.user.current_place.name)
+			Output.doorIsLocked(self.user.current_place.name, True)
 
 		# otherwise, there is no place in that direction
 		else:
