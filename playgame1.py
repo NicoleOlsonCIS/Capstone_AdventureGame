@@ -8,6 +8,7 @@ sys.path.insert(0, './Game_Engine')
 import game_engine_v1 as g
 import action as a
 import parser as p
+from output import *
 
 # playgame1.py works with v6 of the game engine
 
@@ -156,6 +157,7 @@ def main():
     if "new" in new_or_save:  
         game = buildGame()
         game.setIsValid()
+        Output.welcomeToGame(game.user.current_place.description["day"])
        
         # set up parser
         playparser = p.Parser()
@@ -163,7 +165,7 @@ def main():
         # start playing
         while True:
 
-            game.user.printUser(game) 
+            # game.user.printUser(game) 
             received = input("> ")
             if "quit" in received:
                 break      
