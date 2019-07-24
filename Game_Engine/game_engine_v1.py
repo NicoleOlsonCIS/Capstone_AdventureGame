@@ -20,7 +20,7 @@
 #
 #
 import action
-import output
+From output import *
 
 class Game:
 
