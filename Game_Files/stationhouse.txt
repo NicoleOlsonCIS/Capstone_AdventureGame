@@ -18,4 +18,10 @@ It's too dark to see here.
 benches
 ticket counter
 ***
-fabric scrap 
+An unyielding metal bench, weathering the years alone. A newspaper lies askew on the bench, as if blown there by the wind
+***
+The ticket window is closed and locked. You see no sign of anyone who might be minding the counter. A scrap of fabric sits forlornly at the counter’s edge. 
+***
+fabric scrap
+***
+A ragged piece of grubby white fabric, like the torn corner of a handkerchief. It bears the name “James” in blue embroidery.
