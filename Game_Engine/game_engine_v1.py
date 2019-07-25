@@ -59,17 +59,14 @@ class Game:
 
 		for t in self.user.things:
 			if t.name.lower() == itemname:
-				des = t.getDescription()
-				print(des)
-				# update number of times this thing has been examined 
-				t.numTimesExamined += 1
+				des = t.getDescription(self.time) # increases views on Thing
+				print(des) # change to output module
 				return
 		for t in self.user.current_place.things:
 			if t.name.lower() == itemname:
 				print(t)
-				des = t.getDescription()
-				print(des)
-				t.numTimesExamined += 1
+				des = t.getDescription(self.time) # increases views on Thing
+				print(des) # change to output module
 				return 
 
         # v3: takes the thing the user wants to examine
@@ -647,9 +644,10 @@ class User:
 
 #define the "Thing" class
 class Thing: 
-	def __init__(self, name, description, starting_location, is_takeable):
+	def __init__(self, name, day, night, starting_location, is_takeable):
 		self.name = name
-		self.description = description # in v12: description is now an array of size 5
+		self.day # size of 5
+		self.night # size of 5
 		self.location = starting_location # place object
 		self.is_takeable = is_takeable # defines whether feature or object
 		self.with_user = False
@@ -662,13 +660,21 @@ class Thing:
 
 		#debug
 		print("Thing created! " + self.name)
-		print("Thing first description: " + self.description[0])
+		print("Thing first day description: " + self.day[0])
+		print("Thing first day description: " + self.night[0])
 
-	def getDescription(self):
-		if self.numTimesExamined > 5:
-			return self.description[4]
+	def getDescription(self, time):
+		self.numTimesExamined += 1
+		if time > 5 and time < 25:					# do we want this time of 5 - 25 here?
+			if self.numTimesExamined > 5:
+				return self.day[4]
+			else:
+				return self.day[self.numTimesExamined]
 		else:
-			return self.description[self.numTimesExamined]
+			if self.numTimesExamined > 5:
+				return self.night[4]
+			else:
+				return self.night[self.numTimesExamined]
 
 	# add a permitted verb for this thing 
 	def addVerb(self, verb):
