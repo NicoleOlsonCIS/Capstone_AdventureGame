@@ -646,8 +646,8 @@ class User:
 class Thing: 
 	def __init__(self, name, day, night, starting_location, is_takeable):
 		self.name = name
-		self.day # size of 5
-		self.night # size of 5
+		self.day = day     # size of 5
+		self.night = night # size of 5
 		self.location = starting_location # place object
 		self.is_takeable = is_takeable # defines whether feature or object
 		self.with_user = False
