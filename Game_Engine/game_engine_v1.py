@@ -660,6 +660,10 @@ class Thing:
 
 		self.numTimesExamined = 0
 
+		#debug
+		print("Thing created! " + self.name)
+		print("Thing first description: " + self.description[0])
+
 	def getDescription(self):
 		if self.numTimesExamined > 5:
 			return self.description[4]
