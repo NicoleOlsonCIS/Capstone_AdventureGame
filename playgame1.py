@@ -77,7 +77,10 @@ def loadPlaceData(place_obj, filename):
             count += 1
 
         # debug
-        print("Creating features ... ")
+        print("Creating features, the set of feature names now is: ")
+        for f in featurenames: 
+            print(f)
+
         count = 0
         for feature in featurenames:
             feature = feature.rstrip()
