@@ -142,7 +142,7 @@ def loadPlaceData(place_obj, filename):
 
         # figure out where the next type section starts based on how many sections there will be for objects
         # for instance, if there is 1 object, then we index past that object's descriptions
-        nextIdxIncrement = numObjects
+        nextIdxIncrement = numObjects + 1
 
         objectDescriptions = []
         count = 0
@@ -173,6 +173,10 @@ def loadPlaceData(place_obj, filename):
                 while numDescriptions < 5:
                     od_arr.append(od_arr[numDescriptions - 1])
                     numDescriptions = len(od_arr)
+
+                # debug
+                print("Creating an object")
+
                 newthing = g.Thing(obj, od_arr, place_obj, True)
                 place_obj.addThing(newthing)
 
