@@ -659,6 +659,13 @@ class Thing:
 
 		self.numTimesExamined = 0
 
+		# v12 get description based on numTimesExamined (max 5 different descriptions)
+		def getDescription(self):
+			if self.numTimesExamined > 5:
+				return self.description[4]
+			else:
+				return self.desription[self.numTimesExamined]
+
 		# add a permitted verb for this thing 
 		def addVerb(self, verb):
 			self.permittedVerbs.append(verb)
@@ -675,15 +682,3 @@ class Thing:
 		# differentiates object from feature
 		def isTakeable(self):
 			return self.is_takeable
-
-		# v12 increase views (has to be called from execution in game when "look" etc)
-		def hasBeenExamined(self):
-			self.hasBeenExamined += 1
-
-		# v12 get description based on numTimesExamined (max 5 different descriptions)
-		def getDescription(self):
-			if self.numTimesExamined > 5:
-				return self.description[4]
-			else:
-				return self.desription[self.numTimesExamined]
-
