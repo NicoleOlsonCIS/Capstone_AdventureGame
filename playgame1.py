@@ -47,6 +47,11 @@ def loadPlaceData(place_obj, filename):
     if "no features" not in data_chunks[6]:
         featurenames = data_chunks[6].split("\n")
         
+        # have to remove the non-features before setting index tracking 
+        for f in featurenames:
+            if f == "":
+                featurenames.remove(f)
+
         # get the count of features
         numFeatures = len(featurenames)
 
@@ -94,27 +99,9 @@ def loadPlaceData(place_obj, filename):
         idx = 6 + nextIdxIncrement
         objnames = data_chunks[idx].split("\n")
 
-        # debug
-        print("Number of objects: ")
-        size = len(objnames)
-        print(size)
-
-        # debug
-        for o in objnames:
-            print("Object: " + o)
-
         for o in objnames:
             if o == "":
                 objnames.remove(o)
-
-        # debug
-        print("Number of objects after removal: ")
-        size = len(objnames)
-        print(size)
-
-        # debug
-        for o in objnames:
-            print("Object: " + o)
 
         # get the count of objects
         numObjects = len(objnames)
