@@ -324,7 +324,7 @@ def buildGame():
     # load room data from files
     loadPlaceData(place1, "trainplatform.txt") 
     loadPlaceData(place2, "stationhouse.txt")
-    #loadPlaceData(place3, "fields.txt")
+    loadPlaceData(place3, "fields.txt")
     #loadPlaceData(place4, "frontmanorgrounds.txt")
 
     # associate user with game 
