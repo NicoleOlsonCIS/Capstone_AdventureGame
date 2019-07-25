@@ -59,7 +59,7 @@ class Game:
 
 		for t in self.user.things:
 			if t.name.lower() == itemname:
-				print(t.getDescriptionBasedOnTimesExamined)
+				print(t.getDescriptionBasedOnTimesExamined())
 				# update number of times this thing has been examined 
 				t.numTimesExamined += 1
 				return
