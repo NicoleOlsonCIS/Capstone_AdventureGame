@@ -312,7 +312,6 @@ class Output(object):
 
     @classmethod
     def orientUser(self, placeName, placeDescription):
-        print("Trace 3")
         length = len(placeDescription)
         if length > 60:
             placeDescription = Output.break_up_long_message(placeDescription)

@@ -10,6 +10,7 @@
 # v8 --> change print statements to incorporate formatted output
 # v9 --> implement "doors" on places that have doors (changes in playgame.py as well)
 # v10 --> change 'up' and 'down' to 'u' and 'd' to match parser
+# v11 --> descriptions of Place now based on number of visits as well
 # define the "Game" class
 
 # import sys
@@ -182,7 +183,6 @@ class Game:
 			
 			# if the user was moved, re-orient user
 			if action.verb == "move_user":
-				print("trace 1")
 				self.user.current_place.printRoom(self.time)
 				self.user.current_place.updateNumEntries()
  
@@ -483,8 +483,8 @@ class Place:
 		else:
 			self.things = []
 		
-		self.numTimesEntered = 0
-		self.numTimesLooked = 0	
+		self.numTimesEntered = -1
+		self.numTimesLooked = -1	
 
 		# v11 day and night are arrays with different values based on "userVisitCount"
 		self.day = day
@@ -508,6 +508,8 @@ class Place:
 	def getDescriptionBasedOnTimeAndVisitCount(self, time): 
 		# v7: longer clock (40 hours) to allow more moves per day 
 		uvc = self.numTimesEntered
+		if uvc == -1:
+			uvc = 0
 		if uvc > 2:
 			uvc = 2
 		if time > 5 and time < 25: 
@@ -540,7 +542,6 @@ class Place:
 
 	# v5: display room description
 	def printRoom(self, time):
-		print("Trace 2")
 		place_name = self.name
 		place_description = self.getDescriptionBasedOnTimeAndVisitCount(time)
 		# v9: call output function to orient user 
