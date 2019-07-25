@@ -59,13 +59,13 @@ class Game:
 
 		for t in self.user.things:
 			if t.name.lower() == itemname:
-				print(t.getDescriptionBasedOnTimesExamined())
+				print(t.getDescription())
 				# update number of times this thing has been examined 
 				t.numTimesExamined += 1
 				return
 		for t in self.user.current_place.things:
 			if t.name.lower() == itemname:
-				print(t.getDescriptionBasedOnTimesExamined())
+				print(t.getDescription())
 				t.numTimesExamined += 1
 				return 
 
@@ -679,7 +679,7 @@ class Thing:
 			self.hasBeenExamined += 1
 
 		# v12 get description based on numTimesExamined (max 5 different descriptions)
-		def getDescriptionBasedOnTimesExamined(self):
+		def getDescription(self):
 			if self.numTimesExamined > 5:
 				return self.description[4]
 			else:
