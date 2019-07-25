@@ -660,26 +660,25 @@ class Thing:
 
 		self.numTimesExamined = 0
 
-		# v12 get description based on numTimesExamined (max 5 different descriptions)
-		def getDescription(self):
-			if self.numTimesExamined > 5:
-				return self.description[4]
-			else:
-				return self.desription[self.numTimesExamined]
+	def getDescription(self):
+		if self.numTimesExamined > 5:
+			return self.description[4]
+		else:
+			return self.description[self.numTimesExamined]
 
-		# add a permitted verb for this thing 
-		def addVerb(self, verb):
-			self.permittedVerbs.append(verb)
+	# add a permitted verb for this thing 
+	def addVerb(self, verb):
+		self.permittedVerbs.append(verb)
 
-		# when the user drops
-		def leaveUser(self, new_location):
-			self.location = new_location # place where user is dropping it
-			self.with_user = False
+	# when the user drops
+	def leaveUser(self, new_location):
+		self.location = new_location # place where user is dropping it
+		self.with_user = False
 
-		# when the user picks up
-		def becomeWithUser(self):
-			self.with_user = True
+	# when the user picks up
+	def becomeWithUser(self):
+		self.with_user = True
 
-		# differentiates object from feature
-		def isTakeable(self):
-			return self.is_takeable
+	# differentiates object from feature
+	def isTakeable(self):
+		return self.is_takeable
