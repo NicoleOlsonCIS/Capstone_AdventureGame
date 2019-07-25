@@ -103,6 +103,19 @@ def loadPlaceData(place_obj, filename):
         for o in objnames:
             print("Object: " + o)
 
+        for o in objectnames:
+            if o == "":
+                objnames.remove(o)
+
+        # debug
+        print("Number of objects after removal: ")
+        size = len(objnames)
+        print(size)
+
+        # debug
+        for o in objnames:
+            print("Object: " + o)
+
         # get the count of objects
         numObjects = len(objnames)
 
