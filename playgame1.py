@@ -110,6 +110,9 @@ def loadPlaceData(place_obj, filename):
                     fd_arr.append(fd_arr[numDescriptions - 1])
                     numDescriptions = len(fd_arr)
 
+                # debug
+                print("Creating a feature in playgame1. ")
+
                 newthing = g.Thing(feature, fd_arr, place_obj, False)
                 place_obj.addThing(newthing)
 
