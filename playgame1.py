@@ -52,21 +52,12 @@ def loadPlaceData(place_obj, filename):
             if f == "":
                 featurenames.remove(f)
 
-        #debug
-        print("Set of feature names: ")
-        for f in featurenames:
-            print(f)
-
         # get the count of features
         numFeatures = len(featurenames)
 
         # figure out where the next type section starts based on how many *** there will be for features
         # for instance, if there is 1 feature, then we index past that feature's descriptions
         nextIdxIncrement = numFeatures + 1
-
-        #debug 
-        print("Debug: the increment is set to ")
-        print(nextIdxIncrement)
 
         featureDescriptions = []
         count = 0
@@ -76,16 +67,10 @@ def loadPlaceData(place_obj, filename):
             featureDescriptions.append(data_chunks[7 + count])
             count += 1
 
-        # debug
-        print("Creating features, the set of feature names now is: ")
-        for f in featurenames: 
-            print(f)
-
         count = 0
         for feature in featurenames:
             feature = feature.rstrip()
             feature = feature.lstrip()
-            print("feature: " + feature)
             if feature != "":
 
                 # get the description block for this feature
@@ -96,11 +81,6 @@ def loadPlaceData(place_obj, filename):
                 for f in fd_arr:
                     if f == "":
                         fd_arr.remove(f)
-                
-                # debug
-                print("descriptions for this feature: ")
-                for f in fd_arr:
-                    print(f)
 
                 # find out how many descriptions have been entered
                 numDescriptions = len(fd_arr)
@@ -123,16 +103,10 @@ def loadPlaceData(place_obj, filename):
                 if len(night) == 0:
                     night = day
 
-                # debug
-                print("Creating a feature in playgame1. ")
-
                 newthing = g.Thing(feature, day, night, place_obj, False)
                 place_obj.addThing(newthing)
 
                 count += 1
-
-    # debug
-    print("Done creating features")
 
     # load object information and create/add Things
     # v12 if there were no features, then nextIdxIncrement is 1 and we are on chunk 7
@@ -144,11 +118,6 @@ def loadPlaceData(place_obj, filename):
         for o in objnames:
             if o == "":
                 objnames.remove(o)
-
-        #debug
-        print("Set of object names: ")
-        for o in objnames:
-            print(o)
 
         # get the count of objects
         numObjects = len(objnames)
@@ -172,11 +141,6 @@ def loadPlaceData(place_obj, filename):
             if obj != "":
                 # get the description block for this object
                 od = objectDescriptions[count]
-
-                # debug
-                print("Printing the object descriptions for obejct " + obj)
-                for o in od:
-                    print(o)
 
                 # separate out by delimeter and remove empty descriptions
                 od_arr = od.split("\n")
@@ -204,9 +168,6 @@ def loadPlaceData(place_obj, filename):
                 # if there are no night specific descriptions, then set them the same as day
                 if len(night) == 0:
                     night = day
-
-                # debug
-                print("Creating an object")
 
                 newthing = g.Thing(obj, day, night, place_obj, True)
                 place_obj.addThing(newthing)
