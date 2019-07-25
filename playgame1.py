@@ -52,12 +52,21 @@ def loadPlaceData(place_obj, filename):
             if f == "":
                 featurenames.remove(f)
 
+        #debug
+        print("Set of feature names: ")
+        for f in featurenames:
+            print(f)
+
         # get the count of features
         numFeatures = len(featurenames)
 
         # figure out where the next type section starts based on how many *** there will be for features
         # for instance, if there is 1 feature, then we index past that feature's descriptions
         nextIdxIncrement = numFeatures
+
+        #debug 
+        print("Debug: the increment is set to ")
+        print(nextIdxIncrement)
 
         featureDescriptions = []
         count = 0
@@ -85,6 +94,11 @@ def loadPlaceData(place_obj, filename):
                     if f == "":
                         fd_arr.remove(f)
                 
+                # debug
+                print("descriptions for this feature: ")
+                for f in fd_arr:
+                    print(f)
+
                 # find out how many descriptions have been entered
                 numDescriptions = len(fd_arr)
 
