@@ -461,10 +461,15 @@ class Game:
 		# new in v9
 		# print door animation if there is a door
 		new_place = self.user.current_place
+
+		# v13 provision for the "leave" message on the Front Manor Grounds
+		if new_place.name == "Foyer" or new_place.name == "foyer":
+			print("You hurl yourself up the path as it starts to rain in earnest. Maude follows right on your heels, fishing an iron keyring out of her pockets. At the front door, she shoulders you aside, unlocks the door, and heaves it open with a grunt of effort, dragging you inside by the wrist and dumping you in a rain-soaked heap on the floor.")
+		
 		if (is_door):
 			Output.newPlaceWithDoor(new_place.name)
 		else: # not a door
-			print("User moved " + direction)
+			print("User moved " + direction + " to the " + new_place.name)
 
 # define the "Place" class
 class Place:
@@ -657,11 +662,6 @@ class Thing:
 		self.permittedVerbs = [] 
 
 		self.numTimesExamined = 0
-
-		#debug
-		print("Thing created! " + self.name)
-		print("Thing first day description: " + self.day[0])
-		print("Thing first day description: " + self.night[0])
 
 	def getDescription(self, time):
 		self.numTimesExamined += 1
