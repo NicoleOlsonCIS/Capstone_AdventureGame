@@ -62,7 +62,7 @@ def loadPlaceData(place_obj, filename):
 
         # figure out where the next type section starts based on how many *** there will be for features
         # for instance, if there is 1 feature, then we index past that feature's descriptions
-        nextIdxIncrement = numFeatures
+        nextIdxIncrement = numFeatures + 1
 
         #debug 
         print("Debug: the increment is set to ")
