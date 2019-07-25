@@ -118,6 +118,9 @@ def loadPlaceData(place_obj, filename):
 
                 count += 1
 
+    # debug
+    print("Done creating features")
+
     # load object information and create/add Things
     # v12 if there were no features, then nextIdxIncrement is 1 and we are on chunk 7
     if "no objects" not in data_chunks[6 + nextIdxIncrement]:
@@ -128,6 +131,11 @@ def loadPlaceData(place_obj, filename):
         for o in objnames:
             if o == "":
                 objnames.remove(o)
+
+        #debug
+        print("Set of object names: ")
+        for o in objnames:
+            print(o)
 
         # get the count of objects
         numObjects = len(objnames)
