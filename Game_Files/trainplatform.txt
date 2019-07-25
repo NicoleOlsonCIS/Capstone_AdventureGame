@@ -15,10 +15,10 @@ It's too dark to see here.
 bench
 lamppost
 ***
-An unyielding metal bench, weathering the years alone. A newspaper lies askew on the bench, as if blown there by the wind
+An unyielding metal bench, weathering the years alone. A newspaper lies askew on the bench, as if blown there by the wind.###No night
 ***
-There is no description of lamppost
+There is no description of lamppost.###No night
 ***
 newspaper
 ***
-Wilted pages from the Greenridge Weekly Gazette, warped and clammy from the cold and wet.
+Wilted pages from the Greenridge Weekly Gazette, warped and clammy from the cold and wet.###No night

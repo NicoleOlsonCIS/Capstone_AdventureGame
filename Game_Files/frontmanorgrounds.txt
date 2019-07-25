@@ -1,0 +1,23 @@
+There is no day description of this place
+***
+There is no day description of this place
+***
+There is no day description of this place
+***
+You make haste towards the House. The grounds seem to unfurl before you, vast and wild and covered in oak and ash trees. A wide path leads north to the front door of the House. A narrow path leads northwest around the side of the House, its destination hidden by an impenetrable cluster of trees. To the south are the fields, now almost entirely obscured by the mist.
+***
+You make haste towards the House. The grounds seem to unfurl before you, vast and wild and covered in oak and ash trees. A wide path leads north to the front door of the House. A narrow path leads northwest around the side of the House, its destination hidden by an impenetrable cluster of trees. To the south are the fields, now almost entirely obscured by the mist.
+***
+You make haste towards the House. The grounds seem to unfurl before you, vast and wild and covered in oak and ash trees. A wide path leads north to the front door of the House. A narrow path leads northwest around the side of the House, its destination hidden by an impenetrable cluster of trees. To the south are the fields, now almost entirely obscured by the mist.
+***
+house
+manor
+grounds
+***
+An isolated country manor of ivy-choked gray stone.###The House looms out at you in the semidarkness, its every window black and silent. No life seems to stir within it.
+***
+An isolated country manor of ivy-choked gray stone.###The House looms out at you in the semidarkness, its every window black and silent. No life seems to stir within it.
+***
+A manor of ivy-choked stone broods alone in the countryside.### Shadows deepen over the grounds as night begins to fall. The mist follows behind you, swallowing everything in its path.
+***
+no objects

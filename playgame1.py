@@ -110,10 +110,23 @@ def loadPlaceData(place_obj, filename):
                     fd_arr.append(fd_arr[numDescriptions - 1])
                     numDescriptions = len(fd_arr)
 
+                # check if there are any 'day/night' aspects to descriptions (otherwise all day)
+                day = []
+                night = []
+                for f in fd_arr:
+                    day_night = f.split("###")
+                    if day_night[1] != "No night":
+                        night.append(day_night[1])
+                    day.append(day_night[0])
+                
+                # if there are no night specific descriptions, then set them the same as day
+                if len(night) == 0:
+                    night = day
+
                 # debug
                 print("Creating a feature in playgame1. ")
 
-                newthing = g.Thing(feature, fd_arr, place_obj, False)
+                newthing = g.Thing(feature, day, night, place_obj, False)
                 place_obj.addThing(newthing)
 
                 count += 1
@@ -179,10 +192,23 @@ def loadPlaceData(place_obj, filename):
                     od_arr.append(od_arr[numDescriptions - 1])
                     numDescriptions = len(od_arr)
 
+                # check if there are any 'day/night' aspects to descriptions (otherwise all day)
+                day = []
+                night = []
+                for o in od_arr:
+                    day_night = o.split("###")
+                    if day_night[1] != "No night":
+                        night.append(day_night[1])
+                    day.append(day_night[0])
+                
+                # if there are no night specific descriptions, then set them the same as day
+                if len(night) == 0:
+                    night = day
+
                 # debug
                 print("Creating an object")
 
-                newthing = g.Thing(obj, od_arr, place_obj, True)
+                newthing = g.Thing(obj, day, night, place_obj, True)
                 place_obj.addThing(newthing)
 
 
