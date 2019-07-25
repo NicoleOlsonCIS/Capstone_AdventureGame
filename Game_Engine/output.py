@@ -137,7 +137,7 @@ class Output(object):
         Output.printFlashingDoor(od0, "green", 1, 0.1)
         Output.openDoor(_openDoor, placeName)
         Output.printFlashingDoor(od9, "green", 1, 0.1)
-        time.sleep(0.2)
+        time.sleep(0.1)
         Output.clearEntryWriting()
         sys.stdout.write(u"\u001b[0m") # reset
         # print("\n\n")
@@ -152,7 +152,7 @@ class Output(object):
             if i == 0:
                 print("\t") # print tabs before the first line printed
 
-            time.sleep(0.3)
+            time.sleep(0.1)
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u"\033[8A") # up 8
             sys.stdout.flush()
@@ -201,14 +201,13 @@ class Output(object):
             sys.stdout.write(u"\033[7A")
             sys.stdout.flush()
             print("\t" + d)
-            time.sleep(0.02)
+            time.sleep(0.01)
             str = "\tEntering " + placeName
             sys.stdout.write(u"\u001b[32;1m")
         for elem in str:
-            time.sleep(0.01)
+            time.sleep(0.02)
             sys.stdout.write(elem)
             sys.stdout.flush()
-            time.sleep(0.1)
 
     @classmethod
     def clearEntryWriting(self):
@@ -329,7 +328,7 @@ class Output(object):
             #sys.stdout.write("\n")
             sys.stdout.write(u'\u001b[38;5;$146m')
             for elem in placeDescription:
-                time.sleep(0.01)
+                time.sleep(0.02)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write(u"\u001b[0m")
@@ -350,13 +349,13 @@ class Output(object):
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$147m')
             for elem in welcome:
-                time.sleep(0.05)
+                time.sleep(0.06)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write("\n")
             sys.stdout.write(u'\u001b[38;5;$146m')
             for elem in placeDescription:
-                time.sleep(0.05)
+                time.sleep(0.02)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write(u"\u001b[0m")
