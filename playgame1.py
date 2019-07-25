@@ -149,7 +149,7 @@ def loadPlaceData(place_obj, filename):
 
         # starting in the next *** section, get the corresponding descriptions for each object
         while count < numObjects: 
-            objectDescriptions.append(data_chunks[idx + count])
+            objectDescriptions.append(data_chunks[idx + 1 + count])
             count += 1
 
         count = 0
