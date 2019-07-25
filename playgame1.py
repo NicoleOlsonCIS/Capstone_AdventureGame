@@ -103,7 +103,7 @@ def loadPlaceData(place_obj, filename):
         for o in objnames:
             print("Object: " + o)
 
-        for o in objectnames:
+        for o in objnames:
             if o == "":
                 objnames.remove(o)
 
