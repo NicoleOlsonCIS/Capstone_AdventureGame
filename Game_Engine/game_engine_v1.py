@@ -65,7 +65,7 @@ class Game:
 				return
 		for t in self.user.current_place.things:
 			if t.name.lower() == itemname:
-				print(t.getDescriptionBasedOnTimesExamined)
+				print(t.getDescriptionBasedOnTimesExamined())
 				t.numTimesExamined += 1
 				return 
 
