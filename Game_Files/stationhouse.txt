@@ -3,6 +3,16 @@ The station-house has seen better days, but you can imagine it was charming once
 acquired a permanently damp, neglected appearance. It’s deserted, and empty except for a few
 benches and a ticket counter. The door to the platform lies east.
 ***
+You open the door and enter the station-house. 
+It’s empty except for some benches and a ticket counter. The door to the platform lies east.
+***
+You open the door and enter the station-house. 
+It’s empty except for some benches and a ticket counter. The door to the platform lies east.
+***
+It's too dark to see here.
+***
+It's too dark to see here.
+***
 It's too dark to see here.
 ***
 benches

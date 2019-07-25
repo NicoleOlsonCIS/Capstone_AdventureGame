@@ -312,6 +312,7 @@ class Output(object):
 
     @classmethod
     def orientUser(self, placeName, placeDescription):
+        print("Trace 3")
         length = len(placeDescription)
         if length > 60:
             placeDescription = Output.break_up_long_message(placeDescription)
@@ -327,6 +328,33 @@ class Output(object):
             #    sys.stdout.write(elem)
             #    sys.stdout.flush()
             #sys.stdout.write("\n")
+            sys.stdout.write(u'\u001b[38;5;$146m')
+            for elem in placeDescription:
+                time.sleep(0.05)
+                sys.stdout.write(elem)
+                sys.stdout.flush()
+            sys.stdout.write(u"\u001b[0m")
+            print("\n")
+            sys.stdout.flush()
+        else:
+            print(welcome)
+            print(placeDescription)
+
+    @classmethod
+    def welcomeToGame(self, placeDescription):
+        length = len(placeDescription)
+        if length > 60:
+            placeDescription = Output.break_up_long_message(placeDescription)
+
+        welcome = 'Welcome user. We wish you luck on your journey.'
+
+        if sys.stdin.isatty():
+            sys.stdout.write(u'\u001b[38;5;$147m')
+            for elem in welcome:
+                time.sleep(0.05)
+                sys.stdout.write(elem)
+                sys.stdout.flush()
+            sys.stdout.write("\n")
             sys.stdout.write(u'\u001b[38;5;$146m')
             for elem in placeDescription:
                 time.sleep(0.05)
