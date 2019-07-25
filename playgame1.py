@@ -95,6 +95,11 @@ def loadPlaceData(place_obj, filename):
         objnames = data_chunks[idx].split("\n")
 
         # debug
+        print("Number of objects: ")
+        size = len(objnames)
+        print(size)
+
+        # debug
         for o in objnames:
             print("Object: " + o)
 
