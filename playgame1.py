@@ -325,7 +325,7 @@ def buildGame():
     loadPlaceData(place1, "trainplatform.txt") 
     loadPlaceData(place2, "stationhouse.txt")
     loadPlaceData(place3, "fields.txt")
-    #loadPlaceData(place4, "frontmanorgrounds.txt")
+    loadPlaceData(place4, "frontmanorgrounds.txt")
 
     # associate user with game 
     game.setUser(user)
