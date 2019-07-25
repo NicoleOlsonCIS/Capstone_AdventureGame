@@ -67,17 +67,23 @@ def loadPlaceData(place_obj, filename):
             featureDescriptions.append(data_chunks[7 + count])
             count += 1
 
+        # debug
+        print("Creating features ... ")
         count = 0
         for feature in featurenames:
             feature = feature.rstrip()
             feature = feature.lstrip()
+            print("feature: " + feature)
             if feature != "":
 
                 # get the description block for this feature
                 fd = featureDescriptions[count]
 
-                # separate out by ### delimeter
-                fd_arr = fd.split("###")
+                # separate out by delimeter and remove blank descriptions
+                fd_arr = fd.split("\n")
+                for f in fd_arr:
+                    if f == "":
+                        fd_arr.remove(f)
                 
                 # find out how many descriptions have been entered
                 numDescriptions = len(fd_arr)
@@ -126,8 +132,11 @@ def loadPlaceData(place_obj, filename):
                 # get the description block for this object
                 od = objectDescriptions[count]
 
-                # separate out by ### delimeter
-                od_arr = od.split("###")
+                # separate out by delimeter and remove empty descriptions
+                od_arr = od.split("\n")
+                for o in od_arr:
+                    if o == "":
+                        od_arr.remove(o)
                 
                 # find out how many descriptions have been entered
                 numDescriptions = len(od_arr)
