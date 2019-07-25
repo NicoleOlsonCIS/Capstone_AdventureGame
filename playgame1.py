@@ -160,6 +160,11 @@ def loadPlaceData(place_obj, filename):
                 # get the description block for this object
                 od = objectDescriptions[count]
 
+                # debug
+                print("Printing the object descriptions for obejct " + obj)
+                for o in od:
+                    print(o)
+
                 # separate out by delimeter and remove empty descriptions
                 od_arr = od.split("\n")
                 for o in od_arr:
