@@ -134,10 +134,10 @@ class Output(object):
 
         # otherwise, do animation
         Output.approachDoor(_approachDoor2)
-        Output.printFlashingDoor(od0, "green", 1, 0.2)
+        Output.printFlashingDoor(od0, "green", 1, 0.1)
         Output.openDoor(_openDoor, placeName)
-        Output.printFlashingDoor(od9, "green", 1, 0.4)
-        time.sleep(0.5)
+        Output.printFlashingDoor(od9, "green", 1, 0.1)
+        time.sleep(0.2)
         Output.clearEntryWriting()
         sys.stdout.write(u"\u001b[0m") # reset
         # print("\n\n")
@@ -201,11 +201,11 @@ class Output(object):
             sys.stdout.write(u"\033[7A")
             sys.stdout.flush()
             print("\t" + d)
-            time.sleep(0.5)
+            time.sleep(0.02)
             str = "\tEntering " + placeName
             sys.stdout.write(u"\u001b[32;1m")
         for elem in str:
-            time.sleep(0.03)
+            time.sleep(0.01)
             sys.stdout.write(elem)
             sys.stdout.flush()
             time.sleep(0.1)
@@ -329,7 +329,7 @@ class Output(object):
             #sys.stdout.write("\n")
             sys.stdout.write(u'\u001b[38;5;$146m')
             for elem in placeDescription:
-                time.sleep(0.05)
+                time.sleep(0.01)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write(u"\u001b[0m")
