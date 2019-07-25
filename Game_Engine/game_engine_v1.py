@@ -59,13 +59,13 @@ class Game:
 
 		for t in self.user.things:
 			if t.name.lower() == itemname:
-				print(t.description)
+				print(t.getDescriptionBasedOnTimesExamined)
 				# update number of times this thing has been examined 
 				t.numTimesExamined += 1
 				return
 		for t in self.user.current_place.things:
 			if t.name.lower() == itemname:
-				print(t.description)
+				print(t.getDescriptionBasedOnTimesExamined)
 				t.numTimesExamined += 1
 				return 
 
@@ -646,7 +646,7 @@ class User:
 class Thing: 
 	def __init__(self, name, description, starting_location, is_takeable):
 		self.name = name
-		self.description = description
+		self.description = description # in v12: description is now an array of size 5
 		self.location = starting_location # place object
 		self.is_takeable = is_takeable # defines whether feature or object
 		self.with_user = False
@@ -673,4 +673,15 @@ class Thing:
 		# differentiates object from feature
 		def isTakeable(self):
 			return self.is_takeable
+
+		# v12 increase views (has to be called from execution in game when "look" etc)
+		def hasBeenExamined(self):
+			self.hasBeenExamined += 1
+
+		# v12 get description based on numTimesExamined (max 5 different descriptions)
+		def getDescriptionBasedOnTimesExamined(self):
+			if self.numTimesExamined > 5:
+				return self.description[4]
+			else:
+				return self.desription[self.numTimesExamined]
 

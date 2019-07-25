@@ -15,9 +15,6 @@ from output import *
 # reads in place information from room file
 def loadPlaceData(place_obj, filename):
 
-    dayDescrip = ""
-    nightDescrip = ""
- 
     # build path to data file
     fpath = "./Game_Files/" + filename
  
@@ -44,24 +41,93 @@ def loadPlaceData(place_obj, filename):
     place_obj.day = day
     place_obj.night = night 
 
+    nextIdxIncrement = 1
+
     # load feature information and create/add Things
     if "no features" not in data_chunks[6]:
         featurenames = data_chunks[6].split("\n")
+        
+        # get the count of features
+        numFeatures = len(featurenames)
+
+        # figure out where the next type section starts based on how many *** there will be for features
+        # for instance, if there is 1 feature, then we index past that feature's descriptions
+        nextIdxIncrement = numFeatures
+
+        featureDescriptions = []
+        count = 0
+
+        # starting in the next *** section, get the corresponding descriptions for each feature
+        while count < numFeatures: 
+            featureDescriptions.append(data_chunks[7 + count])
+            count += 1
+
+        count = 0
         for feature in featurenames:
             feature = feature.rstrip()
             feature = feature.lstrip()
             if feature != "":
-                newthing = g.Thing(feature, feature + " descrip", place_obj, False)
+
+                # get the description block for this feature
+                fd = featureDescriptions[count]
+
+                # separate out by ### delimeter
+                fd_arr = fd.split("###")
+                
+                # find out how many descriptions have been entered
+                numDescriptions = len(fd_arr)
+
+                # if there is less than 5, fill up to 5 by copying the last one over
+                while numDescriptions < 5:
+                    fd_arr.append(fd_arr[numDescriptions - 1])
+                    numDescriptions = len(fd_arr)
+
+                newthing = g.Thing(feature, fd_arr, place_obj, False)
                 place_obj.addThing(newthing)
 
+                count += 1
+
     # load object information and create/add Things
-    if "no objects" not in data_chunks[7]:
-        objnames = data_chunks[7].split("\n")
+    # v12 if there were no features, then nextIdxIncrement is 1 and we are on chunk 7
+    if "no objects" not in data_chunks[6 + nextIdxIncrement]:
+
+        idx = 6 + nextIdxIncrement
+        objnames = data_chunks[idx].split("\n")
+
+        # get the count of objects
+        numObjects = len(numObjects)
+
+        # figure out where the next type section starts based on how many sections there will be for objects
+        # for instance, if there is 1 object, then we index past that object's descriptions
+        nextIdxIncrement = numObjects
+
+        objectDescriptions = []
+        count = 0
+
+        # starting in the next *** section, get the corresponding descriptions for each object
+        while count < numObjects: 
+            objectDescriptions.append(data_chunks[idx + count])
+            count += 1
+
+        count = 0
         for obj in objnames:
             obj = obj.rstrip()
             obj = obj.lstrip()
             if obj != "":
-                newthing = g.Thing(obj, obj + " descrip", place_obj, True)
+                # get the description block for this object
+                od = objectDescriptions[count]
+
+                # separate out by ### delimeter
+                od_arr = od.split("###")
+                
+                # find out how many descriptions have been entered
+                numDescriptions = len(od_arr)
+
+                # if there is less than 5, fill up to 5 by copying the last one over
+                while numDescriptions < 5:
+                    od_arr.append(od_arr[numDescriptions - 1])
+                    numDescriptions = len(od_arr)
+                newthing = g.Thing(obj, od_arr, place_obj, True)
                 place_obj.addThing(newthing)
 
 
@@ -86,9 +152,34 @@ def buildGame():
         None,
         no_doors)
 
-    place2 = g.Place(game, "Station-House", day, night, [None, None, "Train Platform", None, None, None, None, None, None, None], None, {"n": None, "ne": None, "e": "unlocked", "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place3 = g.Place(game, "Fields", day, night, ["Front Manor Grounds", None, None, None, None, "Train Platform", None, None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place4 = g.Place(game, "Front Manor Grounds", day, night, ["Foyer", None, None, None, "Fields", None, None, "Ash Grove", None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
+    place2 = g.Place(
+        game,
+        "Station-House",
+        day,
+        night,
+        [None, None, "Train Platform", None, None, None, None, None, None, None],
+        None,
+        {"n": None, "ne": None, "e": "unlocked", "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
+
+    place3 = g.Place(
+        game,
+        "Fields",
+        day,
+        night,
+        ["Front Manor Grounds", None, None, None, None, "Train Platform", None, None, None, None],
+        None,
+        {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
+
+    place4 = g.Place(
+        game,
+        "Front Manor Grounds",
+        day,
+        night,
+        ["Foyer", None, None, None, "Fields", None, None, "Ash Grove", None, None],
+        None,
+        {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
+
+
     place5 = g.Place(game, "Foyer", day, night, ["Downstairs Hallway 1", None, None, None, "Front Manor Grounds", None, "Cloakroom", None, "Upstairs Hallway 1", None], None, {"n": None, "ne": None, "e": None, "se": None, "s": "unlocked", "sw": None, "w": None, "nw": None, "u": None, "d": None})
     place6 = g.Place(game, "Upstairs Hallway 1", day, night, ["Upstairs Hallway 2", None, None, None, None, None, "Spare Room", None, None, "Foyer"], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
     place7 = g.Place(game, "Upstairs Hallway 2", day, night, ["Upstairs Hallway 3", None, "Small Lavatory", None, "Upstairs Hallway 1", None, "Bedroom", None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
