@@ -66,6 +66,7 @@ class Game:
 				return
 		for t in self.user.current_place.things:
 			if t.name.lower() == itemname:
+				print(t)
 				des = t.getDescription()
 				print(des)
 				t.numTimesExamined += 1
