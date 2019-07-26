@@ -11,6 +11,8 @@
 # v9 --> implement "doors" on places that have doors (changes in playgame.py as well)
 # v10 --> change 'up' and 'down' to 'u' and 'd' to match parser
 # v11 --> descriptions of Place now based on number of visits as well
+# v12
+# v13
 # define the "Game" class
 
 # import sys
@@ -371,6 +373,23 @@ class Game:
 			else:
 				obj_name = action.direct_obj
 			self.user.pickUpObject(obj_name)
+
+			# v13 PROVISION: edit description of ticket counter if user picks up "fabric scrap"
+			if obj_name == "fabric scrap":
+				# get all things in the room to get references to "ticket counter"
+				all_things = self.user.current_place.getAllThingsInPlace()
+				# get ticket counter
+				for t in all_things:
+					if t.name = "ticket counter":
+						# modified to not have fabric scrap on it
+						modified = "The ticket window is closed and locked. You see no sign of anyone who might be minding the counter. Where there once was the fabric is now just bare counter"
+						for i in range(0,4):
+							day[i] = modified
+							night[i] = modified
+						# pass edited day[] night[] descriptions to edit function
+						t.editDescription(day, night)
+					break
+
 			# time update of 1 hour 
 			self.updateTime(1)
 			return
@@ -647,6 +666,9 @@ class User:
                 	for t in self.things:
                         	print(t.name)
 
+	def getAllThingsInPlace(self):
+		return self.things
+
 #define the "Thing" class
 class Thing: 
 	def __init__(self, name, day, night, starting_location, is_takeable):
@@ -692,3 +714,8 @@ class Thing:
 	# differentiates object from feature
 	def isTakeable(self):
 		return self.is_takeable
+
+	# edit description
+	def editDescription(self, day, night):
+		self.day = day
+		self.night = night
