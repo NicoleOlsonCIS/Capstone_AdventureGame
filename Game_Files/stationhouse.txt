@@ -18,10 +18,10 @@ It's too dark to see here. Best get back to the House.
 benches
 ticket counter
 ***
-Simple wooden benches, red paint cracked and peeling from lack of upkeep.###No night
+Simple wooden benches, red paint cracked and peeling from lack of upkeep.###Cracked, peeling painted benches.
 ***
-The ticket window is closed and locked. You see no sign of anyone who might be minding the counter. A scrap of fabric sits forlornly at the counter’s edge.###No night
+The ticket window is closed and locked. You see no sign of anyone who might be minding the counter. A scrap of fabric sits forlornly at the counter’s edge.###The ticket window is closed and locked.
 ***
 fabric scrap
 ***
-A ragged piece of grubby white fabric, like the torn corner of a handkerchief. It bears the name “James” in blue embroidery.###No night
+A ragged piece of grubby white fabric, like the torn corner of a handkerchief. It bears the name “James” in blue embroidery.###A ragged piece of white fabric, embroidered with the name "James".

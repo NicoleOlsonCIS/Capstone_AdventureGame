@@ -1,0 +1,26 @@
+You find a windowless, white-tiled lavatory with a white sink, toilet, and tub. The sole exit is a wooden door to the west.
+***
+You stand in a white-tiled lavatory with a white sink, toilet, and tub. The sole exit is a wooden door to the west.
+***
+You stand in a white-tiled lavatory with a sink, toilet, and tub. The sole exit is a wooden door to the west.
+***
+You stand in a white-tiled lavatory with a sink, toilet, and tub. The sole exit is a wooden door to the west.
+***
+You stand in a small lavatory. In the gloom of evening, you can still make out the shapes of the sink, toilet, and tub. The sole exit is to the west.
+***
+It's starting to get too dark to see much. Best get back to your room.
+***
+toilet
+tub
+sink
+mirror
+***
+You’re fairly certain you know what this is for.###Its function seems straightforward.
+***
+A white porcelain clawfoot tub.###A white porcelain clawfoot tub.
+***
+A white porcelain sink with a mirror above it.###A porcelain sink with a mirror above it.
+***
+You peruse your reflection in the mirror. Looking good.###Your eyes don’t quite seem to match each other’s color today. Something off about one of them...but never mind, you tell yourself. A trick of the dim light.
+***
+no objects 

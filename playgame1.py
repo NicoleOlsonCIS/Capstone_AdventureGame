@@ -288,6 +288,16 @@ def buildGame():
     loadPlaceData(place3, "fields.txt")
     loadPlaceData(place4, "frontmanorgrounds.txt")
     loadPlaceData(place5, "foyer.txt")
+    loadPlaceData(place6, "upstairshallway1.txt")
+    loadPlaceData(place7, "upstairshallway2.txt")
+    loadPlaceData(place8, "upstairshallway3.txt")
+    loadPlaceData(place9, "upstairshallway4.txt")
+    loadPlaceData(place10, "upstairshallway5.txt")
+    loadPlaceData(place11, "spareroom.txt")
+    loadPlaceData(place12, "smalllavatory.txt")
+
+    loadPlaceData(place17, "servantsstairtop.txt")
+    loadPlaceData(place18, "servantsstairbottom.txt")
 
     # associate user with game 
     game.setUser(user)
@@ -305,6 +315,7 @@ def main():
         game = buildGame()
         game.setIsValid()
         Output.welcomeToGame(game.user.current_place.day[0]) # start day first visit
+        print("Enter \'quit\' at the prompt to quit the game at any time.")
        
         # set up parser
         playparser = p.Parser()
