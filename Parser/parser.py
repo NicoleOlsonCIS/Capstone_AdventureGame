@@ -23,7 +23,7 @@ class Parser:
         "trash": "drop",
         "put": "drop",
         "leave": "drop", # FIXME: Should this be here?
-        "insert": "drop_inside_thing",
+        "insert": "insert", # Which verb to engine? Was "drop_inside_thing"
         "sleep": "sleep",
         "rest": "sleep",
         "relax": "sleep",
@@ -120,13 +120,13 @@ class Parser:
 
     # Parse user input into action object
     # TODO - add "context" parameter so engine can talk *to* parser?
-    def parseInput(self, input):
+    def parseInput(self, userInput):
 
         # Convert input to lowercase
-        input = input.lower()
+        userInput = userInput.lower()
 
         # Tokenize input 
-        tokens = input.split()
+        tokens = userInput.split()
 
         # Remove articles 
         tokens = [token for token in tokens if token not in self.articlesList]
