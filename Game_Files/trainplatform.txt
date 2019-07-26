@@ -15,10 +15,10 @@ It's too dark to see here. Best get back to the House, beyond the fields to the 
 bench
 lamppost
 ***
-An unyielding metal bench, weathering the years alone. A newspaper lies askew on the bench, as if blown there by the wind.###No night
+An unyielding metal bench, weathering the years alone. A newspaper lies askew on the bench, as if blown there by the wind.###An unyielding metal bench, weathering the years alone.
 ***
-You get the sense it hasn’t been illuminated in years.###No night
+You get the sense it hasn’t been illuminated in years.###You get the sense it hasn’t been illuminated in years.
 ***
 newspaper
 ***
-Wilted pages from the Greenridge Weekly Gazette, warped and clammy from the cold and wet.###No night
+Wilted pages from the Greenridge Weekly Gazette, warped and clammy from the cold and wet.###Wilted pages from the Greenridge Weekly Gazette.
