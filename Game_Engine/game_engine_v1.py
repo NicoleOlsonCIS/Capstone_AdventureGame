@@ -375,22 +375,22 @@ class Game:
 			self.user.pickUpObject(obj_name)
 
 			# v13 PROVISION: edit description of ticket counter if user picks up "fabric scrap"
-			if obj_name == "fabric scrap":
-				# get all things in the room to get references to "ticket counter"
-				all_things = self.user.current_place.getAllThingsInPlace()
-				# get ticket counter
-				for t in all_things:
-					if t.name == "ticket counter":
-						# modified to not have fabric scrap on it
-						day = []
-						night = []
-						modified = "The ticket window is closed and locked. You see no sign of anyone who might be minding the counter. Where there once was the fabric is now just bare counter"
-						for i in range(0,4):
-							day[i] = modified
-							night[i] = modified
-						# pass edited day[] night[] descriptions to edit function
-						t.editDescription(day, night)
-					break
+			# if obj_name == "fabric scrap":
+			#	# get all things in the room to get references to "ticket counter"
+			#	all_things = self.user.current_place.getAllThingsInPlace()
+			#	# get ticket counter
+			#	for t in all_things:
+			#		if t.name == "ticket counter":
+			#			# modified to not have fabric scrap on it
+			#			day = []
+			#			night = []
+			#			modified = "The ticket window is closed and locked. You see no sign of anyone who might be minding the counter. Where there once was the fabric is now just bare counter"
+			#			for i in range(0,4):
+			#				day[i] = modified
+			#				night[i] = modified
+			#			# pass edited day[] night[] descriptions to edit function
+			#			t.editDescription(day, night)
+			#		break
 
 			# time update of 1 hour 
 			self.updateTime(1)
