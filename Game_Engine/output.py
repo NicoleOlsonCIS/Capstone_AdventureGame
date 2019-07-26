@@ -148,7 +148,7 @@ class Output(object):
         sys.stdout.flush()
         i = 0
         for d in _approachDoor:
-            if i == 0:
+            #if i == 0:
                 #print("\t") # print tabs before the first line printed
 
             time.sleep(0.1)
