@@ -148,8 +148,6 @@ class Output(object):
         sys.stdout.flush()
         i = 0
         for d in _approachDoor:
-            #if i == 0:
-                #print("\t") # print tabs before the first line printed
 
             time.sleep(0.04)
             sys.stdout.write(u"\u001b[1000D")
@@ -196,13 +194,12 @@ class Output(object):
 
     @classmethod
     def openDoor(self,_openDoor, placeName):
-        #print("\n\n\n\n\n\n\n")
         for d in _openDoor:
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u"\033[7A")
             sys.stdout.flush()
-            print(d) #  removed tab from here
-            time.sleep(0.005)
+            print(d) 
+            time.sleep(0.01)
             str = "Entering " + placeName
             sys.stdout.write(u"\u001b[32;1m")
         for elem in str:
@@ -213,9 +210,9 @@ class Output(object):
     @classmethod
     def clearEntryWriting(self):
         # go back to beginning of line and write over with clear
-        clr = "                          "
+        clr = "                                     "
         sys.stdout.write(u"\u001b[1000D")
-        sys.stdout.write("\t" + clr)
+        sys.stdout.write(clr)
         sys.stdout.write(u"\u001b[0m")
 
     @classmethod
