@@ -484,7 +484,8 @@ class Game:
 		new_place = self.user.current_place
 
 		# v13 provision for the "leave" message on the Front Manor Grounds
-		if new_place.name == "Foyer" or new_place.name == "foyer":
+		# only shows up on day 1
+		if self.day == 1 and (new_place.name == "Foyer" or new_place.name == "foyer"):
 			print("You hurl yourself up the path as it starts to rain in earnest. Maude follows right on your heels, fishing an iron keyring out of her pockets. At the front door, she shoulders you aside, unlocks the door, and heaves it open with a grunt of effort, dragging you inside by the wrist and dumping you in a rain-soaked heap on the floor.")
 		
 		if (is_door):
@@ -551,7 +552,6 @@ class Place:
 		self.things.remove(thing)
 
 	# check if a thing is in a room
-	# v7: made this check more permissive to accommodate input e.g. "counter" when the object name is "ticket counter"
 	def roomHasThing(self, itemname):
 		for t in self.things:
 			if t.name.lower() == itemname: 
@@ -622,7 +622,6 @@ class User:
 					break
 
 	# new in v2, for figuring out if user has an thing in possession
-	# v7: made check more permissive to accommodate variety of user inputs
 	def userHasThing(self, itemname):
 		found = False
 		for t in self.things: 

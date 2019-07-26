@@ -1,23 +1,23 @@
 You stand on a lonely train platform in the middle of nowhere, adorned only by a bench and a lamppost.
-There is a station-house to the west.
+There is a station-house to the west. To the northeast are the fields. 
 ***
 You stand on a lonely train platform with one bench and a single lamppost. 
-The station-house lies to the west. A woman waits on the platform.
+The station-house lies to the west. The fields are to the northeast. 
 ***
-You stand on a deserted train platform. There is a bench and a lamppost. The station-house lies to the west.
+You stand on a deserted train platform. There is a bench and a lamppost. The station-house lies to the west. The fields are to the northeast.
 ***
-It's too dark to see here.
+You stand alone on the train platform as night falls, gradually obscuring everything around you. You can't see much here, but you remember the station-house is to the west and the fields are to the northeast. 
 ***
-It's too dark to see here.
+You stand alone on the train platform in deepening darkness. You think you feel a storm coming. Best get back to the House, beyond the fields to the northeast. 
 ***
-It's too dark to see here.
+It's too dark to see here. Best get back to the House, beyond the fields to the northeast.
 ***
 bench
 lamppost
 ***
 An unyielding metal bench, weathering the years alone. A newspaper lies askew on the bench, as if blown there by the wind.###No night
 ***
-There is no description of lamppost.###No night
+You get the sense it hasn’t been illuminated in years.###No night
 ***
 newspaper
 ***
