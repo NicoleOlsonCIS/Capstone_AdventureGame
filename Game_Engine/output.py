@@ -151,7 +151,7 @@ class Output(object):
             #if i == 0:
                 #print("\t") # print tabs before the first line printed
 
-            time.sleep(0.1)
+            time.sleep(0.04)
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u"\033[8A") # up 8
             sys.stdout.flush()
@@ -198,13 +198,12 @@ class Output(object):
     def openDoor(self,_openDoor, placeName):
         #print("\n\n\n\n\n\n\n")
         for d in _openDoor:
-            time.sleep(0.1)
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u"\033[7A")
             sys.stdout.flush()
             print(d) #  removed tab from here
-            time.sleep(0.01)
-            str = "\tEntering " + placeName
+            time.sleep(0.005)
+            str = "Entering " + placeName
             sys.stdout.write(u"\u001b[32;1m")
         for elem in str:
             time.sleep(0.04)
@@ -330,7 +329,7 @@ class Output(object):
             #sys.stdout.write("\n")
             sys.stdout.write(u'\u001b[38;5;$146m')
             for elem in placeDescription:
-                time.sleep(0.02)
+                time.sleep(0.04)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write(u"\u001b[0m")
@@ -351,13 +350,13 @@ class Output(object):
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$147m')
             for elem in welcome:
-                time.sleep(0.06)
+                time.sleep(0.04)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write("\n")
             sys.stdout.write(u'\u001b[38;5;$146m')
             for elem in placeDescription:
-                time.sleep(0.02)
+                time.sleep(0.04)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write(u"\u001b[0m")
