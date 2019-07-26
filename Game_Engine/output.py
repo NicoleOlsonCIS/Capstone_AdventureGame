@@ -143,13 +143,12 @@ class Output(object):
 
     @classmethod
     def approachDoor(self,_approachDoor):
-        print("\n\n\n\n\n\n\n\n")
+        print("\n\n\n\n\n\n\n\n\n")
         sys.stdout.write(u"\u001b[1000D")
         sys.stdout.flush()
         i = 0
         for d in _approachDoor:
-
-            time.sleep(0.04)
+            time.sleep(0.08)
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u"\033[8A") # up 8
             sys.stdout.flush()
@@ -199,7 +198,7 @@ class Output(object):
             sys.stdout.write(u"\033[7A")
             sys.stdout.flush()
             print(d) 
-            time.sleep(0.08) # slow part is door opening
+            time.sleep(0.09) # slow part is door opening
             str = "Entering " + placeName
             sys.stdout.write(u"\u001b[32;1m")
         for elem in str:
