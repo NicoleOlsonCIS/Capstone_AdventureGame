@@ -205,6 +205,7 @@ class Output(object):
             time.sleep(0.04)
             sys.stdout.write(elem)
             sys.stdout.flush()
+        time.sleep(0.1)
 
     @classmethod
     def clearEntryWriting(self):
