@@ -59,14 +59,14 @@ class Game:
 
 		for t in self.user.things:
 			if t.name.lower() == itemname:
-				print(t.description)
-				# update number of times this thing has been examined 
-				t.numTimesExamined += 1
+				des = t.getDescription(self.time) # increases views on Thing
+				print(des) # change to output module
 				return
 		for t in self.user.current_place.things:
 			if t.name.lower() == itemname:
-				print(t.description)
-				t.numTimesExamined += 1
+				print(t)
+				des = t.getDescription(self.time) # increases views on Thing
+				print(des) # change to output module
 				return 
 
         # v3: takes the thing the user wants to examine
@@ -461,10 +461,15 @@ class Game:
 		# new in v9
 		# print door animation if there is a door
 		new_place = self.user.current_place
+
+		# v13 provision for the "leave" message on the Front Manor Grounds
+		if new_place.name == "Foyer" or new_place.name == "foyer":
+			print("You hurl yourself up the path as it starts to rain in earnest. Maude follows right on your heels, fishing an iron keyring out of her pockets. At the front door, she shoulders you aside, unlocks the door, and heaves it open with a grunt of effort, dragging you inside by the wrist and dumping you in a rain-soaked heap on the floor.")
+		
 		if (is_door):
 			Output.newPlaceWithDoor(new_place.name)
 		else: # not a door
-			print("User moved " + direction)
+			print("User moved " + direction + " to the " + new_place.name)
 
 # define the "Place" class
 class Place:
@@ -644,9 +649,10 @@ class User:
 
 #define the "Thing" class
 class Thing: 
-	def __init__(self, name, description, starting_location, is_takeable):
+	def __init__(self, name, day, night, starting_location, is_takeable):
 		self.name = name
-		self.description = description
+		self.day = day     # size of 5
+		self.night = night # size of 5
 		self.location = starting_location # place object
 		self.is_takeable = is_takeable # defines whether feature or object
 		self.with_user = False
@@ -657,20 +663,32 @@ class Thing:
 
 		self.numTimesExamined = 0
 
-		# add a permitted verb for this thing 
-		def addVerb(self, verb):
-			self.permittedVerbs.append(verb)
+	def getDescription(self, time):
+		self.numTimesExamined += 1
+		if time > 5 and time < 25:					# do we want this time of 5 - 25 here?
+			if self.numTimesExamined > 5:
+				return self.day[4]
+			else:
+				return self.day[self.numTimesExamined]
+		else:
+			if self.numTimesExamined > 5:
+				return self.night[4]
+			else:
+				return self.night[self.numTimesExamined]
 
-		# when the user drops
-		def leaveUser(self, new_location):
-			self.location = new_location # place where user is dropping it
-			self.with_user = False
+	# add a permitted verb for this thing 
+	def addVerb(self, verb):
+		self.permittedVerbs.append(verb)
 
-		# when the user picks up
-		def becomeWithUser(self):
-			self.with_user = True
+	# when the user drops
+	def leaveUser(self, new_location):
+		self.location = new_location # place where user is dropping it
+		self.with_user = False
 
-		# differentiates object from feature
-		def isTakeable(self):
-			return self.is_takeable
+	# when the user picks up
+	def becomeWithUser(self):
+		self.with_user = True
 
+	# differentiates object from feature
+	def isTakeable(self):
+		return self.is_takeable

@@ -8,10 +8,10 @@ import time
 ## Strings for approaching door
 ##
 b1 = "                "
-z1 = b1 + "\n\t" + b1 + "\n\t" + "        _       \n\t       |_|      \n\t" + b1 + "\n\t" + b1 + "\n\t"
-z2 = b1 + "\n\t" + b1 + "\n\t" + "        __      \n\t       |  |     \n\t       |__|     \n\t"+ b1 + "\n\t" + b1 + "\n\t" 
-z3 = b1 + "\n\t" + "       ____     \n\t      |    |    \n\t      |  * |    \n\t      |____|    \n\t" + b1 + "\n\t"
-z4 = "\t"+"      ______    \n\t     |      |   \n\t     |      |   \n\t     |    * |   \n\t     |      |   \n\t     |______|   \n\t"
+z1 = b1 + "\n" + b1 + "\n" + "        _       \n       |_|      \n" + b1 + "\n" + b1 + "\n"
+z2 = b1 + "\n" + b1 + "\n" + "        __      \n       |  |     \n       |__|     \n"+ b1 + "\n" + b1 + "\n" 
+z3 = b1 + "\n" + "       ____     \n      |    |    \n      |  * |    \n      |____|    \n" + b1 + "\n"
+z4 = "      ______    \n     |      |   \n     |      |   \n     |    * |   \n     |      |   \n     |______|   \n"
 _approachDoor2 = [z1, z2, z3, z4]
 
 
@@ -19,16 +19,16 @@ _approachDoor2 = [z1, z2, z3, z4]
 ##
 ## Strings for opening door
 ##
-od0 = "      ______\n\t     |      |\n\t     |      |\n\t     |    * |\n\t     |      |\n\t     |______|\n\t"
-od1 = "      ______\n\t     |     ||\n\t     |     ||\n\t     |    *||\n\t     |     ||\n\t     |_____||\n\t"
-od2 = "      ______\n\t     |    | |\n\t     |    | |\n\t     |   *| |\n\t     |    | |\n\t     |____| |\n\t"
-od3 = "      ______\n\t     |   |  |\n\t     |   |  |\n\t     |  *|  |\n\t     |   |  |\n\t     |___|  |\n\t"
-od4 = "      ______\n\t     |  |   |\n\t     |  |   |\n\t     | .|   |\n\t     |  |   |\n\t     |__|   |\n\t"
-od5 = "      ______\n\t     | |    |\n\t     | |    |\n\t     |.|    |\n\t     | |    |\n\t     |_|    |\n\t"
-od6 = "      ______\n\t     | |    |\n\t     | |    |\n\t     |.|    |\n\t     | |    |\n\t     |/     |\n\t"
-od7 = "      ______\n\t     | |    |\n\t     | |    |\n\t     | |    |\n\t     | /    |\n\t     |/     |\n\t"
-od8 = "      /_____\n\t     ||     |\n\t     ||     |\n\t     ||     |\n\t     ||     |\n\t     ||     |\n\t"
-od9 = "      ______\n\t     |      |\n\t     |      |\n\t     |      |\n\t     |      |\n\t     |      |\n\t"
+od0 = "      ______\n     |      |\n     |      |\n     |    * |\n     |      |\n     |______|\n"
+od1 = "      ______\n     |     ||\n     |     ||\n     |    *||\n     |     ||\n     |_____||\n"
+od2 = "      ______\n     |    | |\n     |    | |\n     |   *| |\n     |    | |\n     |____| |\n"
+od3 = "      ______\n     |   |  |\n     |   |  |\n     |  *|  |\n     |   |  |\n     |___|  |\n"
+od4 = "      ______\n     |  |   |\n     |  |   |\n     | .|   |\n     |  |   |\n     |__|   |\n"
+od5 = "      ______\n     | |    |\n     | |    |\n     |.|    |\n     | |    |\n     |_|    |\n"
+od6 = "      ______\n     | |    |\n     | |    |\n     |.|    |\n     | |    |\n     |/     |\n"
+od7 = "      ______\n     | |    |\n     | |    |\n     | |    |\n     | /    |\n     |/     |\n"
+od8 = "      /_____\n     ||     |\n     ||     |\n     ||     |\n     ||     |\n     ||     |\n"
+od9 = "      ______\n     |      |\n     |      |\n     |      |\n     |      |\n     |      |\n"
 _openDoor = [od0, od1, od2, od3, od4, od5, od6, od7, od8, od9]
 
 ##
@@ -134,25 +134,21 @@ class Output(object):
 
         # otherwise, do animation
         Output.approachDoor(_approachDoor2)
-        Output.printFlashingDoor(od0, "green", 1, 0.2)
+        Output.printFlashingDoor(od0, "green", 1, 0.1)
         Output.openDoor(_openDoor, placeName)
-        Output.printFlashingDoor(od9, "green", 1, 0.4)
-        time.sleep(0.5)
+        Output.printFlashingDoor(od9, "green", 1, 0.1)
+        time.sleep(0.1)
         Output.clearEntryWriting()
         sys.stdout.write(u"\u001b[0m") # reset
-        # print("\n\n")
 
     @classmethod
     def approachDoor(self,_approachDoor):
-        print("\n\n\n\n\n\n\n\n\n\n\n")
+        print("\n\n\n\n\n\n\n\n\n")
         sys.stdout.write(u"\u001b[1000D")
         sys.stdout.flush()
         i = 0
         for d in _approachDoor:
-            if i == 0:
-                print("\t") # print tabs before the first line printed
-
-            time.sleep(0.3)
+            time.sleep(0.08)
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u"\033[8A") # up 8
             sys.stdout.flush()
@@ -175,47 +171,48 @@ class Output(object):
             sys.stdout.write(u"\033[7A")
             sys.stdout.flush()
             sys.stdout.write(u"\u001b" + c) # color
-            print("\t"+ door)
+            # print("\t"+ door)
+            print(door)
             sys.stdout.write(u"\u001b[0m") # reset
             time.sleep(speed)
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u"\033[7A")
             sys.stdout.flush()
-            print("\t" + door)
+            # print("\t" + door)
+            print(door)
             time.sleep(speed)
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u"\033[7A")
             sys.stdout.flush()
             sys.stdout.write(u"\u001b" + c) # color
-            print("\t" + door)
+            # print("\t" + door)
+            print(door)
             sys.stdout.write(u"\u001b[0m")
             i += 1
         sys.stdout.write(u"\u001b[0m") # reset
 
     @classmethod
     def openDoor(self,_openDoor, placeName):
-        #print("\n\n\n\n\n\n\n")
         for d in _openDoor:
-            time.sleep(0.1)
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u"\033[7A")
             sys.stdout.flush()
-            print("\t" + d)
-            time.sleep(0.5)
-            str = "\tEntering " + placeName
+            print(d) 
+            time.sleep(0.09) # slow part is door opening
+            str = "Entering " + placeName
             sys.stdout.write(u"\u001b[32;1m")
         for elem in str:
-            time.sleep(0.03)
+            time.sleep(0.04)
             sys.stdout.write(elem)
             sys.stdout.flush()
-            time.sleep(0.1)
+        time.sleep(0.1)
 
     @classmethod
     def clearEntryWriting(self):
         # go back to beginning of line and write over with clear
-        clr = "                          "
+        clr = "                                     "
         sys.stdout.write(u"\u001b[1000D")
-        sys.stdout.write("\t" + clr)
+        sys.stdout.write(clr)
         sys.stdout.write(u"\u001b[0m")
 
     @classmethod
@@ -315,21 +312,13 @@ class Output(object):
         length = len(placeDescription)
         if length > 60:
             placeDescription = Output.break_up_long_message(placeDescription)
-        # print slowly and in green
-        # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
 
         welcome = "You are now in the " + placeName
 
         if sys.stdin.isatty():
-            #sys.stdout.write(u'\u001b[38;5;$147m')
-            #for elem in welcome:
-            #    time.sleep(0.05)
-            #    sys.stdout.write(elem)
-            #    sys.stdout.flush()
-            #sys.stdout.write("\n")
             sys.stdout.write(u'\u001b[38;5;$146m')
             for elem in placeDescription:
-                time.sleep(0.05)
+                time.sleep(0.04)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write(u"\u001b[0m")
@@ -350,13 +339,13 @@ class Output(object):
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$147m')
             for elem in welcome:
-                time.sleep(0.05)
+                time.sleep(0.04)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write("\n")
             sys.stdout.write(u'\u001b[38;5;$146m')
             for elem in placeDescription:
-                time.sleep(0.05)
+                time.sleep(0.04)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write(u"\u001b[0m")
