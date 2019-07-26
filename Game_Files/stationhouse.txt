@@ -9,11 +9,11 @@ It’s empty except for some benches and a ticket counter. The door to the platf
 You open the door and enter the station-house. 
 It’s empty except for some benches and a ticket counter. The door to the platform lies east.
 ***
-It's too dark to see here.
+You open the door and enter the station-house. It's already almost pitch-dark at this hour. The door to the platform lies east.  
 ***
-It's too dark to see here.
+The station-house is already pitch-dark at this hour. You can barely see enough to find the door back to the platform to the east. 
 ***
-It's too dark to see here.
+It's too dark to see here. Best get back to the House.
 ***
 benches
 ticket counter

@@ -4,11 +4,11 @@ You stand in a wide field, surrounded by knee-high grass that extends almost as 
 ***
 You stand in a wide field, surrounded by knee-high grass that extends almost as far as you can see in most directions. The train station lies southwest of here. You can see the House to the north.
 ***
-There is no night description yet
+You stand in a tall, whispering field. The gloom of night begins to settle around you, limiting your vision. What lurks out here in the darkness, you wonder? You hear a distant rumble of thunder and realize you don't want to find out. The safety of the House lies north. 
 ***
-There is no night description yet
+You stand alone and shivering in an empty field. The thunder sounds closer than it was before. There again is that thick, choking white mist, slowly engulfing the fields. Though it's too dark to see, you're quite sure the House is to the north. 
 ***
-There is no night description yet
+It's too dark to see here. Best get back to the House.
 ***
 sky
 clouds
