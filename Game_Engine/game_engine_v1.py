@@ -380,8 +380,10 @@ class Game:
 				all_things = self.user.current_place.getAllThingsInPlace()
 				# get ticket counter
 				for t in all_things:
-					if t.name = "ticket counter":
+					if t.name == "ticket counter":
 						# modified to not have fabric scrap on it
+						day = []
+						night = []
 						modified = "The ticket window is closed and locked. You see no sign of anyone who might be minding the counter. Where there once was the fabric is now just bare counter"
 						for i in range(0,4):
 							day[i] = modified
