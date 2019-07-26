@@ -8,10 +8,10 @@ import time
 ## Strings for approaching door
 ##
 b1 = "                "
-z1 = b1 + "\n\t" + b1 + "\n\t" + "        _       \n\t       |_|      \n\t" + b1 + "\n\t" + b1 + "\n\t"
-z2 = b1 + "\n\t" + b1 + "\n\t" + "        __      \n\t       |  |     \n\t       |__|     \n\t"+ b1 + "\n\t" + b1 + "\n\t" 
-z3 = b1 + "\n\t" + "       ____     \n\t      |    |    \n\t      |  * |    \n\t      |____|    \n\t" + b1 + "\n\t"
-z4 = "\t"+"      ______    \n\t     |      |   \n\t     |      |   \n\t     |    * |   \n\t     |      |   \n\t     |______|   \n\t"
+z1 = b1 + "\n" + b1 + "\n" + "        _       \n       |_|      \n" + b1 + "\n" + b1 + "\n"
+z2 = b1 + "\n" + b1 + "\n" + "        __      \n       |  |     \n       |__|     \n"+ b1 + "\n" + b1 + "\n" 
+z3 = b1 + "\n" + "       ____     \n      |    |    \n      |  * |    \n      |____|    \n" + b1 + "\n"
+z4 = "      ______    \n     |      |   \n     |      |   \n     |    * |   \n     |      |   \n     |______|   \n"
 _approachDoor2 = [z1, z2, z3, z4]
 
 
@@ -19,16 +19,16 @@ _approachDoor2 = [z1, z2, z3, z4]
 ##
 ## Strings for opening door
 ##
-od0 = "      ______\n\t     |      |\n\t     |      |\n\t     |    * |\n\t     |      |\n\t     |______|\n\t"
-od1 = "      ______\n\t     |     ||\n\t     |     ||\n\t     |    *||\n\t     |     ||\n\t     |_____||\n\t"
-od2 = "      ______\n\t     |    | |\n\t     |    | |\n\t     |   *| |\n\t     |    | |\n\t     |____| |\n\t"
-od3 = "      ______\n\t     |   |  |\n\t     |   |  |\n\t     |  *|  |\n\t     |   |  |\n\t     |___|  |\n\t"
-od4 = "      ______\n\t     |  |   |\n\t     |  |   |\n\t     | .|   |\n\t     |  |   |\n\t     |__|   |\n\t"
-od5 = "      ______\n\t     | |    |\n\t     | |    |\n\t     |.|    |\n\t     | |    |\n\t     |_|    |\n\t"
-od6 = "      ______\n\t     | |    |\n\t     | |    |\n\t     |.|    |\n\t     | |    |\n\t     |/     |\n\t"
-od7 = "      ______\n\t     | |    |\n\t     | |    |\n\t     | |    |\n\t     | /    |\n\t     |/     |\n\t"
-od8 = "      /_____\n\t     ||     |\n\t     ||     |\n\t     ||     |\n\t     ||     |\n\t     ||     |\n\t"
-od9 = "      ______\n\t     |      |\n\t     |      |\n\t     |      |\n\t     |      |\n\t     |      |\n\t"
+od0 = "      ______\n     |      |\n     |      |\n     |    * |\n     |      |\n     |______|\n"
+od1 = "      ______\n     |     ||\n     |     ||\n     |    *||\n     |     ||\n     |_____||\n"
+od2 = "      ______\n     |    | |\n     |    | |\n     |   *| |\n     |    | |\n     |____| |\n"
+od3 = "      ______\n     |   |  |\n     |   |  |\n     |  *|  |\n     |   |  |\n     |___|  |\n"
+od4 = "      ______\n     |  |   |\n     |  |   |\n     | .|   |\n     |  |   |\n     |__|   |\n"
+od5 = "      ______\n     | |    |\n     | |    |\n     |.|    |\n     | |    |\n     |_|    |\n"
+od6 = "      ______\n     | |    |\n     | |    |\n     |.|    |\n     | |    |\n     |/     |\n"
+od7 = "      ______\n     | |    |\n     | |    |\n     | |    |\n     | /    |\n     |/     |\n"
+od8 = "      /_____\n     ||     |\n     ||     |\n     ||     |\n     ||     |\n     ||     |\n"
+od9 = "      ______\n     |      |\n     |      |\n     |      |\n     |      |\n     |      |\n"
 _openDoor = [od0, od1, od2, od3, od4, od5, od6, od7, od8, od9]
 
 ##
@@ -140,7 +140,6 @@ class Output(object):
         time.sleep(0.1)
         Output.clearEntryWriting()
         sys.stdout.write(u"\u001b[0m") # reset
-        # print("\n\n")
 
     @classmethod
     def approachDoor(self,_approachDoor):
@@ -150,7 +149,7 @@ class Output(object):
         i = 0
         for d in _approachDoor:
             if i == 0:
-                print("\t") # print tabs before the first line printed
+                #print("\t") # print tabs before the first line printed
 
             time.sleep(0.1)
             sys.stdout.write(u"\u001b[1000D")
@@ -200,12 +199,12 @@ class Output(object):
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u"\033[7A")
             sys.stdout.flush()
-            print("\t" + d)
+            print(d) #  removed tab from here
             time.sleep(0.01)
             str = "\tEntering " + placeName
             sys.stdout.write(u"\u001b[32;1m")
         for elem in str:
-            time.sleep(0.02)
+            time.sleep(0.04)
             sys.stdout.write(elem)
             sys.stdout.flush()
 
