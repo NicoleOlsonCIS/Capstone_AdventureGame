@@ -174,19 +174,22 @@ class Output(object):
             sys.stdout.write(u"\033[7A")
             sys.stdout.flush()
             sys.stdout.write(u"\u001b" + c) # color
-            print("\t"+ door)
+            # print("\t"+ door)
+            print(door)
             sys.stdout.write(u"\u001b[0m") # reset
             time.sleep(speed)
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u"\033[7A")
             sys.stdout.flush()
-            print("\t" + door)
+            # print("\t" + door)
+            print(door)
             time.sleep(speed)
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u"\033[7A")
             sys.stdout.flush()
             sys.stdout.write(u"\u001b" + c) # color
-            print("\t" + door)
+            # print("\t" + door)
+            print(door)
             sys.stdout.write(u"\u001b[0m")
             i += 1
         sys.stdout.write(u"\u001b[0m") # reset
