@@ -315,18 +315,10 @@ class Output(object):
         length = len(placeDescription)
         if length > 60:
             placeDescription = Output.break_up_long_message(placeDescription)
-        # print slowly and in green
-        # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
 
         welcome = "You are now in the " + placeName
 
         if sys.stdin.isatty():
-            #sys.stdout.write(u'\u001b[38;5;$147m')
-            #for elem in welcome:
-            #    time.sleep(0.05)
-            #    sys.stdout.write(elem)
-            #    sys.stdout.flush()
-            #sys.stdout.write("\n")
             sys.stdout.write(u'\u001b[38;5;$146m')
             for elem in placeDescription:
                 time.sleep(0.04)
