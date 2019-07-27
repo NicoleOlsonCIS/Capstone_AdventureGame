@@ -11,6 +11,7 @@
 # v9 --> implement "doors" on places that have doors (changes in playgame.py as well)
 # v10 --> change 'up' and 'down' to 'u' and 'd' to match parser
 # v11 --> descriptions of Place now based on number of visits as well
+# v11.1 --> implement "search" and "read" 
 # v12
 # v13
 # define the "Game" class
@@ -95,10 +96,10 @@ class Game:
 			# if user tries to examine a room that is not the current one, error
 			for placename in self.places.keys():
 				if attemptedObj == placename.lower():
-					print("You can\'t look around a room if you aren\'t in it.")
+					Output.print_error("You can\'t look around a room if you aren\'t in it.")
 					return
 			# otherwise print generic error msg
-			print("You don\'t see that here.")
+			Output.print_error("You don\'t see that here.")
 
 
 	# v4: handle output for "take", "drop", "sleep"
@@ -147,6 +148,29 @@ class Game:
 				Output.print_input_hint("You can only sleep on a bed.") 
 			else:
 				Output.print_input_hint("You aren\'t sleepy right now.")
+
+	# new in v11.1
+	def handleSearch(self, attemptedObj, indirObj, canSearch):
+		if indirObj != None:
+			attemptedObj = attemptedObj + " " + indirObj
+		if canSearch:
+			print("You search the {}.".format(attemptedObj))
+		else:
+			if attemptedObj == None:
+				Output.print_input_hint("Try being more specific about what you want to search.")
+				return
+			Output.print_error("That\'s not something you can search.")
+
+	def handleRead(self, attemptedObj, indirObj, canRead):
+		if indirObj != None:
+			attemptedObj = attemptedObj + " " + indirObj
+		if canRead:
+			print("You read the {}.".format(attemptedObj))
+		else:
+			if attemptedObj == None:
+				Output.print_input_hint("Try being more specific about what you want to read.")
+				return
+			Output.print_error("That\'s not something you can read.")
 
 	# new in v9: print special error message for locked door
 	def handleLockedDoor(self, direction):
@@ -201,6 +225,10 @@ class Game:
 				self.handleDrop(action.direct_obj, action.indirect_obj, False)
 			elif action.verb == "sleep":
 				self.handleSleep(action.direct_obj, False)
+			elif action.verb == "search":
+				self.handleSearch(action.direct_obj, action.indirect_obj, False)
+			elif action.verb == "read":
+				self.handleRead(action.direct_obj, action.indirect_obj, False)
 			else:
 				# thing is present, but action.verb is not one of the thing's allowed verbs
 				if self.user.canAccessThing(action.direct_obj) and not self.user.canActOnThing(action.direct_obj, action.verb):
@@ -266,9 +294,14 @@ class Game:
 
 		# v7
 		valid_searches = [item.name for item in user_place.things if item.is_searchable]
+		# v11.1	
+		valid_reads = [item.name for item in user_place.things if item.is_readable]
+		for item in self.user.things:
+			if item.is_readable:
+				valid_reads.append(item.name)
 
 		# set the dictionary with keys as actions and values as valid corresponding things
-		newdict = {"move_user": valid_moves, "take": valid_takes, "drop": valid_drops, "look": valid_looks, "search": valid_searches}
+		newdict = {"move_user": valid_moves, "take": valid_takes, "drop": valid_drops, "look": valid_looks, "search": valid_searches, "read": valid_reads}
 
 		# set the "is valid" attribute to the current dictionary of valid game operations
 		self.isValid = newdict
@@ -347,11 +380,37 @@ class Game:
 			else:
 				return False
 
-		# v6
+		# new in v6
 		elif action.verb == "show_help":
 			return True 
 		elif action.verb == "show_inventory":
 			return True
+
+		# new in v11.1
+		elif action.verb == "search":
+			if action.direct_obj == None:
+				return False
+			v = self.isValid.get("search")
+			for i in v:
+				if i.lower() == action.direct_obj:
+					return True
+				if action.indirect_obj != None:
+					objName = action.direct_obj + " " + action.indirect_obj
+					if objName == i.lower():
+						return True
+
+		elif action.verb == "read":
+			if action.direct_obj == None:
+				return False
+			v = self.isValid.get("read")
+			for i in v:
+				if i.lower() == action.direct_obj:
+					return True
+				if action.indirect_obj != None:
+					objName = action.direct_obj + " " + action.indirect_obj
+					if objName == i.lower():
+						return True
+
 		else:
 			#print("Invalid game action")
 			return False	
@@ -679,7 +738,9 @@ class Thing:
 		self.location = starting_location # place object
 		self.is_takeable = is_takeable # defines whether feature or object
 		self.with_user = False
+		# v11.1
 		self.is_searchable = False
+		self.is_readable = False
 
 		# keep track of allowed verbs for each thing
 		self.permittedVerbs = [] 
