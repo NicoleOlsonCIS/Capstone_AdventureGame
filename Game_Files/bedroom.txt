@@ -1,0 +1,26 @@
+You open the door and let yourself into a prim bedroom with a neatly made bed, a wooden wardrobe, and a small writing desk. A wooden trunk sits at the foot of the bed. The heavy blue drapes are open, and daylight streams into the room between the iron window bars. No one’s here. To the east is a wooden door.
+***
+You find yourself in a bedroom with a bed, a wardrobe, and a writing desk. A wooden trunk sits at the foot of the bed. The heavy blue drapes are open, and daylight streams into the room between the iron window bars. No one’s here. To the east is a wooden door.
+***
+You stand in a prim bedroom with a bed, a wardrobe, and a writing desk. A wooden trunk sits at the foot of the bed. To the east is a wooden door.
+***
+You stand in a dark bedroom. You can make out the dim shapes of a bed, a wardrobe, a writing desk, and a wooden trunk. There is a door to the east.
+***
+You stand in a dark bedroom. You can make out the dim shapes of a bed, a wardrobe, a writing desk, and a wooden trunk. There is a door to the east.
+***
+It's getting too dark to see much, and you don't want a scolding for being out of bed. Best head back to your room.
+***
+bed
+wardrobe
+writing desk
+wooden trunk
+***
+A neatly made bed, bigger than yours, but not as cozy.###A neatly made bed.
+***
+A tall wardrobe of medium-brown wood, maybe chestnut.###A tall wardrobe of medium-brown wood.
+***
+A spindly writing-desk to match the trunk and wardrobe.###A spindly-legged writing desk. 
+***
+A wooden trunk, made of the same medium-brown wood as the wardrobe.###A heavy wooden trunk.
+***
+no objects
