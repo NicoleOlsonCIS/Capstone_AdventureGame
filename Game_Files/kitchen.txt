@@ -1,0 +1,39 @@
+You follow your nose into a large, tidy kitchen, where something in the oven is making the most delicious smell. A stout, dour-looking cook labors over a floured countertop, while a flustered maid scurries to and fro, fetching and carrying. Overseeing it all is Maude, who watches the proceedings with hawk-like attention.
+There's an open doorway to the west.
+***
+A spacious, tidy kitchen, where a stout, dour-looking cook and a flustered maid bustle to and fro, carrying out their duties. Overseeing it all is Maude, who watches the proceedings with hawk-like attention.
+There's an open doorway to the west.
+***
+A spacious, tidy kitchen, where a stout, dour-looking cook and a flustered maid bustle to and fro, carrying out their duties. Overseeing it all is Maude, who watches the proceedings with hawk-like attention.
+There's an open doorway to the west.
+***
+A spacious kitchen with flour-dusted countertops. There's an open doorway to the west.
+***
+A spacious kitchen with flour-dusted countertops. There's an open doorway to the west.
+***
+A spacious kitchen with flour-dusted countertops. There's an open doorway to the west.
+***
+smell
+oven
+counter
+countertop
+countertops
+cook
+maid
+***
+The smell reminds you of warm bread, honey, and butter. Your stomach rumbles. You barely remember the taste of butter. Is it as good as that distant memory tells you it is?###No night
+***
+The smell reminds you of warm bread, honey, and butter. Your stomach rumbles. You barely remember the taste of butter. Is it as good as that distant memory tells you it is?###No night
+***
+At one corner of the counter, you spy a short but sharp-looking knife and a matchbook. The cook seems to be working on an elaborate pastry dough, and doesn’t notice you.###No night 
+***
+The cook seems to be working on an elaborate pastry dough, and doesn’t notice you.###No night
+***
+The cook seems to be working on an elaborate pastry dough, and doesn’t notice you.###No night
+***
+He’s hard at work and pays you no mind.###He’s hard at work and pays you no mind.
+***
+She’s hard at work and pays you no mind.###She’s hard at work and pays you no mind.
+***
+no objects
+

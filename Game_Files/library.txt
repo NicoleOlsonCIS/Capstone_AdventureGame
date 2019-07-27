@@ -1,0 +1,32 @@
+The sight that greets you is everything you’ve dreamed of. Books...more books than you’ve seen in your life. More than you knew existed. Books from floor to ceiling, smothering the shelves, heaped on armchairs, strewn across tables that smell like wood and smoke. The luxury of it almost makes you dizzy.
+There is an archway to the west.
+***
+The sight that greets you is everything you’ve dreamed of. Books...more books than you’ve seen in your life. More than you knew existed. Books from floor to ceiling, smothering the shelves, heaped on armchairs, strewn across tables.
+There is an archway to the west.
+***
+The sight that greets you is everything you’ve dreamed of. Books...more books than you’ve seen in your life. More than you knew existed. Books from floor to ceiling, smothering the shelves, heaped on armchairs, strewn across tables.
+There is an archway to the west.
+***
+You stand in a dark library. There are books everywhere. Books from floor to ceiling, smothering the shelves, heaped on armchairs, strewn across tables.
+There is an archway to the west.  
+***
+You stand in a dark library. You can make out the dim shapes of books heaped on every available surface, but there isn't enough light to explore by, and you don't want to get caught out of bed after hours. Best head back to your room.
+There is an archway to the west.
+***
+It's getting too dark to see much in here. Best head back to your room.
+***
+tables
+armchairs
+shelves
+settees
+***
+There are books scattered everywhere. The messiness of it is a welcome contrast to the rest of the House.###No night
+***
+There are books scattered everywhere. The messiness of it is a welcome contrast to the rest of the House.###No night
+***
+There are books scattered everywhere. The messiness of it is a welcome contrast to the rest of the House.###No night
+***
+There are books scattered everywhere. The messiness of it is a welcome contrast to the rest of the House.###No night
+***
+no objects
+ 
