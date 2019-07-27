@@ -23,6 +23,7 @@ class Parser:
         "trash": "drop",
         "put": "drop",
         "leave": "drop", # FIXME: Should this be here?
+        "place": "drop",
         "insert": "insert", # Which verb to engine? Was "drop_inside_thing"
         "sleep": "sleep",
         "rest": "sleep",
@@ -92,13 +93,23 @@ class Parser:
 
     quantifiersList = ["all", "some", "few", "many", "several", "both", "every", "each", "first", "last", "next", "other", "same"]
 
-    prepositionsList = [
+    # Two different kinds of prepositions...
+    # ...those recognized by the game
+    prepositionsListUnused = [
         "about", "above", "across", "after", "against", "along", "among", "around", "at",
         "before", "behind", "below", "beneath", "beside", "between", "by",
-        "for", "from", "in", "inside", "into", "near", "of", "off", "on", "onto",
+        "for", "from", "near", "of", "off", "on", "onto",
         "through", "to", "toward", "towards", "under", "upon", "with", "within",
         "out"
     ] # removed 'down' - otherwise direction 'down' will be removed as preposition
+    # ...and those that are not
+    prepositionsListUsed = [
+        "in", "inside", "into"
+    ] # removed 'down' - otherwise direction 'down' will be removed as preposition
+
+    hardcodedPhrases = {
+        "go to bed": Action("sleep")
+    }
 
     # Default constructor - no instance variables
 
@@ -118,12 +129,25 @@ class Parser:
                 numdirections += 1 
         return numdirections
 
+    # Count how many usable prepositions in tokens
+    def prepositionCount(self, tokens):
+        numPrepositions = 0
+        for token in tokens:
+            if token in self.prepositionsListUsed:
+                numPrepositions += 1 
+        return numPrepositions
+
     # Parse user input into action object
     # TODO - add "context" parameter so engine can talk *to* parser?
     def parseInput(self, userInput):
 
         # Convert input to lowercase
         userInput = userInput.lower()
+
+        # Check if input is a hard-coded phrase
+        userAction = self.parseHardCodePhrases(userInput)
+        if (userAction is not None):
+            return userAction
 
         # Tokenize input 
         tokens = userInput.split()
@@ -137,7 +161,7 @@ class Parser:
         # Remove conjunctions
         tokens = [token for token in tokens if token not in self.conjunctionsList] 
         # Remove prepositions
-        tokens = [token for token in tokens if token not in self.prepositionsList]
+        tokens = [token for token in tokens if token not in self.prepositionsListUnused]
 
         # Combine directions
         tokens = self.combineDirections(tokens)
@@ -147,10 +171,10 @@ class Parser:
         if len(tokens) < 1:
             return Action() 
 
-        elif len(tokens) == 1:
+        elif len(tokens) is 1:
             return self.parseSingleToken(tokens[0])
 
-        elif len(tokens) == 2:
+        elif len(tokens) is 2:
             return self.parseTwoTokens(tokens)
         else:
             return self.parseThreeOrMoreTokens(tokens)
@@ -169,6 +193,9 @@ class Parser:
     def parseDirection(self, direction):
         return self.directionDict.get(direction)
 
+    def parseHardCodePhrases(self, userInput):
+        return self.hardcodedPhrases.get(userInput)
+
     # Return Action from single token input
     def parseSingleToken(self, token):
         if (token in self.directionDict):
@@ -184,18 +211,24 @@ class Parser:
         verbct = self.verbCount(tokens)
         if verbct > 1:
             return Action()
+
+        # There should not be more than one preposition in tokens.
+        prepct = self.prepositionCount(tokens)
+        if prepct > 1:
+            return Action()
+
         # there should not be more than one direction in tokens. return empty action if 2+ directions
         directionct = self.directionCount(tokens)
         if directionct > 1:
             return Action()
 
         # calculate number of objects in tokens
-        objct = 2 - verbct - directionct 
+        objct = 2 - verbct - directionct - prepct
         # if 2 objects and 2 tokens, that means both tokens are objs
-        if objct == 2:
+        if objct is 2:
             return Action(None, None, tokens[0], tokens[1])
         # 1 obj in tokens, so other token is a verb or direction
-        elif objct == 1:
+        elif objct is 1:
             verb = None
             direction = None
             directObj = None
@@ -228,29 +261,46 @@ class Parser:
             
             return Action(verb, direction, directObj, None)
 
-        # 0 objs in token, so there is 1 verb and 1 direction    
+        # 0 objs in token, so there is 1 verb and either 1 direction or prep
         else:  
-            verb = self.parseVerb(tokens[0])
-            direction = None
-            # first token is verb "move_user", 2nd token is direction  
-            if (verb == "move_user"):
-                direction = self.parseDirection(tokens[1])
-                return Action(verb, direction, None, None)
-            # first token is verb other than "move_user", ignore direction
+            if (prepct is 0):
+                verb = self.parseVerb(tokens[0])
+                direction = None
+                # first token is verb "move_user", 2nd token is direction  
+                if (verb is "move_user"):
+                    direction = self.parseDirection(tokens[1])
+                    return Action(verb, direction, None, None)
+                # first token is verb other than "move_user", ignore direction
+                else:
+                    return Action(verb, None, None, None) 
             else:
-                return Action(verb, None, None, None) 
+                verb = self.parseVerb(tokens[0])
+                # Only used prepositions are to put things inside something else
+                if (verb is "drop"):
+                    verb = "insert"
+                elif (verb is "look"):
+                    verb = "search"
+                # Return action with modified verb
+                return Action(verb, None, None, None)
 
     def parseThreeOrMoreTokens(self, tokens):
         action = self.parseTwoTokens(tokens[:2])    # parse first two tokens
         if (action.verb is None):                        # check if invalid
             return action 
 
-        # FIXME: right now, just assume next token is a direct_obj
-        # Should probably use a setter here...
-        if (action.direct_obj == None):
-            action.direct_obj = tokens[2]
+        # FIXME: come up with something more robust than this?
+        nextTokenPos = 2
+        if (tokens[nextTokenPos] in self.prepositionsListUsed):
+            if (action.verb is "drop"):
+                action.verb = "insert"
+            elif (action.verb is "look"):
+                action.verb = "search"
+            del tokens[nextTokenPos]
+
+        if (action.direct_obj is None):
+            action.direct_obj = tokens[nextTokenPos]
         else:
-            action.indirect_obj = tokens[2]
+            action.indirect_obj = tokens[nextTokenPos]
 
         # Return action
         return action
@@ -268,5 +318,5 @@ class Parser:
         return tokens
 
 # Debug
-parser = Parser()
-parser.parseInput("go north east")
+# parser = Parser()
+# parser.parseInput("insert foo in bar")
