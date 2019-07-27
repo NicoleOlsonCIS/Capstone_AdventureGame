@@ -1,0 +1,15 @@
+You stand in a north-south hallway. There is a wooden door to the west and an open doorway to the east. You can see other doors along the hallway to the north and south.
+***
+You stand in a hallway. There is a wooden door to the west and an open doorway to the east. You can see other doors along the hallway to the north and south.
+***
+You stand in a hallway. There is a wooden door to the west and an open doorway to the east. You can see other doors along the hallway to the north and south. 
+***
+You stand in a dark hallway. You can still make out doors to the east and west, and you'd guess there are other doors down the hall to the north and south.
+***
+You stand in a dark north-south hallway. It's quickly getting too dark to see.
+***
+You stumble blindly in the dark. 
+***
+no features
+***
+no objects 

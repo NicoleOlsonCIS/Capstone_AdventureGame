@@ -300,9 +300,16 @@ def buildGame():
     
     loadPlaceData(place17, "servantsstairtop.txt")
     loadPlaceData(place18, "servantsstairbottom.txt")
-
+    loadPlaceData(place19, "downstairshallway3.txt")
+    loadPlaceData(place20, "downstairshallway2.txt")
+    loadPlaceData(place21, "downstairshallway1.txt")
     loadPlaceData(place22, "kitchen.txt")
+
     loadPlaceData(place24, "drawingroom.txt")
+    loadPlaceData(place25, "diningroom.txt")
+    loadPlaceData(place26, "cloakroom.txt")
+    loadPlaceData(place27, "ashgrove.txt")
+    loadPlaceData(place28, "rearmanorgrounds.txt")
 
     # associate user with game 
     game.setUser(user)
