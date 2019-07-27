@@ -6,9 +6,9 @@ You are in your bedroom, which is furnished with a bed, dresser, and one tiny wi
 ***
 You fumble at the door and manage to open it. You walk into a small, bare chamber, furnished only with a bed and dresser. On the wall opposite is a square window no bigger than your head. For all the room’s lack of decoration, though, it’s dry and clean and, most importantly, yours. Closing the door to the east, you feel a wave of fatigue wash over you.
 ***
-You walk into a small, bare chamber, furnished only with a bed and dresser. On the wall opposite is a window no bigger than your head. Closing the door to the east, you feel a wave of fatigue wash over you.
+You find yourself in a small, bare chamber, furnished only with a bed and dresser. On the wall opposite is a window no bigger than your head. Closing the door to the east, you feel a wave of fatigue wash over you.
 ***
-You walk into a small, bare chamber, furnished only with a bed and dresser. On the wall opposite is a window no bigger than your head. Closing the door to the east, you feel a wave of fatigue wash over you.
+You find yourself in a small, bare chamber, furnished only with a bed and dresser. On the wall opposite is a window no bigger than your head. Closing the door to the east, you feel a wave of fatigue wash over you.
 ***
 bed
 dresser
