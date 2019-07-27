@@ -1,0 +1,48 @@
+You stand in a well-appointed dining room, where the remnants of a meal are still set out on a long mahogany table. Everything about the room, from the intricate rug beneath your feet to the fireplace and the tapestry above it, bespeaks old blood and old money.
+There is a spacious archway to the west.
+***
+You stand in a well-appointed dining room. Everything about the room, from the intricate rug under the table to the fireplace and the tapestry above it, bespeaks old blood and old money.
+There is a spacious archway to the west.
+***
+You stand in a well-appointed dining room. Everything about the room, from the intricate rug under the table to the fireplace and the tapestry above it, bespeaks old blood and old money.
+There is a spacious archway to the west.
+***
+You stand in a well-appointed dining room, where the remnants of a meal are still set out on a long mahogany table. Everything about the room, from the intricate rug beneath your feet to the fireplace and the tapestry above it, bespeaks old blood and old money.
+There is a spacious archway to the west.
+***
+You stand in a well-appointed dining room. You can't see much in the evening gloom, but you know there is an archway to the west.
+***
+It's getting too dark to see much. Best head back to your room.
+***
+meal
+tureens
+pitchers
+platters
+dishes
+utensils
+fireplace
+rug
+tapestry
+table
+***
+You see two sets of used dishes and utensils, along with several tureens, pitchers, and platters. It looks like it was a hearty meal. You feel your insides clench longingly.###You see two sets of used dishes and utensils, along with several tureens, pitchers, and platters. It looks like it was a hearty meal. You feel your insides clench longingly.
+***
+It looks like it was a hearty meal. Your insides clench longingly.###It looks like it was a hearty meal. Your insides clench longingly.
+***
+It looks like it was a hearty meal. Your insides clench longingly.###It looks like it was a hearty meal. Your insides clench longingly.
+***
+It looks like it was a hearty meal. Your insides clench longingly.###It looks like it was a hearty meal. Your insides clench longingly.
+***
+It looks like it was a hearty meal. Your insides clench longingly.###It looks like it was a hearty meal. Your insides clench longingly.
+***
+It looks like it was a hearty meal. Your insides clench longingly.###It looks like it was a hearty meal. Your insides clench longingly.
+***
+A fireplace framed by a wooden mantel, richly carved with shapes of climbing vines and leaves.###A fireplace framed by a wooden mantel, richly carved with shapes of climbing vines and leaves.
+***
+A very fine rug, woven with geometric motifs - an eight-pointed star surrounded by smaller octagons and heptagons - in crimson red, blue, and olive green.###A fine rug woven with geometric motifs. 
+***
+A deep blue night filled up by an immense white moon. A riderless gray horse rears at the edge of a dark forest. The rider is nowhere to be seen - there’s only moonlight and darkness, and a shattered lance on the green field.###No night
+***
+Heavy and imposing, built to impress rather than to unite.###Heavy and imposing, built to impress rather than to unite. 
+***
+no objects 

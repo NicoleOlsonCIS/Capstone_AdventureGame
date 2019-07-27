@@ -1,0 +1,20 @@
+You enter a small, dim cloakroom, empty except for a row of wooden pegs on the wall. Several coats hang from the pegs. There is a door to the east.
+***
+You find yourself in a small, dim cloakroom, empty except for a row of wooden pegs on the wall. Several coats hang from the pegs. There is a door to the east.
+***
+You stand in a small, dim cloakroom, empty except for a row of wooden pegs on the wall. There is a door to the east.
+***
+You find yourself in a dark, claustrophobic cloakroom, empty except for a row of wooden pegs on the wall. Several coats hang from the pegs. There is a door to the east.
+***
+You stand in a small, dark cloakroom. You can't see much here without more light. There is a door to the east.
+***
+It's getting too dark to see much here. Best head back to your room - you don't want to be caught out of bed after hours.
+***
+coats
+pegs
+***
+Sturdy, warm coats for wearing outside. They’re all far too big for you to wear.###Sturdy, warm coats for wearing outside. They’re all far too big for you to wear.
+***
+For hanging coats on.###For hanging coats on.
+***
+no objects 
