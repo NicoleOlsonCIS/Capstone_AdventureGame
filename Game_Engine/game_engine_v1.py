@@ -177,8 +177,13 @@ class Game:
 
 		doors = self.user.current_place.doors
 
+		# v11.1: fix "go to X" bug.
+		# If direction is None, attempting to access doors[direction] crashes the game.  
+		if direction == None:
+			Output.print_error("That\'s not somewhere you can go.")
+
 		# if there is a door, and the move is invalid, then "locked"
-		if doors[direction] == "locked":
+		elif doors[direction] == "locked":
 			Output.doorIsLocked(self.user.current_place.name, True)
 
 		# otherwise, there is no place in that direction
@@ -486,6 +491,12 @@ class Game:
 		if action.verb == "show_inventory":
 			self.user.printInventory()
 			return
+		if action.verb == "search":
+			self.handleSearch(action.direct_obj, action.indirect_obj, True)
+			return
+		if action.verb == "read":
+			self.handleRead(action.direct_obj, action.indirect_obj, True)
+			return
 		else:
 			#print("Invalid action type for version 1 or 2")
 			return
@@ -543,8 +554,8 @@ class Game:
 		new_place = self.user.current_place
 
 		# v13 provision for the "leave" message on the Front Manor Grounds
-		# only shows up on day 1
-		if self.day == 1 and (new_place.name == "Foyer" or new_place.name == "foyer"):
+		# only shows up on first entry into foyer
+		if new_place.numTimesEntered == 0 and new_place.name.lower() == "foyer":
 			print("You hurl yourself up the path as it starts to rain in earnest. Maude follows right on your heels, fishing an iron keyring out of her pockets. At the front door, she shoulders you aside, unlocks the door, and heaves it open with a grunt of effort, dragging you inside by the wrist and dumping you in a rain-soaked heap on the floor.")
 		
 		if (is_door):
@@ -741,6 +752,8 @@ class Thing:
 		# v11.1
 		self.is_searchable = False
 		self.is_readable = False
+		self.is_inside_other_thing = False
+		self.contains_other_thing = False
 
 		# keep track of allowed verbs for each thing
 		self.permittedVerbs = [] 

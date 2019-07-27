@@ -10,7 +10,7 @@ import action as a
 import parser as p
 from output import *
 
-# playgame1.py works with v6 of the game engine
+# playgame1.py works with v11.1 of game engine
 
 # reads in place information from room file
 def loadPlaceData(place_obj, filename):
@@ -18,7 +18,7 @@ def loadPlaceData(place_obj, filename):
     # build path to data file
     fpath = "./Game_Files/" + filename
  
-    # read file line by line
+    # read file all in at once 
     with open(fpath) as f:
         read_data = f.read()
         data_chunks = read_data.split("***\n")
@@ -335,7 +335,7 @@ def main():
         # start playing
         while True:
 
-            # game.user.printUser(game) 
+            # game continues until user enters quit at the prompt 
             received = input("> ")
             if "quit" in received:
                 break      
@@ -347,6 +347,8 @@ def main():
  
     elif "load" in new_or_save:
         print("Checking for existing saves...")
+        print("No saves found. Exiting...")
+        return
         # loading code here
 
     else:
