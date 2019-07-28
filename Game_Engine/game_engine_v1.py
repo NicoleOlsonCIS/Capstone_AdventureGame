@@ -788,7 +788,7 @@ class Thing:
 		self.permittedVerbs = [] 
 
 		self.numTimesRead = 0
-		self.numTimesExamined = 0
+		self.numTimesExamined = -1 # start at -1 to account for "+1" at beginning of getDescription/array indexing
 
 	def getDescription(self, time):
 		self.numTimesExamined += 1
