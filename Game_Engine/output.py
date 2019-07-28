@@ -104,6 +104,7 @@ class Output(object):
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write('\033[0m')
+            print("\n")
         else:
             print(look_description)
 
@@ -121,7 +122,7 @@ class Output(object):
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write('\033[0m')
-            #print("\n")
+            print("\n")
         else:
             print(msg)
 
@@ -140,7 +141,7 @@ class Output(object):
                 sys.stdout.flush()
             sys.stdout.write('\033[0m')
             # sys.stdout.write(u'\u001b[38;5;$12m' + obj_name + "\n" +'\033[0m')
-            #print("\n")
+            print("\n")
         else:
             print(msg)
 
@@ -191,10 +192,10 @@ class Output(object):
             return
 
         # otherwise, do animation
-        Output.approachDoor(_approachDoor2)
-        Output.printFlashingDoor(od0, "green", 1, 0.1)
+        # Output.approachDoor(_approachDoor2)
+        # Output.printFlashingDoor(od0, "green", 1, 0.1)
         Output.openDoor(_openDoor, placeName)
-        Output.printFlashingDoor(od9, "green", 1, 0.1)
+        # Output.printFlashingDoor(od9, "green", 1, 0.1)
         time.sleep(0.1)
         Output.clearEntryWriting()
         sys.stdout.write(u"\u001b[0m") # reset
