@@ -83,8 +83,14 @@ class Game:
 							return
 				return 
 
-        # v3: takes the thing the user wants to examine
-        # prints appropriate outputs
+		for c in self.user.current_place.character.names: 
+			if c == itemname:
+				description = self.user.current_place.character.getLook()
+				print(description)
+
+
+    # v3: takes the thing the user wants to examine
+    # prints appropriate outputs
 	# v7: handle two-word obj names
 	def handleLook(self, attemptedObj, indirObj, canLook):
 		if indirObj != None:
@@ -320,6 +326,10 @@ class Game:
 		valid_looks = [item for item in user_place.things]
 		for item in self.user.things:
 			valid_looks.append(item)
+
+		# v12 you can look at characters if there are any present (characters are rare)
+		if user_place.character is not None:
+			valid_looks.append(user_place.character) # follow change of obj not names
 	
 		valid_searches = [item for item in user_place.things if item.is_searchable]
 		valid_reads = [item for item in user_place.things if item.is_readable]
@@ -597,6 +607,7 @@ class Place:
 	def __init__(self, game, name, day, night, adjacentPlaceNames, things = None, doors = None):
 		self.name = name
 		self.adjacent_place_names = adjacentPlaceNames
+		self.character = None # default to none
 
 		# new in v9: a dictionary of doors tracking: whether there is a door, and whether it is locked or unlocked
 		# dictionary: key is direction, value is either 'locked', 'unlocked', or None
@@ -671,6 +682,15 @@ class Place:
 		place_description = self.getDescriptionBasedOnTimeAndVisitCount(time)
 		# v9: call output function to orient user 
 		Output.orientUser(place_name, place_description)
+	
+	# v12 character add
+	def addCharacter(self, character):
+		self.character = character # for now only 1 character per room
+	
+	# v12 accomodating situation where character moves with the user (ex following Maude from Train to House)
+	def removeCharacter(self):
+		self.character = None
+
 
 # define the User class
 class User:
@@ -835,3 +855,42 @@ class Thing:
 	def editDescription(self, day, night):
 		self.day = day
 		self.night = night
+
+
+#define the "Character" class
+class Character: 
+	# string, place obj of current location, talk interactions, look interactions (dictionaries)
+	def __init__(self, names, location, talk, look):
+		self.name = names
+		self.location = location
+		self.talk = talk #[]
+		self.look = look #[]
+		self.numTimesLooked = 0
+		self.numTimesTalked = 0
+
+	def updateLooked(self):
+		numTimesLooked += 1
+
+	def updateTalked(self):
+		numTimesTalked += 1
+		
+	# increases looks
+	def getLook(self):
+		if self.numTimesLooked > 2:
+			return self.look[2]
+		else:
+			d = self.look[self.numTimesLooked]
+			self.numTimesLooked += 1
+			return d
+	
+	# increases talks
+	def getTalk(self):
+		if self.numTimesTalked > 2:
+			return self.talk[2]
+		else:
+			t = self.talk[self.numTimesTalked]
+			self.numTimesTalked += 1
+			return t
+
+	
+

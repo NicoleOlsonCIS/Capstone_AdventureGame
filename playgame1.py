@@ -355,6 +355,26 @@ def buildGame():
     loadPlaceData(place27, "ashgrove.txt")
     loadPlaceData(place28, "rearmanorgrounds.txt")
 
+
+    # hard coding in Maude instantiation for now you can only look at her
+
+    # train platform version of Maude
+    l1 = "She looks frail and gray, but her bony frame seems to possess a kind of wiry strength. She stands ramrod straight, and her heavy black dress - buttoned long at the wrists and high at the neck - is spotless. Somehow, you know she’s waiting for you."
+    l2 = "She looks frail and gray, but her bony frame seems to possess a kind of wiry strength. She stands ramrod straight, and her black dress - buttoned long at the wrists and high at the neck - is spotless."
+    look = [l1, l2, l2] # subsequent up to 3
+    t1 = "You cannot yet talk to this character"
+    talk = [t1, t1, t1] # talk not implemented in parser yet
+    maude = Character(["Maude", "woman"], place1, look, talk)
+    place1.addCharacter(maude)
+
+    # field version of Maude
+    l1 = "Maude is here with you"
+    t1 = "You cannot yet talk to this character"
+    look = [l1, l1, l1]
+    talk = [t1, t1, t1]
+    maude = Character(["Maude", "woman"], place3, look, talk)
+    place3.addCharacter(maude)
+
     # associate user with game 
     game.setUser(user)
 
