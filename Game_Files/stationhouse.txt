@@ -18,7 +18,7 @@ ticket counter
 ***
 Simple wooden benches, red paint cracked and peeling from lack of upkeep.###Cracked, peeling painted benches.
 ***
-The ticket window is closed and locked. You see no sign of anyone who might be minding the counter. A scrap of fabric sits forlornly at the counter’s edge.###The ticket window is closed and locked.
+The ticket window is closed and locked. You see no sign of anyone who might be minding the counter.###The ticket window is closed and locked.
 ***
 fabric scrap
 ***
