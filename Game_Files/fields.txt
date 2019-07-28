@@ -19,10 +19,7 @@ hill
 mist
 fog
 grass
-field
-ground
-flash
-color
+flash of color
 ***
 Cool droplets of rain hit your face as you survey the sky. You see dense white mist rolling over the fields, obscuring everything behind you.###No night
 ***
@@ -40,13 +37,7 @@ If you got caught in it, you wouldn’t be able to see your own hand in front of
 ***
 If you got caught in it, you wouldn’t be able to see your own hand in front of your face.###No night
 ***
-The grass ripples under a sudden light gust of wind. You glance down and glimpse a flash of color half-buried in the soil under your feet.###No night
-***
-The grass ripples under a sudden light gust of wind. You glance down and glimpse a flash of color half-buried in the soil under your feet.###No night
-***
-The grass ripples under a sudden light gust of wind. You glance down and glimpse a flash of color half-buried in the soil under your feet.###No night
-***
-You lean down and dig roughly with your fingers, unearthing a dirty but unbroken porcelain doll.###No night
+The grass ripples under a sudden light gust of wind. You glance down at the soil under your feet.###No night
 ***
 You lean down and dig roughly with your fingers, unearthing a dirty but unbroken porcelain doll.###No night
 ***

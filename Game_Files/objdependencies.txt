@@ -1,0 +1,15 @@
+bench:newspaper
+***
+ticket counter:fabric scrap
+***
+grass:flash of color
+***
+flash of color:doll
+***
+dresser:set of drawers
+***
+set of drawers:flashlight
+***
+wardrobe:set of dresses
+***
+trunk:sheaf of papers

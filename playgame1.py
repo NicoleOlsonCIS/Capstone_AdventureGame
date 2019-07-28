@@ -10,7 +10,23 @@ import action as a
 import parser as p
 from output import *
 
-# playgame1.py works with v11.1 of game engine
+# playgame1.py works with v11.2 of game engine
+
+# Some things in the game are related to each other,
+# e.g. one thing is viewable only after another thing has been viewed.
+# This function loads those relationships from a file. 
+def loadThingDependencies(filename, thing_obj):
+    fpath = "./Game_Files/" + filename
+    with open(fpath) as f:
+        read_data = f.read()
+        data_chunks = read_data.split("***\n")
+
+    for chunk in data_chunks:
+        chunk = chunk.rstrip("\n")
+        objNames = chunk.split(":")
+        if objNames[0].lower() == thing_obj.name.lower():
+            thing_obj.hasOtherItems.append(objNames[1])
+            return  
 
 # reads in place information from room file
 def loadPlaceData(place_obj, filename):
@@ -106,6 +122,9 @@ def loadPlaceData(place_obj, filename):
                 newthing = g.Thing(feature, day, night, place_obj, False)
                 place_obj.addThing(newthing)
 
+                # load thing dependencies
+                loadThingDependencies("objdependencies.txt", newthing)
+
                 count += 1
 
     # load object information and create/add Things
@@ -171,6 +190,9 @@ def loadPlaceData(place_obj, filename):
 
                 newthing = g.Thing(obj, day, night, place_obj, True)
                 place_obj.addThing(newthing)
+             
+                # load thing dependencies
+                loadThingDependencies("objdependencies.txt", newthing)
 
 
 def buildGame():

@@ -58,6 +58,7 @@ class Game:
 
 
 	# v3: prints the description of a feature or object 
+	# v11.2: also prints description of other objects dependent on this one 
 	def showThing(self, itemname):
 
 		for t in self.user.things:
@@ -70,6 +71,13 @@ class Game:
 				print(t)
 				des = t.getDescription(self.time) # increases views on Thing
 				print(des) # change to output module
+				# v11.2: if there are other objects viewable because of this one,
+				# describe those other objects also.
+				for obj in t.hasOtherItems:
+					for thingObj in self.user.current_place.things:
+						if obj.lower() == thingObj.name.lower():
+							print(thingObj.isHereDescription)
+							return
 				return 
 
         # v3: takes the thing the user wants to examine
@@ -752,12 +760,18 @@ class Thing:
 		# v11.1
 		self.is_searchable = False
 		self.is_readable = False
-		self.is_inside_other_thing = False
-		self.contains_other_thing = False
+		self.hasBeenSearched = False
 
+		# v11.2
+		self.isHereDescription = "There is a " + self.name + " here."
+ 
+		# v11.2: for things that have other things on/in them
+		self.hasOtherItems = []
+ 
 		# keep track of allowed verbs for each thing
 		self.permittedVerbs = [] 
 
+		self.numTimesRead = 0
 		self.numTimesExamined = 0
 
 	def getDescription(self, time):
