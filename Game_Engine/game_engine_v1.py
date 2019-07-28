@@ -67,18 +67,18 @@ class Game:
 		for t in self.user.things:
 			if t.name.lower() == itemname or itemname in t.altNames:
 				des = t.getDescription(self.time)
-				print_look(des) 
+				Output.print_look(des) 
 				return
 		for t in self.user.current_place.things:
 			if t.name.lower() == itemname or itemname in t.altNames:
 				des = t.getDescription(self.time) 
-				print_look(des)
+				Output.print_look(des)
 				# v11.2: if there are other objects viewable because of this one,
 				# describe those other objects also.
 				for obj in t.hasOtherItems:
 					for thingObj in self.user.current_place.things:
 						if obj.lower() == thingObj.name.lower():
-							print_look(thingObj.isHereDescription)
+							Output.print_look(thingObj.isHereDescription)
 							return
 				return
 
@@ -128,7 +128,7 @@ class Game:
 			if self.user.userHasThing(attemptedObj): 
 				Output.print_error("You can\'t take what\'s already in your inventory.")
 			else:
-				print_take(attemptedObj)
+				Output.print_take(attemptedObj)
 		else:
 			if attemptedObj == None:
 				Output.print_input_hint("Try being more specific about what you want to take.")
@@ -145,7 +145,7 @@ class Game:
 			attemptedObj = attemptedObj + " " + indirObj
 
 		if canDrop:
-			print_drop(attemptedObj) 
+			Output.print_drop(attemptedObj) 
 		else:
 			if attemptedObj == None:
 				Output.print_input_hint("Try being more specific about what you want to drop.")

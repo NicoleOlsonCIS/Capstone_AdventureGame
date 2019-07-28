@@ -94,7 +94,7 @@ class Output(object):
 
         # if message is long, break up into lines of ~60 characters 
         if length > 60:
-            hint_message = Output.break_up_long_message(look_description)
+            look_description = Output.break_up_long_message(look_description)
 
         # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
         if sys.stdin.isatty():
