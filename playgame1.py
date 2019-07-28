@@ -9,6 +9,8 @@ import game_engine_v1 as g
 import action as a
 import parser as p
 from output import *
+import termios
+from termios import tcflush, TCIFLUSH
 
 # playgame1.py works with v11.2 of game engine
 
@@ -380,7 +382,8 @@ def main():
         while True:
 
             # flush standard in 
-            sys.stdout.flush()
+            termios.tcflush(sys.stdin, termios.TCIFLUSH)
+            #sys.stdin.flush()
 
             # game continues until user enters quit at the prompt 
             received = input("> ")
