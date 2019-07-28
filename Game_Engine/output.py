@@ -194,6 +194,7 @@ class Output(object):
         # otherwise, do animation
         # Output.approachDoor(_approachDoor2)
         # Output.printFlashingDoor(od0, "green", 1, 0.1)
+        print("\n\n\n\n\n\n")
         Output.openDoor(_openDoor, placeName)
         # Output.printFlashingDoor(od9, "green", 1, 0.1)
         time.sleep(0.1)
@@ -254,12 +255,12 @@ class Output(object):
     def openDoor(self,_openDoor, placeName):
         for d in _openDoor:
             sys.stdout.write(u"\u001b[1000D")
-            sys.stdout.write(u"\033[7A")
+            # sys.stdout.write(u"\033[7A")
             sys.stdout.flush()
             print(d) 
             time.sleep(0.09) # slow part is door opening
             str = "Entering " + placeName
-            sys.stdout.write(u"\u001b[32;1m")
+            sys.stdout.write(u"\u001b[32")
         for elem in str:
             time.sleep(0.04)
             sys.stdout.write(elem)
