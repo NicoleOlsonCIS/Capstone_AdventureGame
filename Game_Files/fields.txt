@@ -39,8 +39,8 @@ If you got caught in it, you wouldn’t be able to see your own hand in front of
 ***
 The grass ripples under a sudden light gust of wind. You glance down at the soil under your feet.###No night
 ***
-You lean down and dig roughly with your fingers, unearthing a dirty but unbroken porcelain doll.###No night
+You lean down and dig roughly with your fingers, wondering if you'll unearth something.###No night
 ***
-doll
+porcelain doll
 ***
 Its sightless blue eyes gaze sadly at nothing in particular, and its red lips are fixed in a bland, accepting smile. The golden curls and white ruffled dress are matted with mud. It’s lost its shoes.###No night

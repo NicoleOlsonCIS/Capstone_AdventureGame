@@ -28,6 +28,24 @@ def loadThingDependencies(filename, thing_obj):
             thing_obj.hasOtherItems.append(objNames[1])
             return  
 
+# Some things in the game have alternate names.
+# e.g. "scrap of fabric"/"fabric scrap", or "ticket counter"/"counter"
+# This function loads those alt names from a file.
+def loadAltNames(filename, thing_obj):
+    fpath = "./Game_Files/" + filename
+    with open(fpath) as f:
+        read_data = f.read()
+        data_chunks = read_data.split("***\n")
+
+    for chunk in data_chunks:
+        chunk = chunk.rstrip("\n")
+        objNames = chunk.split(":")
+        synonyms = objNames[1].split(",") 
+        if objNames[0].lower() == thing_obj.name.lower():
+            for syn in synonyms:
+                thing_obj.altNames.append(syn)
+            return
+
 # reads in place information from room file
 def loadPlaceData(place_obj, filename):
 
@@ -124,6 +142,8 @@ def loadPlaceData(place_obj, filename):
 
                 # load thing dependencies
                 loadThingDependencies("objdependencies.txt", newthing)
+		# load alternate names
+                loadAltNames("objalternatenames.txt", newthing)
 
                 count += 1
 
@@ -193,7 +213,9 @@ def loadPlaceData(place_obj, filename):
              
                 # load thing dependencies
                 loadThingDependencies("objdependencies.txt", newthing)
-
+                # load alternate thing names
+                loadAltNames("objalternatenames.txt", newthing) 
+                
 
 def buildGame():
 
