@@ -98,7 +98,12 @@ class Output(object):
 
         # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
         if sys.stdin.isatty():
-            print(u'\u001b[38;5;$217m' + look_description + '\033[0m')
+            sys.stdout.write(u'\u001b[38;5;$31m')
+            for elem in look_description:
+                time.sleep(0.07)
+                sys.stdout.write(elem)
+                sys.stdout.flush()
+            sys.stdout.write('\033[0m')
         else:
             print(look_description)
 
@@ -106,12 +111,16 @@ class Output(object):
     @classmethod
     def print_take(self, obj_name):
 
-        msg = "You take the "
+        msg = "You take the " + obj_name
 
         # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
         if sys.stdin.isatty():
-            sys.stdout.write(u'\u001b[38;5;$12m' + msg)
-            sys.stdout.write(u'\u001b[38;5;$11m' + obj_name + "\n" +'\033[0m')
+            sys.stdout.write(u'\u001b[38;5;$12m')
+            for elem in msg:
+                time.sleep(0.07)
+                sys.stdout.write(elem)
+                sys.stdout.flush()
+            sys.stdout.write('\033[0m')
             #print("\n")
         else:
             print(msg)
@@ -120,12 +129,17 @@ class Output(object):
     @classmethod
     def print_drop(self, obj_name):
 
-        msg = "You drop the "
+        msg = "You drop the " + obj_name
 
         # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
         if sys.stdin.isatty():
-            sys.stdout.write(u'\u001b[38;5;$11m' + msg)
-            sys.stdout.write(u'\u001b[38;5;$12m' + obj_name + "\n" +'\033[0m')
+            sys.stdout.write(u'\u001b[38;5;$11m')
+            for elem in msg:
+                time.sleep(0.07)
+                sys.stdout.write(elem)
+                sys.stdout.flush()
+            sys.stdout.write('\033[0m')
+            # sys.stdout.write(u'\u001b[38;5;$12m' + obj_name + "\n" +'\033[0m')
             #print("\n")
         else:
             print(msg)
