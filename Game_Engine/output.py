@@ -255,7 +255,7 @@ class Output(object):
     def openDoor(self,_openDoor, placeName):
         for d in _openDoor:
             sys.stdout.write(u"\u001b[1000D")
-            # sys.stdout.write(u"\033[7A")
+            sys.stdout.write(u"\033[7A")
             sys.stdout.flush()
             print(d) 
             time.sleep(0.09) # slow part is door opening
