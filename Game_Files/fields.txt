@@ -13,11 +13,9 @@ It's too dark to see here. Best get back to the House.
 sky
 clouds
 storm
-house
-manor
+manor house
 hill
 mist
-fog
 grass
 flash of color
 ***
@@ -30,10 +28,6 @@ Cool droplets of rain hit your face as you survey the sky. You see dense white m
 An isolated country manor of ivy-choked gray stone. It’s the only building you see around here.###No night
 ***
 An isolated country manor of ivy-choked gray stone. It’s the only building you see around here.###No night
-***
-An isolated country manor of ivy-choked gray stone. It’s the only building you see around here.###No night
-***
-If you got caught in it, you wouldn’t be able to see your own hand in front of your face.###No night
 ***
 If you got caught in it, you wouldn’t be able to see your own hand in front of your face.###No night
 ***

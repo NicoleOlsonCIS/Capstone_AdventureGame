@@ -10,19 +10,13 @@ You stand in an elegant, albeit gloomy, foyer. Heavy velvet curtains cover the w
 ***
 You stand in an elegant, albeit gloomy, foyer. Heavy velvet curtains cover the windows, and the chandelier hanging from the ceiling provides only a weak glow. A staircase leads up. To the north is an unlit hallway. To the west is a wooden door.
 ***
-window
-windows
-curtains
-drapes
-chandelier
+foyer windows
+foyer curtains
+foyer chandelier
 ***
-The thick black drapes extend from floor to ceiling, giving the room an oddly muffled, muted quality.###No night
+The black drapes extend from floor to ceiling, giving the room an oddly muffled, muted quality.###No night
 ***
-The thick black drapes extend from floor to ceiling, giving the room an oddly muffled, muted quality.###No night
-***
-The thick black drapes extend from floor to ceiling, giving the room an oddly muffled, muted quality.###No night
-***
-The thick black drapes extend from floor to ceiling, giving the room an oddly muffled, muted quality.###No night
+The black drapes extend from floor to ceiling, giving the room an oddly muffled, muted quality.###No night
 ***
 An ornate wrought-iron chandelier. Its dim light is swallowed up by the oppressive opulence of the room.###No night
 ***

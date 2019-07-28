@@ -10,7 +10,7 @@ You stand in a dark bedroom. You can make out the dim shapes of a bed, a wardrob
 ***
 It's getting too dark to see much, and you don't want a scolding for being out of bed. Best head back to your room.
 ***
-bed
+neatly made bed
 wooden wardrobe
 writing desk
 wooden trunk
@@ -29,4 +29,4 @@ sheaf of papers
 They look as good as new. These must belong to someone who doesn’t go outside much.###No night
 ***
 You look through the papers. One in particular catches your eye:
-It's a charcoal portrait of an old man. You know instantly that it’s a good likeness of him - better than a good likeness. It’s like looking at the man himself. The lines trace a suggestion of mournful eyes and a weary smile. You feel - suddenly, intensely - that this man is alive, wherever he is. Whoever he is. 
+It's a charcoal portrait of an old man. You know instantly that it’s a good likeness of him - better than a good likeness. It’s like looking at the man himself. The lines trace a suggestion of mournful eyes and a weary smile. You feel - suddenly, intensely - that this man is alive, wherever he is. Whoever he is.###No night 

@@ -13,3 +13,7 @@ set of drawers:flashlight
 wooden wardrobe:set of dresses
 ***
 wooden trunk:sheaf of papers
+***
+countertops:small knife
+***
+countertops:matchbook
