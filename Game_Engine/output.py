@@ -324,9 +324,6 @@ class Output(object):
                     sys.stdout.flush()
                 time.sleep(1) # pause before printing key
                 Output.printKey(keyline1, keyline2, keyline3)
-                time.sleep(2)
-                print("\n\n\n")
-        
             else:
                 print("\n\n\n")
         else:
