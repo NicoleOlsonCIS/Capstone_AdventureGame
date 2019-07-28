@@ -326,10 +326,6 @@ class Game:
 		valid_looks = [item for item in user_place.things]
 		for item in self.user.things:
 			valid_looks.append(item)
-
-		# v12 you can look at characters if there are any present (characters are rare)
-		if user_place.character is not None:
-			valid_looks.append(user_place.character) # follow change of obj not names
 	
 		valid_searches = [item for item in user_place.things if item.is_searchable]
 		valid_reads = [item for item in user_place.things if item.is_readable]
@@ -474,25 +470,6 @@ class Game:
 			else:
 				obj_name = action.direct_obj
 			self.user.pickUpObject(obj_name)
-
-			#####DONE - addressed in v11.2
-			# v13 PROVISION: edit description of ticket counter if user picks up "fabric scrap"
-			# if obj_name == "fabric scrap":
-			#	# get all things in the room to get references to "ticket counter"
-			#	all_things = self.user.current_place.getAllThingsInPlace()
-			#	# get ticket counter
-			#	for t in all_things:
-			#		if t.name == "ticket counter":
-			#			# modified to not have fabric scrap on it
-			#			day = []
-			#			night = []
-			#			modified = "The ticket window is closed and locked. You see no sign of anyone who might be minding the counter. Where there once was the fabric is now just bare counter"
-			#			for i in range(0,4):
-			#				day[i] = modified
-			#				night[i] = modified
-			#			# pass edited day[] night[] descriptions to edit function
-			#			t.editDescription(day, night)
-			#		break
 
 			# time update of 1 hour 
 			self.updateTime(1)
@@ -682,14 +659,6 @@ class Place:
 		place_description = self.getDescriptionBasedOnTimeAndVisitCount(time)
 		# v9: call output function to orient user 
 		Output.orientUser(place_name, place_description)
-	
-	# v12 character add
-	def addCharacter(self, character):
-		self.character = character # for now only 1 character per room
-	
-	# v12 accomodating situation where character moves with the user (ex following Maude from Train to House)
-	def removeCharacter(self):
-		self.character = None
 
 
 # define the User class
@@ -795,7 +764,7 @@ class User:
 
 #define the "Thing" class
 class Thing: 
-	def __init__(self, name, day, night, starting_location, is_takeable):
+	def __init__(self, name, day, night, starting_location, is_takeable, is_character):
 		self.name = name
 		self.day = day     # size of 5
 		self.night = night # size of 5
@@ -806,6 +775,7 @@ class Thing:
 		self.is_searchable = False
 		self.is_readable = False
 		self.hasBeenSearched = False
+		self.isCharacter = is_character
 
 		# v11.2
 		self.isHereDescription = "You see a " + self.name + " here."
@@ -856,41 +826,4 @@ class Thing:
 		self.day = day
 		self.night = night
 
-
-#define the "Character" class
-class Character: 
-	# string, place obj of current location, talk interactions, look interactions (dictionaries)
-	def __init__(self, names, location, talk, look):
-		self.name = names
-		self.location = location
-		self.talk = talk #[]
-		self.look = look #[]
-		self.numTimesLooked = 0
-		self.numTimesTalked = 0
-
-	def updateLooked(self):
-		self.numTimesLooked += 1
-
-	def updateTalked(self):
-		self.numTimesTalked += 1
-		
-	# increases looks
-	def getLook(self):
-		if self.numTimesLooked > 2:
-			return self.look[2]
-		else:
-			d = self.look[self.numTimesLooked]
-			self.numTimesLooked += 1
-			return d
-	
-	# increases talks
-	def getTalk(self):
-		if self.numTimesTalked > 2:
-			return self.talk[2]
-		else:
-			t = self.talk[self.numTimesTalked]
-			self.numTimesTalked += 1
-			return t
-
-	
 
