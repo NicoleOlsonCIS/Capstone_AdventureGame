@@ -261,9 +261,9 @@ class Output(object):
             sys.stdout.flush()
             print(d) 
             time.sleep(0.09) # slow part is door opening
-            str = "EEntering " + placeName
-            # sys.stdout.write(u"\u001b[32")
-        # print("\n")
+            str = "Entering " + placeName
+        str = "Entering " + placeName
+        sys.stdout.flush()
         for elem in str:
             time.sleep(0.04)
             sys.stdout.write(elem)
