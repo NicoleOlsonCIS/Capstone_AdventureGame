@@ -20,6 +20,6 @@ Simple wooden benches, red paint cracked and peeling from lack of upkeep.###Crac
 ***
 The ticket window is closed and locked. You see no sign of anyone who might be minding the counter.###The ticket window is closed and locked.
 ***
-fabric scrap
+scrap of fabric
 ***
 A ragged piece of grubby white fabric, like the torn corner of a handkerchief. It bears the name “James” in blue embroidery.###A ragged piece of white fabric, embroidered with the name "James".

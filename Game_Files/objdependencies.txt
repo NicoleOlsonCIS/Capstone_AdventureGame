@@ -1,15 +1,15 @@
 bench:newspaper
 ***
-ticket counter:fabric scrap
+ticket counter:scrap of fabric
 ***
 grass:flash of color
 ***
-flash of color:doll
+flash of color:porcelain doll
 ***
 dresser:set of drawers
 ***
 set of drawers:flashlight
 ***
-wardrobe:set of dresses
+wooden wardrobe:set of dresses
 ***
-trunk:sheaf of papers
+wooden trunk:sheaf of papers

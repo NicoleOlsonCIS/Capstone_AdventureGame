@@ -11,7 +11,9 @@
 # v9 --> implement "doors" on places that have doors (changes in playgame.py as well)
 # v10 --> change 'up' and 'down' to 'u' and 'd' to match parser
 # v11 --> descriptions of Place now based on number of visits as well
-# v11.1 --> implement "search" and "read" 
+# v11.1 --> implement "search" and "read"
+# v11.2 --> toggle item description for when it is present/not present//viewable/not viewable 
+# v11.3 --> accommodate alternate thing names (e.g. "scrap of fabric"/"fabric scrap"/"scrap"/"fabric")
 # v12
 # v13
 # define the "Game" class
@@ -59,16 +61,17 @@ class Game:
 
 	# v3: prints the description of a feature or object 
 	# v11.2: also prints description of other objects dependent on this one 
+	# v11.3: allow alternate thing names
 	def showThing(self, itemname):
 
 		for t in self.user.things:
-			if t.name.lower() == itemname:
+			if t.name.lower() == itemname or itemname in t.altNames:
 				des = t.getDescription(self.time) # increases views on Thing
 				print(des) # change to output module
 				return
 		for t in self.user.current_place.things:
-			if t.name.lower() == itemname:
-				print(t)
+			if t.name.lower() == itemname or itemname in t.altNames:
+				#print(t)
 				des = t.getDescription(self.time) # increases views on Thing
 				print(des) # change to output module
 				# v11.2: if there are other objects viewable because of this one,
@@ -242,10 +245,12 @@ class Game:
 				self.handleSearch(action.direct_obj, action.indirect_obj, False)
 			elif action.verb == "read":
 				self.handleRead(action.direct_obj, action.indirect_obj, False)
+			elif action.verb == None and action.direct_obj != None:
+				Output.print_input_hint("Try being more specific about what you want to do with the {}.".format(action.direct_obj))
 			else:
 				# thing is present, but action.verb is not one of the thing's allowed verbs
 				if self.user.canAccessThing(action.direct_obj) and not self.user.canActOnThing(action.direct_obj, action.verb):
-					Output.print_error("You can\'t " + action.verb + " the " + action.direct_obj + " Try doing something else with it.")
+					Output.print_error("You can\'t " + action.verb + " the " + action.direct_obj + ". Try doing something else with it.")
 				else:
 					Output.print_error("You don\'t see the point of doing that right now.")
 
@@ -296,22 +301,31 @@ class Game:
 				valid_moves.append("d")
 
 		# new in v2 (build set of valid actions regarding objects)
-		# valid_takes = [item.name for item in user_place.things if item.isTakeable()] 
-		valid_takes = [item.name for item in user_place.things if item.is_takeable]
-		valid_drops = [item.name for item in self.user.things]
+		#valid_takes = [item.name for item in user_place.things if item.is_takeable]
+		#valid_drops = [item.name for item in self.user.things]
                 # new in v3
                 # can examine things that are in the current place or in inventory
-		valid_looks = [item.name for item in user_place.things]
-		for item in self.user.things:
-                	valid_looks.append(item.name) 
+		#valid_looks = [item.name for item in user_place.things]
+		#for item in self.user.things:
+                	#valid_looks.append(item.name) 
+		#valid_searches = [item.name for item in user_place.things if item.is_searchable]
+		#valid_reads = [item.name for item in user_place.things if item.is_readable]
+		#for item in self.user.things:
+			#if item.is_readable:
+				#valid_reads.append(item.name)
 
-		# v7
-		valid_searches = [item.name for item in user_place.things if item.is_searchable]
-		# v11.1	
-		valid_reads = [item.name for item in user_place.things if item.is_readable]
+		# v11.3: change from strings to objects 
+		valid_takes = [item for item in user_place.things if item.is_takeable]
+		valid_drops = [item for item in self.user.things]
+		valid_looks = [item for item in user_place.things]
+		for item in self.user.things:
+			valid_looks.append(item)
+	
+		valid_searches = [item for item in user_place.things if item.is_searchable]
+		valid_reads = [item for item in user_place.things if item.is_readable]
 		for item in self.user.things:
 			if item.is_readable:
-				valid_reads.append(item.name)
+				valid_reads.append(item)
 
 		# set the dictionary with keys as actions and values as valid corresponding things
 		newdict = {"move_user": valid_moves, "take": valid_takes, "drop": valid_drops, "look": valid_looks, "search": valid_searches, "read": valid_reads}
@@ -333,11 +347,12 @@ class Game:
 				return False
 			v = self.isValid.get("take")
 			for i in v:
-				if i.lower() == action.direct_obj:
+				#v11.3: check for alternate thing names
+				if i.name.lower() == action.direct_obj or action.direct_obj in i.altNames:
 					return True
 				if action.indirect_obj != None:
 					objName = action.direct_obj + " " + action.indirect_obj
-					if objName == i.lower():
+					if objName == i.name.lower() or objName in i.altNames:
 						return True
 			# new in v4: case where item is takeable but already in inventory
 			if self.user.userHasThing(action.direct_obj):
@@ -352,12 +367,13 @@ class Game:
 			if action.direct_obj == None:
 				return False
 			v = self.isValid.get("drop")
-			for i in v: 
-				if i.lower() == action.direct_obj:
+			for i in v:
+				#v11.3: check for alternate thing names 
+				if i.name.lower() == action.direct_obj or action.direct_obj in i.altNames:
 					return True
 				if action.indirect_obj != None:
 					objName = action.direct_obj + " " + action.indirect_obj
-					if objName == i.lower():
+					if objName == i.name.lower() or objName in i.altNames:
 						return True 
 			return False
 
@@ -367,11 +383,12 @@ class Game:
 			# check if specified object can be examined (is in current place or inventory)
 			for i in v:
 				if action.direct_obj != None:
-					if i.lower() == action.direct_obj:
+					#v11.3: check for alternate thing names
+					if i.name.lower() == action.direct_obj or action.direct_obj in i.altNames:
                                 		return True
 				if action.indirect_obj != None:
 					objName = action.direct_obj + " " + action.indirect_obj
-					if objName == i.lower():
+					if objName == i.name.lower() or objName in i.altNames:
 						return True
                         # if no object specified or current room specified, examine room
 			if action.direct_obj == None:
@@ -405,11 +422,12 @@ class Game:
 				return False
 			v = self.isValid.get("search")
 			for i in v:
-				if i.lower() == action.direct_obj:
+				#v11.3: check for alternate thing names
+				if i.name.lower() == action.direct_obj or action.direct_obj in i.altNames:
 					return True
 				if action.indirect_obj != None:
 					objName = action.direct_obj + " " + action.indirect_obj
-					if objName == i.lower():
+					if objName == i.name.lower() or objName in i.altNames:
 						return True
 
 		elif action.verb == "read":
@@ -417,11 +435,12 @@ class Game:
 				return False
 			v = self.isValid.get("read")
 			for i in v:
-				if i.lower() == action.direct_obj:
+				#v11.3: check for alternate thing names
+				if i.name.lower() == action.direct_obj or action.direct_obj in i.altNames:
 					return True
 				if action.indirect_obj != None:
 					objName = action.direct_obj + " " + action.indirect_obj
-					if objName == i.lower():
+					if objName == i.name.lower() or objName in i.altNames:
 						return True
 
 		else:
@@ -446,6 +465,7 @@ class Game:
 				obj_name = action.direct_obj
 			self.user.pickUpObject(obj_name)
 
+			#####DONE - addressed in v11.2
 			# v13 PROVISION: edit description of ticket counter if user picks up "fabric scrap"
 			# if obj_name == "fabric scrap":
 			#	# get all things in the room to get references to "ticket counter"
@@ -632,7 +652,8 @@ class Place:
 	# check if a thing is in a room
 	def roomHasThing(self, itemname):
 		for t in self.things:
-			if t.name.lower() == itemname: 
+			# v11.2: check for alternate thing names
+			if t.name.lower() == itemname or itemname in t.altNames: 
 				return True
 		return False	
 
@@ -677,7 +698,8 @@ class User:
 		# EDIT get actual thing obj reference 
 		room_things = self.current_place.things
 		for t in room_things:
-			if t.name == thing_name:
+			# v11.3: check for alternate thing names
+			if t.name == thing_name or thing_name in t.altNames:
 				thing = t
 				# v4: only add to inventory if not already in it
 				if self.userHasThing(thing.name) == False: 
@@ -691,7 +713,8 @@ class User:
 		# EDIT get actual thing obj reference, only remove if user has
 		if self.userHasThing(thing_name):
 			for t in self.things:
-				if t.name == thing_name:
+				# v11.3: check for alternate thing names
+				if t.name == thing_name or thing_name in t.altNames:
 					thing = t
 					# remove from user array
 					self.things.remove(thing)
@@ -702,8 +725,9 @@ class User:
 	# new in v2, for figuring out if user has an thing in possession
 	def userHasThing(self, itemname):
 		found = False
-		for t in self.things: 
-			if t.name.lower() == itemname: 
+		for t in self.things:
+			# v11.3: check for alternate thing names 
+			if t.name.lower() == itemname or itemname in t.altNames: 
 				found = True
 		return found
 
@@ -727,11 +751,12 @@ class User:
 			return False
 		else:
 			for t in self.things:
-				if t.name == itemname:
+				#v11.3: check for alternate thing names
+				if t.name == itemname or itemname in t.altNames:
 					if verb in t.permittedVerbs:
 						return True
 			for t in self.current_place.things:
-				if t.name == itemname:
+				if t.name == itemname or itemname in t.altNames:
 					if verb in t.permittedVerbs:
 						return True
 			return False 
@@ -763,11 +788,13 @@ class Thing:
 		self.hasBeenSearched = False
 
 		# v11.2
-		self.isHereDescription = "There is a " + self.name + " here."
+		self.isHereDescription = "You see a " + self.name + " here."
  
 		# v11.2: for things that have other things on/in them
 		self.hasOtherItems = []
- 
+		# v11.3: alternate names for items
+		self.altNames = [] 
+
 		# keep track of allowed verbs for each thing
 		self.permittedVerbs = [] 
 

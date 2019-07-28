@@ -1,0 +1,21 @@
+newspaper:greenridge weekly gazette,weekly gazette,gazette,weekly,greenridge weekly,greenridge gazette,weekly newspaper,gazette newspaper
+***
+ticket counter:counter
+***
+flash of color:flash,color,flash color
+***
+scrap of fabric:scrap,fabric,scrap fabric,fabric scrap
+***
+porcelain doll:doll
+***
+set of drawers:drawers,dresser drawers,drawer,dresser drawer
+***
+set of dresses:dresses,dress
+***
+wooden trunk:trunk
+***
+wooden wardrobe:wardrobe
+***
+writing desk:desk
+***
+sheaf of papers:sheaf,papers,drawings,sketches,charcoal drawings,charcoal sketches,sheaf papers,paper,drawing,sketch,charcoal drawing,charcoal sketch
