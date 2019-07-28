@@ -368,11 +368,11 @@ def buildGame():
     place1.addCharacter(maude)
 
     # field version of Maude
-    l1 = "Maude is here with you"
+    l1 = "maude is here with you"
     t1 = "You cannot yet talk to this character"
     look = [l1, l1, l1]
     talk = [t1, t1, t1]
-    maude = g.Character(["Maude", "woman"], place3, look, talk)
+    maude = g.Character(["maude", "woman"], place3, look, talk)
     place3.addCharacter(maude)
 
     # associate user with game 
