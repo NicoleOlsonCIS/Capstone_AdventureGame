@@ -261,8 +261,8 @@ class Output(object):
             sys.stdout.flush()
             print(d) 
             time.sleep(0.09) # slow part is door opening
-            str = "Entering " + placeName
-            sys.stdout.write(u"\u001b[32")
+            str = "EEntering " + placeName
+            # sys.stdout.write(u"\u001b[32")
         # print("\n")
         for elem in str:
             time.sleep(0.04)
@@ -296,7 +296,7 @@ class Output(object):
             time.sleep(1)
             Output.printFlashingDoor(od0, "red", 2, 0.4)
             str = "That door is locked."
-            sys.stdout.write("\t")
+            # sys.stdout.write("\t")
             for elem in str:
                 time.sleep(0.04)
                 sys.stdout.write(elem)
@@ -312,7 +312,7 @@ class Output(object):
                 print("\n")
                 strHint = "Hint:"
                 strHint2 = " You need a key\n"
-                sys.stdout.write("\t")
+                # sys.stdout.write("\t")
                 for elem in strHint:
                     time.sleep(0.04)
                     sys.stdout.write(elem)
