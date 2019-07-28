@@ -6,11 +6,29 @@ flash of color:flash,color,flash color
 ***
 scrap of fabric:scrap,fabric,scrap fabric,fabric scrap
 ***
+manor house:house,manor,building
+***
+mist:fog
+***
 porcelain doll:doll
+***
+foyer windows:windows,window
+***
+foyer curtains:curtains,curtain,drapes,drape,velvet curtains,velvet curtain,velvet drapes,velvet drape,black drapes,black drape,black curtains,black curtain,heavy velvet
+***
+foyer chandelier:chandelier,wrought-iron chandelier,iron chandelier,ornate chandelier,ornate wrought-iron,ornate iron
 ***
 set of drawers:drawers,dresser drawers,drawer,dresser drawer
 ***
+white porcelain sink:sink,porcelain sink,white sink
+***
+white porcelain bathtub:tub,bathtub,porcelain tub,porcelain bathtub,white bathtub,white tub,clawfoot tub,clawfoot bathtub
+***
+white porcelain toilet:toilet,white toilet,porcelain toilet
+***
 set of dresses:dresses,dress
+***
+neatly made bed:bed
 ***
 wooden trunk:trunk
 ***
@@ -19,3 +37,13 @@ wooden wardrobe:wardrobe
 writing desk:desk
 ***
 sheaf of papers:sheaf,papers,drawings,sketches,charcoal drawings,charcoal sketches,sheaf papers,paper,drawing,sketch,charcoal drawing,charcoal sketch
+***
+countertops:countertop,counters,counter,kitchen counter,kitchen counters
+***
+small knife:knife
+***
+matchbook:matches,match,book matches
+***
+intricate rug:rug
+***
+long mahogany table:mahogany table,long table,long mahogany,table,dining table,dinner table

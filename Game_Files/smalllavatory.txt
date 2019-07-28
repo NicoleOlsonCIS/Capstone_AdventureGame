@@ -1,8 +1,8 @@
-You find a windowless, white-tiled lavatory with a white sink, toilet, and tub. The sole exit is a wooden door to the west.
+You find a windowless, white-tiled lavatory with a white porcelain sink, toilet, and tub. The sole exit is a wooden door to the west.
+***
+You stand in a white-tiled lavatory with a white porcelain sink, toilet, and tub. The sole exit is a wooden door to the west.
 ***
 You stand in a white-tiled lavatory with a white sink, toilet, and tub. The sole exit is a wooden door to the west.
-***
-You stand in a white-tiled lavatory with a sink, toilet, and tub. The sole exit is a wooden door to the west.
 ***
 You stand in a white-tiled lavatory with a sink, toilet, and tub. The sole exit is a wooden door to the west.
 ***
@@ -10,9 +10,9 @@ You stand in a small lavatory. In the gloom of evening, you can still make out t
 ***
 It's starting to get too dark to see much. Best get back to your room.
 ***
-toilet
-tub
-sink
+white porcelain toilet
+white porcelain bathtub
+white porcelain sink
 mirror
 ***
 You’re fairly certain you know what this is for.###Its function seems straightforward.

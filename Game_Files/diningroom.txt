@@ -21,9 +21,9 @@ platters
 dishes
 utensils
 fireplace
-rug
+intricate rug
 tapestry
-table
+long mahogany table
 ***
 You see two sets of used dishes and utensils, along with several tureens, pitchers, and platters. It looks like it was a hearty meal. You feel your insides clench longingly.###You see two sets of used dishes and utensils, along with several tureens, pitchers, and platters. It looks like it was a hearty meal. You feel your insides clench longingly.
 ***

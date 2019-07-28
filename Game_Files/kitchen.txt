@@ -15,8 +15,6 @@ A spacious kitchen with flour-dusted countertops. There's an open doorway to the
 ***
 smell
 oven
-counter
-countertop
 countertops
 cook
 maid
@@ -25,15 +23,15 @@ The smell reminds you of warm bread, honey, and butter. Your stomach rumbles. Yo
 ***
 The smell reminds you of warm bread, honey, and butter. Your stomach rumbles. You barely remember the taste of butter. Is it as good as that distant memory tells you it is?###No night
 ***
-At one corner of the counter, you spy a short but sharp-looking knife and a matchbook. The cook seems to be working on an elaborate pastry dough, and doesn’t notice you.###No night 
-***
-The cook seems to be working on an elaborate pastry dough, and doesn’t notice you.###No night
-***
 The cook seems to be working on an elaborate pastry dough, and doesn’t notice you.###No night
 ***
 He’s hard at work and pays you no mind.###He’s hard at work and pays you no mind.
 ***
 She’s hard at work and pays you no mind.###She’s hard at work and pays you no mind.
 ***
-no objects
-
+small knife
+matchbook
+***
+A short but sharp-looking knife. It's only slightly unwieldy in your hand.###No night
+***
+A neat little book of matches.###No night 
