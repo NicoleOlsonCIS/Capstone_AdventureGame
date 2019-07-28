@@ -114,8 +114,10 @@ class Output(object):
             else:
                 line = line + " " + w
                 count -= 1
-                if count == 0:
-                    lines.append(line)
+
+            # If that was the last word, append this line
+            if count == 0:
+                lines.append(line)
 
         # now append the lines to one another with a "\n" between lines
         result = ""
