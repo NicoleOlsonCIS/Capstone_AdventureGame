@@ -2,7 +2,7 @@
 # Note: The Parser and Game_Engine folders
 #   must be subdirectories of the current directory,
 #   and playgame1.py must be in the current directory.
-import sys
+import sys, termios
 sys.path.insert(0, './Parser')
 sys.path.insert(0, './Game_Engine')
 import game_engine_v1 as g
@@ -367,6 +367,7 @@ def buildGame():
 def main():
 
     print("Welcome! Would you like to start a new game or load a saved game? new/load")
+    flushInput()
     new_or_save = input("> ")
 
     if "new" in new_or_save:  
@@ -386,6 +387,7 @@ def main():
             #sys.stdin.flush()
 
             # game continues until user enters quit at the prompt 
+            flushInput()
             received = input("> ")
             if "quit" in received:
                 break      
@@ -405,5 +407,10 @@ def main():
         print("You did not choose to start a new game or load a saved game. Exiting...") 
         return
 
+# Function to flush stdin before user is prompted for input
+# See https://stackoverflow.com/questions/2520893/how-to-flush-the-input-stream-in-python
+def flushInput():
+    termios.tcflush(sys.stdin, termios.TCIOFLUSH)
+    return
 
 main()
