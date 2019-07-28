@@ -66,25 +66,30 @@ class Game:
 
 		for t in self.user.things:
 			if t.name.lower() == itemname or itemname in t.altNames:
-				des = t.getDescription(self.time) # increases views on Thing
-				print(des) # change to output module
+				des = t.getDescription(self.time)
+				Output.print_look(des) 
 				return
 		for t in self.user.current_place.things:
 			if t.name.lower() == itemname or itemname in t.altNames:
-				#print(t)
-				des = t.getDescription(self.time) # increases views on Thing
-				print(des) # change to output module
+				des = t.getDescription(self.time) 
+				Output.print_look(des)
 				# v11.2: if there are other objects viewable because of this one,
 				# describe those other objects also.
 				for obj in t.hasOtherItems:
 					for thingObj in self.user.current_place.things:
 						if obj.lower() == thingObj.name.lower():
-							print(thingObj.isHereDescription)
+							Output.print_look(thingObj.isHereDescription)
 							return
-				return 
+				return
 
-        # v3: takes the thing the user wants to examine
-        # prints appropriate outputs
+		for c in self.user.current_place.character.names: 
+			if c == itemname:
+				description = self.user.current_place.character.getLook()
+				print(description)
+
+
+    # v3: takes the thing the user wants to examine
+    # prints appropriate outputs
 	# v7: handle two-word obj names
 	def handleLook(self, attemptedObj, indirObj, canLook):
 		if indirObj != None:
@@ -123,7 +128,7 @@ class Game:
 			if self.user.userHasThing(attemptedObj): 
 				Output.print_error("You can\'t take what\'s already in your inventory.")
 			else:
-				print("You take the {}.".format(attemptedObj))
+				Output.print_take(attemptedObj)
 		else:
 			if attemptedObj == None:
 				Output.print_input_hint("Try being more specific about what you want to take.")
@@ -140,7 +145,7 @@ class Game:
 			attemptedObj = attemptedObj + " " + indirObj
 
 		if canDrop:
-			print("You drop the {}.".format(attemptedObj)) 
+			Output.print_drop(attemptedObj) 
 		else:
 			if attemptedObj == None:
 				Output.print_input_hint("Try being more specific about what you want to drop.")
@@ -465,25 +470,6 @@ class Game:
 				obj_name = action.direct_obj
 			self.user.pickUpObject(obj_name)
 
-			#####DONE - addressed in v11.2
-			# v13 PROVISION: edit description of ticket counter if user picks up "fabric scrap"
-			# if obj_name == "fabric scrap":
-			#	# get all things in the room to get references to "ticket counter"
-			#	all_things = self.user.current_place.getAllThingsInPlace()
-			#	# get ticket counter
-			#	for t in all_things:
-			#		if t.name == "ticket counter":
-			#			# modified to not have fabric scrap on it
-			#			day = []
-			#			night = []
-			#			modified = "The ticket window is closed and locked. You see no sign of anyone who might be minding the counter. Where there once was the fabric is now just bare counter"
-			#			for i in range(0,4):
-			#				day[i] = modified
-			#				night[i] = modified
-			#			# pass edited day[] night[] descriptions to edit function
-			#			t.editDescription(day, night)
-			#		break
-
 			# time update of 1 hour 
 			self.updateTime(1)
 			return
@@ -597,6 +583,7 @@ class Place:
 	def __init__(self, game, name, day, night, adjacentPlaceNames, things = None, doors = None):
 		self.name = name
 		self.adjacent_place_names = adjacentPlaceNames
+		self.character = None # default to none
 
 		# new in v9: a dictionary of doors tracking: whether there is a door, and whether it is locked or unlocked
 		# dictionary: key is direction, value is either 'locked', 'unlocked', or None
@@ -671,6 +658,7 @@ class Place:
 		place_description = self.getDescriptionBasedOnTimeAndVisitCount(time)
 		# v9: call output function to orient user 
 		Output.orientUser(place_name, place_description)
+
 
 # define the User class
 class User:
@@ -799,7 +787,7 @@ class Thing:
 		self.permittedVerbs = [] 
 
 		self.numTimesRead = 0
-		self.numTimesExamined = 0
+		self.numTimesExamined = -1 # start at -1 to account for "+1" at beginning of getDescription/array indexing
 
 	def getDescription(self, time):
 		self.numTimesExamined += 1
@@ -835,3 +823,5 @@ class Thing:
 	def editDescription(self, day, night):
 		self.day = day
 		self.night = night
+
+
