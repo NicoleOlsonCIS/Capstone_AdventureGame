@@ -2,6 +2,7 @@ import os
 import sys
 import re
 import time
+import random
 
 ##
 ##
@@ -71,7 +72,7 @@ class Output(object):
         else:
             print(error_message)
 
-    # print a helpful hint in purple, result to defaul afterwards
+    # print a helpful hint in yellow, result to defaul afterwards
     @classmethod
     def print_input_hint(self, hint_message):
         length = len(hint_message)
@@ -85,6 +86,49 @@ class Output(object):
             print(u'\u001b[38;5;$220m' + hint_message + '\033[0m')
         else:
             print(hint_message)
+
+    # print "look"
+    @classmethod
+    def print_look(self, look_description):
+        length = len(look_description)
+
+        # if message is long, break up into lines of ~60 characters 
+        if length > 60:
+            hint_message = Output.break_up_long_message(look_description)
+
+        # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
+        if sys.stdin.isatty():
+            print(u'\u001b[38;5;$217m' + look_description + '\033[0m')
+        else:
+            print(look_description)
+
+    # print "take"
+    @classmethod
+    def print_take(self, obj_name):
+
+        msg = "You take the "
+
+        # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
+        if sys.stdin.isatty():
+            sys.stdout.write(u'\u001b[38;5;$12m' + msg)
+            sys.stdout.write(u'\u001b[38;5;$11m' + obj_name + "\n" +'\033[0m')
+            #print("\n")
+        else:
+            print(msg)
+
+    # print "drop"
+    @classmethod
+    def print_drop(self, obj_name):
+
+        msg = "You drop the "
+
+        # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
+        if sys.stdin.isatty():
+            sys.stdout.write(u'\u001b[38;5;$11m' + msg)
+            sys.stdout.write(u'\u001b[38;5;$12m' + obj_name + "\n" +'\033[0m')
+            #print("\n")
+        else:
+            print(msg)
 
     @classmethod
     # helper functions, called if a line is > 60 characters
