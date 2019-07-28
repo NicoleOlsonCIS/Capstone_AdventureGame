@@ -234,7 +234,7 @@ class Output(object):
             Output.approachDoor(_approachDoor2)
             time.sleep(1)
             Output.printFlashingDoor(od0, "red", 2, 0.4)
-            str = "The door to the " + placeName + " is locked."
+            str = "That door is locked."
             sys.stdout.write("\t")
             for elem in str:
                 time.sleep(0.07)
