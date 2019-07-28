@@ -869,10 +869,10 @@ class Character:
 		self.numTimesTalked = 0
 
 	def updateLooked(self):
-		numTimesLooked += 1
+		self.numTimesLooked += 1
 
 	def updateTalked(self):
-		numTimesTalked += 1
+		self.numTimesTalked += 1
 		
 	# increases looks
 	def getLook(self):
