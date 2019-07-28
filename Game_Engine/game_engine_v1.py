@@ -764,7 +764,7 @@ class User:
 
 #define the "Thing" class
 class Thing: 
-	def __init__(self, name, day, night, starting_location, is_takeable, is_character):
+	def __init__(self, name, day, night, starting_location, is_takeable):
 		self.name = name
 		self.day = day     # size of 5
 		self.night = night # size of 5
@@ -775,7 +775,6 @@ class Thing:
 		self.is_searchable = False
 		self.is_readable = False
 		self.hasBeenSearched = False
-		self.isCharacter = is_character
 
 		# v11.2
 		self.isHereDescription = "You see a " + self.name + " here."
