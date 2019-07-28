@@ -379,6 +379,9 @@ def main():
         # start playing
         while True:
 
+            # flush standard in 
+            sys.stdout.flush()
+
             # game continues until user enters quit at the prompt 
             received = input("> ")
             if "quit" in received:
