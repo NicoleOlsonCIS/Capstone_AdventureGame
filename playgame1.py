@@ -364,7 +364,7 @@ def buildGame():
     look = [l1, l2, l2] # subsequent up to 3
     t1 = "You cannot yet talk to this character"
     talk = [t1, t1, t1] # talk not implemented in parser yet
-    maude = Character(["Maude", "woman"], place1, look, talk)
+    maude = g.Character(["Maude", "woman"], place1, look, talk)
     place1.addCharacter(maude)
 
     # field version of Maude
@@ -372,7 +372,7 @@ def buildGame():
     t1 = "You cannot yet talk to this character"
     look = [l1, l1, l1]
     talk = [t1, t1, t1]
-    maude = Character(["Maude", "woman"], place3, look, talk)
+    maude = g.Character(["Maude", "woman"], place3, look, talk)
     place3.addCharacter(maude)
 
     # associate user with game 
