@@ -118,6 +118,8 @@ def loadPlaceData(place_obj, filename):
 
                 # find out how many descriptions have been entered
                 numDescriptions = len(fd_arr)
+                # debug
+                c = numDescriptions
 
                 # debug 
                 print("feature: " + feature)
@@ -128,6 +130,13 @@ def loadPlaceData(place_obj, filename):
                 while numDescriptions < 5:
                     fd_arr.append(fd_arr[numDescriptions - 1])
                     numDescriptions = len(fd_arr)
+
+                #debug 
+                print("Printing descriptions array when there are more than 1 descriptoin")
+                if c > 1:
+                    for f in fd_arr:
+                        print(f)
+
 
                 # check if there are any 'day/night' aspects to descriptions (otherwise all day)
                 day = []
