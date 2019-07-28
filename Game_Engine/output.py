@@ -100,7 +100,7 @@ class Output(object):
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$31m')
             for elem in look_description:
-                time.sleep(0.07)
+                time.sleep(0.04)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write('\033[0m')
