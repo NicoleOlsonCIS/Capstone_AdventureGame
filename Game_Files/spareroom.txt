@@ -1,4 +1,4 @@
-A small, bare chamber, furnished only with a bed and dresser. On the wall opposite is a window no bigger than your head.
+A small, bare chamber, furnished only with a bed and dresser. On the wall opposite is a tiny window no bigger than your head.
 ***
 A small, bare chamber, furnished only with a bed and dresser. On the wall opposite is a window no bigger than your head.
 ***
@@ -12,7 +12,7 @@ You find yourself in a small, bare chamber, furnished only with a bed and dresse
 ***
 bed
 dresser
-window
+tiny square window
 set of drawers
 ***
 The sheets smell freshly laundered.###The sheets smell freshly laundered.

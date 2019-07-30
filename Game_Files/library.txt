@@ -1,10 +1,10 @@
 The sight that greets you is everything you’ve dreamed of. Books...more books than you’ve seen in your life. More than you knew existed. Books from floor to ceiling, smothering the shelves, heaped on armchairs, strewn across tables that smell like wood and smoke. The luxury of it almost makes you dizzy.
 There is an archway to the west.
 ***
-The sight that greets you is everything you’ve dreamed of. Books...more books than you’ve seen in your life. More than you knew existed. Books from floor to ceiling, smothering the shelves, heaped on armchairs, strewn across tables.
+The sight that greets you is everything you’ve dreamed of...more books than you’ve seen in your life. Books from floor to ceiling, smothering the shelves, heaped on armchairs, strewn across tables.
 There is an archway to the west.
 ***
-The sight that greets you is everything you’ve dreamed of. Books...more books than you’ve seen in your life. More than you knew existed. Books from floor to ceiling, smothering the shelves, heaped on armchairs, strewn across tables.
+The sight that greets you is everything you’ve dreamed of...books from floor to ceiling, smothering the shelves, heaped on armchairs, strewn across tables.
 There is an archway to the west.
 ***
 You stand in a dark library. There are books everywhere. Books from floor to ceiling, smothering the shelves, heaped on armchairs, strewn across tables.
@@ -15,18 +15,25 @@ There is an archway to the west.
 ***
 It's getting too dark to see much in here. Best head back to your room.
 ***
-tables
-armchairs
-shelves
-settees
+library tables
+library armchairs
+library bookshelves
+library books
 ***
-There are books scattered everywhere. The messiness of it is a welcome contrast to the rest of the House.###No night
+Heavy, imposing wood furniture - not to your taste, but it's very helpfully covered in books. The messiness is a welcome contrast to the rest of the House.###No night
 ***
-There are books scattered everywhere. The messiness of it is a welcome contrast to the rest of the House.###No night
+Wide, cushy old armchairs, perfect for reading in. There are books scattered everywhere.###No night
 ***
-There are books scattered everywhere. The messiness of it is a welcome contrast to the rest of the House.###No night
+The shelves tower over you, their tempting contents mostly out of your reach. There are some low shelves near the floor, luckily.###No night
 ***
-There are books scattered everywhere. The messiness of it is a welcome contrast to the rest of the House.###No night
+They're scattered everywhere.###No night
 ***
-no objects
- 
+faded blue book
+hefty black book
+dull reddish book
+***
+A well-worn volume bound in navy blue cloth. You can tell there were once golden letters stamped on the spine, but they've faded away.###No night
+***
+A sensible-looking black book. It has a nice weight to it.###No night
+***
+A dull reddish book as big as a dictionary.###No night
