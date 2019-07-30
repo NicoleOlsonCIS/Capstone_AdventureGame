@@ -28,7 +28,7 @@ white porcelain toilet:toilet,white toilet,porcelain toilet
 ***
 set of dresses:dresses,dress
 ***
-neatly made bed:bed
+neatly made bed:bed,neat bed,made bed,neatly made,neatly bed
 ***
 wooden trunk:trunk
 ***
@@ -39,6 +39,12 @@ writing desk:desk
 sheaf of papers:sheaf,papers,drawings,sketches,charcoal drawings,charcoal sketches,sheaf papers,paper,drawing,sketch,charcoal drawing,charcoal sketch
 ***
 countertops:countertop,counters,counter,kitchen counter,kitchen counters
+***
+cloakroom coats:coats,coat
+***
+military coat:jacket,military jacket,officer's coat,officer's jacket,officer coat,officer jacket,coat pocket,coat pockets,pocket,pockets,jacket pocket, jacket pockets,flap pocket,flap pockets
+***
+cloakroom pegs:pegs,peg
 ***
 small knife:knife
 ***

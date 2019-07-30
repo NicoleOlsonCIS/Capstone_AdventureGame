@@ -17,3 +17,7 @@ wooden trunk:sheaf of papers
 countertops:small knife
 ***
 countertops:matchbook
+***
+cloakroom coats:military coat
+***
+military coat:letter

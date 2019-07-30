@@ -11,9 +11,10 @@
 # v9 --> implement "doors" on places that have doors (changes in playgame.py as well)
 # v10 --> change 'up' and 'down' to 'u' and 'd' to match parser
 # v11 --> descriptions of Place now based on number of visits as well
-# v11.1 --> implement "search" and "read"
+# v11.1 --> error handling for "search" and "read"
 # v11.2 --> toggle item description for when it is present/not present//viewable/not viewable 
 # v11.3 --> accommodate alternate thing names (e.g. "scrap of fabric"/"fabric scrap"/"scrap"/"fabric")
+# v11.4 --> finish implementing search 
 # v12
 # v13
 # define the "Game" class
@@ -62,6 +63,8 @@ class Game:
 	# v3: prints the description of a feature or object 
 	# v11.2: also prints description of other objects dependent on this one 
 	# v11.3: allow alternate thing names
+	# v11.4: if a thing must be searched before revealing another thing inside,
+	#  don't reveal thing just upon examining	
 	def showThing(self, itemname):
 
 		for t in self.user.things:
@@ -75,11 +78,12 @@ class Game:
 				Output.print_look(des)
 				# v11.2: if there are other objects viewable because of this one,
 				# describe those other objects also.
-				for obj in t.hasOtherItems:
-					for thingObj in self.user.current_place.things:
-						if obj.lower() == thingObj.name.lower():
-							Output.print_look(thingObj.isHereDescription)
-							return
+				# v11.4: separate handling for searchable things.
+				if not t.is_searchable:
+					for obj in t.hasOtherItems:
+						for thingObj in self.user.current_place.things:
+							if obj.lower() == thingObj.name.lower():
+								Output.print_look(thingObj.isHereDescription)
 				return
 
 		for c in self.user.current_place.character.names: 
@@ -171,6 +175,16 @@ class Game:
 			attemptedObj = attemptedObj + " " + indirObj
 		if canSearch:
 			print("You search the {}.".format(attemptedObj))
+			# 11.4: reveal hidden item upon searching the enclosing item
+			for t in self.user.current_place.things:
+				if t.name.lower() == attemptedObj or attemptedObj in t.altNames:
+					t.hasBeenSearched = True
+					Output.print_look(t.searchDescrip)
+					for obj in t.hasOtherItems:
+						for thingObj in self.user.current_place.things:
+							if obj.lower() == thingObj.name.lower():
+								Output.print_look(thingObj.isHereDescription)
+								return
 		else:
 			if attemptedObj == None:
 				Output.print_input_hint("Try being more specific about what you want to search.")
@@ -782,6 +796,10 @@ class Thing:
 		self.hasOtherItems = []
 		# v11.3: alternate names for items
 		self.altNames = [] 
+
+		#v11.4: search/read descriptions for searchable/readable items
+		self.searchDescrip = "" 
+		self.readDescrips = []
 
 		# keep track of allowed verbs for each thing
 		self.permittedVerbs = [] 
