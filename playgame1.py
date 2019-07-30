@@ -14,6 +14,21 @@ from termios import tcflush, TCIFLUSH
 
 # playgame1.py works with v11.2 of game engine
 
+# Loads information about searchable things.
+def loadSearchables(filename, thing_obj):
+    fpath = "./Game_Files/" + filename
+    with open(fpath) as f:
+        read_data = f.read()
+        data_chunks = read_data.split("***\n")
+
+    for chunk in data_chunks:
+        chunk = chunk.rstrip("\n")
+        parts = chunk.split(":")
+        if parts[0].lower() == thing_obj.name.lower():
+            thing_obj.searchDescrip = parts[1]
+            thing_obj.is_searchable = True
+            return
+
 # Some things in the game are related to each other,
 # e.g. one thing is viewable only after another thing has been viewed.
 # This function loads those relationships from a file. 
@@ -146,6 +161,8 @@ def loadPlaceData(place_obj, filename):
                 loadThingDependencies("objdependencies.txt", newthing)
 		# load alternate names
                 loadAltNames("objalternatenames.txt", newthing)
+                # load info about searchable features
+                loadSearchables("searchables.txt", newthing) 
 
                 count += 1
 
