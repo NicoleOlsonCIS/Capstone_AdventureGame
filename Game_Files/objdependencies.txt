@@ -21,3 +21,9 @@ countertops:matchbook
 cloakroom coats:military coat
 ***
 military coat:letter
+***
+library tables:faded blue book
+***
+library armchairs:hefty black book
+***
+library bookshelves:dull reddish book

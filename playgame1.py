@@ -12,9 +12,13 @@ from output import *
 import termios
 from termios import tcflush, TCIFLUSH
 
-# playgame1.py works with v11.2 of game engine
+# playgame1.py works with v11.4 of game engine
 
-# Loads information about searchable things.
+# Loads information about readable objects.
+def loadReadables(filename, thing_obj):
+    print(filename)
+
+# Loads information about searchable features.
 def loadSearchables(filename, thing_obj):
     fpath = "./Game_Files/" + filename
     with open(fpath) as f:
@@ -231,10 +235,12 @@ def loadPlaceData(place_obj, filename):
                 place_obj.addThing(newthing)
              
                 # load thing dependencies
-                loadThingDependencies("objdependencies.txt", newthing)
+                #loadThingDependencies("objdependencies.txt", newthing)
                 # load alternate thing names
                 loadAltNames("objalternatenames.txt", newthing) 
                 
+                count += 1
+
 
 def buildGame():
 

@@ -78,7 +78,7 @@ class Game:
 				Output.print_look(des)
 				# v11.2: if there are other objects viewable because of this one,
 				# describe those other objects also.
-				# v11.4: separate handling for searchable things.
+				# v11.4: separate handling for searchable things in handleSearch function.
 				if not t.is_searchable:
 					for obj in t.hasOtherItems:
 						for thingObj in self.user.current_place.things:
@@ -174,7 +174,6 @@ class Game:
 		if indirObj != None:
 			attemptedObj = attemptedObj + " " + indirObj
 		if canSearch:
-			print("You search the {}.".format(attemptedObj))
 			# 11.4: reveal hidden item upon searching the enclosing item
 			for t in self.user.current_place.things:
 				if t.name.lower() == attemptedObj or attemptedObj in t.altNames:
