@@ -15,8 +15,33 @@ from termios import tcflush, TCIFLUSH
 # playgame1.py works with v11.4 of game engine
 
 # Loads information about readable objects.
-def loadReadables(filename, thing_obj):
-    print(filename)
+def loadReadables(filename1, filename2, thing_obj):
+    if thing_obj.name == "newspaper":
+        fpath = "./Game_Files/" + filename2
+        with open(fpath) as f:
+            read_data = f.read()
+            data_chunks = read_data.split("***\n")
+
+        for chunk in data_chunks: 
+            chunk = chunk.rstrip("\n")
+            thing_obj.readDescrips.append(chunk)
+
+        thing_obj.is_readable = True
+        return
+
+    else: 
+        fpath = "./Game_Files/" + filename1
+        with open(fpath) as f: 
+            read_data = f.read()
+            data_chunks = read_data.split("***\n")
+
+        for chunk in data_chunks:
+            chunk = chunk.rstrip("\n")
+            parts = chunk.split("###")
+            if parts[0] == thing_obj.name:
+                thing_obj.readDescrips.append(parts[1])
+                thing_obj.is_readable = True
+                return
 
 # Loads information about searchable features.
 def loadSearchables(filename, thing_obj):
@@ -234,10 +259,10 @@ def loadPlaceData(place_obj, filename):
                 newthing = g.Thing(obj, day, night, place_obj, True)
                 place_obj.addThing(newthing)
              
-                # load thing dependencies
-                #loadThingDependencies("objdependencies.txt", newthing)
                 # load alternate thing names
                 loadAltNames("objalternatenames.txt", newthing) 
+                # load readable things 
+                loadReadables("readables.txt", "newspaper.txt", newthing) 
                 
                 count += 1
 
