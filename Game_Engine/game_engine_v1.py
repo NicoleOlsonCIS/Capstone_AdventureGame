@@ -14,7 +14,7 @@
 # v11.1 --> error handling for "search" and "read"
 # v11.2 --> toggle item description for when it is present/not present//viewable/not viewable 
 # v11.3 --> accommodate alternate thing names (e.g. "scrap of fabric"/"fabric scrap"/"scrap"/"fabric")
-# v11.4 --> finish implementing search 
+# v11.4 --> finish implementing search and read 
 # v12
 # v13
 # define the "Game" class
@@ -195,6 +195,28 @@ class Game:
 			attemptedObj = attemptedObj + " " + indirObj
 		if canRead:
 			print("You read the {}.".format(attemptedObj))
+			# check for readable thing in current location
+			for t in self.user.current_place.things:
+				if t.name.lower() == attemptedObj or attemptedObj in t.altNames:
+					# cycle through descriptions until exhausted, then start over at first description
+					if len(t.readDescrips) > t.numTimesRead:
+						Output.print_look(t.readDescrips[t.numTimesRead])
+					else:
+						t.numTimesRead -= len(t.readDescrips) 
+						Output.print_look(t.readDescrips[t.numTimesRead])
+					t.numTimesRead += 1
+					return
+			# check for readable thing in inventory
+			for ob in self.user.things:
+				if ob.name.lower() == attemptedObj or attemptedObj in ob.altNames:
+					# cycle through descriptions until exhausted, then start over at first description
+					if len(ob.readDescrips) > ob.numTimesRead:
+						Output.print_look(ob.readDescrips[ob.numTimesRead])
+					else:
+						ob.numTimesRead -= len(ob.readDescrips)
+						Output.print_look(ob.readDescrips[ob.numTimesRead])
+					ob.numTimesRead += 1
+					return 
 		else:
 			if attemptedObj == None:
 				Output.print_input_hint("Try being more specific about what you want to read.")
