@@ -14,7 +14,7 @@
 # v11.1 --> error handling for "search" and "read"
 # v11.2 --> toggle item description for when it is present/not present//viewable/not viewable 
 # v11.3 --> accommodate alternate thing names (e.g. "scrap of fabric"/"fabric scrap"/"scrap"/"fabric")
-# v11.4 --> finish implementing search and read 
+# v11.4 --> finish implementing search and read, add new day message 
 # v12
 # v13
 # define the "Game" class
@@ -194,7 +194,6 @@ class Game:
 		if indirObj != None:
 			attemptedObj = attemptedObj + " " + indirObj
 		if canRead:
-			print("You read the {}.".format(attemptedObj))
 			# check for readable thing in current location
 			for t in self.user.current_place.things:
 				if t.name.lower() == attemptedObj or attemptedObj in t.altNames:
@@ -220,6 +219,9 @@ class Game:
 		else:
 			if attemptedObj == None:
 				Output.print_input_hint("Try being more specific about what you want to read.")
+				return
+			if "book" in attemptedObj:
+				Output.print_input_hint("Try being more specific about which book you want to read.")
 				return
 			Output.print_error("That\'s not something you can read.")
 
@@ -531,6 +533,9 @@ class Game:
 			# move time to start of next day 
 			self.time = 6
 			self.day += 1
+			# v11.4: wakeup message
+			Output.print_look("Start of Day {}".format(self.day))
+			Output.print_look("You awake to morning light streaming softly into the room. The House is still and silent around you as you climb out of bed, walking gingerly on frigid floorboards.")
 			return
 
 		if action.verb == "show_help":
