@@ -144,8 +144,8 @@ class Output(object):
     def print_talk(self, characters_message):
         if sys.stdin.isatty():
             # break up things in quotes from things outside quotes
-            outside = ""
-            inside = ""
+            str_outside = ""
+            str_inside = ""
             count = 0
             inside = False
 
@@ -154,9 +154,9 @@ class Output(object):
                     count += 1
                     if count == 1: # then we are at the beginning of a quote, print the outside 
                         inside = True # set inside to true
-                        if len(outside) is not 0:
-                            print(ouside)
-                            outside = ""
+                        if len(str_outside) is not 0:
+                            print(str_outside)
+                            str_outside = ""
                             break
                     if count == 2:
                         # we are done with the inside
@@ -164,9 +164,9 @@ class Output(object):
                         # reset count
                         count = 0
                         # get the lenght of the string
-                        length = len(inside)
+                        length = len(str_inside)
                         if length > 25:
-                            lines = Output.getLines(inside)
+                            lines = Output.getLines(str_inside)
                             count = len(lines)
                             # print a speech bubble with multiple lines
                             # color of speech bubble:
@@ -179,15 +179,17 @@ class Output(object):
                                 # get number of characters in the line
                                 line_length = len(lines[lcount])
                                 if line_length == 25:
-                                    system.stdout.write(lines[lcount])
+                                    sys.stdout.write(lines[lcount])
                                     sys.stdout.write(u'\u001b[38;5;$11m')
                                     print(sb7)
                                     lcount += 1
                                 else: # in the event that the line needs spaces added up to len of 25
                                     while(len(lines[lcount]) < 25):
-                                        lines[lcount].append(" ") # add a space
+                                        l = lines[lcount] 
+                                        l = l + " "
+                                        line[lcount] = l
                                     # now that it is 25 long
-                                    system.stdout.write(lines[lcount])
+                                    sys.stdout.write(lines[lcount])
                                     sys.stdout.write(u'\u001b[38;5;$11m')
                                     print(sb7)
                                     lcount += 1
@@ -197,33 +199,31 @@ class Output(object):
                         else:
                             # print a speech bubble with a single line
                             if length < 25:
-                                while(len(inside) < 25):
-                                    inside.append(" ") # add a space
+                                while(len(str_inside) < 25):
+                                    str_inside = str_inside + " " # add a space
                             # print opening of speech bubble: 
                             sys.stdout.write(u'\u001b[38;5;$11m')
                             print(sb1 + "\n" + sb2)
                             sys.stdout.write(sb3) # no newline
                             sys.stdout.write(u'\u001b[38;5;$12m') # change to text color
-                            sys.stdout.write(inside)
+                            sys.stdout.write(str_inside)
                             sys.stdout.write(u'\u001b[38;5;$11m') # change back to bubble color
                             print(sb7 + "\n" + sb4 + "\n" + sb5 + "\n" + sb6)
                             # reset inside variable
                             inside = ""
                             break
                 if inside == True:
-                    inside.append(c)
+                    str_inside = str_inside + c
                     break
-                if inside = False:
-                    outside.append(c)
+                if inside == False:
+                    str_outside = str_outside + c
 
             # if the string ends with outside stuff then there will be left over things to print
-            if len(outside) is not 0:
-                print(ouside)
-                outside = ""
-                break
-
-    else:
-        print(characters_message)
+            if len(str_outside) is not 0:
+                print(str_outside)
+                str_outside = ""
+        else:
+            print(characters_message)
 
 
     # print "drop"
