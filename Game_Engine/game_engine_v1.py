@@ -80,7 +80,7 @@ class Game:
 							Output.print_look(thingObj.isHereDescription)
 							return
 		#v12 character interaction for looking at character
-		if self.user.current_place.hasCharacter():
+		if self.user.current_place.hasCharacter:
 			character = self.user.current_place.character
 			if character.name == itemname or itemname in character.altNames:
 				Output.print_look(character.getDescription(self.time))
@@ -330,7 +330,7 @@ class Game:
 				valid_reads.append(item)
 
 		# v12 add a character to the list of things to look at and talk with
-		if user_place.hasCharacter(): 
+		if user_place.hasCharacter: 
 			valid_looks.append(user_place.character) # character is a Thing obj
 			valid_talks = []
 			valid_talks.append(user_place.character) # you can also talk to characters
