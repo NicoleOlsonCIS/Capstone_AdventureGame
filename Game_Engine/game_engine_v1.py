@@ -454,6 +454,7 @@ class Game:
 
 		# v12 talking to things (characters)
 		elif action.verb == "talk_npc":
+			print("debug talk1")
 			v = self.isValid.get("talk_npc")
 			for i in v: 
 				if action.direct_obj != None:
@@ -465,6 +466,7 @@ class Game:
 						if objName == i.name.lower() or objName in i.altNames:
 							return True
 		else:
+			print("debug talk2")
 			return False	
 
 
