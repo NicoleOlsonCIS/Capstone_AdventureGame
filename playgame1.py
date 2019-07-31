@@ -176,7 +176,6 @@ def loadPlaceData(place_obj, filename):
         while count < numObjects: 
             objectDescriptions.append(data_chunks[idx + 1 + count])
             count += 1
-            start_of_character = idx + 1 + count
 
         count = 0
         for obj in objnames:
@@ -222,8 +221,8 @@ def loadPlaceData(place_obj, filename):
                 # loadAltNames("objalternatenames.txt", newthing) 
     
     # character loading section
-    if "no characters" not in data_chunks[7 + nextIdxIncrement]:
-        idx = 7 + nextIdxIncrement
+    if "no characters" not in data_chunks[8 + nextIdxIncrement]:
+        idx = 8 + nextIdxIncrement
         charnames = data_chunks[idx].split("\n")
 
         print("debug: printing character names")
