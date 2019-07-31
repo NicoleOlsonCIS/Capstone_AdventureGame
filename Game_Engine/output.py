@@ -141,28 +141,51 @@ class Output(object):
 
     # print conversations
     @classmethod
-    def print_talk(self, characters_message):
-        if sys.stdin.isatty():
+    def print_talk(self, characters_message, person_name):
+        #if sys.stdin.isatty():
+        if True:
             # break up things in quotes from things outside quotes
             str_outside = ""
             str_inside = ""
             count = 0
             inside = False
 
+            str = "You talk to " + person_name
+
+            print("\n")
+            sys.stdout.write(u'\u001b[38;5;$14m')
+            for elem in str:
+                time.sleep(0.04)
+                sys.stdout.write(elem)
+                sys.stdout.flush()
+            sys.stdout.write('\033[0m')
+            time.sleep(1)
+            print("\n")
+
+
             for c in characters_message:
-                if c == "/":
+                if c == "#":
                     count += 1
                     if count == 1: # then we are at the beginning of a quote, print the outside 
                         inside = True # set inside to true
                         if len(str_outside) is not 0:
-                            print(str_outside)
+                            if len(str_outside) > 60:
+                                str_outside = Output.break_up_long_message(str_outside)
+                            print("\n")
+                            sys.stdout.write(u'\u001b[38;5;$14m')
+                            for elem in str_outside:
+                                time.sleep(0.04)
+                                sys.stdout.write(elem)
+                                sys.stdout.flush()
+                            sys.stdout.write('\033[0m')
+                            time.sleep(1)
                             str_outside = ""
-                            break
+                            print("\n")
+                            continue
+                        continue
                     if count == 2:
                         # we are done with the inside
                         inside = False
-                        # reset count
-                        count = 0
                         # get the lenght of the string
                         length = len(str_inside)
                         if length > 25:
@@ -195,7 +218,10 @@ class Output(object):
                                     lcount += 1
                             # print the closing of the speech bubble
                             print(sb4 + "\n" + sb5 + "\n" + sb6)
-                            break
+                            str_inside = ""
+                            time.sleep(1)
+                            count = 0
+                            continue
                         else:
                             # print a speech bubble with a single line
                             if length < 25:
@@ -210,18 +236,31 @@ class Output(object):
                             sys.stdout.write(u'\u001b[38;5;$11m') # change back to bubble color
                             print(sb7 + "\n" + sb4 + "\n" + sb5 + "\n" + sb6)
                             # reset inside variable
-                            inside = ""
-                            break
+                            str_inside = ""
+                            time.sleep(1)
+                            count = 0
+                            continue
                 if inside == True:
                     str_inside = str_inside + c
-                    break
+                    continue
                 if inside == False:
                     str_outside = str_outside + c
 
             # if the string ends with outside stuff then there will be left over things to print
             if len(str_outside) is not 0:
-                print(str_outside)
+                print("\n")
+                if len(str_outside) > 60:
+                    str_outside = Output.break_up_long_message(str_outside)
+                sys.stdout.write(u'\u001b[38;5;$14m')
+                #sys.stdout.write(u'\e[3m')
+                for elem in str_outside:
+                    time.sleep(0.04)
+                    sys.stdout.write(elem)
+                    sys.stdout.flush()
+                sys.stdout.write('\033[0m')
                 str_outside = ""
+                time.sleep(1)
+                print("\n")
         else:
             print(characters_message)
 

@@ -214,7 +214,7 @@ class Game:
 		if canTalk:
 			character = self.user.current_place.character
 			if character.name.lower() == attemptedObj.lower():
-				Output.print_talk(character.getCharacterSpeak(self.time))
+				Output.print_talk(character.getCharacterSpeak(self.time), attemptedObj)
 				return
 		else:
 			print("You can not talk to " + attemptedObj)
