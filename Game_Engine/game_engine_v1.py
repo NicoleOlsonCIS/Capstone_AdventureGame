@@ -462,14 +462,9 @@ class Game:
 				if action.direct_obj != None:
 					print("thing has direct object")
 					# other names for a person, like "him, her, woman"
-					if i.name.lower() == action.direct_obj or action.direct_obj in i.altNames:
+					if i.name.lower() == action.direct_obj:
 						print("debug talkA")
 						return True
-					if action.indirect_obj != None: # not sure if necessary here
-						objName = action.direct_obj + " " + action.indirect_obj
-						if objName == i.name.lower() or objName in i.altNames:
-							print("debug talkB")
-							return True
 		else:
 			print("returning false from checkIsValid")
 			return False	

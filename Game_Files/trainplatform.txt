@@ -24,16 +24,9 @@ newspaper
 Wilted pages from the Greenridge Weekly Gazette, warped and clammy from the cold and wet.###Wilted pages from the Greenridge Weekly Gazette.
 ***
 Maude
-Maude2
 ***
 She looks frail and gray, but her bony frame seems to possess a kind of wiry strength. She stands ramrod straight, and her heavy black dress - buttoned long at the wrists and high at the neck - is spotless. Somehow, you know she’s waiting for you.###No night
 She looks frail and gray, but her bony frame seems to possess a kind of wiry strength. She stands ramrod straight, and her black dress - buttoned long at the wrists and high at the neck - is spotless.###No night
 ***
-Maude2 descrip1###No night
-Maude2 descrip2###No night
-***
 Maude says 1 "Hello I am Maude"###Maude says at night 1
 Maude says 2 "Hi person test test test test test test test"###Maude says at night 2
-***
-Maude2 says 1###No night
-Maude2 says 2###No night
