@@ -15,6 +15,8 @@
 # v11.2 --> toggle item description for when it is present/not present//viewable/not viewable 
 # v11.3 --> accommodate alternate thing names (e.g. "scrap of fabric"/"fabric scrap"/"scrap"/"fabric")
 # v11.4 --> finish implementing search and read, add new day message 
+# v11.5 --> make dropped items show up in room description (unless dropped inside a feature) 
+# v11.6
 # v12
 # v13
 # define the "Game" class
@@ -541,7 +543,6 @@ class Game:
 		if action.verb == "show_help":
 			self.showHelp()
 			return 
-
 		if action.verb == "show_inventory":
 			self.user.printInventory()
 			return
@@ -550,6 +551,9 @@ class Game:
 			return
 		if action.verb == "read":
 			self.handleRead(action.direct_obj, action.indirect_obj, True)
+			return
+		if action.verb == "insert":
+			#self.handleInsert(action.direct_obj, action.indirect_obj, True)
 			return
 		else:
 			#print("Invalid action type for version 1 or 2")
@@ -625,6 +629,10 @@ class Place:
 		self.adjacent_place_names = adjacentPlaceNames
 		self.character = None # default to none
 
+		#v11.5: list of items dropped in this place 
+		# (separate handling for items dropped inside features) 
+		self.droppedHere = []
+
 		# new in v9: a dictionary of doors tracking: whether there is a door, and whether it is locked or unlocked
 		# dictionary: key is direction, value is either 'locked', 'unlocked', or None
 		self.doors = doors
@@ -698,6 +706,12 @@ class Place:
 		place_description = self.getDescriptionBasedOnTimeAndVisitCount(time)
 		# v9: call output function to orient user 
 		Output.orientUser(place_name, place_description)
+		# v11.5: show any dropped objects currently in the room
+		# (don't show objects that were dropped inside features)
+		for i in self.droppedHere:
+			for feat in self.things:
+				if i.name not in feat.hasOtherItems: 
+					Output.print_look(i.isHereDescription)
 
 
 # define the User class
@@ -735,6 +749,15 @@ class User:
 					self.things.append(thing)
 					# remove the thing from the Place it is in
 					self.current_place.removeThing(thing)
+					# v11.5: remove from place's droppedHere list, if present
+					for i in self.current_place.droppedHere:
+						if thing.name == i.name:
+							r = i 
+							self.current_place.droppedHere.remove(r)
+					# v11.5: remove from feature's hasOtherItems list, if present
+					for feat in self.current_place.things:
+						if thing.name in feat.hasOtherItems:
+							feat.hasOtherItems.remove(thing.name)	
 
 	# new in v2
 	def dropObject(self, thing_name):
@@ -748,7 +771,22 @@ class User:
 					self.things.remove(thing)
 					# add thing to the place the user is in
 					self.current_place.addThing(thing)
+					# v11.5: add thing to the place's droppedHere list
+					self.current_place.droppedHere.append(thing)
 					break
+
+	# v11.5: implement dropping objects inside searchable features (e.g. trunk, wardrobe) 
+	def insertObject(self, thingToDrop, thingToContain):
+		print("dropping obj inside other obj")
+		dropObject(thingToDrop)
+		for i in self.current_place.things:
+			if i.name == thingToDrop:
+				dropped = i
+		for t in self.current_place.things:
+			if t.name == thingToContain or thingToContain in t.altNames:
+				containerThing = t
+				if containerThing.is_searchable and not containerThing.is_takeable:
+					containerThing.hasOtherItems.append(dropped.name)  
 
 	# new in v2, for figuring out if user has an thing in possession
 	def userHasThing(self, itemname):
