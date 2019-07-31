@@ -454,16 +454,11 @@ class Game:
 
 		# v12 talking to things (characters)
 		elif action.verb == "talk_npc":
-			print("debug talk1")
 			v = self.isValid.get("talk_npc")
 			for i in v:
-				print("Printing names to talk to:")
-				print(i.name) 
 				if action.direct_obj != None:
-					print("thing has direct object")
 					# other names for a person, like "him, her, woman"
 					if i.name.lower() == action.direct_obj:
-						print("debug talkA")
 						return True
 		else:
 			print("returning false from checkIsValid")
@@ -516,7 +511,6 @@ class Game:
 			return
 		
 		if action.verb == "talk_npc":
-			print("executing talk")
 			self.handleTalk(action.direct_obj, True)
 			self.updateTime(1)
 			return
@@ -869,8 +863,6 @@ class Thing:
 	# get the character's dialogue based on time of day and num of times talked prior
 	# characters have up to 5 different things to say in the day and night, and after that just say the last thing
 	def getCharacterSpeak(self, time):
-		print("Debug time:")
-		print(time)
 		self.numTimesTalked += 1
 		if time > 5 and time < 25:
 			if self.numTimesTalked > 5:

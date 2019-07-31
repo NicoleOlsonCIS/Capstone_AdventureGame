@@ -150,7 +150,7 @@ class Output(object):
             count = 0
             inside = False
 
-            str = "You talk to " + person_name
+            str = "You talk to " + person_name + ": "
 
             print("\n")
             sys.stdout.write(u'\u001b[38;5;$146m')
@@ -159,7 +159,7 @@ class Output(object):
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write('\033[0m')
-            time.sleep(1)
+            time.sleep(0.5)
             print("\n")
 
 
@@ -170,7 +170,7 @@ class Output(object):
                         inside = True # set inside to true
                         if len(str_outside) is not 0:
                             if len(str_outside) > 60:
-                                str_outside = Output.break_up_long_message(str_outside, 30)
+                                str_outside = Output.break_up_long_message(str_outside, 32)
                             #print("\n")
                             sys.stdout.write(u'\u001b[38;5;$146m')
                             for elem in str_outside:
@@ -222,7 +222,6 @@ class Output(object):
                             print(sb4)
                             time.sleep(0.7)
                             print(sb5)
-                            time.sleep(0.7)
                             print(sb6)
                             str_inside = ""
                             time.sleep(1)
@@ -262,7 +261,7 @@ class Output(object):
             # if the string ends with outside stuff then there will be left over things to print
             if len(str_outside) is not 0:
                 if len(str_outside) > 60:
-                    str_outside = Output.break_up_long_message(str_outside, 30)
+                    str_outside = Output.break_up_long_message(str_outside, 32)
                 sys.stdout.write(u'\u001b[38;5;$146m')
                 #sys.stdout.write(u'\e[3m')
                 for elem in str_outside:

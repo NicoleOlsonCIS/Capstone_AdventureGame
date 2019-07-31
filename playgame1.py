@@ -141,9 +141,9 @@ def loadPlaceData(place_obj, filename):
                 place_obj.addThing(newthing)
 
                 # load thing dependencies
-                #loadThingDependencies("objdependencies.txt", newthing)
+                # loadThingDependencies("objdependencies.txt", newthing)
                 # load alternate names
-                #loadAltNames("objalternatenames.txt", newthing)
+                # loadAltNames("objalternatenames.txt", newthing)
 
                 count += 1
 
