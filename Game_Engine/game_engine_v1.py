@@ -16,7 +16,7 @@
 # v11.3 --> accommodate alternate thing names (e.g. "scrap of fabric"/"fabric scrap"/"scrap"/"fabric")
 # v11.4 --> finish implementing search and read, add new day message 
 # v11.5 --> make dropped items show up in room description (unless dropped inside a feature) 
-# v11.6
+# v11.6 --> small fix, implement insert
 # v12
 # v13
 # define the "Game" class
@@ -185,7 +185,6 @@ class Game:
 						for thingObj in self.user.current_place.things:
 							if obj.lower() == thingObj.name.lower():
 								Output.print_look(thingObj.isHereDescription)
-								return
 		else:
 			if attemptedObj == None:
 				Output.print_input_hint("Try being more specific about what you want to search.")
@@ -227,6 +226,25 @@ class Game:
 				return
 			Output.print_error("That\'s not something you can read.")
 
+	# new in v11.6 
+	def handleInsert(self, attemptedObj, indirObj, canInsert):
+		if canInsert:
+			if attemptedObj != None and indirObj != None: 
+				Output.print_drop(attemptedObj + " inside the " + indirObj)
+		else:
+			if attemptedObj == None or indirObj == None:
+				Output.print_input_hint("Try being more specific about what you want to put where.")
+			else:
+				if not self.user.userHasThing(attemptedObj):
+					Output.print_error("You can\'t drop something that\'s not in your inventory.")
+					return	
+				if not self.user.current_place.roomHasThing(indirObj):
+					Output.print_error("You don\'t see a " + indirObj + " here.")
+					return
+				if self.user.current_place.roomHasThing(indirObj):
+					Output.print_error("You can\'t put things inside the {}.".format(indirObj)) 
+					return
+
 	# new in v9: print special error message for locked door
 	def handleLockedDoor(self, direction):
 
@@ -252,7 +270,7 @@ class Game:
 		print("drop\nabandon\ndiscard\ntrash\n")
 		print("look\nl\nlook at\nstudy\nread\nexamine\nx\nsearch\n")
 		print("talk\nsay\ngreet\nask\nchat\nspeak\n")
-		print("sleep\nrest\nrelax\nopen\nunlock\n")
+		print("sleep\nrest\nrelax\n")
 
 	# point of entry from parser, game takes care of input from this point
 	# either by updating the game or sending error messages
@@ -289,14 +307,23 @@ class Game:
 				self.handleSearch(action.direct_obj, action.indirect_obj, False)
 			elif action.verb == "read":
 				self.handleRead(action.direct_obj, action.indirect_obj, False)
-			elif action.verb == None and action.direct_obj != None:
-				Output.print_input_hint("Try being more specific about what you want to do with the {}.".format(action.direct_obj))
+			elif action.verb == "insert":
+				self.handleInsert(action.direct_obj, action.indirect_obj, False)
 			else:
-				# thing is present, but action.verb is not one of the thing's allowed verbs
-				if self.user.canAccessThing(action.direct_obj) and not self.user.canActOnThing(action.direct_obj, action.verb):
-					Output.print_error("You can\'t " + action.verb + " the " + action.direct_obj + ". Try doing something else with it.")
-				else:
+				if action.direct_obj == None or action.verb == None:
 					Output.print_error("You don\'t see the point of doing that right now.")
+					return
+				attempted = action.direct_obj 
+				if action.indirect_obj != None: 
+					attempted = attempted + " " + action.indirect_obj
+				# thing is present, but action.verb doesn't work with the thing
+				if self.user.canAccessThing(attempted): 
+					Output.print_error("You can\'t " + action.verb + " the " + attempted + ". Try doing something else with it.")
+					return
+				else:
+					Output.print_error("You don\'t see a {} that you can {}.".format(attempted, action.verb))
+					return
+				Output.print_error("You don\'t see the point of doing that right now.")
 
 	# called after every change in game state in preparation for next input from parser
 	def setIsValid(self):
@@ -487,6 +514,23 @@ class Game:
 					if objName == i.name.lower() or objName in i.altNames:
 						return True
 
+		elif action.verb == "insert":
+			if action.direct_obj == None or action.indirect_obj == None:
+				return False
+			v = self.isValid.get("search")
+			d = self.isValid.get("drop")
+			whereToPut = None
+			whatToPut = None
+			for feat in v:
+				if feat.name.lower() == action.indirect_obj or action.indirect_obj in feat.altNames:
+					whereToPut = feat
+			for o in d:
+				if o.name.lower() == action.direct_obj or action.direct_obj in o.altNames:
+					whatToPut = o
+			if whereToPut == None or whatToPut == None:
+				return False
+			return True
+
 		else:
 			#print("Invalid game action")
 			return False	
@@ -553,7 +597,8 @@ class Game:
 			self.handleRead(action.direct_obj, action.indirect_obj, True)
 			return
 		if action.verb == "insert":
-			#self.handleInsert(action.direct_obj, action.indirect_obj, True)
+			self.handleInsert(action.direct_obj, action.indirect_obj, True)
+			self.user.insertObject(action.direct_obj, action.indirect_obj)
 			return
 		else:
 			#print("Invalid action type for version 1 or 2")
@@ -708,11 +753,14 @@ class Place:
 		Output.orientUser(place_name, place_description)
 		# v11.5: show any dropped objects currently in the room
 		# (don't show objects that were dropped inside features)
+		features = [feat for feat in self.things if feat.is_searchable]
+		hiddenItems = []
+		for ft in features:
+			for hidden in ft.hasOtherItems:
+				hiddenItems.append(hidden) 
 		for i in self.droppedHere:
-			for feat in self.things:
-				if i.name not in feat.hasOtherItems: 
-					Output.print_look(i.isHereDescription)
-
+			if i.name not in hiddenItems: 
+				Output.print_look(i.isHereDescription)
 
 # define the User class
 class User:
@@ -775,13 +823,16 @@ class User:
 					self.current_place.droppedHere.append(thing)
 					break
 
-	# v11.5: implement dropping objects inside searchable features (e.g. trunk, wardrobe) 
+	# v11.6: implement dropping objects inside searchable features (e.g. trunk, wardrobe) 
 	def insertObject(self, thingToDrop, thingToContain):
 		print("dropping obj inside other obj")
-		dropObject(thingToDrop)
+		self.dropObject(thingToDrop)
+		dropped = None
 		for i in self.current_place.things:
-			if i.name == thingToDrop:
+			if i.name == thingToDrop or thingToDrop in i.altNames:
 				dropped = i
+		if dropped == None:
+			return
 		for t in self.current_place.things:
 			if t.name == thingToContain or thingToContain in t.altNames:
 				containerThing = t
