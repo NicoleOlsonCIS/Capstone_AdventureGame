@@ -23,3 +23,5 @@ The ticket window is closed and locked. You see no sign of anyone who might be m
 scrap of fabric
 ***
 A ragged piece of grubby white fabric, like the torn corner of a handkerchief. It bears the name “James” in blue embroidery.###A ragged piece of white fabric, embroidered with the name "James".
+***
+no characters

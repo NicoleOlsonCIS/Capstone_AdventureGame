@@ -21,3 +21,5 @@ An isolated country manor of ivy-choked gray stone.###The House looms out at you
 A manor of ivy-choked stone broods alone in the countryside.###Shadows deepen over the grounds as night begins to fall. The mist follows behind you, swallowing everything in its path.
 ***
 no objects
+***
+no characters

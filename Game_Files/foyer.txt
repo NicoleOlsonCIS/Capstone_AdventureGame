@@ -21,3 +21,5 @@ The black drapes extend from floor to ceiling, giving the room an oddly muffled,
 An ornate wrought-iron chandelier. Its dim light is swallowed up by the oppressive opulence of the room.###No night
 ***
 no objects
+***
+no characters

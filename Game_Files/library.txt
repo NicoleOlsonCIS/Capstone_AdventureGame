@@ -29,4 +29,5 @@ There are books scattered everywhere. The messiness of it is a welcome contrast 
 There are books scattered everywhere. The messiness of it is a welcome contrast to the rest of the House.###No night
 ***
 no objects
- 
+***
+no characters

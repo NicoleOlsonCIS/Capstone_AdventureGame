@@ -12,4 +12,6 @@ It's getting too dark to see here. Best get back inside the House.
 ***
 no features
 ***
-no objects 
+no objects
+***
+no characters

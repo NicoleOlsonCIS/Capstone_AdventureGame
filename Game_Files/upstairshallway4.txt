@@ -13,4 +13,5 @@ You stumble blindly in the dark.
 no features
 ***
 no objects
-
+***
+no characters

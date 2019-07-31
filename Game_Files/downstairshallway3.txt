@@ -13,4 +13,5 @@ You stumble blindly in the dark. Best get back to your room before you're caught
 no features
 ***
 no objects
- 
+***
+no characters

@@ -17,3 +17,5 @@ wooden trunk:sheaf of papers
 countertops:small knife
 ***
 countertops:matchbook
+***
+no characters
