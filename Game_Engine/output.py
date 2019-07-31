@@ -635,7 +635,7 @@ class Output(object):
         welcome2 = " A recap of where you are: "
 
         if sys.stdin.isatty():
-            sys.stdout.write(u'\u001b[38;5;$49m')
+            sys.stdout.write(u'\u001b[38;5;252m')
             for elem in pl1:
                 time.sleep(0.04)
                 sys.stdout.write(elem)
