@@ -58,7 +58,7 @@ keyline3 = [k3p1, k3p2, k3p3, k3p4, k3p5]
 ## Strings for speech bubbles
 ##
 ##
-sb1 = "____________________________"
+sb1 = " ____________________________"
 sb2 = "/" + "                            " + "\\"
 sb3 = "| "
 sb4 = "\\" + "___    _____________________" + "/"
@@ -153,7 +153,7 @@ class Output(object):
             str = "You talk to " + person_name
 
             print("\n")
-            sys.stdout.write(u'\u001b[38;5;$14m')
+            sys.stdout.write(u'\u001b[38;5;$146m')
             for elem in str:
                 time.sleep(0.04)
                 sys.stdout.write(elem)
@@ -171,8 +171,8 @@ class Output(object):
                         if len(str_outside) is not 0:
                             if len(str_outside) > 60:
                                 str_outside = Output.break_up_long_message(str_outside)
-                            print("\n")
-                            sys.stdout.write(u'\u001b[38;5;$14m')
+                            #print("\n")
+                            sys.stdout.write(u'\u001b[38;5;$146m')
                             for elem in str_outside:
                                 time.sleep(0.04)
                                 sys.stdout.write(elem)
@@ -205,6 +205,7 @@ class Output(object):
                                     sys.stdout.write(lines[lcount])
                                     sys.stdout.write(u'\u001b[38;5;$244m')
                                     print(sb7)
+                                    time.sleep(0.7)
                                     lcount += 1
                                 else: # in the event that the line needs spaces added up to len of 25
                                     while(len(lines[lcount]) < 25):
@@ -213,11 +214,16 @@ class Output(object):
                                         lines[lcount] = l
                                     # now that it is 25 long
                                     sys.stdout.write(lines[lcount])
+                                    time.sleep(0.7)
                                     sys.stdout.write(u'\u001b[38;5;$244m')
                                     print(sb7)
                                     lcount += 1
                             # print the closing of the speech bubble
-                            print(sb4 + "\n" + sb5 + "\n" + sb6)
+                            print(sb4)
+                            time.sleep(0.7)
+                            print(sb5)
+                            time.sleep(0.7)
+                            print(sb6)
                             str_inside = ""
                             time.sleep(1)
                             count = 0
@@ -231,10 +237,17 @@ class Output(object):
                             sys.stdout.write(u'\u001b[38;5;$244m')
                             print(sb1 + "\n" + sb2)
                             sys.stdout.write(sb3) # no newline
+                            time.sleep(0.7)
                             sys.stdout.write(u'\u001b[38;5;$157m') # change to text color
                             sys.stdout.write(str_inside)
+                            time.sleep(0.7)
                             sys.stdout.write(u'\u001b[38;5;$244m') # change back to bubble color
-                            print(sb7 + "\n" + sb4 + "\n" + sb5 + "\n" + sb6)
+                            print(sb7)
+                            print(sb4)
+                            time.sleep(0.7)
+                            print(sb5)
+                            print(sb6)
+
                             # reset inside variable
                             str_inside = ""
                             time.sleep(1)
@@ -248,10 +261,9 @@ class Output(object):
 
             # if the string ends with outside stuff then there will be left over things to print
             if len(str_outside) is not 0:
-                print("\n")
                 if len(str_outside) > 60:
                     str_outside = Output.break_up_long_message(str_outside)
-                sys.stdout.write(u'\u001b[38;5;$157m')
+                sys.stdout.write(u'\u001b[38;5;$146m')
                 #sys.stdout.write(u'\e[3m')
                 for elem in str_outside:
                     time.sleep(0.04)
