@@ -22,9 +22,8 @@ class Parser:
         "discard": "drop",
         "trash": "drop",
         "put": "drop",
-        "leave": "drop", # FIXME: Should this be here?
         "place": "drop",
-        "insert": "insert", # Which verb to engine? Was "drop_inside_thing"
+        "insert": "insert", 
         "sleep": "sleep",
         "rest": "sleep",
         "relax": "sleep",
@@ -49,6 +48,9 @@ class Parser:
         "look_in": "search",
         "search": "search", 
         "read": "read",
+        "listen": "listen",
+        "eavesdrop": "listen",
+        "hear": "listen", 
         "open": "open_thing",
         "unlock": "unlock_thing",
         "help": "show_help",

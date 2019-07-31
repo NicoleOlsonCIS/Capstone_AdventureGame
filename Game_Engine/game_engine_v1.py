@@ -16,7 +16,8 @@
 # v11.3 --> accommodate alternate thing names (e.g. "scrap of fabric"/"fabric scrap"/"scrap"/"fabric")
 # v11.4 --> finish implementing search and read, add new day message 
 # v11.5 --> make dropped items show up in room description (unless dropped inside a feature) 
-# v11.6 --> small fix, implement insert
+# v11.6 --> implement insert, update error handling 
+# v11.7 --> implement listen 
 # v12
 # v13
 # define the "Game" class
@@ -55,6 +56,7 @@ class Game:
 		if self.time > 39: 
 			self.time -= 39 
 			self.day = self.day + 1
+			Output.print_look("Start of Day {}".format(self.day))
 
 	def getPlace(self, name):
 		if name in self.places.keys():
@@ -209,14 +211,15 @@ class Game:
 			# check for readable thing in inventory
 			for ob in self.user.things:
 				if ob.name.lower() == attemptedObj or attemptedObj in ob.altNames:
-					# cycle through descriptions until exhausted, then start over at first description
-					if len(ob.readDescrips) > ob.numTimesRead:
-						Output.print_look(ob.readDescrips[ob.numTimesRead])
-					else:
-						ob.numTimesRead -= len(ob.readDescrips)
-						Output.print_look(ob.readDescrips[ob.numTimesRead])
-					ob.numTimesRead += 1
-					return 
+					if len(ob.readDescrips) > 0:
+						# cycle through descriptions until exhausted, then start over at first description
+						if len(ob.readDescrips) > ob.numTimesRead:
+							Output.print_look(ob.readDescrips[ob.numTimesRead])
+						else:
+							ob.numTimesRead -= len(ob.readDescrips)
+							Output.print_look(ob.readDescrips[ob.numTimesRead])
+						ob.numTimesRead += 1
+						return 
 		else:
 			if attemptedObj == None:
 				Output.print_input_hint("Try being more specific about what you want to read.")
@@ -244,6 +247,30 @@ class Game:
 				if self.user.current_place.roomHasThing(indirObj):
 					Output.print_error("You can\'t put things inside the {}.".format(indirObj)) 
 					return
+
+	#v11.7
+	def handleListen(self, obj1, obj2, canListen):
+		attemptedObj = obj1
+		if not canListen:
+			if attemptedObj == None:
+				Output.print_error("You don\'t hear anything out of the ordinary here.")
+				return
+			if obj2 != None:
+				attemptedObj = attemptedObj + " " + obj2	
+			if self.user.current_place.roomHasThing(attemptedObj) or self.user.userHasThing(attemptedObj):
+				Output.print_error("That\'s not something you can listen to.")
+			else:
+				Output.print_error("You don\'t see a {} to listen to here.".format(attemptedObj))
+		else:
+			currRoom = self.user.current_place
+			# cycle through listen descriptions; when exhausted, start at first listen description
+			if len(currRoom.listenDescrips) > 0:
+				if len(currRoom.listenDescrips) > currRoom.numTimesListened:
+					Output.print_look(currRoom.listenDescrips[currRoom.numTimesListened])
+				else:
+					currRoom.numTimesListened -= len(currRoom.listenDescrips)
+					Output.print_look(currRoom.listenDescrips[currRoom.numTimesListened])
+				currRoom.numTimesListened += 1
 
 	# new in v9: print special error message for locked door
 	def handleLockedDoor(self, direction):
@@ -309,6 +336,8 @@ class Game:
 				self.handleRead(action.direct_obj, action.indirect_obj, False)
 			elif action.verb == "insert":
 				self.handleInsert(action.direct_obj, action.indirect_obj, False)
+			elif action.verb == "listen":
+				self.handleListen(action.direct_obj, action.indirect_obj, False)
 			else:
 				if action.direct_obj == None or action.verb == None:
 					Output.print_error("You don\'t see the point of doing that right now.")
@@ -513,7 +542,7 @@ class Game:
 					objName = action.direct_obj + " " + action.indirect_obj
 					if objName == i.name.lower() or objName in i.altNames:
 						return True
-
+		# v11.6
 		elif action.verb == "insert":
 			if action.direct_obj == None or action.indirect_obj == None:
 				return False
@@ -530,7 +559,11 @@ class Game:
 			if whereToPut == None or whatToPut == None:
 				return False
 			return True
-
+		#v11.7
+		elif action.verb == "listen":
+			if self.user.current_place.name == "Drawing Room" and (self.day == 2 or self.day == 3):
+				return True
+			return False 
 		else:
 			#print("Invalid game action")
 			return False	
@@ -576,14 +609,15 @@ class Game:
 
 		if action.verb == "sleep":
 			self.handleSleep(action.direct_obj, True)
-			# move time to start of next day 
+			# start new morning 
 			self.time = 6
 			self.day += 1
 			# v11.4: wakeup message
 			Output.print_look("Start of Day {}".format(self.day))
 			Output.print_look("You awake to morning light streaming softly into the room. The House is still and silent around you as you climb out of bed, walking gingerly on frigid floorboards.")
 			return
-
+		# don't increment time for help/inventory
+		# since these are not "in-game" actions 
 		if action.verb == "show_help":
 			self.showHelp()
 			return 
@@ -592,13 +626,20 @@ class Game:
 			return
 		if action.verb == "search":
 			self.handleSearch(action.direct_obj, action.indirect_obj, True)
+			self.updateTime(1)
 			return
 		if action.verb == "read":
 			self.handleRead(action.direct_obj, action.indirect_obj, True)
+			self.updateTime(1)
 			return
 		if action.verb == "insert":
 			self.handleInsert(action.direct_obj, action.indirect_obj, True)
 			self.user.insertObject(action.direct_obj, action.indirect_obj)
+			self.updateTime(1)
+			return
+		if action.verb == "listen":
+			self.handleListen(action.direct_obj, action.indirect_obj, True)
+			self.updateTime(1)
 			return
 		else:
 			#print("Invalid action type for version 1 or 2")
@@ -656,10 +697,14 @@ class Game:
 		# print door animation if there is a door
 		new_place = self.user.current_place
 
+		#v11.7 provision for making Fields take longer to cross
+		if user_place.name.lower() == "fields" and new_place.name.lower() != "fields":
+			self.updateTime(3)
+
 		# v13 provision for the "leave" message on the Front Manor Grounds
 		# only shows up on first entry into foyer
 		if new_place.numTimesEntered == 0 and new_place.name.lower() == "foyer":
-			print("You hurl yourself up the path as it starts to rain in earnest. Maude follows right on your heels, fishing an iron keyring out of her pockets. At the front door, she shoulders you aside, unlocks the door, and heaves it open with a grunt of effort, dragging you inside by the wrist and dumping you in a rain-soaked heap on the floor.")
+			Output.print_look("You hurl yourself up the path as it starts to rain in earnest. Maude follows right on your heels, fishing an iron keyring out of her pockets. At the front door, she shoulders you aside, unlocks the door, and heaves it open with a grunt of effort, dragging you inside by the wrist and dumping you in a rain-soaked heap on the floor.")
 		
 		if (is_door):
 			Output.newPlaceWithDoor(new_place.name)
@@ -677,6 +722,9 @@ class Place:
 		#v11.5: list of items dropped in this place 
 		# (separate handling for items dropped inside features) 
 		self.droppedHere = []
+		#v11.7: list of "listen" descriptions
+		self.listenDescrips = [] 
+		self.numTimesListened = 0
 
 		# new in v9: a dictionary of doors tracking: whether there is a door, and whether it is locked or unlocked
 		# dictionary: key is direction, value is either 'locked', 'unlocked', or None
