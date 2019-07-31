@@ -291,6 +291,10 @@ class Parser:
             return action 
 
         # FIXME: come up with something more robust than this?
+        # The following works around this form
+        # [VERB] [DO] [HELPING PREPOSITION] [IO]
+        # The "helping preposition" changes the understood verb
+        # E.g., "drop in" = "insert", "look in" = "search"
         nextTokenPos = 2
         if (tokens[nextTokenPos] in self.prepositionsListUsed):
             if (action.verb is "drop"):
@@ -299,10 +303,12 @@ class Parser:
                 action.verb = "search"
             del tokens[nextTokenPos]
 
-        if (action.direct_obj is None):
-            action.direct_obj = tokens[nextTokenPos]
-        else:
-            action.indirect_obj = tokens[nextTokenPos]
+        # Avoid out-of-range error after del
+        if (len(tokens) > nextTokenPos):
+            if (action.direct_obj is None):
+                action.direct_obj = tokens[nextTokenPos]
+            else:
+                action.indirect_obj = tokens[nextTokenPos]
 
         # Return action
         return action
