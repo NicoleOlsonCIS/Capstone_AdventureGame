@@ -460,6 +460,7 @@ class Game:
 				print("Printing names to talk to:")
 				print(i.name) 
 				if action.direct_obj != None:
+					print("thing has direct object")
 					# other names for a person, like "him, her, woman"
 					if i.name.lower() == action.direct_obj or action.direct_obj in i.altNames:
 						print("debug talkA")
