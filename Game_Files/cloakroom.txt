@@ -23,3 +23,5 @@ An olive-green officer’s jacket, complete with shiny buttons and flap pockets.
 letter
 ***
 A handwritten letter, folded up and tucked deep into one of the pockets of the jacket.###No night
+***
+no characters

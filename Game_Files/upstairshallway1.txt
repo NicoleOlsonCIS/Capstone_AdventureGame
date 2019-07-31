@@ -13,3 +13,5 @@ To the west, you can make out the shape of a door. The hallway stretches into to
 no features
 ***
 no objects
+***
+no characters

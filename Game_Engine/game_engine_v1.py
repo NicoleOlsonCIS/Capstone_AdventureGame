@@ -70,7 +70,6 @@ class Game:
 	# v11.4: if a thing must be searched before revealing another thing inside,
 	#  don't reveal thing just upon examining	
 	def showThing(self, itemname):
-
 		for t in self.user.things:
 			if t.name.lower() == itemname or itemname in t.altNames:
 				des = t.getDescription(self.time)
@@ -83,17 +82,23 @@ class Game:
 				# v11.2: if there are other objects viewable because of this one,
 				# describe those other objects also.
 				# v11.4: separate handling for searchable things in handleSearch function.
-				if not t.is_searchable:
-					for obj in t.hasOtherItems:
-						for thingObj in self.user.current_place.things:
-							if obj.lower() == thingObj.name.lower():
-								Output.print_look(thingObj.isHereDescription)
+			if not t.is_searchable:
+				for obj in t.hasOtherItems:
+					for thingObj in self.user.current_place.things:
+						if obj.lower() == thingObj.name.lower():
+							Output.print_look(thingObj.isHereDescription)
+
+			#v12 character interaction for looking at character
+			if self.user.current_place.hasCharacter:
+				character = self.user.current_place.character
+				if character.name == itemname or itemname in character.altNames:
+					Output.print_look(character.getDescription(self.time))
 				return
 
-		for c in self.user.current_place.character.names: 
-			if c == itemname:
-				description = self.user.current_place.character.getLook()
-				print(description)
+		#for c in self.user.current_place.character.names: 
+		#	if c == itemname:
+		#		description = self.user.current_place.character.getLook()
+		#		print(description)
 
 
     # v3: takes the thing the user wants to examine
@@ -104,7 +109,7 @@ class Game:
 			attemptedObj = attemptedObj + " " + indirObj
 
 		if canLook:
-                	# if nothing or "room" specified, examine current room 
+			# if nothing or "room" specified, examine current room 
 			if attemptedObj == None or attemptedObj == "room":
 				self.user.current_place.printRoom(self.time)
 				self.user.current_place.updateNumLooks()
@@ -115,7 +120,6 @@ class Game:
 			# print thing description if thing available for examining
 			else:
 				self.showThing(attemptedObj)
-					
 		else:
 			# if user tries to examine a room that is not the current one, error
 			for placename in self.places.keys():
@@ -290,6 +294,17 @@ class Game:
 		else:
 			Output.print_error("There is no place in the " + direction + " direction")
 
+	# v12 handling talking to characters
+	def handleTalk(self, attemptedObj, canTalk):
+		if canTalk:
+			character = self.user.current_place.character
+			if character.name.lower() == attemptedObj.lower():
+				Output.print_talk(character.getCharacterSpeak(self.time), attemptedObj)
+				return
+		else:
+			print("You can not talk to " + attemptedObj)
+
+
 	# v6: displays list of supported verbs
 	def showHelp(self):
 		print("go\nmove\nrun\nwalk\nhead\nhurry\n")
@@ -360,9 +375,6 @@ class Game:
 		newdict={} 
 		
 		user_place = self.user.current_place
-
-		# new in v9: a dictionary of the doors of the users place
-		doors = user_place.doors
 		
 		adjacent_places = self.user.current_place.adjacent_places
    
@@ -400,20 +412,6 @@ class Game:
 			if adjacent_places[9].doors["u"] is not "locked":
 				valid_moves.append("d")
 
-		# new in v2 (build set of valid actions regarding objects)
-		#valid_takes = [item.name for item in user_place.things if item.is_takeable]
-		#valid_drops = [item.name for item in self.user.things]
-                # new in v3
-                # can examine things that are in the current place or in inventory
-		#valid_looks = [item.name for item in user_place.things]
-		#for item in self.user.things:
-                	#valid_looks.append(item.name) 
-		#valid_searches = [item.name for item in user_place.things if item.is_searchable]
-		#valid_reads = [item.name for item in user_place.things if item.is_readable]
-		#for item in self.user.things:
-			#if item.is_readable:
-				#valid_reads.append(item.name)
-
 		# v11.3: change from strings to objects 
 		valid_takes = [item for item in user_place.things if item.is_takeable]
 		valid_drops = [item for item in self.user.things]
@@ -427,8 +425,15 @@ class Game:
 			if item.is_readable:
 				valid_reads.append(item)
 
+
+		# v12 add a character to the list of things to look at and talk with
+		valid_talks = []
+		if user_place.hasCharacter: 
+			valid_looks.append(user_place.character) # character is a Thing obj
+			valid_talks.append(user_place.character) # you can also talk to characters
+
 		# set the dictionary with keys as actions and values as valid corresponding things
-		newdict = {"move_user": valid_moves, "take": valid_takes, "drop": valid_drops, "look": valid_looks, "search": valid_searches, "read": valid_reads}
+		newdict = {"move_user": valid_moves, "take": valid_takes, "drop": valid_drops, "look": valid_looks, "search": valid_searches, "read": valid_reads, "talk_npc": valid_talks}
 
 		# set the "is valid" attribute to the current dictionary of valid game operations
 		self.isValid = newdict
@@ -490,7 +495,7 @@ class Game:
 					objName = action.direct_obj + " " + action.indirect_obj
 					if objName == i.name.lower() or objName in i.altNames:
 						return True
-                        # if no object specified or current room specified, examine room
+            # if no object specified or current room specified, examine room
 			if action.direct_obj == None:
                         	return True
 			if action.direct_obj == "room":
@@ -563,9 +568,17 @@ class Game:
 		elif action.verb == "listen":
 			if self.user.current_place.name == "Drawing Room" and (self.day == 2 or self.day == 3):
 				return True
-			return False 
+			return False
+		# v12 talking to things (characters)
+		elif action.verb == "talk_npc":
+			v = self.isValid.get("talk_npc")
+			for i in v:
+				if action.direct_obj != None:
+					# other names for a person, like "him, her, woman"
+					if i.name.lower() == action.direct_obj:
+						return True 
 		else:
-			#print("Invalid game action")
+			print("returning false from checkIsValid")
 			return False	
 
 
@@ -620,6 +633,10 @@ class Game:
 		# since these are not "in-game" actions 
 		if action.verb == "show_help":
 			self.showHelp()
+			return
+		if action.verb == "talk_npc":
+			self.handleTalk(action.direct_obj, True)
+			self.updateTime(1)
 			return 
 		if action.verb == "show_inventory":
 			self.user.printInventory()
@@ -642,7 +659,6 @@ class Game:
 			self.updateTime(1)
 			return
 		else:
-			#print("Invalid action type for version 1 or 2")
 			return
 
 	# Precondition: place adjacency pre-validated
@@ -716,8 +732,7 @@ class Place:
 	# game(game object), name(string), day[], night[], adjacentPaceNames[10 strings], things[strings], doors{ })
 	def __init__(self, game, name, day, night, adjacentPlaceNames, things = None, doors = None):
 		self.name = name
-		self.adjacent_place_names = adjacentPlaceNames
-		self.character = None # default to none
+		self.adjacent_place_names = adjacentPlaceNames 
 
 		#v11.5: list of items dropped in this place 
 		# (separate handling for items dropped inside features) 
@@ -744,6 +759,10 @@ class Place:
 		self.night = night
 
 		game.addPlace(self) # creates a map between name and place object in the game
+
+		# v12 characters as part of places
+		self.character = None
+		self.hasCharacter = False
 
 	# new in v9 update the doors dictionary when a door becomes locked
 	def lockDoor(self, direction):
@@ -774,6 +793,11 @@ class Place:
 	def addThing(self, thing):
 		self.things.append(thing)
 
+	# v12 adding character to place
+	def addCharacter(self, thing):
+		self.character = thing
+		self.hasCharacter = True
+
 	def removeThing(self, thing):
 		self.things.remove(thing)
 
@@ -792,6 +816,11 @@ class Place:
 	# v5: update number of entries
 	def updateNumEntries(self):
 		self.numTimesEntered += 1
+
+	# v12 character related functions
+	# def addCharacter(self, thing):
+	#	self.character = thing
+	#	self.hasCharacter = True # character can be turned "off", so isValid can use hasCharacter to determine
 
 	# v5: display room description
 	def printRoom(self, time):
@@ -940,7 +969,7 @@ class User:
 
 #define the "Thing" class
 class Thing: 
-	def __init__(self, name, day, night, starting_location, is_takeable):
+	def __init__(self, name, day, night, starting_location, is_takeable, is_character = None, char_day = None, char_night = None):
 		self.name = name
 		self.day = day     # size of 5
 		self.night = night # size of 5
@@ -960,6 +989,13 @@ class Thing:
 		# v11.3: alternate names for items
 		self.altNames = [] 
 
+		# v12 things can now be characters 
+		self.is_character = is_character
+		# set the day and night dialogue of the character
+		if is_character is not False:
+			print(self.name)
+			self.char_day = char_day
+			self.char_night = char_night
 		#v11.4: search/read descriptions for searchable/readable items
 		self.searchDescrip = "" 
 		self.readDescrips = []
@@ -969,6 +1005,7 @@ class Thing:
 
 		self.numTimesRead = 0
 		self.numTimesExamined = -1 # start at -1 to account for "+1" at beginning of getDescription/array indexing
+		self.numTimesTalked = -1
 
 	def getDescription(self, time):
 		self.numTimesExamined += 1
@@ -1000,9 +1037,29 @@ class Thing:
 	def isTakeable(self):
 		return self.is_takeable
 
+	# differentiate character from object or feature
+	def isCharacter(self):
+		return self.is_character
+
+	# get the character's dialogue based on time of day and num of times talked prior
+	# characters have up to 5 different things to say in the day and night, and after that just say the last thing
+	def getCharacterSpeak(self, time):
+		self.numTimesTalked += 1
+		if time > 5 and time < 25:
+			if self.numTimesTalked > 5:
+				return self.char_day[4]
+			else:
+				return self.char_day[self.numTimesTalked]
+		else:
+			if self.numTimesTalked > 5:
+				return self.char_night[4]
+			else:
+				return self.char_night[self.numTimesTalked]
+
 	# edit description
 	def editDescription(self, day, night):
 		self.day = day
 		self.night = night
+
 
 

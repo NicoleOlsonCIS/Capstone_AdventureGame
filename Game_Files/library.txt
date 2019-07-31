@@ -37,3 +37,5 @@ A well-worn volume bound in navy blue cloth. You can tell there were once golden
 A sensible-looking black book. It has a nice weight to it.###No night
 ***
 A dull reddish book as big as a dictionary.###No night
+***
+no characters

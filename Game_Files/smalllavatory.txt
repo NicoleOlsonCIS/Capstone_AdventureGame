@@ -24,3 +24,5 @@ A white porcelain sink with a mirror above it.###A porcelain sink with a mirror 
 You peruse your reflection in the mirror. Looking good.###Your eyes don’t quite seem to match each other’s color today. Something off about one of them...but never mind, you tell yourself. A trick of the dim light.
 ***
 no objects 
+***
+no characters

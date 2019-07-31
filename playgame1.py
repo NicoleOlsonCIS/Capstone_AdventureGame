@@ -97,11 +97,12 @@ def loadAltNames(filename, thing_obj):
     for chunk in data_chunks:
         chunk = chunk.rstrip("\n")
         objNames = chunk.split(":")
-        synonyms = objNames[1].split(",") 
-        if objNames[0].lower() == thing_obj.name.lower():
-            for syn in synonyms:
-                thing_obj.altNames.append(syn)
-            return
+        if len(objNames) > 1: 
+            synonyms = objNames[1].split(",")
+            if objNames[0].lower() == thing_obj.name.lower():
+                for syn in synonyms:
+                    thing_obj.altNames.append(syn)
+                return
 
 # reads in place information from room file
 def loadPlaceData(place_obj, filename):
@@ -132,7 +133,7 @@ def loadPlaceData(place_obj, filename):
     place_obj.day = day
     place_obj.night = night 
 
-    nextIdxIncrement = 1
+    nextIdxIncrement = 0
 
     # load feature information and create/add Things
     if "no features" not in data_chunks[6]:
@@ -148,7 +149,7 @@ def loadPlaceData(place_obj, filename):
 
         # figure out where the next type section starts based on how many *** there will be for features
         # for instance, if there is 1 feature, then we index past that feature's descriptions
-        nextIdxIncrement = numFeatures + 1
+        nextIdxIncrement = numFeatures
 
         featureDescriptions = []
         count = 0
@@ -194,12 +195,12 @@ def loadPlaceData(place_obj, filename):
                 if len(night) == 0:
                     night = day
 
-                newthing = g.Thing(feature, day, night, place_obj, False)
+                newthing = g.Thing(feature, day, night, place_obj, False, False, None, None)
                 place_obj.addThing(newthing)
 
                 # load thing dependencies
                 loadThingDependencies("objdependencies.txt", newthing)
-		# load alternate names
+		        # load alternate names
                 loadAltNames("objalternatenames.txt", newthing)
                 # load info about searchable features
                 loadSearchables("searchables.txt", newthing) 
@@ -208,9 +209,9 @@ def loadPlaceData(place_obj, filename):
 
     # load object information and create/add Things
     # v12 if there were no features, then nextIdxIncrement is 1 and we are on chunk 7
-    if "no objects" not in data_chunks[6 + nextIdxIncrement]:
+    if "no objects" not in data_chunks[7 + nextIdxIncrement]:
 
-        idx = 6 + nextIdxIncrement
+        idx = 7 + nextIdxIncrement
         objnames = data_chunks[idx].split("\n")
 
         for o in objnames:
@@ -222,7 +223,7 @@ def loadPlaceData(place_obj, filename):
 
         # figure out where the next type section starts based on how many sections there will be for objects
         # for instance, if there is 1 object, then we index past that object's descriptions
-        nextIdxIncrement = numObjects + 1
+        nextIdxIncrement = nextIdxIncrement + numObjects
 
         objectDescriptions = []
         count = 0
@@ -267,17 +268,113 @@ def loadPlaceData(place_obj, filename):
                 if len(night) == 0:
                     night = day
 
-                newthing = g.Thing(obj, day, night, place_obj, True)
+                newthing = g.Thing(obj, day, night, place_obj, True, False, None, None)
                 place_obj.addThing(newthing)
              
                 # load alternate thing names
-                loadAltNames("objalternatenames.txt", newthing) 
-                # load readable things 
-                loadReadables("readables.txt", "newspaper.txt", newthing) 
+                loadAltNames("objalternatenames.txt", newthing)
+                # load readable  things
+                loadReadables("readables.txt", "newspaper.txt", newthing)
+
+                count += 1 # what 
+    
+    # character loading section
+    if "no characters" not in data_chunks[8 + nextIdxIncrement]:
+        idx = 8 + nextIdxIncrement
+        charnames = data_chunks[idx].split("\n")
+
+        for c in charnames:
+            if c == "":
+                charnames.remove(c)
+
+        # get the count of characters
+        numCharacters = len(charnames)
+
+        # figure out where the next type section starts based on how many sections there will be for characters
+        nextIdxIncrement = (2 * numCharacters) + 1 # x2 because each character has a description section and dialogue section
+
+        characterDescriptions = []
+        characterDialogue = []
+        count = 0
+
+        # starting in the next *** section, get the corresponding descriptions for each character
+        while count < numCharacters: 
+            characterDescriptions.append(data_chunks[idx + 1 + count])
+            count += 1
+        while count < numCharacters * 2:
+            characterDialogue.append(data_chunks[idx + 1 + count])
+            count += 1
+    
+        count = 0
+        for char in charnames:
+            char = char.rstrip()
+            char = char.lstrip()
+            if char != "":
+                # get the description block for this character
+                cd = characterDescriptions[count]
+
+                # separate out by delimeter and remove empty descriptions
+                cd_arr = cd.split("\n")
+                for c in cd_arr:
+                    if c == "":
+                        cd_arr.remove(c)
                 
-                count += 1
+                # find out how many descriptions have been entered
+                numDescriptions = len(cd_arr)
 
+                # if there is less than 5, fill up to 5 by copying the last one over
+                while numDescriptions < 5:
+                    cd_arr.append(cd_arr[numDescriptions - 1])
+                    numDescriptions = len(cd_arr)
 
+                # check if there are any 'day/night' aspects to descriptions (otherwise all day)
+                day = []
+                night = []
+                for c in cd_arr:
+                    day_night = c.split("###")
+                    if day_night[1] != "No night":
+                        night.append(day_night[1])
+                    day.append(day_night[0])
+                
+                # if there are no night specific descriptions, then set them the same as day
+                if len(night) == 0:
+                    night = day
+
+                # Do the same now for dialogue
+                # get the description block for this character
+                cdi = characterDialogue[count]
+
+                # separate out by delimeter and remove empty descriptions
+                cdi_arr = cdi.split("\n")
+                for c in cdi_arr:
+                    if c == "":
+                        cdi_arr.remove(c)
+                
+                # find out how many dialogues have been entered
+                numDialogues = len(cdi_arr)
+
+                # if there is less than 5, fill up to 5 by copying the last one over
+                while numDialogues < 5:
+                    cdi_arr.append(cdi_arr[numDialogues - 1])
+                    numDialogues = len(cdi_arr)
+
+                # check if there are any 'day/night' aspects to descriptions (otherwise all day)
+                char_day = []
+                char_night = []
+                for c in cdi_arr:
+                    day_night = c.split("###")
+                    if day_night[1] != "No night":
+                        char_night.append(day_night[1])
+                    char_day.append(day_night[0])
+                
+                # if there are no night specific descriptions, then set them the same as day
+                if len(char_night) == 0:
+                    char_night = char_day
+
+                newthing = g.Thing(char, day, night, place_obj, False, True, char_day, char_night)
+                place_obj.addThing(newthing)
+                place_obj.addCharacter(newthing)
+        
 def buildGame():
 
     # start game at 7 am

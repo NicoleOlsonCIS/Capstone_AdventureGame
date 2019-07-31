@@ -21,3 +21,5 @@ To your inexperienced eyes, it seems well stocked.###To your inexperienced eyes,
 A fireplace with a gray marble mantel. Currently filled with logs and a crackling fire.###A fireplace with a gray marble mantel.
 ***
 no objects
+***
+no characters

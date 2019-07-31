@@ -26,3 +26,5 @@ Four sturdy dresser drawers.###No night
 flashlight
 ***
 A clunky metal flashlight. It has no batteries in it.###A clunky metal flashlight. It has no batteries in it.
+***
+no characters

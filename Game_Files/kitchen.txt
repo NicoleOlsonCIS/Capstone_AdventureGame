@@ -35,3 +35,5 @@ matchbook
 A short but sharp-looking knife. It's only slightly unwieldy in your hand.###No night
 ***
 A neat little book of matches.###No night 
+***
+no characters

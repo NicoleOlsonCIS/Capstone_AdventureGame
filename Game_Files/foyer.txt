@@ -33,3 +33,5 @@ It's a bit grand for your liking. Feeling suddenly small and cold, you find your
 The dim light is swallowed up by the oppressive opulence of the room.###No night
 ***
 no objects
+***
+no characters
