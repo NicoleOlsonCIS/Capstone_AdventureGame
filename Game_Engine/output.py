@@ -162,7 +162,7 @@ class Output(object):
                         # we are done with the inside
                         inside = False
                         # reset count
-                        count = 0:
+                        count = 0
                         # get the lenght of the string
                         length = len(inside)
                         if length > 25:
