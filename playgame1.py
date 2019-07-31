@@ -154,6 +154,10 @@ def loadPlaceData(place_obj, filename):
         idx = 6 + nextIdxIncrement
         objnames = data_chunks[idx].split("\n")
 
+        print("Debug: object names")
+        for i in objnames:
+            print(i)
+
         for o in objnames:
             if o == "":
                 objnames.remove(o)
@@ -167,7 +171,6 @@ def loadPlaceData(place_obj, filename):
 
         objectDescriptions = []
         count = 0
-        start_of_character = 0
 
         # starting in the next *** section, get the corresponding descriptions for each object
         while count < numObjects: 
