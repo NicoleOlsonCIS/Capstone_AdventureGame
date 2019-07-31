@@ -456,7 +456,9 @@ class Game:
 		elif action.verb == "talk_npc":
 			print("debug talk1")
 			v = self.isValid.get("talk_npc")
-			for i in v: 
+			for i in v:
+				print("Printing valid talks:")
+				print(i) 
 				if action.direct_obj != None:
 					# other names for a person, like "him, her, woman"
 					if i.name.lower() == action.direct_obj or action.direct_obj in i.altNames:
@@ -468,7 +470,7 @@ class Game:
 							print("debug talkB")
 							return True
 		else:
-			print("debug talk2")
+			print("returning false from checkIsValid")
 			return False	
 
 
