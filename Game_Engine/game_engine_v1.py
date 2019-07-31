@@ -824,6 +824,7 @@ class Thing:
 		self.is_character = is_character
 		# set the day and night dialogue of the character
 		if is_character is not None:
+			print("Character created")
 			self.char_day = char_day
 			self.char_night = char_night
 
