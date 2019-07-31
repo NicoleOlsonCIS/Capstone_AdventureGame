@@ -213,9 +213,9 @@ def loadPlaceData(place_obj, filename):
                 place_obj.addThing(newthing)
              
                 # load thing dependencies
-                loadThingDependencies("objdependencies.txt", newthing)
+                # loadThingDependencies("objdependencies.txt", newthing)
                 # load alternate thing names
-                loadAltNames("objalternatenames.txt", newthing) 
+                # loadAltNames("objalternatenames.txt", newthing) 
     
     # character loading section
     if "no characters" not in data_chunks[idx + nextIdxIncrement]:
