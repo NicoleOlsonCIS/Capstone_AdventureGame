@@ -76,7 +76,6 @@ def loadPlaceData(place_obj, filename):
     place_obj.night = night 
 
     nextIdxIncrement = 1
-    idx = 6 + nextIdxIncrement
 
     # load feature information and create/add Things
     if "no features" not in data_chunks[6]:
@@ -168,11 +167,13 @@ def loadPlaceData(place_obj, filename):
 
         objectDescriptions = []
         count = 0
+        start_of_character = 0
 
         # starting in the next *** section, get the corresponding descriptions for each object
         while count < numObjects: 
             objectDescriptions.append(data_chunks[idx + 1 + count])
             count += 1
+            start_of_character = idx + 1 + count
 
         count = 0
         for obj in objnames:
@@ -218,8 +219,8 @@ def loadPlaceData(place_obj, filename):
                 # loadAltNames("objalternatenames.txt", newthing) 
     
     # character loading section
-    if "no characters" not in data_chunks[idx + nextIdxIncrement + 1]:
-        idx = idx + nextIdxIncrement + 1
+    if "no characters" not in data_chunks[7 + nextIdxIncrement]:
+        idx = 7 + nextIdxIncrement
         charnames = data_chunks[idx].split("\n")
 
         for c in charnames:
