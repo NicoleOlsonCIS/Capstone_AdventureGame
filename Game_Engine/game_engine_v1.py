@@ -606,7 +606,7 @@ class Game:
 # define the "Place" class
 class Place:
 	# game(game object), name(string), day[], night[], adjacentPaceNames[10 strings], things[strings], doors{ })
-	def __init__(self, game, name, day, night, adjacentPlaceNames, things = None, doors = None, character = None):
+	def __init__(self, game, name, day, night, adjacentPlaceNames, things = None, doors = None):
 		self.name = name
 		self.adjacent_place_names = adjacentPlaceNames 
 
@@ -630,12 +630,8 @@ class Place:
 		game.addPlace(self) # creates a map between name and place object in the game
 
 		# v12 characters as part of places
-		if character is not None:
-			self.character = character
-			self.hasCharacter = True
-		else:
-			self.character = None
-			self.hasCharacter = False
+		self.character = None
+		self.hasCharacter = False
 
 	# new in v9 update the doors dictionary when a door becomes locked
 	def lockDoor(self, direction):
@@ -665,6 +661,11 @@ class Place:
 	# new in v2 (correpond to take and drop)
 	def addThing(self, thing):
 		self.things.append(thing)
+
+	# v12 adding character to place
+	def addCharacter(self, thing):
+		self.character = thing
+		self.hasCharacter = True
 
 	def removeThing(self, thing):
 		self.things.remove(thing)
@@ -825,6 +826,8 @@ class Thing:
 		# set the day and night dialogue of the character
 		if is_character is not False:
 			print("Character created")
+			print("Character's name: ")
+			print(self.name)
 			self.char_day = char_day
 			self.char_night = char_night
 

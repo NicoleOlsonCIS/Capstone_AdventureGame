@@ -313,6 +313,7 @@ def loadPlaceData(place_obj, filename):
 
                 newthing = g.Thing(obj, day, night, place_obj, True, char_day, char_night)
                 place_obj.addThing(newthing)
+                place_obj.addCharacter(newthing)
         
 def buildGame():
 
