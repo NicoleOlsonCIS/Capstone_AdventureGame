@@ -578,16 +578,17 @@ def main():
         return
  
     elif "load" in new_or_save:
-        print("Checking for existing saves...")
+        print("\n")
+        Output.searchForGameOutput("Checking for existing saves")
 
         if path.exists("savedGame.pickle"):
-            print("Saved game found, loading now .... ")
-
             game = fromSave()
             game.setIsValid()
-            print("Welcome back!")
+
+            time = game.time
+            Output.welcomeBackToGame(game.user.current_place.getDescriptionBasedOnTimeAndVisitCount(time))
+
             print("Enter \'quit\' at the prompt to quit the game at any time.")
-            Output.welcomeToGame(game.user.current_place.day[0]) # start day first visit
             gameLoop(game)
             print("Goodbye again!")
             return
