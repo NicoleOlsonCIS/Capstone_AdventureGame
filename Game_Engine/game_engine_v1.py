@@ -337,7 +337,7 @@ class Game:
 			valid_talks.append(user_place.character) # you can also talk to characters
 
 		# set the dictionary with keys as actions and values as valid corresponding things
-		newdict = {"move_user": valid_moves, "take": valid_takes, "drop": valid_drops, "look": valid_looks, "search": valid_searches, "read": valid_reads, "talk": valid_talks}
+		newdict = {"move_user": valid_moves, "take": valid_takes, "drop": valid_drops, "look": valid_looks, "search": valid_searches, "read": valid_reads, "talk_npc": valid_talks}
 
 		# set the "is valid" attribute to the current dictionary of valid game operations
 		self.isValid = newdict
