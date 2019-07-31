@@ -245,7 +245,7 @@ def loadPlaceData(place_obj, filename):
             count += 1
     
         count = 0
-        for char in charNames:
+        for char in charnames:
             char = char.rstrip()
             char = char.lstrip()
             if char != "":
