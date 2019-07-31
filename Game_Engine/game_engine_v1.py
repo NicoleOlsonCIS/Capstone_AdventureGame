@@ -329,10 +329,11 @@ class Game:
 			if item.is_readable:
 				valid_reads.append(item)
 
+
 		# v12 add a character to the list of things to look at and talk with
+		valid_talks = []
 		if user_place.hasCharacter: 
 			valid_looks.append(user_place.character) # character is a Thing obj
-			valid_talks = []
 			valid_talks.append(user_place.character) # you can also talk to characters
 
 		# set the dictionary with keys as actions and values as valid corresponding things
