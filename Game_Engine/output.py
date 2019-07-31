@@ -614,7 +614,6 @@ class Output(object):
                 time.sleep(0.5)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
-            print("\n")
         else:
             message = message + dots
             print(message)
@@ -629,32 +628,38 @@ class Output(object):
         pl1 = "Saved game found!"
         pl2 = "Loading . "
         pl3 = ". . . "
-        c = 5
+        printClear = "                                                        "
 
         welcome = 'Welcome back user!'
         welcome2 = " A recap of where you are: "
 
+
         if sys.stdin.isatty():
+            sys.stdout.write(u"\u001b[1000D")
+            sys.stdout.write(printClear)
+            sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u'\u001b[38;5;252m')
             for elem in pl1:
                 time.sleep(0.04)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
-            sys.stdout.write(u'\u001b[38;5;$50m')
-            print("\n")
+            time.sleep(1)
+            sys.stdout.write(u"\u001b[1000D")
+            sys.stdout.write(printClear)
+            sys.stdout.write(u"\u001b[1000D")
             for elem in pl2:
                 time.sleep(0.04)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
-            sys.stdout.write(u'\u001b[38;5;$51m')
             for elem in pl3:
                 time.sleep(0.5)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
-                sys.stdout.write(u'\u001b[38;5;$4' + str(c) + 'm')
-                c -= 1
+            time.sleep(1)
+            sys.stdout.write(u"\u001b[1000D")
+            sys.stdout.write(printClear)
+            sys.stdout.write(u"\u001b[1000D")
             # welcome message 
-            print("\n")
             sys.stdout.write(u'\u001b[38;5;$51m')
             for elem in welcome:
                 time.sleep(0.04)
