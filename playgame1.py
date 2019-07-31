@@ -11,6 +11,9 @@ import parser as p
 from output import *
 import termios
 from termios import tcflush, TCIFLUSH
+import pickle
+import os.path
+from os import path
 
 # playgame1.py works with v11.7 of game engine
 
@@ -276,7 +279,7 @@ def loadPlaceData(place_obj, filename):
                 # load readable  things
                 loadReadables("readables.txt", "newspaper.txt", newthing)
 
-                count += 1 # what 
+                count += 1 
     
     # character loading section
     if "no characters" not in data_chunks[8 + nextIdxIncrement]:
@@ -520,7 +523,45 @@ def buildGame():
 
     return game
 
+# returns a game object
+def fromSave():
+    
+    pickle_in = open("savedGame.pickle", "rb")
+    game = pickle.load(pickle_in)
+    # get the game object
+    return game
 
+def saveGame(game):
+    pickle_out = open("savedGame.pickle", "wb")
+    pickle.dump(game, pickle_out)
+    pickle_out.close()
+
+
+def gameLoop(game):
+    # set up parser
+    playparser = p.Parser()
+
+    # start playing
+    while True:
+        # flush standard in 
+        termios.tcflush(sys.stdin, termios.TCIFLUSH)
+        #sys.stdin.flush()
+
+        # game continues until user enters quit at the prompt 
+        received = input("> ")
+        if "quit" in received:
+            print("Do you want to save this game? (y/n)")
+            received = input("> ")
+            if "y" in received:
+                saveGame(game)
+                return
+            else:
+                break
+        else:
+            playaction = a.Action()
+            playaction = playparser.parseInput(received)
+            print(playaction.verb, playaction.direction, playaction.direct_obj, playaction.indirect_obj) 
+            game.fromParserToGame(playaction)
 
 def main():
 
@@ -532,36 +573,31 @@ def main():
         game.setIsValid()
         Output.welcomeToGame(game.user.current_place.day[0]) # start day first visit
         print("Enter \'quit\' at the prompt to quit the game at any time.")
-       
-        # set up parser
-        playparser = p.Parser()
-
-        # start playing
-        while True:
-
-            # flush standard in 
-            termios.tcflush(sys.stdin, termios.TCIFLUSH)
-            #sys.stdin.flush()
-
-            # game continues until user enters quit at the prompt 
-            received = input("> ")
-            if "quit" in received:
-                break      
-            else:
-                playaction = a.Action()
-                playaction = playparser.parseInput(received)
-                print(playaction.verb, playaction.direction, playaction.direct_obj, playaction.indirect_obj) 
-                game.fromParserToGame(playaction)
+        gameLoop(game)
+        print("Goodbye!")
+        return
  
     elif "load" in new_or_save:
-        print("Checking for existing saves...")
-        print("No saves found. Exiting...")
-        return
-        # loading code here
+        print("\n")
+        Output.searchForGameOutput("Checking for existing saves")
+
+        if path.exists("savedGame.pickle"):
+            game = fromSave()
+            game.setIsValid()
+
+            time = game.time
+            Output.welcomeBackToGame(game.user.current_place.getDescriptionBasedOnTimeAndVisitCount(time))
+
+            print("Enter \'quit\' at the prompt to quit the game at any time.")
+            gameLoop(game)
+            print("Goodbye again!")
+            return
+        else: 
+            print("No saves found. Exiting...")
+            return
 
     else:
         print("You did not choose to start a new game or load a saved game. Exiting...") 
         return
-
 
 main()

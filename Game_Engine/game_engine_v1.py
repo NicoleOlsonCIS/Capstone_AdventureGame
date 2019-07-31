@@ -18,8 +18,8 @@
 # v11.5 --> make dropped items show up in room description (unless dropped inside a feature) 
 # v11.6 --> implement insert, update error handling 
 # v11.7 --> implement listen 
-# v12
-# v13
+# v12   --> implement character, including edits to output
+
 # define the "Game" class
 
 # import sys
@@ -79,6 +79,7 @@ class Game:
 			if t.name.lower() == itemname or itemname in t.altNames:
 				des = t.getDescription(self.time) 
 				Output.print_look(des)
+				#return
 				# v11.2: if there are other objects viewable because of this one,
 				# describe those other objects also.
 				# v11.4: separate handling for searchable things in handleSearch function.
