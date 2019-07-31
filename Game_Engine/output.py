@@ -53,6 +53,19 @@ keyline1 = [k1]
 keyline2 = [k2p1, k2p2, k2p3]
 keyline3 = [k3p1, k3p2, k3p3, k3p4, k3p5]
 
+##
+##
+## Strings for speech bubbles
+##
+##
+sb1 = "/t ____________________________"
+sb2 = "/t/                            \"
+sb3 = "/t| "
+sb4 = "/t\___    _____________________/"
+sb5 = "/t    | /"
+sb6 = "/t    |/"
+sb7 = "  |"
+
 # static class
 class Output(object):
 
@@ -126,6 +139,92 @@ class Output(object):
         else:
             print(msg)
 
+    # print conversations
+    @classmethod
+    def print_talk(self, characters_message):
+        if sys.stdin.isatty():
+            # break up things in quotes from things outside quotes
+            outside = ""
+            inside = ""
+            count = 0
+            inside = False
+
+            for c in characters_message:
+                if c == "/":
+                    count += 1
+                    if count == 1: # then we are at the beginning of a quote, print the outside 
+                        inside = True # set inside to true
+                        if len(outside) is not 0:
+                            print(ouside)
+                            outside = ""
+                            break
+                    if count == 2:
+                        # we are done with the inside
+                        inside = False
+                        # reset count
+                        count = 0:
+                        # get the lenght of the string
+                        length = len(inside)
+                        if length > 25:
+                            lines = Output.getLines(inside)
+                            count = len(lines)
+                            # print a speech bubble with multiple lines
+                            # color of speech bubble:
+                            sys.stdout.write(u'\u001b[38;5;$11m')
+                            print(sb1 + "\n" + sb2)
+                            lcount = 0
+                            while lcount < count:
+                                sys.stdout.write(sb3) # no newline
+                                sys.stdout.write(u'\u001b[38;5;$12m') # change to text color
+                                # get number of characters in the line
+                                line_length = len(lines[lcount])
+                                if line_length == 25:
+                                    system.stdout.write(lines[lcount])
+                                    sys.stdout.write(u'\u001b[38;5;$11m')
+                                    print(sb7)
+                                    lcount += 1
+                                else: # in the event that the line needs spaces added up to len of 25
+                                    while(len(lines[lcount]) < 25):
+                                        lines[lcount].append(" ") # add a space
+                                    # now that it is 25 long
+                                    system.stdout.write(lines[lcount])
+                                    sys.stdout.write(u'\u001b[38;5;$11m')
+                                    print(sb7)
+                                    lcount += 1
+                            # print the closing of the speech bubble
+                            print(sb4 + "\n" + sb5 + "\n" + sb6)
+                            break
+                        else:
+                            # print a speech bubble with a single line
+                            if length < 25:
+                                while(len(inside) < 25):
+                                    inside.append(" ") # add a space
+                            # print opening of speech bubble: 
+                            sys.stdout.write(u'\u001b[38;5;$11m')
+                            print(sb1 + "\n" + sb2)
+                            sys.stdout.write(sb3) # no newline
+                            sys.stdout.write(u'\u001b[38;5;$12m') # change to text color
+                            sys.stdout.write(inside)
+                            sys.stdout.write(u'\u001b[38;5;$11m') # change back to bubble color
+                            print(sb7 + "\n" + sb4 + "\n" + sb5 + "\n" + sb6)
+                            # reset inside variable
+                            inside = ""
+                            break
+                if inside == True:
+                    inside.append(c)
+                    break
+                if inside = False:
+                    outside.append(c)
+
+            # if the string ends with outside stuff then there will be left over things to print
+            if len(outside) is not 0:
+                print(ouside)
+                outside = ""
+                break
+    else:
+        print(characters_message)
+
+
     # print "drop"
     @classmethod
     def print_drop(self, obj_name):
@@ -184,6 +283,42 @@ class Output(object):
             result = result + "\n" + l
 
         return result
+
+    @classmethod
+    # helper function, called for conversation messages, returns array of lines <=25 char each
+    def getLines(self, message):
+
+        # split at white space, turn it into an array of words
+        words = message.split()
+        count = len(words)
+
+        # array of lines, where lines are max 30 characters
+        lines = []
+        line = ""
+
+        for w in words:
+             # get the length of a word
+            l = len(w)
+            # get the current length of the line
+            l2 = len(line)
+
+            if l2 + l > 25:
+                # add the line even though it is less than 60
+                lines.append(line)
+                # resert the line variable to the new word
+                line = w
+                count -= 1
+            # otherwise, add the word to the line
+            else:
+                line = line + " " + w
+                count -= 1
+
+            # If that was the last word, append this line
+            if count == 0:
+                lines.append(line)
+
+        return lines
+
 
     # call when door is unlocked and you are moving into a new room
     @classmethod
