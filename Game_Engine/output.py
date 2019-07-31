@@ -64,7 +64,7 @@ sb3 = "| "
 sb4 = "\\" + "___    _____________________" + "/"
 sb5 = "    | " + "/"
 sb6 = "    |" + "/"
-sb7 = "  |"
+sb7 = "   |"
 
 # static class
 class Output(object):
@@ -77,7 +77,7 @@ class Output(object):
 
         # if message is long, break up into lines of ~60 characters 
         if length > 60:
-            error_message = Output.break_up_long_message(error_message)
+            error_message = Output.break_up_long_message(error_message, 60)
 
         # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
         if sys.stdin.isatty():
@@ -92,7 +92,7 @@ class Output(object):
 
         # if message is long, break up into lines of ~60 characters 
         if length > 60:
-            hint_message = Output.break_up_long_message(hint_message)
+            hint_message = Output.break_up_long_message(hint_message, 60)
 
         # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
         if sys.stdin.isatty():
@@ -107,7 +107,7 @@ class Output(object):
 
         # if message is long, break up into lines of ~60 characters 
         if length > 60:
-            look_description = Output.break_up_long_message(look_description)
+            look_description = Output.break_up_long_message(look_description, 60)
 
         # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
         if sys.stdin.isatty():
@@ -170,7 +170,7 @@ class Output(object):
                         inside = True # set inside to true
                         if len(str_outside) is not 0:
                             if len(str_outside) > 60:
-                                str_outside = Output.break_up_long_message(str_outside)
+                                str_outside = Output.break_up_long_message(str_outside, 30)
                             #print("\n")
                             sys.stdout.write(u'\u001b[38;5;$146m')
                             for elem in str_outside:
@@ -188,8 +188,8 @@ class Output(object):
                         inside = False
                         # get the lenght of the string
                         length = len(str_inside)
-                        if length > 25:
-                            lines = Output.getLines(str_inside)
+                        if length > 24:
+                            lines = Output.getLines(str_inside, 24)
                             count = len(lines)
                             # print a speech bubble with multiple lines
                             # color of speech bubble:
@@ -201,18 +201,18 @@ class Output(object):
                                 sys.stdout.write(u'\u001b[38;5;$157m') # change to text color
                                 # get number of characters in the line
                                 line_length = len(lines[lcount])
-                                if line_length == 25:
+                                if line_length == 24:
                                     sys.stdout.write(lines[lcount])
                                     sys.stdout.write(u'\u001b[38;5;$244m')
                                     print(sb7)
                                     time.sleep(0.7)
                                     lcount += 1
                                 else: # in the event that the line needs spaces added up to len of 25
-                                    while(len(lines[lcount]) < 25):
+                                    while(len(lines[lcount]) < 24):
                                         l = lines[lcount] 
                                         l = l + " "
                                         lines[lcount] = l
-                                    # now that it is 25 long
+                                    # now that it is 24 long
                                     sys.stdout.write(lines[lcount])
                                     time.sleep(0.7)
                                     sys.stdout.write(u'\u001b[38;5;$244m')
@@ -230,8 +230,8 @@ class Output(object):
                             continue
                         else:
                             # print a speech bubble with a single line
-                            if length < 25:
-                                while(len(str_inside) < 25):
+                            if length < 24:
+                                while(len(str_inside) < 24):
                                     str_inside = str_inside + " " # add a space
                             # print opening of speech bubble: 
                             sys.stdout.write(u'\u001b[38;5;$244m')
@@ -262,7 +262,7 @@ class Output(object):
             # if the string ends with outside stuff then there will be left over things to print
             if len(str_outside) is not 0:
                 if len(str_outside) > 60:
-                    str_outside = Output.break_up_long_message(str_outside)
+                    str_outside = Output.break_up_long_message(str_outside, 30)
                 sys.stdout.write(u'\u001b[38;5;$146m')
                 #sys.stdout.write(u'\e[3m')
                 for elem in str_outside:
@@ -297,8 +297,8 @@ class Output(object):
             print(msg)
 
     @classmethod
-    # helper functions, called if a line is > 60 characters
-    def break_up_long_message(self, extended_message):
+    # helper functions, break up message to lines of specified length
+    def break_up_long_message(self, extended_message, length):
 
         # split at white space, turn it into an array of words
         words = extended_message.split()
@@ -314,8 +314,8 @@ class Output(object):
             # get the current length of the line
             l2 = len(line)
 
-            if l2 + l > 60:
-                # add the line even though it is less than 60
+            if l2 + l > length:
+                # add the line even though it is less than length
                 lines.append(line)
                 # resert the line variable to the new word
                 line = w
@@ -337,14 +337,13 @@ class Output(object):
         return result
 
     @classmethod
-    # helper function, called for conversation messages, returns array of lines <=25 char each
-    def getLines(self, message):
+    # helper function, called for conversation messages, returns array of lines <=size char each
+    def getLines(self, message, size):
 
         # split at white space, turn it into an array of words
         words = message.split()
         count = len(words)
 
-        # array of lines, where lines are max 30 characters
         lines = []
         line = ""
 
@@ -354,10 +353,10 @@ class Output(object):
             # get the current length of the line
             l2 = len(line)
 
-            if l2 + l > 25:
-                # add the line even though it is less than 60
+            if l2 + l > size:
+                # add the line to the [] without adding the new word
                 lines.append(line)
-                # resert the line variable to the new word
+                # reset the line variable to the new word
                 line = w
                 count -= 1
             # otherwise, add the word to the line
@@ -560,7 +559,7 @@ class Output(object):
     def orientUser(self, placeName, placeDescription):
         length = len(placeDescription)
         if length > 60:
-            placeDescription = Output.break_up_long_message(placeDescription)
+            placeDescription = Output.break_up_long_message(placeDescription, 60)
 
         welcome = "You are now in the " + placeName
 
@@ -581,7 +580,7 @@ class Output(object):
     def welcomeToGame(self, placeDescription):
         length = len(placeDescription)
         if length > 60:
-            placeDescription = Output.break_up_long_message(placeDescription)
+            placeDescription = Output.break_up_long_message(placeDescription, 60)
 
         welcome = 'Welcome user. We wish you luck on your journey.'
 
