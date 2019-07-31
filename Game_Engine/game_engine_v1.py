@@ -454,7 +454,7 @@ class Game:
 
 		# v12 talking to things (characters)
 		elif action.verb == "talk_npc":
-			v = self.isValid.get("talk")
+			v = self.isValid.get("talk_npc")
 			for i in v: 
 				if action.direct_obj != None:
 					# other names for a person, like "him, her, woman"
