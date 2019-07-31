@@ -171,7 +171,7 @@ def loadPlaceData(place_obj, filename):
 
         # figure out where the next type section starts based on how many sections there will be for objects
         # for instance, if there is 1 object, then we index past that object's descriptions
-        nextIdxIncrement = numObjects
+        nextIdxIncrement = numObjects + idx
         print("Printing the increment set from obejct section")
         print(nextIdxIncrement)
 
