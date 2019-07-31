@@ -213,7 +213,7 @@ class Game:
 	def handleTalk(self, attemptedObj, canTalk):
 		if canTalk:
 			character = self.user.current_place.character
-			if character.name == attemptedObj or attemptedObj in character.altNames:
+			if character.name.lower() == attemptedObj.lower():
 				Output.print_talk(character.getCharacterSpeak(self.time))
 				return
 		else:
@@ -516,6 +516,7 @@ class Game:
 			return
 		
 		if action.verb == "talk_npc":
+			print("executing talk")
 			self.handleTalk(action.direct_obj, True)
 			self.updateTime(1)
 			return
