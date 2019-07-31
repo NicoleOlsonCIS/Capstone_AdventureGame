@@ -58,12 +58,12 @@ keyline3 = [k3p1, k3p2, k3p3, k3p4, k3p5]
 ## Strings for speech bubbles
 ##
 ##
-sb1 = "/t ____________________________"
-sb2 = "/t/                            \"
-sb3 = "/t| "
-sb4 = "/t\___    _____________________/"
-sb5 = "/t    | /"
-sb6 = "/t    |/"
+sb1 = "____________________________"
+sb2 = "/" + "                            " + "\\"
+sb3 = "| "
+sb4 = "\\" + "___    _____________________" + "/"
+sb5 = "    | " + "/"
+sb6 = "    |" + "/"
 sb7 = "  |"
 
 # static class
@@ -221,6 +221,7 @@ class Output(object):
                 print(ouside)
                 outside = ""
                 break
+
     else:
         print(characters_message)
 
