@@ -239,7 +239,6 @@ def loadPlaceData(place_obj, filename):
         while count < numCharacters: 
             characterDescriptions.append(data_chunks[idx + 1 + count])
             count += 1
-        
         while count < numCharacters * 2:
             characterDialogue.append(data_chunks[idx + 1 + count])
             count += 1
@@ -294,7 +293,7 @@ def loadPlaceData(place_obj, filename):
 
                 # if there is less than 5, fill up to 5 by copying the last one over
                 while numDialogues < 5:
-                    cdi_arr.append(cd_arr[numDialogues - 1])
+                    cdi_arr.append(cdi_arr[numDialogues - 1])
                     numDialogues = len(cdi_arr)
 
                 # check if there are any 'day/night' aspects to descriptions (otherwise all day)
@@ -307,8 +306,8 @@ def loadPlaceData(place_obj, filename):
                     char_day.append(day_night[0])
                 
                 # if there are no night specific descriptions, then set them the same as day
-                if len(night) == 0:
-                    night = day
+                if len(char_night) == 0:
+                    char_night = char_day
 
                 newthing = g.Thing(char, day, night, place_obj, True, char_day, char_night)
                 place_obj.addThing(newthing)
