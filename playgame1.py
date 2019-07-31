@@ -12,7 +12,7 @@ from output import *
 import termios
 from termios import tcflush, TCIFLUSH
 
-# playgame1.py works with v11.4 of game engine
+# playgame1.py works with v11.7 of game engine
 
 # Loads information about readable objects.
 def loadReadables(filename1, filename2, thing_obj):
@@ -58,6 +58,17 @@ def loadSearchables(filename, thing_obj):
             thing_obj.is_searchable = True
             return
 
+# Load text data for listenable conversation 
+def loadListens(place_obj, filename):
+    fpath = "./Game_Files/" + filename
+    with open(fpath) as f:
+        read_data = f.read()
+        data_chunks = read_data.split("***\n")
+
+    for chunk in data_chunks:
+        chunk = chunk.rstrip("\n")     
+        place_obj.listenDescrips.append(chunk)
+
 # Some things in the game are related to each other,
 # e.g. one thing is viewable only after another thing has been viewed.
 # This function loads those relationships from a file. 
@@ -72,7 +83,7 @@ def loadThingDependencies(filename, thing_obj):
         objNames = chunk.split(":")
         if objNames[0].lower() == thing_obj.name.lower():
             thing_obj.hasOtherItems.append(objNames[1])
-            return  
+
 
 # Some things in the game have alternate names.
 # e.g. "scrap of fabric"/"fabric scrap", or "ticket counter"/"counter"
@@ -404,6 +415,8 @@ def buildGame():
     loadPlaceData(place26, "cloakroom.txt")
     loadPlaceData(place27, "ashgrove.txt")
     loadPlaceData(place28, "rearmanorgrounds.txt")
+
+    loadListens(place24, "drawinglisten.txt")
 
     # associate user with game 
     game.setUser(user)
