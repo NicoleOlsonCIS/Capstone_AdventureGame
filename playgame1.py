@@ -57,10 +57,6 @@ def loadPlaceData(place_obj, filename):
         read_data = f.read()
         data_chunks = read_data.split("***\n")
     
-    #debug
-    print("data chunks in file: ")
-    print(len(data_chunks))
-    
     # day and night descriptions
     dayDescrip1 = data_chunks[0].rstrip("\n")
     dayDescrip2 = data_chunks[1].rstrip("\n")
@@ -158,10 +154,6 @@ def loadPlaceData(place_obj, filename):
         idx = 7 + nextIdxIncrement
         objnames = data_chunks[idx].split("\n")
 
-        print("Debug: object names")
-        for i in objnames:
-            print(i)
-
         for o in objnames:
             if o == "":
                 objnames.remove(o)
@@ -172,8 +164,6 @@ def loadPlaceData(place_obj, filename):
         # figure out where the next type section starts based on how many sections there will be for objects
         # for instance, if there is 1 object, then we index past that object's descriptions
         nextIdxIncrement = nextIdxIncrement + numObjects
-        print("Printing the increment set from obejct section")
-        print(nextIdxIncrement)
 
         objectDescriptions = []
         count = 0
@@ -227,15 +217,9 @@ def loadPlaceData(place_obj, filename):
                 # loadAltNames("objalternatenames.txt", newthing) 
     
     # character loading section
-    print("debug: ")
-    print(data_chunks[8 + nextIdxIncrement])
     if "no characters" not in data_chunks[8 + nextIdxIncrement]:
         idx = 8 + nextIdxIncrement
         charnames = data_chunks[idx].split("\n")
-
-        print("debug: printing character names")
-        for i in charnames:
-            print(i)
 
         for c in charnames:
             if c == "":
@@ -326,7 +310,7 @@ def loadPlaceData(place_obj, filename):
                 if len(night) == 0:
                     night = day
 
-                newthing = g.Thing(obj, day, night, place_obj, True, char_day, char_night)
+                newthing = g.Thing(char, day, night, place_obj, True, char_day, char_night)
                 place_obj.addThing(newthing)
                 place_obj.addCharacter(newthing)
         
