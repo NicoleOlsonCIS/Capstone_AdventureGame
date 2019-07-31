@@ -453,7 +453,7 @@ class Game:
 						return True
 
 		# v12 talking to things (characters)
-		elif action.verb == "talk":
+		elif action.verb == "talk_npc":
 			v = self.isValid.get("talk")
 			for i in v: 
 				if action.direct_obj != None:
@@ -513,7 +513,7 @@ class Game:
 			self.day += 1
 			return
 		
-		if action.verb == "talk":
+		if action.verb == "talk_npc":
 			self.handleTalk(action.direct_obj, True)
 			self.updateTime(1)
 			return
