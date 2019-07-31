@@ -223,6 +223,10 @@ def loadPlaceData(place_obj, filename):
         idx = 7 + nextIdxIncrement
         charnames = data_chunks[idx].split("\n")
 
+        print("debug: printing character names")
+        for i in charnames:
+            print(i)
+
         for c in charnames:
             if c == "":
                 charnames.remove(c)
