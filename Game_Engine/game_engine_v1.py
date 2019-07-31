@@ -456,10 +456,9 @@ class Game:
 		elif action.verb == "talk_npc":
 			print("debug talk1")
 			v = self.isValid.get("talk_npc")
-			print(v)
 			for i in v:
-				print("Printing valid talks:")
-				print(i) 
+				print("Printing names to talk to:")
+				print(i.name) 
 				if action.direct_obj != None:
 					# other names for a person, like "him, her, woman"
 					if i.name.lower() == action.direct_obj or action.direct_obj in i.altNames:
@@ -825,8 +824,6 @@ class Thing:
 		self.is_character = is_character
 		# set the day and night dialogue of the character
 		if is_character is not False:
-			print("Character created")
-			print("Character's name: ")
 			print(self.name)
 			self.char_day = char_day
 			self.char_night = char_night
