@@ -460,10 +460,12 @@ class Game:
 				if action.direct_obj != None:
 					# other names for a person, like "him, her, woman"
 					if i.name.lower() == action.direct_obj or action.direct_obj in i.altNames:
+						print("debug talkA")
 						return True
 					if action.indirect_obj != None: # not sure if necessary here
 						objName = action.direct_obj + " " + action.indirect_obj
 						if objName == i.name.lower() or objName in i.altNames:
+							print("debug talkB")
 							return True
 		else:
 			print("debug talk2")
