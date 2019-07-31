@@ -9,8 +9,65 @@ import game_engine_v1 as g
 import action as a
 import parser as p
 from output import *
+import termios
+from termios import tcflush, TCIFLUSH
 
-# playgame1.py works with v11.2 of game engine
+# playgame1.py works with v11.7 of game engine
+
+# Loads information about readable objects.
+def loadReadables(filename1, filename2, thing_obj):
+    if thing_obj.name == "newspaper":
+        fpath = "./Game_Files/" + filename2
+        with open(fpath) as f:
+            read_data = f.read()
+            data_chunks = read_data.split("***\n")
+
+        for chunk in data_chunks: 
+            chunk = chunk.rstrip("\n")
+            thing_obj.readDescrips.append(chunk)
+
+        thing_obj.is_readable = True
+        return
+
+    else: 
+        fpath = "./Game_Files/" + filename1
+        with open(fpath) as f: 
+            read_data = f.read()
+            data_chunks = read_data.split("***\n")
+
+        for chunk in data_chunks:
+            chunk = chunk.rstrip("\n")
+            parts = chunk.split("###")
+            if parts[0] == thing_obj.name:
+                thing_obj.readDescrips.append(parts[1])
+                thing_obj.is_readable = True
+                return
+
+# Loads information about searchable features.
+def loadSearchables(filename, thing_obj):
+    fpath = "./Game_Files/" + filename
+    with open(fpath) as f:
+        read_data = f.read()
+        data_chunks = read_data.split("***\n")
+
+    for chunk in data_chunks:
+        chunk = chunk.rstrip("\n")
+        parts = chunk.split(":")
+        if parts[0].lower() == thing_obj.name.lower():
+            thing_obj.searchDescrip = parts[1]
+            thing_obj.is_searchable = True
+            return
+
+# Load text data for listenable conversation 
+def loadListens(place_obj, filename):
+    fpath = "./Game_Files/" + filename
+    with open(fpath) as f:
+        read_data = f.read()
+        data_chunks = read_data.split("***\n")
+
+    for chunk in data_chunks:
+        chunk = chunk.rstrip("\n")     
+        place_obj.listenDescrips.append(chunk)
 
 # Some things in the game are related to each other,
 # e.g. one thing is viewable only after another thing has been viewed.
@@ -26,7 +83,7 @@ def loadThingDependencies(filename, thing_obj):
         objNames = chunk.split(":")
         if objNames[0].lower() == thing_obj.name.lower():
             thing_obj.hasOtherItems.append(objNames[1])
-            return  
+
 
 # Some things in the game have alternate names.
 # e.g. "scrap of fabric"/"fabric scrap", or "ticket counter"/"counter"
@@ -40,11 +97,12 @@ def loadAltNames(filename, thing_obj):
     for chunk in data_chunks:
         chunk = chunk.rstrip("\n")
         objNames = chunk.split(":")
-        synonyms = objNames[1].split(",") 
-        if objNames[0].lower() == thing_obj.name.lower():
-            for syn in synonyms:
-                thing_obj.altNames.append(syn)
-            return
+        if len(objNames) > 1: 
+            synonyms = objNames[1].split(",")
+            if objNames[0].lower() == thing_obj.name.lower():
+                for syn in synonyms:
+                    thing_obj.altNames.append(syn)
+                return
 
 # reads in place information from room file
 def loadPlaceData(place_obj, filename):
@@ -141,9 +199,11 @@ def loadPlaceData(place_obj, filename):
                 place_obj.addThing(newthing)
 
                 # load thing dependencies
-                # loadThingDependencies("objdependencies.txt", newthing)
-                # load alternate names
-                # loadAltNames("objalternatenames.txt", newthing)
+                loadThingDependencies("objdependencies.txt", newthing)
+		        # load alternate names
+                loadAltNames("objalternatenames.txt", newthing)
+                # load info about searchable features
+                loadSearchables("searchables.txt", newthing) 
 
                 count += 1
 
@@ -211,10 +271,12 @@ def loadPlaceData(place_obj, filename):
                 newthing = g.Thing(obj, day, night, place_obj, True, False, None, None)
                 place_obj.addThing(newthing)
              
-                # load thing dependencies
-                # loadThingDependencies("objdependencies.txt", newthing)
                 # load alternate thing names
-                # loadAltNames("objalternatenames.txt", newthing) 
+                loadAltNames("objalternatenames.txt", newthing)
+                # load readable  things
+                loadReadables("readables.txt", "newspaper.txt", newthing)
+
+                count += 1 # what 
     
     # character loading section
     if "no characters" not in data_chunks[8 + nextIdxIncrement]:
@@ -451,6 +513,8 @@ def buildGame():
     loadPlaceData(place27, "ashgrove.txt")
     loadPlaceData(place28, "rearmanorgrounds.txt")
 
+    loadListens(place24, "drawinglisten.txt")
+
     # associate user with game 
     game.setUser(user)
 
@@ -474,6 +538,10 @@ def main():
 
         # start playing
         while True:
+
+            # flush standard in 
+            termios.tcflush(sys.stdin, termios.TCIFLUSH)
+            #sys.stdin.flush()
 
             # game continues until user enters quit at the prompt 
             received = input("> ")

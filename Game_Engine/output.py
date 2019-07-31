@@ -113,7 +113,7 @@ class Output(object):
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$31m')
             for elem in look_description:
-                time.sleep(0.07)
+                time.sleep(0.04)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write('\033[0m')
@@ -131,7 +131,7 @@ class Output(object):
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$12m')
             for elem in msg:
-                time.sleep(0.07)
+                time.sleep(0.04)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write('\033[0m')
@@ -286,7 +286,7 @@ class Output(object):
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$11m')
             for elem in msg:
-                time.sleep(0.07)
+                time.sleep(0.04)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write('\033[0m')
@@ -446,8 +446,9 @@ class Output(object):
             sys.stdout.flush()
             print(d) 
             time.sleep(0.09) # slow part is door opening
-            str = "EEntering " + placeName
-            sys.stdout.write(u"\u001b[32")
+            str = "Entering " + placeName
+        str = "Entering " + placeName
+        sys.stdout.flush()
         for elem in str:
             time.sleep(0.04)
             sys.stdout.write(elem)
@@ -480,7 +481,7 @@ class Output(object):
             time.sleep(1)
             Output.printFlashingDoor(od0, "red", 2, 0.4)
             str = "That door is locked."
-            sys.stdout.write("\t")
+            # sys.stdout.write("\t")
             for elem in str:
                 time.sleep(0.04)
                 sys.stdout.write(elem)
@@ -496,7 +497,7 @@ class Output(object):
                 print("\n")
                 strHint = "Hint:"
                 strHint2 = " You need a key\n"
-                sys.stdout.write("\t")
+                # sys.stdout.write("\t")
                 for elem in strHint:
                     time.sleep(0.04)
                     sys.stdout.write(elem)
@@ -508,9 +509,6 @@ class Output(object):
                     sys.stdout.flush()
                 time.sleep(1) # pause before printing key
                 Output.printKey(keyline1, keyline2, keyline3)
-                time.sleep(2)
-                print("\n\n\n")
-        
             else:
                 print("\n\n\n")
         else:

@@ -11,9 +11,13 @@
 # v9 --> implement "doors" on places that have doors (changes in playgame.py as well)
 # v10 --> change 'up' and 'down' to 'u' and 'd' to match parser
 # v11 --> descriptions of Place now based on number of visits as well
-# v11.1 --> implement "search" and "read"
+# v11.1 --> error handling for "search" and "read"
 # v11.2 --> toggle item description for when it is present/not present//viewable/not viewable 
 # v11.3 --> accommodate alternate thing names (e.g. "scrap of fabric"/"fabric scrap"/"scrap"/"fabric")
+# v11.4 --> finish implementing search and read, add new day message 
+# v11.5 --> make dropped items show up in room description (unless dropped inside a feature) 
+# v11.6 --> implement insert, update error handling 
+# v11.7 --> implement listen 
 # v12
 # v13
 # define the "Game" class
@@ -52,6 +56,7 @@ class Game:
 		if self.time > 39: 
 			self.time -= 39 
 			self.day = self.day + 1
+			Output.print_look("Start of Day {}".format(self.day))
 
 	def getPlace(self, name):
 		if name in self.places.keys():
@@ -62,6 +67,8 @@ class Game:
 	# v3: prints the description of a feature or object 
 	# v11.2: also prints description of other objects dependent on this one 
 	# v11.3: allow alternate thing names
+	# v11.4: if a thing must be searched before revealing another thing inside,
+	#  don't reveal thing just upon examining	
 	def showThing(self, itemname):
 		for t in self.user.things:
 			if t.name.lower() == itemname or itemname in t.altNames:
@@ -74,16 +81,18 @@ class Game:
 				Output.print_look(des)
 				# v11.2: if there are other objects viewable because of this one,
 				# describe those other objects also.
+				# v11.4: separate handling for searchable things in handleSearch function.
+			if not t.is_searchable:
 				for obj in t.hasOtherItems:
 					for thingObj in self.user.current_place.things:
 						if obj.lower() == thingObj.name.lower():
 							Output.print_look(thingObj.isHereDescription)
-							return
-		#v12 character interaction for looking at character
-		if self.user.current_place.hasCharacter:
-			character = self.user.current_place.character
-			if character.name == itemname or itemname in character.altNames:
-				Output.print_look(character.getDescription(self.time))
+
+			#v12 character interaction for looking at character
+			if self.user.current_place.hasCharacter:
+				character = self.user.current_place.character
+				if character.name == itemname or itemname in character.altNames:
+					Output.print_look(character.getDescription(self.time))
 				return
 
 		#for c in self.user.current_place.character.names: 
@@ -173,7 +182,15 @@ class Game:
 		if indirObj != None:
 			attemptedObj = attemptedObj + " " + indirObj
 		if canSearch:
-			print("You search the {}.".format(attemptedObj))
+			# 11.4: reveal hidden item upon searching the enclosing item
+			for t in self.user.current_place.things:
+				if t.name.lower() == attemptedObj or attemptedObj in t.altNames:
+					t.hasBeenSearched = True
+					Output.print_look(t.searchDescrip)
+					for obj in t.hasOtherItems:
+						for thingObj in self.user.current_place.things:
+							if obj.lower() == thingObj.name.lower():
+								Output.print_look(thingObj.isHereDescription)
 		else:
 			if attemptedObj == None:
 				Output.print_input_hint("Try being more specific about what you want to search.")
@@ -184,12 +201,80 @@ class Game:
 		if indirObj != None:
 			attemptedObj = attemptedObj + " " + indirObj
 		if canRead:
-			print("You read the {}.".format(attemptedObj))
+			# check for readable thing in current location
+			for t in self.user.current_place.things:
+				if t.name.lower() == attemptedObj or attemptedObj in t.altNames:
+					# cycle through descriptions until exhausted, then start over at first description
+					if len(t.readDescrips) > t.numTimesRead:
+						Output.print_look(t.readDescrips[t.numTimesRead])
+					else:
+						t.numTimesRead -= len(t.readDescrips) 
+						Output.print_look(t.readDescrips[t.numTimesRead])
+					t.numTimesRead += 1
+					return
+			# check for readable thing in inventory
+			for ob in self.user.things:
+				if ob.name.lower() == attemptedObj or attemptedObj in ob.altNames:
+					if len(ob.readDescrips) > 0:
+						# cycle through descriptions until exhausted, then start over at first description
+						if len(ob.readDescrips) > ob.numTimesRead:
+							Output.print_look(ob.readDescrips[ob.numTimesRead])
+						else:
+							ob.numTimesRead -= len(ob.readDescrips)
+							Output.print_look(ob.readDescrips[ob.numTimesRead])
+						ob.numTimesRead += 1
+						return 
 		else:
 			if attemptedObj == None:
 				Output.print_input_hint("Try being more specific about what you want to read.")
 				return
+			if "book" in attemptedObj:
+				Output.print_input_hint("Try being more specific about which book you want to read.")
+				return
 			Output.print_error("That\'s not something you can read.")
+
+	# new in v11.6 
+	def handleInsert(self, attemptedObj, indirObj, canInsert):
+		if canInsert:
+			if attemptedObj != None and indirObj != None: 
+				Output.print_drop(attemptedObj + " inside the " + indirObj)
+		else:
+			if attemptedObj == None or indirObj == None:
+				Output.print_input_hint("Try being more specific about what you want to put where.")
+			else:
+				if not self.user.userHasThing(attemptedObj):
+					Output.print_error("You can\'t drop something that\'s not in your inventory.")
+					return	
+				if not self.user.current_place.roomHasThing(indirObj):
+					Output.print_error("You don\'t see a " + indirObj + " here.")
+					return
+				if self.user.current_place.roomHasThing(indirObj):
+					Output.print_error("You can\'t put things inside the {}.".format(indirObj)) 
+					return
+
+	#v11.7
+	def handleListen(self, obj1, obj2, canListen):
+		attemptedObj = obj1
+		if not canListen:
+			if attemptedObj == None:
+				Output.print_error("You don\'t hear anything out of the ordinary here.")
+				return
+			if obj2 != None:
+				attemptedObj = attemptedObj + " " + obj2	
+			if self.user.current_place.roomHasThing(attemptedObj) or self.user.userHasThing(attemptedObj):
+				Output.print_error("That\'s not something you can listen to.")
+			else:
+				Output.print_error("You don\'t see a {} to listen to here.".format(attemptedObj))
+		else:
+			currRoom = self.user.current_place
+			# cycle through listen descriptions; when exhausted, start at first listen description
+			if len(currRoom.listenDescrips) > 0:
+				if len(currRoom.listenDescrips) > currRoom.numTimesListened:
+					Output.print_look(currRoom.listenDescrips[currRoom.numTimesListened])
+				else:
+					currRoom.numTimesListened -= len(currRoom.listenDescrips)
+					Output.print_look(currRoom.listenDescrips[currRoom.numTimesListened])
+				currRoom.numTimesListened += 1
 
 	# new in v9: print special error message for locked door
 	def handleLockedDoor(self, direction):
@@ -227,7 +312,7 @@ class Game:
 		print("drop\nabandon\ndiscard\ntrash\n")
 		print("look\nl\nlook at\nstudy\nread\nexamine\nx\nsearch\n")
 		print("talk\nsay\ngreet\nask\nchat\nspeak\n")
-		print("sleep\nrest\nrelax\nopen\nunlock\n")
+		print("sleep\nrest\nrelax\n")
 
 	# point of entry from parser, game takes care of input from this point
 	# either by updating the game or sending error messages
@@ -264,14 +349,25 @@ class Game:
 				self.handleSearch(action.direct_obj, action.indirect_obj, False)
 			elif action.verb == "read":
 				self.handleRead(action.direct_obj, action.indirect_obj, False)
-			elif action.verb == None and action.direct_obj != None:
-				Output.print_input_hint("Try being more specific about what you want to do with the {}.".format(action.direct_obj))
+			elif action.verb == "insert":
+				self.handleInsert(action.direct_obj, action.indirect_obj, False)
+			elif action.verb == "listen":
+				self.handleListen(action.direct_obj, action.indirect_obj, False)
 			else:
-				# thing is present, but action.verb is not one of the thing's allowed verbs
-				if self.user.canAccessThing(action.direct_obj) and not self.user.canActOnThing(action.direct_obj, action.verb):
-					Output.print_error("You can\'t " + action.verb + " the " + action.direct_obj + ". Try doing something else with it.")
-				else:
+				if action.direct_obj == None or action.verb == None:
 					Output.print_error("You don\'t see the point of doing that right now.")
+					return
+				attempted = action.direct_obj 
+				if action.indirect_obj != None: 
+					attempted = attempted + " " + action.indirect_obj
+				# thing is present, but action.verb doesn't work with the thing
+				if self.user.canAccessThing(attempted): 
+					Output.print_error("You can\'t " + action.verb + " the " + attempted + ". Try doing something else with it.")
+					return
+				else:
+					Output.print_error("You don\'t see a {} that you can {}.".format(attempted, action.verb))
+					return
+				Output.print_error("You don\'t see the point of doing that right now.")
 
 	# called after every change in game state in preparation for next input from parser
 	def setIsValid(self):
@@ -451,7 +547,28 @@ class Game:
 					objName = action.direct_obj + " " + action.indirect_obj
 					if objName == i.name.lower() or objName in i.altNames:
 						return True
-
+		# v11.6
+		elif action.verb == "insert":
+			if action.direct_obj == None or action.indirect_obj == None:
+				return False
+			v = self.isValid.get("search")
+			d = self.isValid.get("drop")
+			whereToPut = None
+			whatToPut = None
+			for feat in v:
+				if feat.name.lower() == action.indirect_obj or action.indirect_obj in feat.altNames:
+					whereToPut = feat
+			for o in d:
+				if o.name.lower() == action.direct_obj or action.direct_obj in o.altNames:
+					whatToPut = o
+			if whereToPut == None or whatToPut == None:
+				return False
+			return True
+		#v11.7
+		elif action.verb == "listen":
+			if self.user.current_place.name == "Drawing Room" and (self.day == 2 or self.day == 3):
+				return True
+			return False
 		# v12 talking to things (characters)
 		elif action.verb == "talk_npc":
 			v = self.isValid.get("talk_npc")
@@ -459,7 +576,7 @@ class Game:
 				if action.direct_obj != None:
 					# other names for a person, like "him, her, woman"
 					if i.name.lower() == action.direct_obj:
-						return True
+						return True 
 		else:
 			print("returning false from checkIsValid")
 			return False	
@@ -505,28 +622,41 @@ class Game:
 
 		if action.verb == "sleep":
 			self.handleSleep(action.direct_obj, True)
-			# move time to start of next day 
+			# start new morning 
 			self.time = 6
 			self.day += 1
+			# v11.4: wakeup message
+			Output.print_look("Start of Day {}".format(self.day))
+			Output.print_look("You awake to morning light streaming softly into the room. The House is still and silent around you as you climb out of bed, walking gingerly on frigid floorboards.")
 			return
-		
+		# don't increment time for help/inventory
+		# since these are not "in-game" actions 
+		if action.verb == "show_help":
+			self.showHelp()
+			return
 		if action.verb == "talk_npc":
 			self.handleTalk(action.direct_obj, True)
 			self.updateTime(1)
-			return
-
-		if action.verb == "show_help":
-			self.showHelp()
 			return 
-
 		if action.verb == "show_inventory":
 			self.user.printInventory()
 			return
 		if action.verb == "search":
 			self.handleSearch(action.direct_obj, action.indirect_obj, True)
+			self.updateTime(1)
 			return
 		if action.verb == "read":
 			self.handleRead(action.direct_obj, action.indirect_obj, True)
+			self.updateTime(1)
+			return
+		if action.verb == "insert":
+			self.handleInsert(action.direct_obj, action.indirect_obj, True)
+			self.user.insertObject(action.direct_obj, action.indirect_obj)
+			self.updateTime(1)
+			return
+		if action.verb == "listen":
+			self.handleListen(action.direct_obj, action.indirect_obj, True)
+			self.updateTime(1)
 			return
 		else:
 			return
@@ -583,10 +713,14 @@ class Game:
 		# print door animation if there is a door
 		new_place = self.user.current_place
 
+		#v11.7 provision for making Fields take longer to cross
+		if user_place.name.lower() == "fields" and new_place.name.lower() != "fields":
+			self.updateTime(3)
+
 		# v13 provision for the "leave" message on the Front Manor Grounds
 		# only shows up on first entry into foyer
 		if new_place.numTimesEntered == 0 and new_place.name.lower() == "foyer":
-			print("You hurl yourself up the path as it starts to rain in earnest. Maude follows right on your heels, fishing an iron keyring out of her pockets. At the front door, she shoulders you aside, unlocks the door, and heaves it open with a grunt of effort, dragging you inside by the wrist and dumping you in a rain-soaked heap on the floor.")
+			Output.print_look("You hurl yourself up the path as it starts to rain in earnest. Maude follows right on your heels, fishing an iron keyring out of her pockets. At the front door, she shoulders you aside, unlocks the door, and heaves it open with a grunt of effort, dragging you inside by the wrist and dumping you in a rain-soaked heap on the floor.")
 		
 		if (is_door):
 			Output.newPlaceWithDoor(new_place.name)
@@ -599,6 +733,13 @@ class Place:
 	def __init__(self, game, name, day, night, adjacentPlaceNames, things = None, doors = None):
 		self.name = name
 		self.adjacent_place_names = adjacentPlaceNames 
+
+		#v11.5: list of items dropped in this place 
+		# (separate handling for items dropped inside features) 
+		self.droppedHere = []
+		#v11.7: list of "listen" descriptions
+		self.listenDescrips = [] 
+		self.numTimesListened = 0
 
 		# new in v9: a dictionary of doors tracking: whether there is a door, and whether it is locked or unlocked
 		# dictionary: key is direction, value is either 'locked', 'unlocked', or None
@@ -676,17 +817,27 @@ class Place:
 	def updateNumEntries(self):
 		self.numTimesEntered += 1
 
+	# v12 character related functions
+	# def addCharacter(self, thing):
+	#	self.character = thing
+	#	self.hasCharacter = True # character can be turned "off", so isValid can use hasCharacter to determine
+
 	# v5: display room description
 	def printRoom(self, time):
 		place_name = self.name
 		place_description = self.getDescriptionBasedOnTimeAndVisitCount(time)
 		# v9: call output function to orient user 
 		Output.orientUser(place_name, place_description)
-
-	# v12 character related functions
-	def addCharacter(self, thing):
-		self.character = thing
-		self.hasCharacter = True # character can be turned "off", so isValid can use hasCharacter to determine
+		# v11.5: show any dropped objects currently in the room
+		# (don't show objects that were dropped inside features)
+		features = [feat for feat in self.things if feat.is_searchable]
+		hiddenItems = []
+		for ft in features:
+			for hidden in ft.hasOtherItems:
+				hiddenItems.append(hidden) 
+		for i in self.droppedHere:
+			if i.name not in hiddenItems: 
+				Output.print_look(i.isHereDescription)
 
 # define the User class
 class User:
@@ -723,6 +874,15 @@ class User:
 					self.things.append(thing)
 					# remove the thing from the Place it is in
 					self.current_place.removeThing(thing)
+					# v11.5: remove from place's droppedHere list, if present
+					for i in self.current_place.droppedHere:
+						if thing.name == i.name:
+							r = i 
+							self.current_place.droppedHere.remove(r)
+					# v11.5: remove from feature's hasOtherItems list, if present
+					for feat in self.current_place.things:
+						if thing.name in feat.hasOtherItems:
+							feat.hasOtherItems.remove(thing.name)	
 
 	# new in v2
 	def dropObject(self, thing_name):
@@ -736,7 +896,25 @@ class User:
 					self.things.remove(thing)
 					# add thing to the place the user is in
 					self.current_place.addThing(thing)
+					# v11.5: add thing to the place's droppedHere list
+					self.current_place.droppedHere.append(thing)
 					break
+
+	# v11.6: implement dropping objects inside searchable features (e.g. trunk, wardrobe) 
+	def insertObject(self, thingToDrop, thingToContain):
+		print("dropping obj inside other obj")
+		self.dropObject(thingToDrop)
+		dropped = None
+		for i in self.current_place.things:
+			if i.name == thingToDrop or thingToDrop in i.altNames:
+				dropped = i
+		if dropped == None:
+			return
+		for t in self.current_place.things:
+			if t.name == thingToContain or thingToContain in t.altNames:
+				containerThing = t
+				if containerThing.is_searchable and not containerThing.is_takeable:
+					containerThing.hasOtherItems.append(dropped.name)  
 
 	# new in v2, for figuring out if user has an thing in possession
 	def userHasThing(self, itemname):
@@ -818,6 +996,9 @@ class Thing:
 			print(self.name)
 			self.char_day = char_day
 			self.char_night = char_night
+		#v11.4: search/read descriptions for searchable/readable items
+		self.searchDescrip = "" 
+		self.readDescrips = []
 
 		# keep track of allowed verbs for each thing
 		self.permittedVerbs = [] 

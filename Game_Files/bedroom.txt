@@ -14,8 +14,9 @@ neatly made bed
 wooden wardrobe
 writing desk
 wooden trunk
+set of dresses
 ***
-A neatly made bed, bigger than yours, but not as cozy.###A neatly made bed.
+A neatly made bed, bigger than yours, but not as cozy.###No night
 ***
 A tall wardrobe of medium-brown wood, maybe chestnut.###A tall wardrobe of medium-brown wood.
 ***
@@ -23,12 +24,10 @@ A spindly writing-desk to match the trunk and wardrobe.###A spindly-legged writi
 ***
 A wooden trunk, made of the same medium-brown wood as the wardrobe.###A heavy wooden trunk.
 ***
-set of dresses
+A neat row of blindingly white dresses, stiffly starched. These must belong to someone who doesn’t go outside much.###No night
+***
 sheaf of papers
 ***
-They look as good as new. These must belong to someone who doesn’t go outside much.###No night
-***
-You look through the papers. One in particular catches your eye:
-It's a charcoal portrait of an old man. You know instantly that it’s a good likeness of him - better than a good likeness. It’s like looking at the man himself. The lines trace a suggestion of mournful eyes and a weary smile. You feel - suddenly, intensely - that this man is alive, wherever he is. Whoever he is.###No night 
+You look through the papers. One page in particular catches your eye: a charcoal portrait of an old man. You know instantly that it’s a good likeness of him - better than a good likeness. It’s like looking at the man himself. The lines trace a suggestion of mournful eyes and a weary smile. You feel - suddenly, intensely - that this man is alive, wherever he is. Whoever he is.###No night
 ***
 no characters

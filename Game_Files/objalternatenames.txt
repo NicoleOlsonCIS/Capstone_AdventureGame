@@ -12,7 +12,11 @@ mist:fog
 ***
 porcelain doll:doll
 ***
+tiny square window:tiny window,square window,window
+***
 foyer windows:windows,window
+***
+foyer staircase:polished staircase,staircase
 ***
 foyer curtains:curtains,curtain,drapes,drape,velvet curtains,velvet curtain,velvet drapes,velvet drape,black drapes,black drape,black curtains,black curtain,heavy velvet
 ***
@@ -26,9 +30,9 @@ white porcelain bathtub:tub,bathtub,porcelain tub,porcelain bathtub,white bathtu
 ***
 white porcelain toilet:toilet,white toilet,porcelain toilet
 ***
-set of dresses:dresses,dress
+set of dresses:dresses,dress,white dresses,white dress
 ***
-neatly made bed:bed
+neatly made bed:bed,neat bed,made bed,neatly made,neatly bed
 ***
 wooden trunk:trunk
 ***
@@ -38,7 +42,27 @@ writing desk:desk
 ***
 sheaf of papers:sheaf,papers,drawings,sketches,charcoal drawings,charcoal sketches,sheaf papers,paper,drawing,sketch,charcoal drawing,charcoal sketch
 ***
+library tables:tables,table
+***
+library armchairs:armchairs,armchair
+***
+library bookshelves:bookshelves,shelves,shelf,bookshelf
+***
+library books:books,book
+***
+faded blue book:navy book,navy blue,faded blue,blue book,faded book
+***
+hefty black book:first course,hatch theory,course hatch,course,hefty black,black book,hefty book
+***
+dull reddish book:hatch mechanics,mechanics,interstices,mechanics interstices,red book,reddish book,dull reddish,dull book
+***
 countertops:countertop,counters,counter,kitchen counter,kitchen counters
+***
+cloakroom coats:coats,coat
+***
+military coat:jacket,military jacket,officer's coat,officer's jacket,officer coat,officer jacket,coat pocket,coat pockets,pocket,pockets,jacket pocket,jacket pockets,flap pocket,flap pockets
+***
+cloakroom pegs:pegs,peg
 ***
 small knife:knife
 ***

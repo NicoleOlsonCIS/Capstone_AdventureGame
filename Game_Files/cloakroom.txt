@@ -10,13 +10,18 @@ You stand in a small, dark cloakroom. You can't see much here without more light
 ***
 It's getting too dark to see much here. Best head back to your room - you don't want to be caught out of bed after hours.
 ***
-coats
-pegs
+cloakroom coats
+cloakroom pegs
+military coat
 ***
 Sturdy, warm coats for wearing outside. They’re all far too big for you to wear.###Sturdy, warm coats for wearing outside. They’re all far too big for you to wear.
 ***
 For hanging coats on.###For hanging coats on.
 ***
-no objects 
+An olive-green officer’s jacket, complete with shiny buttons and flap pockets.###No night
+***
+letter
+***
+A handwritten letter, folded up and tucked deep into one of the pockets of the jacket.###No night
 ***
 no characters
