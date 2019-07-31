@@ -193,17 +193,17 @@ class Output(object):
                             count = len(lines)
                             # print a speech bubble with multiple lines
                             # color of speech bubble:
-                            sys.stdout.write(u'\u001b[38;5;$11m')
+                            sys.stdout.write(u'\u001b[38;5;$244m')
                             print(sb1 + "\n" + sb2)
                             lcount = 0
                             while lcount < count:
                                 sys.stdout.write(sb3) # no newline
-                                sys.stdout.write(u'\u001b[38;5;$12m') # change to text color
+                                sys.stdout.write(u'\u001b[38;5;$157m') # change to text color
                                 # get number of characters in the line
                                 line_length = len(lines[lcount])
                                 if line_length == 25:
                                     sys.stdout.write(lines[lcount])
-                                    sys.stdout.write(u'\u001b[38;5;$11m')
+                                    sys.stdout.write(u'\u001b[38;5;$244m')
                                     print(sb7)
                                     lcount += 1
                                 else: # in the event that the line needs spaces added up to len of 25
@@ -213,7 +213,7 @@ class Output(object):
                                         lines[lcount] = l
                                     # now that it is 25 long
                                     sys.stdout.write(lines[lcount])
-                                    sys.stdout.write(u'\u001b[38;5;$11m')
+                                    sys.stdout.write(u'\u001b[38;5;$244m')
                                     print(sb7)
                                     lcount += 1
                             # print the closing of the speech bubble
@@ -228,12 +228,12 @@ class Output(object):
                                 while(len(str_inside) < 25):
                                     str_inside = str_inside + " " # add a space
                             # print opening of speech bubble: 
-                            sys.stdout.write(u'\u001b[38;5;$11m')
+                            sys.stdout.write(u'\u001b[38;5;$244m')
                             print(sb1 + "\n" + sb2)
                             sys.stdout.write(sb3) # no newline
-                            sys.stdout.write(u'\u001b[38;5;$12m') # change to text color
+                            sys.stdout.write(u'\u001b[38;5;$157m') # change to text color
                             sys.stdout.write(str_inside)
-                            sys.stdout.write(u'\u001b[38;5;$11m') # change back to bubble color
+                            sys.stdout.write(u'\u001b[38;5;$244m') # change back to bubble color
                             print(sb7 + "\n" + sb4 + "\n" + sb5 + "\n" + sb6)
                             # reset inside variable
                             str_inside = ""
@@ -251,7 +251,7 @@ class Output(object):
                 print("\n")
                 if len(str_outside) > 60:
                     str_outside = Output.break_up_long_message(str_outside)
-                sys.stdout.write(u'\u001b[38;5;$14m')
+                sys.stdout.write(u'\u001b[38;5;$157m')
                 #sys.stdout.write(u'\e[3m')
                 for elem in str_outside:
                     time.sleep(0.04)
