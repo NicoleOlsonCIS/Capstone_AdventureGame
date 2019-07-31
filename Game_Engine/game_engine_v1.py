@@ -869,6 +869,8 @@ class Thing:
 	# get the character's dialogue based on time of day and num of times talked prior
 	# characters have up to 5 different things to say in the day and night, and after that just say the last thing
 	def getCharacterSpeak(self, time):
+		print("Debug time:")
+		print(time)
 		self.numTimesTalked += 1
 		if time > 5 and time < 25:
 			if self.numTimesTalked > 5:

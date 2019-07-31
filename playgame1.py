@@ -309,7 +309,7 @@ def loadPlaceData(place_obj, filename):
                 if len(char_night) == 0:
                     char_night = char_day
 
-                newthing = g.Thing(char, day, night, place_obj, True, char_day, char_night)
+                newthing = g.Thing(char, day, night, place_obj, False, True, char_day, char_night)
                 place_obj.addThing(newthing)
                 place_obj.addCharacter(newthing)
         

@@ -187,7 +187,7 @@ class Output(object):
                                     while(len(lines[lcount]) < 25):
                                         l = lines[lcount] 
                                         l = l + " "
-                                        line[lcount] = l
+                                        lines[lcount] = l
                                     # now that it is 25 long
                                     sys.stdout.write(lines[lcount])
                                     sys.stdout.write(u'\u001b[38;5;$11m')
