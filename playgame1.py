@@ -221,8 +221,8 @@ def loadPlaceData(place_obj, filename):
                 # loadAltNames("objalternatenames.txt", newthing) 
     
     # character loading section
-    if "no characters" not in data_chunks[8 + nextIdxIncrement]:
-        idx = 8 + nextIdxIncrement
+    if "no characters" not in data_chunks[9 + nextIdxIncrement]:
+        idx = 9 + nextIdxIncrement
         charnames = data_chunks[idx].split("\n")
 
         print("debug: printing character names")
