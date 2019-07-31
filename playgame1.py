@@ -57,6 +57,10 @@ def loadPlaceData(place_obj, filename):
         read_data = f.read()
         data_chunks = read_data.split("***\n")
     
+    #debug
+    print("data chunks in file: ")
+    print(len(data_chunks))
+    
     # day and night descriptions
     dayDescrip1 = data_chunks[0].rstrip("\n")
     dayDescrip2 = data_chunks[1].rstrip("\n")
