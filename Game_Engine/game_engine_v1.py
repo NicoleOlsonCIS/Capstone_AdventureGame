@@ -456,6 +456,7 @@ class Game:
 		elif action.verb == "talk_npc":
 			print("debug talk1")
 			v = self.isValid.get("talk_npc")
+			print(v)
 			for i in v:
 				print("Printing valid talks:")
 				print(i) 
