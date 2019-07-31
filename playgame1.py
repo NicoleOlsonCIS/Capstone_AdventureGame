@@ -76,6 +76,7 @@ def loadPlaceData(place_obj, filename):
     place_obj.night = night 
 
     nextIdxIncrement = 1
+    idx = 6 + nextIdxIncrement
 
     # load feature information and create/add Things
     if "no features" not in data_chunks[6]:
