@@ -168,6 +168,8 @@ def loadPlaceData(place_obj, filename):
         # figure out where the next type section starts based on how many sections there will be for objects
         # for instance, if there is 1 object, then we index past that object's descriptions
         nextIdxIncrement = numObjects
+        print("Printing the increment set from obejct section")
+        print(nextIdxIncrement)
 
         objectDescriptions = []
         count = 0
@@ -221,6 +223,8 @@ def loadPlaceData(place_obj, filename):
                 # loadAltNames("objalternatenames.txt", newthing) 
     
     # character loading section
+    print("debug: ")
+    print(data_chunks[8 + nextIdxIncrement])
     if "no characters" not in data_chunks[8 + nextIdxIncrement]:
         idx = 8 + nextIdxIncrement
         charnames = data_chunks[idx].split("\n")
