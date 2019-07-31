@@ -75,7 +75,7 @@ def loadPlaceData(place_obj, filename):
     place_obj.day = day
     place_obj.night = night 
 
-    nextIdxIncrement = 1
+    nextIdxIncrement = 0
 
     # load feature information and create/add Things
     if "no features" not in data_chunks[6]:
@@ -91,7 +91,7 @@ def loadPlaceData(place_obj, filename):
 
         # figure out where the next type section starts based on how many *** there will be for features
         # for instance, if there is 1 feature, then we index past that feature's descriptions
-        nextIdxIncrement = numFeatures + 1
+        nextIdxIncrement = numFeatures
 
         featureDescriptions = []
         count = 0
@@ -149,9 +149,9 @@ def loadPlaceData(place_obj, filename):
 
     # load object information and create/add Things
     # v12 if there were no features, then nextIdxIncrement is 1 and we are on chunk 7
-    if "no objects" not in data_chunks[6 + nextIdxIncrement]:
+    if "no objects" not in data_chunks[7 + nextIdxIncrement]:
 
-        idx = 6 + nextIdxIncrement
+        idx = 7 + nextIdxIncrement
         objnames = data_chunks[idx].split("\n")
 
         print("Debug: object names")
@@ -167,7 +167,7 @@ def loadPlaceData(place_obj, filename):
 
         # figure out where the next type section starts based on how many sections there will be for objects
         # for instance, if there is 1 object, then we index past that object's descriptions
-        nextIdxIncrement = numObjects + 1
+        nextIdxIncrement = numObjects
 
         objectDescriptions = []
         count = 0
@@ -221,8 +221,8 @@ def loadPlaceData(place_obj, filename):
                 # loadAltNames("objalternatenames.txt", newthing) 
     
     # character loading section
-    if "no characters" not in data_chunks[9 + nextIdxIncrement]:
-        idx = 9 + nextIdxIncrement
+    if "no characters" not in data_chunks[8 + nextIdxIncrement]:
+        idx = 8 + nextIdxIncrement
         charnames = data_chunks[idx].split("\n")
 
         print("debug: printing character names")
