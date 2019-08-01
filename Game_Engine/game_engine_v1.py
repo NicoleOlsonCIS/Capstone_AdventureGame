@@ -300,7 +300,10 @@ class Game:
 		if canTalk:
 			character = self.user.current_place.character
 			if character.name.lower() == attemptedObj.lower():
-				Output.print_talk(character.getCharacterSpeak(self.time), attemptedObj)
+				Output.print_talk(character.getCharacterSpeak(self.time), character.name)
+				return
+			if attemptedObj.lower() in character.altNames:
+				Output.print_talk(character.getCharacterSpeak(self.time), character.name)
 				return
 		else:
 			print("You can not talk to " + attemptedObj)
@@ -575,9 +578,11 @@ class Game:
 			v = self.isValid.get("talk_npc")
 			for i in v:
 				if action.direct_obj != None:
-					# other names for a person, like "him, her, woman"
 					if i.name.lower() == action.direct_obj:
-						return True 
+						return True
+					elif action.direct_obj in i.altNames:
+						return True
+
 		else:
 			print("returning false from checkIsValid")
 			return False	

@@ -377,6 +377,11 @@ def loadPlaceData(place_obj, filename):
                 newthing = g.Thing(char, day, night, place_obj, False, True, char_day, char_night)
                 place_obj.addThing(newthing)
                 place_obj.addCharacter(newthing)
+
+                # load alternate thing names
+                loadAltNames("objalternatenames.txt", newthing)
+
+                count += 1
         
 def buildGame():
 
