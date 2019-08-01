@@ -19,6 +19,7 @@
 # v11.6 --> implement insert, update error handling 
 # v11.7 --> implement listen 
 # v12   --> implement character, including edits to output
+# v13   --> verbs with no objects condition, implementation added to "handle" functions
 
 # define the "Game" class
 
@@ -41,6 +42,8 @@ class Game:
 		self.isValid = {}
 		self.day = day	# time component new in v1.1
 		self.time = time
+		# v13 Thing object (and only Thing objs) the user last looked at (for disambiguating verb without subject)
+		self.lastLooked = None 
 
 	def setUser(self, user):
 		self.user = user
@@ -63,6 +66,120 @@ class Game:
 			return self.places[name]
 		return None
 
+	# v13 
+	def upDateLastLooked(self, thing):
+		print("Updating last looked with " + thing.name)
+		self.lastLooked = thing
+		print(self.lastLooked.name)
+
+	# v13 handle when only thing input is "take"
+	# handles context of when user has just looked at somethign that reveals a takeable object not in room descriptoin
+	def verbOnlyTake(self):
+		numThings = len(self.user.current_place.things)
+		print("Number of things in this room")
+		print(numThings)
+		takeable_things = []
+		if numThings > 0:
+			# count up how many are takable
+			count = 0
+			things = self.user.current_place.things
+			for n in things:
+				if n.is_takeable:
+					count += 1
+					takeable_things.append(n)
+			print("Number of is_takeable things in this room")
+			print(count)
+			# if there is something in the room that is takeable
+			available_takeable_things = []
+			if count is not 0:
+				# now count of how many are takeable that are NOT in the "hasOtherItems" list of another
+				# create a list of items that are not on any hasOtherItems list
+				att = 0
+				for tt in takeable_things:
+					found_on_another_thing = False
+					for c in things:
+						# if this isn't the same thing
+						if c.name is not tt.name:
+							# if the thing has other items
+							if len(c.hasOtherItems) > 0:
+								other_items = c.hasOtherItems
+								for oi in other_items:
+									if tt.name == oi:
+										found_on_another_thing = True
+					if found_on_another_thing == False:
+						available_takeable_things.append(tt)
+						att += 1
+					
+				print("Number of takeable things that are not on hasOtherItems")
+				print(att)
+				# if there is a takeable thing that is NOT on another thing's "hasOtherItems" list
+				if att > 0:
+					# if there is one thing, then take it
+					if att == 1:
+						print("There is one thing to take, taking it")
+						self.user.pickUpObject(available_takeable_things[0].name)
+						# update the clock
+						self.updateTime(1)
+						# print about it
+						Output.print_take(available_takeable_things[0].name)
+					# if there is more than on thing, tell user to be more specific 
+					if att > 1: 
+						Output.print_input_hint("You see multiple things you could take. Be more specific.")
+
+				# if att is 0, then all things that are takeable are related to other things.
+				# check what the user has just looked at. If there is one thing related to that 
+				# thing AND it is takeable, then take it. Otherwise, tell user to look around more. 
+				else:
+					print("att is zero branch")
+					print("the last looked item is ")
+					if self.lastLooked is not None:
+						print(self.lastLooked.name)
+					if self.lastLooked is not None:
+						print("self.lastlooked is not None")
+						ll = self.lastLooked
+						print("User last looked at the " + ll.name)
+						
+						# check if what the user last looked at was in this room
+						present = False
+						for t in things: 
+							if t.name == ll.name:
+								present = True
+
+						# if the last thing they looked at was elsewhere, then it's not relevent 
+						if present == False:
+							Output.print_input_hint("Try looking around more. There may be things present that you can take.")
+							return
+						else:
+							# if the last object the user looked at is present and has 1 other thing
+							if len(ll.hasOtherItems) == 1:
+								name = ll.hasOtherItems[0]
+								# go through the things in the room, match name, check if takeable
+								# the last thing the user looked at could be in a different room or not takeable
+								for t in things:
+									if t.name == name:
+										if t.is_takeable:
+											# infer that user just looked at a hidden takeable thing (i.e. scrap of fabric)
+											# take the object
+											self.user.pickUpObject(t.name)
+											# update the clock
+											self.updateTime(1)
+											# print about it
+											Output.print_take(t.name)
+											return
+							# last thing the user looked at is present but has nothing
+							elif len(ll.hasOtherItems) == 0:
+								Output.print_input_hint("Try looking around more. There may be things present that you can take.")
+							# last looked item is present but has multiple things associated
+							else:
+								Output.print_input_hint("You need to be more specific.")
+					else:
+						Output.print_input_hint("Try looking around more. There may be things present that you can take.")
+			# there are things, but they are not takeable, so are features or characters
+			elif count is 0: 
+				Output.print_input_hint("You see only things you can look at or talk to.")
+		# there are no features or objects or characters
+		else:
+			Output.print_error("This room is currently devoid of features, things and characters. It may be haunted, or someone has taken everything already.")
 
 	# v3: prints the description of a feature or object 
 	# v11.2: also prints description of other objects dependent on this one 
@@ -76,31 +193,29 @@ class Game:
 				Output.print_look(des) 
 				return
 		for t in self.user.current_place.things:
+			# debug
+			print("The itemname is: " + itemname)
+			print("The thing name is: " + t.name)
 			if t.name.lower() == itemname or itemname in t.altNames:
+				print("TraceA")
 				des = t.getDescription(self.time) 
 				Output.print_look(des)
-				#return
+
 				# v11.2: if there are other objects viewable because of this one,
 				# describe those other objects also.
 				# v11.4: separate handling for searchable things in handleSearch function.
-			if not t.is_searchable:
-				for obj in t.hasOtherItems:
-					for thingObj in self.user.current_place.things:
-						if obj.lower() == thingObj.name.lower():
-							Output.print_look(thingObj.isHereDescription)
+				if not t.is_searchable:
+					for obj in t.hasOtherItems:
+						for thingObj in self.user.current_place.things:
+							if obj.lower() == thingObj.name.lower():
+								Output.print_look(thingObj.isHereDescription)
 
-			#v12 character interaction for looking at character
-			if self.user.current_place.hasCharacter:
-				character = self.user.current_place.character
-				if character.name == itemname or itemname in character.altNames:
-					Output.print_look(character.getDescription(self.time))
-				return
-
-		#for c in self.user.current_place.character.names: 
-		#	if c == itemname:
-		#		description = self.user.current_place.character.getLook()
-		#		print(description)
-
+		#v12 character interaction for looking at character
+		if self.user.current_place.hasCharacter:
+			character = self.user.current_place.character
+			if character.name == itemname or itemname in character.altNames:
+				Output.print_look(character.getDescription(self.time))
+			return
 
     # v3: takes the thing the user wants to examine
     # prints appropriate outputs
@@ -121,6 +236,11 @@ class Game:
 			# print thing description if thing available for examining
 			else:
 				self.showThing(attemptedObj)
+				# v13 get the obj and update lastLooked
+				things = self.user.current_place.things
+				for t in things:
+					if t.name == attemptedObj:
+						self.upDateLastLooked(t)
 		else:
 			# if user tries to examine a room that is not the current one, error
 			for placename in self.places.keys():
@@ -142,14 +262,16 @@ class Game:
 				Output.print_error("You can\'t take what\'s already in your inventory.")
 			else:
 				Output.print_take(attemptedObj)
+
+		# v13 edit to handle various cases of user just inputing "take"
+		elif attemptedObj == None:
+			self.verbOnlyTake()
+
+		# thing is in current room but not takeable
+		elif self.user.current_place.roomHasThing(attemptedObj): 
+			Output.print_error("You can\'t put that in your inventory.")
+			return
 		else:
-			if attemptedObj == None:
-				Output.print_input_hint("Try being more specific about what you want to take.")
-				return 
-			# thing is in current room but not takeable
-			if self.user.current_place.roomHasThing(attemptedObj): 
-				Output.print_error("You can\'t put that in your inventory.")
-				return
 			# thing is not in current room
 			Output.print_error("You don\'t see a " + attemptedObj + " that you can take.")
 
