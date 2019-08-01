@@ -71,3 +71,5 @@ matchbook:matches,match,book matches
 intricate rug:rug
 ***
 long mahogany table:mahogany table,long table,long mahogany,table,dining table,dinner table
+***
+maude:woman,person,female
