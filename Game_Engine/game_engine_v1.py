@@ -68,16 +68,12 @@ class Game:
 
 	# v13 
 	def upDateLastLooked(self, thing):
-		print("Updating last looked with " + thing.name)
 		self.lastLooked = thing
-		print(self.lastLooked.name)
 
 	# v13 handle when only thing input is "take"
 	# handles context of when user has just looked at somethign that reveals a takeable object not in room descriptoin
 	def verbOnlyTake(self):
 		numThings = len(self.user.current_place.things)
-		print("Number of things in this room")
-		print(numThings)
 		takeable_things = []
 		if numThings > 0:
 			# count up how many are takable
@@ -87,8 +83,6 @@ class Game:
 				if n.is_takeable:
 					count += 1
 					takeable_things.append(n)
-			print("Number of is_takeable things in this room")
-			print(count)
 			# if there is something in the room that is takeable
 			available_takeable_things = []
 			if count is not 0:
@@ -109,14 +103,10 @@ class Game:
 					if found_on_another_thing == False:
 						available_takeable_things.append(tt)
 						att += 1
-					
-				print("Number of takeable things that are not on hasOtherItems")
-				print(att)
 				# if there is a takeable thing that is NOT on another thing's "hasOtherItems" list
 				if att > 0:
 					# if there is one thing, then take it
 					if att == 1:
-						print("There is one thing to take, taking it")
 						self.user.pickUpObject(available_takeable_things[0].name)
 						# update the clock
 						self.updateTime(1)
@@ -130,14 +120,10 @@ class Game:
 				# check what the user has just looked at. If there is one thing related to that 
 				# thing AND it is takeable, then take it. Otherwise, tell user to look around more. 
 				else:
-					print("att is zero branch")
-					print("the last looked item is ")
 					if self.lastLooked is not None:
 						print(self.lastLooked.name)
 					if self.lastLooked is not None:
-						print("self.lastlooked is not None")
 						ll = self.lastLooked
-						print("User last looked at the " + ll.name)
 						
 						# check if what the user last looked at was in this room
 						present = False
@@ -193,11 +179,7 @@ class Game:
 				Output.print_look(des) 
 				return
 		for t in self.user.current_place.things:
-			# debug
-			print("The itemname is: " + itemname)
-			print("The thing name is: " + t.name)
 			if t.name.lower() == itemname or itemname in t.altNames:
-				print("TraceA")
 				des = t.getDescription(self.time) 
 				Output.print_look(des)
 
