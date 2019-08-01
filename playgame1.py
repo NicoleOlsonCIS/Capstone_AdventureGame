@@ -562,6 +562,10 @@ def gameLoop(game):
                 return
             else:
                 break
+        elif "save" in received:
+            print("Saving game ... ")
+            saveGame(game)
+            return
         else:
             playaction = a.Action()
             playaction = playparser.parseInput(received)
