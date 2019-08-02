@@ -579,7 +579,7 @@ class Output(object):
         if length > 60:
             placeDescription = Output.break_up_long_message(placeDescription, 60)
 
-        welcome = 'Welcome user. We wish you luck on your journey.'
+        welcome = 'Welcome user. We wish you luck on your journey.\n\nStart of Day 1'
 
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$147m')
