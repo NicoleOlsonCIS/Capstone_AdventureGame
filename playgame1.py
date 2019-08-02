@@ -574,7 +574,7 @@ def gameLoop(game):
 
 def main():
 
-    print("Welcome! Would you like to start a new game or load a saved game? new/load")
+    print("Welcome! Would you like to start a new game or load a saved game? (new/load)")
     new_or_save = input("> ")
 
     if "new" in new_or_save:  
