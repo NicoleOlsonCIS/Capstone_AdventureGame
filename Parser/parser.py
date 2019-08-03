@@ -1,125 +1,36 @@
 from action import Action
+from parserWords import (verbDict,
+                         verbListUnused,
+                         directionDict,
+                         articlesList,
+                         pronounsList,
+                         conjunctionsList,
+                         quantifiersList,
+                         prepositionsListUnused,
+                         prepositionsListUsed,
+                         hardcodedPhrases)
 
 class Parser:
 
-    # Class variables
-    verbDict = {
-        "go": "move_user",
-        "move": "move_user",
-        "run": "move_user",
-        "walk": "move_user",
-        "head": "move_user",
-        "hurry": "move_user",
-        "take": "take",
-        "grab": "take",
-        "get": "take",
-        "pick": "take",
-        "keep": "take",
-        "stow": "take",
-        "steal": "take",
-        "drop": "drop", 
-        "abandon": "drop",
-        "discard": "drop",
-        "trash": "drop",
-        "put": "drop",
-        "place": "drop",
-        "insert": "insert", 
-        "sleep": "sleep",
-        "rest": "sleep",
-        "relax": "sleep",
-        "talk": "talk_npc",
-        "say": "talk_npc",
-        "greet": "talk_npc",
-        "ask": "talk_npc",
-        "yell": "talk_npc",
-        "scream": "talk_npc",
-        "shout": "talk_npc",
-        "tell": "talk_npc",
-        "call": "talk_npc",
-        "chat": "talk_npc",
-        "speak": "talk_npc",
-        "look": "look",
-        "examine": "look",
-        "x": "look",
-        "l": "look",
-        "study": "look",
-        "find": "look",
-        "touch": "look",
-        "look_in": "search",
-        "search": "search", 
-        "read": "read",
-        "listen": "listen",
-        "eavesdrop": "listen",
-        "hear": "listen", 
-        "open": "open_thing",
-        "unlock": "unlock_thing",
-        "help": "show_help",
-        "inventory": "show_inventory",
-        "save": "save_game",
-        "load": "load_game"
-    }
-
-    directionDict = {
-        "north": "n",
-        "n": "n",
-        "east": "e",
-        "e": "e",
-        "northeast": "ne",
-        "ne": "ne",
-        "south": "s",
-        "s": "s",
-        "west": "w",
-        "w": "w",
-        "northwest": "nw",
-        "nw": "nw",
-        "southeast": "se",
-        "se": "se",
-        "southwest": "sw",
-        "sw": "sw", 
-        "up": "u",
-        "upstairs": "u",
-        "u": "u",
-        "down": "d",
-        "downstairs": "d",
-        "d": "d"
-    }
-
-    articlesList = ["the", "an", "a"]
-
-    pronounsList = ["that", "her", "it", "she", "he", "him", "his", "hers", "they", "them", "their",
-                    "you", "your", "yours", "me", "my", "mine", "myself", "yourself", "himself", "herself",
-                    "its", "itself", "we", "our", "ours", "ourselves", "yourselves", "theirs", "themselves",
-                    "this", "these", "those"]
-
-    conjunctionsList = ["and", "or", "nor", "but", "yet", "so", "whether", "neither", "either", "though", "although", "because", "while"] 
-
-    quantifiersList = ["all", "some", "few", "many", "several", "both", "every", "each", "first", "last", "next", "other", "same"]
-
-    # Two different kinds of prepositions...
-    # ...those recognized by the game
-    prepositionsListUnused = [
-        "about", "above", "across", "after", "against", "along", "among", "around", "at",
-        "before", "behind", "below", "beneath", "beside", "between", "by",
-        "for", "from", "near", "of", "off", "on", "onto",
-        "through", "to", "toward", "towards", "under", "upon", "with", "within",
-        "out"
-    ] # removed 'down' - otherwise direction 'down' will be removed as preposition
-    # ...and those that are not
-    prepositionsListUsed = [
-        "in", "inside", "into"
-    ] # removed 'down' - otherwise direction 'down' will be removed as preposition
-
-    hardcodedPhrases = {
-        "go to bed": Action("sleep")
-    }
-
     # Default constructor - no instance variables
+
+    # Load word dictionaries and lists into class variables
+    verbDict = verbDict
+    verbListUnused = verbListUnused
+    directionDict = directionDict
+    articlesList = articlesList
+    pronounsList = pronounsList
+    conjunctionsList = conjunctionsList
+    quantifiersList = quantifiersList
+    prepositionsListUnused = prepositionsListUnused
+    prepositionsListUsed = prepositionsListUsed
+    hardcodedPhrases = hardcodedPhrases
 
     # Count how many verbs in tokens
     def verbCount(self, tokens):
         numverbs = 0
         for token in tokens:
-            if token in self.verbDict.keys():
+            if (token in self.verbDict.keys() or token in self.verbListUnused):
                 numverbs += 1
         return numverbs 
 
@@ -189,7 +100,13 @@ class Parser:
         #     return "take"
         # else:
         #     return self.verbDict.get(tokens[0])
-        return self.verbDict.get(verb)
+        parsedVerb = self.verbDict.get(verb)
+        if (parsedVerb is not None):
+            return parsedVerb
+        elif (verb in self.verbListUnused):
+            return verb
+        else:
+            return None
 
     # Convert user-desired direction to valid form, return None on error
     def parseDirection(self, direction):
@@ -202,7 +119,7 @@ class Parser:
     def parseSingleToken(self, token):
         if (token in self.directionDict):
             return Action("move_user", self.parseDirection(token))
-        elif (token in self.verbDict):
+        elif (token in self.verbDict or token in self.verbListUnused):
             return Action(self.parseVerb(token))
         else:
             return Action(None, None, token) 
@@ -296,12 +213,17 @@ class Parser:
         # The "helping preposition" changes the understood verb
         # E.g., "drop in" = "insert", "look in" = "search"
         nextTokenPos = 2
-        if (tokens[nextTokenPos] in self.prepositionsListUsed):
-            if (action.verb is "drop"):
-                action.verb = "insert"
-            elif (action.verb is "look"):
-                action.verb = "search"
-            del tokens[nextTokenPos]
+        if (tokens[nextTokenPos - 1] == "on"): # "turn ON thing"
+            if (action.verb == "turn"):
+                action.setVerb("activate")
+            del tokens[nextTokenPos - 1] # delete preposition
+            nextTokenPos -= 1
+        elif (tokens[nextTokenPos] in self.prepositionsListUsed):
+            if (action.verb == "drop"):
+                action.setVerb("insert")
+            elif (action.verb == "look"):
+                action.setVerb("search")
+            del tokens[nextTokenPos] # delete preposition
 
         # Avoid out-of-range error after del
         if (len(tokens) > nextTokenPos):
@@ -326,5 +248,5 @@ class Parser:
         return tokens
 
 # Debug
-# parser = Parser()
-# parser.parseInput("insert foo in bar")
+parser = Parser()
+parser.parseInput("turn on thing")

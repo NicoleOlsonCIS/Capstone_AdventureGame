@@ -124,3 +124,54 @@ def test_look_at_bench():
     # Now assert there've been no errors, else print them
     assert not errors, "errors occurred:\n{}".format("\n".join(errors))
 
+def test_look_in_mirror():
+
+    errors = []
+
+    action = parser.parseInput("look in mirror")
+
+    # Replace individual assertions with conditions
+    if not action.verb == "look":
+        errors.append("expected 'look', got " + str(action.verb))
+    if not action.direction == None:
+        errors.append("expected 'None' type, got " + str(action.direction))
+    if not action.direct_obj == "mirror":
+        errors.append("expected 'mirror', got " + str(action.direct_obj))
+
+    # Now assert there've been no errors, else print them
+    assert not errors, "errors occurred:\n{}".format("\n".join(errors))
+
+def test_look_out_window():
+
+    errors = []
+
+    action = parser.parseInput("look out window")
+
+    # Replace individual assertions with conditions
+    if not action.verb == "look":
+        errors.append("expected 'look', got " + str(action.verb))
+    if not action.direction == None:
+        errors.append("expected 'None' type, got " + str(action.direction))
+    if not action.direct_obj == "outside":
+        errors.append("expected 'outside', got " + str(action.direct_obj))
+
+    # Now assert there've been no errors, else print them
+    assert not errors, "errors occurred:\n{}".format("\n".join(errors))
+
+def test_see_out_window():
+
+    errors = []
+
+    action = parser.parseInput("see out window")
+
+    # Replace individual assertions with conditions
+    if not action.verb == "look":
+        errors.append("expected 'look', got " + str(action.verb))
+    if not action.direction == None:
+        errors.append("expected 'None' type, got " + str(action.direction))
+    if not action.direct_obj == "outside":
+        errors.append("expected 'outside', got " + str(action.direct_obj))
+
+    # Now assert there've been no errors, else print them
+    assert not errors, "errors occurred:\n{}".format("\n".join(errors))
+        
