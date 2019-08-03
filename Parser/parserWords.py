@@ -1110,5 +1110,8 @@ prepositionsListUsed = [
 ] # removed 'down' - otherwise direction 'down' will be removed as preposition
 
 hardcodedPhrases = {
-    "go to bed": Action("sleep")
+    "go to bed": Action("sleep"),
+    "look in mirror": Action("look", None, "mirror"),
+    "look out window": Action("look", None, "outside"),
+    "see out window": Action("look", None, "outside")
 }

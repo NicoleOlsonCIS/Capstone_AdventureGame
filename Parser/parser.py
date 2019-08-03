@@ -30,7 +30,7 @@ class Parser:
     def verbCount(self, tokens):
         numverbs = 0
         for token in tokens:
-            if token in self.verbDict.keys():
+            if (token in self.verbDict.keys() or token in self.verbListUnused):
                 numverbs += 1
         return numverbs 
 
@@ -119,7 +119,7 @@ class Parser:
     def parseSingleToken(self, token):
         if (token in self.directionDict):
             return Action("move_user", self.parseDirection(token))
-        elif (token in self.verbDict):
+        elif (token in self.verbDict or token in self.verbListUnused):
             return Action(self.parseVerb(token))
         else:
             return Action(None, None, token) 
@@ -243,5 +243,5 @@ class Parser:
         return tokens
 
 # Debug
-# parser = Parser()
-# parser.parseInput("insert foo in bar")
+parser = Parser()
+parser.parseInput("fly to the north")
