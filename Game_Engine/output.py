@@ -338,6 +338,7 @@ class Output(object):
             else:
                 if first == True and indent == False:
                     line = line + w
+                    count -= 1
                     first = False
                 else:
                     line = line + " " + w
