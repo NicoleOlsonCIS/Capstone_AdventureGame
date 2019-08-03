@@ -77,7 +77,7 @@ class Output(object):
 
         # if message is long, break up into lines of ~60 characters 
         if length > 60:
-            error_message = Output.break_up_long_message(error_message, 60)
+            error_message = Output.break_up_long_message(error_message, 60, False)
 
         # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
         if sys.stdin.isatty():
@@ -88,15 +88,21 @@ class Output(object):
     # print a helpful hint in yellow, result to defaul afterwards
     @classmethod
     def print_input_hint(self, hint_message):
+        # hint_message = "Hint: " + hint_message
         length = len(hint_message)
 
         # if message is long, break up into lines of ~60 characters 
         if length > 60:
-            hint_message = Output.break_up_long_message(hint_message, 60)
+            hint_message = Output.break_up_long_message(hint_message, 60, False)
 
         # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
         if sys.stdin.isatty():
-            print(u'\u001b[38;5;$220m' + hint_message + '\033[0m')
+            sys.stdout.write(u'\u001b[38;5;$220m')
+            for elem in hint_message:
+                sys.stdout.write(elem)
+                time.sleep(0.04)
+                sys.stdout.flush()
+            print('\033[0m') # reset color
         else:
             print(hint_message)
 
@@ -107,7 +113,7 @@ class Output(object):
 
         # if message is long, break up into lines of ~60 characters 
         if length > 60:
-            look_description = Output.break_up_long_message(look_description, 60)
+            look_description = Output.break_up_long_message(look_description, 60, False)
 
         # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
         if sys.stdin.isatty():
@@ -138,6 +144,12 @@ class Output(object):
             print("\n")
         else:
             print(msg)
+
+    # user moves through something other than door
+    #@classmethod 
+    #def move_NotDoor(self, direction, newPlaceName, oldPlaceName, passageType) # eg archway, stairs
+
+
 
     # print conversations
     @classmethod
@@ -170,7 +182,7 @@ class Output(object):
                         inside = True # set inside to true
                         if len(str_outside) is not 0:
                             if len(str_outside) > 60:
-                                str_outside = Output.break_up_long_message(str_outside, 32)
+                                str_outside = Output.break_up_long_message(str_outside, 32, False)
                             #print("\n")
                             sys.stdout.write(u'\u001b[38;5;$146m')
                             for elem in str_outside:
@@ -261,7 +273,7 @@ class Output(object):
             # if the string ends with outside stuff then there will be left over things to print
             if len(str_outside) is not 0:
                 if len(str_outside) > 60:
-                    str_outside = Output.break_up_long_message(str_outside, 32)
+                    str_outside = Output.break_up_long_message(str_outside, 32, False)
                 sys.stdout.write(u'\u001b[38;5;$146m')
                 #sys.stdout.write(u'\e[3m')
                 for elem in str_outside:
@@ -296,8 +308,8 @@ class Output(object):
             print(msg)
 
     @classmethod
-    # helper functions, break up message to lines of specified length
-    def break_up_long_message(self, extended_message, length):
+    # helper functions, break up message to lines of specified length and whether it should be indented
+    def break_up_long_message(self, extended_message, length, indent):
 
         # split at white space, turn it into an array of words
         words = extended_message.split()
@@ -306,6 +318,7 @@ class Output(object):
         # array of lines, where lines are max 60 characters
         lines = []
         line = ""
+        first = True
 
         for w in words:
              # get the length of a word
@@ -321,8 +334,13 @@ class Output(object):
                 count -= 1
             # otherwise, add the word to the line
             else:
-                line = line + " " + w
-                count -= 1
+                if first == True and indent == False:
+                    line = line + w
+                    first = False
+                else:
+                    line = line + " " + w
+                    count -= 1
+                    first = False
 
             # If that was the last word, append this line
             if count == 0:
@@ -556,7 +574,7 @@ class Output(object):
     def orientUser(self, placeName, placeDescription):
         length = len(placeDescription)
         if length > 60:
-            placeDescription = Output.break_up_long_message(placeDescription, 60)
+            placeDescription = Output.break_up_long_message(placeDescription, 60, True)
 
         welcome = "You are now in the " + placeName
 
@@ -577,7 +595,7 @@ class Output(object):
     def welcomeToGame(self, placeDescription):
         length = len(placeDescription)
         if length > 60:
-            placeDescription = Output.break_up_long_message(placeDescription, 60)
+            placeDescription = Output.break_up_long_message(placeDescription, 60, True)
 
         welcome = 'Welcome user. We wish you luck on your journey.'
 
@@ -663,7 +681,7 @@ class Output(object):
     def welcomeBackToGame(self, placeDescription):
         length = len(placeDescription)
         if length > 60:
-            placeDescription = Output.break_up_long_message(placeDescription, 60)
+            placeDescription = Output.break_up_long_message(placeDescription, 60, True)
 
         pl1 = "Saved game found!"
         pl2 = "Loading . "

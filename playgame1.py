@@ -107,7 +107,52 @@ def loadAltNames(filename, thing_obj):
                     thing_obj.altNames.append(syn)
                 return
 
-# reads in place information from room file
+# read passage descriptions from file "placepassages.txt" and set place
+def loadPassageData(places):
+
+    ref_direction = {0: "n", 1: "ne", 2: "e", 3: "se", 4: "s", 5: "sw", 6: "w", 7:"nw", 8: "u", 9: "d"}
+
+    # build path to data file
+    fpath = "./Game_Files/" + "placepassages.txt"
+ 
+    # read file all in at once 
+    with open(fpath) as f:
+        read_data = f.read()
+        data_chunks = read_data.split("***\n")
+
+    i = 0
+    for p in places: 
+        placeInfo = data_chunks[i]
+        place_arr = placeInfo.split("\n")
+        name = place_arr[0]
+        #print("Name coming from file: " + name)
+        #print("Name coming from places array: " + p.name)
+        name = name.rstrip("\n")
+        passages_inp = place_arr[1]
+        #if name != p.name: 
+            #print("mismatch")
+        passages_int = passages_inp.split("-")
+        emptyArr = []
+        passages_dict = {"n": emptyArr, "ne": emptyArr, "e": emptyArr, "se": emptyArr, "s": emptyArr, "sw": emptyArr, "w": emptyArr, "nw": emptyArr, "u": emptyArr, "d": emptyArr}
+        j = 0
+        for passage in passages_int:
+            if passage != "None":
+                pKey = ref_direction.get(j)
+                # print(pKey)
+                # check if there's a comma
+                if "," in passage:
+                    arr = passage.split(",")
+                else: 
+                    arr = []
+                    arr.append(passage)
+                p1 = {pKey: arr}
+                passages_dict.update(p1)
+                # print(passages_dict.get(pKey))
+            j += 1
+        # now set the place object with the passager dictionary
+        p.setPassages(passages_dict)
+        i += 1
+
 def loadPlaceData(place_obj, filename):
 
     # build path to data file
@@ -117,7 +162,8 @@ def loadPlaceData(place_obj, filename):
     with open(fpath) as f:
         read_data = f.read()
         data_chunks = read_data.split("***\n")
-    
+        
+
     # day and night descriptions
     dayDescrip1 = data_chunks[0].rstrip("\n")
     dayDescrip2 = data_chunks[1].rstrip("\n")
@@ -522,6 +568,11 @@ def buildGame():
     loadPlaceData(place28, "rearmanorgrounds.txt")
 
     loadListens(place24, "drawinglisten.txt")
+
+
+    places = [place1, place2, place3, place4, place5, place6, place7, place8, place9, place10, place11, place12, place13, place14, place15, place16, place17, place18, place19, place20, place21, place22, place23, place24, place25, place26, place27, place28, place29]
+
+    loadPassageData(places)
 
     # load narrative intro text
     with open("./Game_Files/intro.txt") as ifile:
