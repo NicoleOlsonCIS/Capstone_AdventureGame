@@ -20,7 +20,7 @@
 # v11.7 --> implement listen 
 # v12   --> implement character, including edits to output
 # v13   --> verbs with no objects condition, implementation added to "handle" functions
-# v13.1 --> sleep msg, exit msg from platform to fields, lock front door after user is inside, start impl. "open", expand help 
+# v13.1 --> sleep msg, exit msg from platform to fields, lock front door after user is inside, start impl. "open", expand help, add narrative intro 
 
 # define the "Game" class
 
@@ -45,6 +45,7 @@ class Game:
 		self.time = time
 		# v13 Thing object (and only Thing objs) the user last looked at (for disambiguating verb without subject)
 		self.lastLooked = None 
+		self.narrativeIntro = [] 
 
 	def setUser(self, user):
 		self.user = user
