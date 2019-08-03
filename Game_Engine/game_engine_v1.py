@@ -246,6 +246,12 @@ class Game:
 			i += 1
 
 		if match and match2:
+			if directObj == "leave":
+				directObj = "exits"
+			elif directObj == "exit":
+				directObj = "exists"
+			if combined:
+				directObj = two_words
 			Output.print_input_hint("There are more than one " + directObj + ". You must be more specific")
 		elif match and not match2:
 			# move the user 
