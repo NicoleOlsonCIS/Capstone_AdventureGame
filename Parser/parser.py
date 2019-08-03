@@ -213,12 +213,17 @@ class Parser:
         # The "helping preposition" changes the understood verb
         # E.g., "drop in" = "insert", "look in" = "search"
         nextTokenPos = 2
-        if (tokens[nextTokenPos] in self.prepositionsListUsed):
-            if (action.verb is "drop"):
-                action.verb = "insert"
-            elif (action.verb is "look"):
-                action.verb = "search"
-            del tokens[nextTokenPos]
+        if (tokens[nextTokenPos - 1] == "on"): # "turn ON thing"
+            if (action.verb == "turn"):
+                action.setVerb("activate")
+            del tokens[nextTokenPos - 1] # delete preposition
+            nextTokenPos -= 1
+        elif (tokens[nextTokenPos] in self.prepositionsListUsed):
+            if (action.verb == "drop"):
+                action.setVerb("insert")
+            elif (action.verb == "look"):
+                action.setVerb("search")
+            del tokens[nextTokenPos] # delete preposition
 
         # Avoid out-of-range error after del
         if (len(tokens) > nextTokenPos):
@@ -244,4 +249,4 @@ class Parser:
 
 # Debug
 parser = Parser()
-parser.parseInput("fly to the north")
+parser.parseInput("turn on thing")

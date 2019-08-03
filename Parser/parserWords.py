@@ -54,7 +54,8 @@ verbDict = {
     "help": "show_help",
     "inventory": "show_inventory",
     "save": "save_game",
-    "load": "load_game"
+    "load": "load_game",
+    "activate": "activate"
 }
 
 verbListUnused = {
@@ -1100,13 +1101,13 @@ quantifiersList = ["all", "some", "few", "many", "several", "both", "every", "ea
 prepositionsListUnused = [
     "about", "above", "across", "after", "against", "along", "among", "around", "at",
     "before", "behind", "below", "beneath", "beside", "between", "by",
-    "for", "from", "near", "of", "off", "on", "onto",
+    "for", "from", "near", "of", "off", "onto", # "on",
     "through", "to", "toward", "towards", "under", "upon", "with", "within",
     "out"
 ] # removed 'down' - otherwise direction 'down' will be removed as preposition
 # ...and those that are not
 prepositionsListUsed = [
-    "in", "inside", "into"
+    "in", "inside", "into", "on"
 ] # removed 'down' - otherwise direction 'down' will be removed as preposition
 
 hardcodedPhrases = {
