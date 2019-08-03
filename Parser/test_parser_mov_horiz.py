@@ -257,10 +257,10 @@ def test_fly_to_the_north():
     action = parser.parseInput("fly to the north")
 
     # Replace individual assertions with conditions
-    if not action.verb == None:
-        errors.append("expected 'None' type, got " + str(action.verb))
-    if not action.direction == "n":
-        errors.append("expected 'n', got " + str(action.direction))
+    if not action.verb == "fly": 
+        errors.append("expected 'fly', got " + str(action.verb))
+    if not action.direction == None: # Used to be 'n'
+        errors.append("expected 'None' type, got " + str(action.direction))
 
     # Now assert there've been no errors, else print them
     assert not errors, "errors occurred:\n{}".format("\n".join(errors))

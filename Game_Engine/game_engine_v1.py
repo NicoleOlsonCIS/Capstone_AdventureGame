@@ -19,7 +19,9 @@
 # v11.6 --> implement insert, update error handling 
 # v11.7 --> implement listen 
 # v12   --> implement character, including edits to output
-# v13   --> verbs with no objects condition, some have their own functions
+# v13   --> verbs with no objects condition, implementation added to "handle" functions
+# v13.1 --> sleep msg, exit msg from platform to fields, lock front door after user is inside, start impl. "open", expand help, add narrative intro 
+
 
 # define the "Game" class
 
@@ -42,6 +44,7 @@ class Game:
 		self.time = time
 		# v13 Thing object (and only Thing objs) the user last looked at (for disambiguating verb without subject)
 		self.lastLooked = None 
+		self.narrativeIntro = [] 
 
 	def setUser(self, user):
 		self.user = user
@@ -501,17 +504,30 @@ class Game:
 				Output.print_talk(character.getCharacterSpeak(self.time), character.name)
 				return
 		else:
-			print("You can not talk to " + attemptedObj)
+			Output.print_error("You can not talk to " + attemptedObj)
 
 
 	# v6: displays list of supported verbs
 	def showHelp(self):
-		print("go\nmove\nrun\nwalk\nhead\nhurry\n")
-		print("get\npick up\nkeep\ntake\ngrab\nsteal\n")
-		print("drop\nabandon\ndiscard\ntrash\n")
-		print("look\nl\nlook at\nstudy\nread\nexamine\nx\nsearch\n")
-		print("talk\nsay\ngreet\nask\nchat\nspeak\n")
-		print("sleep\nrest\nrelax\n")
+		Output.print_input_hint("go, move, run, walk, head, hurry")
+		print()
+		Output.print_input_hint("n, s, e, w, nw, ne, sw, se, u, d")
+		Output.print_input_hint("north, south, east, west, northwest, northeast, southwest, southeast, up, down, upstairs, downstairs")
+		print()
+		Output.print_input_hint("get, pick up, take, grab, keep, steal")
+		print()
+		Output.print_input_hint("drop, put down, abandon, discard, trash")
+		Output.print_input_hint("insert, put in, put inside")
+		print()
+		Output.print_input_hint("look, l, look around")
+		Output.print_input_hint("look at, examine, x")
+		Output.print_input_hint("search, look in, look inside")
+		print()
+		Output.print_input_hint("talk, say, greet, ask, chat, speak")
+		print()
+		Output.print_input_hint("sleep, rest, relax, go to bed")
+		print()
+		Output.print_input_hint("help, inventory")
 
 	# point of entry from parser, game takes care of input from this point
 	# either by updating the game or sending error messages
@@ -833,6 +849,7 @@ class Game:
 
 		if action.verb == "sleep":
 			self.handleSleep(action.direct_obj, True)
+			Output.print_look("Drained from the day’s activity, you shuck off your things and burrow under the covers. You\'re asleep by the time your head hits the pillow.")
 			# start new morning 
 			self.time = 6
 			self.day += 1
@@ -924,15 +941,25 @@ class Game:
 		# print door animation if there is a door
 		new_place = self.user.current_place
 
-		#v11.7 provision for making Fields take longer to cross
+		#v11.7 make Fields take longer to cross
 		if user_place.name.lower() == "fields" and new_place.name.lower() != "fields":
 			self.updateTime(3)
 
-		# v13 provision for the "leave" message on the Front Manor Grounds
+		# exit msg from Front Manor Grounds to Foyer
 		# only shows up on first entry into foyer
-		if new_place.numTimesEntered == 0 and new_place.name.lower() == "foyer":
+		if new_place.numTimesEntered == 0 and (user_place.name.lower() == "front manor grounds" and new_place.name.lower() == "foyer"):
 			Output.print_look("You hurl yourself up the path as it starts to rain in earnest. Maude follows right on your heels, fishing an iron keyring out of her pockets. At the front door, she shoulders you aside, unlocks the door, and heaves it open with a grunt of effort, dragging you inside by the wrist and dumping you in a rain-soaked heap on the floor.")
-		
+
+			# 13.1: lock front door of house once user is inside foyer
+			# (lock north door of front manor grounds, lock south door of foyer) 
+			user_place.lockDoor("n")
+			new_place.lockDoor("s") 
+	
+		# 13.1: exit message from Train Platform to Fields
+		# only shows up on first entry into fields
+		if new_place.numTimesEntered == 0 and (user_place.name.lower() == "train platform" and new_place.name.lower() == "fields"): 
+			Output.print_look("Leaving the station behind, you trail doggedly after Maude, who doesn\'t spare so much as a backward glance. You mechanically put one foot in front of another, resigning yourself to what already feels like a long journey to the House.")
+	
 		if (is_door):
 			Output.newPlaceWithDoor(new_place.name)
 		else: # not a door
@@ -1173,18 +1200,18 @@ class User:
 	# v6: show inventory contents
 	def printInventory(self):
                 if len(self.things) == 0:
-                        print("You currently have nothing in your inventory.")
+                        Output.print_input_hint("You currently have nothing in your inventory.")
                 else:
-                	print("You have, in various locations on your person:")
+                	Output.print_input_hint("You have, in various locations on your person:")
                 	for t in self.things:
-                        	print(t.name)
+                        	Output.print_input_hint(t.name)
 
 	def getAllThingsInPlace(self):
 		return self.things
 
 #define the "Thing" class
 class Thing: 
-	def __init__(self, name, day, night, starting_location, is_takeable, is_character = None, char_day = None, char_night = None):
+	def __init__(self, name, day, night, starting_location, is_takeable, is_character = False, char_day = None, char_night = None):
 		self.name = name
 		self.day = day     # size of 5
 		self.night = night # size of 5
@@ -1195,6 +1222,10 @@ class Thing:
 		self.is_searchable = False
 		self.is_readable = False
 		self.hasBeenSearched = False
+		# v13.1: start implementing open (for openable things like windows) 
+		# (if an item is both openable and searchable, e.g. trunk, default to searching)  
+		self.is_openable = False
+		self.openDescrips = [] 
 
 		# v11.2
 		self.isHereDescription = "You see a " + self.name + " here."
@@ -1207,10 +1238,11 @@ class Thing:
 		# v12 things can now be characters 
 		self.is_character = is_character
 		# set the day and night dialogue of the character
-		if is_character is not False:
+		if is_character:
 			print(self.name)
 			self.char_day = char_day
 			self.char_night = char_night
+
 		#v11.4: search/read descriptions for searchable/readable items
 		self.searchDescrip = "" 
 		self.readDescrips = []

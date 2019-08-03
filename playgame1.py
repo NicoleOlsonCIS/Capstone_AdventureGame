@@ -15,7 +15,7 @@ import pickle
 import os.path
 from os import path
 
-# playgame1.py works with v11.7 of game engine
+# playgame1.py works with v13 of game engine
 
 # Loads information about readable objects.
 def loadReadables(filename1, filename2, thing_obj):
@@ -431,8 +431,8 @@ def loadPlaceData(place_obj, filename):
         
 def buildGame():
 
-    # start game at 7 am
-    game = g.Game(1,7)
+    # start game at 8 am
+    game = g.Game(1,8)
 
     # v11: descriptions are now 2D array to capture the number of visits of user (first, second, all subsequent ...)
     day = ["place during day 1", "place during day 2", "place during day 3"]
@@ -569,9 +569,18 @@ def buildGame():
 
     loadListens(place24, "drawinglisten.txt")
 
+
     places = [place1, place2, place3, place4, place5, place6, place7, place8, place9, place10, place11, place12, place13, place14, place15, place16, place17, place18, place19, place20, place21, place22, place23, place24, place25, place26, place27, place28, place29]
 
     loadPassageData(places)
+
+    # load narrative intro text
+    with open("./Game_Files/intro.txt") as ifile:
+        intro = ifile.read()
+
+    intro_chunks = intro.split("***\n")
+    for ichunk in intro_chunks: 
+        game.narrativeIntro.append(ichunk)
 
     # associate user with game 
     game.setUser(user)
@@ -624,14 +633,20 @@ def gameLoop(game):
 
 def main():
 
-    print("Welcome! Would you like to start a new game or load a saved game? new/load")
+    print("Welcome! Would you like to start a new game or load a saved game? (new/load)")
     new_or_save = input("> ")
 
     if "new" in new_or_save:  
         game = buildGame()
         game.setIsValid()
+        # prompt user to indicate whether they want to see intro narrative text
+        print("Starting new game. Display narrative intro? Recommended on first play only. (y/n)")
+        show_intro = input("> ")
+        if "y" in show_intro:
+            Output.printIntro(game.narrativeIntro) 
         Output.welcomeToGame(game.user.current_place.day[0]) # start day first visit
         print("Enter \'quit\' at the prompt to quit the game at any time.")
+        print("Once you quit, you will be asked if you want to save your game.")
         gameLoop(game)
         print("Goodbye!")
         return
