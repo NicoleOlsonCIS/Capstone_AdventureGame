@@ -247,12 +247,15 @@ class Game:
 
 		if match and match2:
 			if directObj == "leave":
-				directObj = "exits"
+				Output.print_input_hint("There is more than one way to leave. Be more specific.")
+				return
 			elif directObj == "exit":
-				directObj = "exists"
+				Output.print_input_hint("There is more than one way to exit. Be more specific.")
+				return
 			if combined:
 				directObj = two_words
-			Output.print_input_hint("There are more than one " + directObj + ". You must be more specific")
+
+			Output.print_input_hint("There is more than one " + directObj + ". Be more specific")
 		elif match and not match2:
 			# move the user 
 			# get the opposing door info
@@ -267,6 +270,8 @@ class Game:
 			else:
 				# door is looked
 				self.handleLockedDoor(int_to_str_dict.get(direction))
+		else:
+			Output.print_error("That's not something you can do from here.")
 
 
 	# v3: prints the description of a feature or object 
@@ -815,7 +820,6 @@ class Game:
 					elif action.direct_obj in i.altNames:
 						return True
 		else:
-			print("returning false from checkIsValid")
 			return False	
 
 	# Precondition: called after checkIsValid() returns True
@@ -972,7 +976,8 @@ class Game:
 		if (is_door):
 			Output.newPlaceWithDoor(new_place.name)
 		else: # not a door
-			print("User moved " + direction + " to the " + new_place.name)
+			return
+			# print("You move to the " + new_place.name)
 
 # define the "Place" class
 class Place:

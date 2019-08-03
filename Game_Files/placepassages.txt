@@ -11,22 +11,22 @@ Front Manor Grounds
 wide path,leave,exit-None-None-None-None-None-None-narrow path,leave,exit-None-None
 ***
 Foyer
-hallway-None-None-None-leave,exit-None-wooden door-None-staircase,stairs-None
+hallway-None-None-None-leave,exit-None-wooden door,leave,exit-None-staircase,stairs-None
 ***
 Upstairs Hallway 1
-None-None-None-None-None-None-wooden door-None-None-staircase,stairs
+None-None-None-None-None-None-wooden door,leave,exit-None-None-staircase,stairs,leave,exit
 ***
 Upstairs Hallway 2
-None-None-wooden door-None-None-None-wooden door-None-None-None
+None-None-wooden door,leave,exit-None-None-None-wooden door,leave,exit-None-None-None
 ***
 Upstairs Hallway 3
-None-None-archway,wide archway-None-None-None-None-None-None-None
+leave,exit-None-archway,wide archway,leave,exit-None-None-None-None-None-None-None
 ***
 Upstairs Hallway 4
-None-None-wooden door-None-None-None-wooden door-None-None-None
+leave,exit-None-wooden door,leave,exit-None-None-None-wooden door,leave,exit-None-None-None
 ***
 Upstairs Hallway 5
-open doorway,doorway-None-None-None-None-None-None-None-None-None
+open doorway,doorway,leave,exit-None-None-None-leave,exit-None-None-None-None-None
 ***
 Spare Room
 None-None-leave,exit-None-None-None-None-None-None-None
@@ -47,19 +47,19 @@ Large Bedroom
 None-None-None-None-None-None-None-None-None-None
 ***
 Servants\' Stair Top
-None-None-None-None-open door-None-None-None-None-staircase,stairs,downstairs
+None-None-None-None-open door,leave,exit-None-None-None-None-staircase,stairs,downstairs,leave,exit
 ***
 Servants\' Stair Bottom
-None-None-None-None-open door-None-None-None-upstairs,stairs,staircase-None
+None-None-None-None-open door,leave,exit-None-None-None-upstairs,stairs,staircase,leave,exit-None
 ***
 Downstairs Hallway 3
-None-None-None-None-None-None-None-None-None-None
+leave,exit-None-None-None-leave,exit-None-None-None-None-None
 ***
 Downstairs Hallway 2
-None-None-None-None-None-None-None-None-None-None
+leave,exit-None-None-None-leave,exit-None-None-None-None-None
 ***
 Downstairs Hallway 1
-None-None-archway-None-None-None-archway-None-None-None
+leave,exit-None-archway-None-leave,exit-None-archway-None-None-None
 ***
 Kitchen
 None-None-None-None-None-None-None-leave,exit-None-None
@@ -77,10 +77,10 @@ Cloakroom
 None-None-leave,exit-None-None-None-None-None-None-None
 ***
 Ash Grove
-path-None-None-path-None-None-None-None-None-None
+path,leave,exit-None-None-path,leave,exit-None-None-None-None-None-None
 ***
 Rear Manor Grounds
-None-None-red door,wooden door-None-dirt path-None-None-None-None-None
+None-None-red door,wooden door,leave,exit-None-dirt path,path,leave,exit-None-None-None-None-None
 ***
 Root Cellar
 None-None-None-None-None-None-None-None-None-None
