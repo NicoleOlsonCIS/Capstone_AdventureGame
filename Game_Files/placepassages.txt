@@ -1,17 +1,18 @@
+n-ne-e-se-s-sw-w-u-d
 Train Platform
-None-None-None-None-None-None-None-None-None-None
+None-leave,exit-None-None-None-None-None-leave,exit-None-None
 ***
 Station-House
-None-None-exit-None-None-None-None-None-None-None
+None-None-leave,exit-None-None-None-None-None-None-None
 ***
 Fields
-None-None-None-None-None-None-None-None-None-None
+leave,exit-None-None-None-None-None-leave,exit-None-None-None
 ***
 Front Manor Grounds
-wide path-None-None-None-None-None-None-narrow path-None-None
+wide path,leave,exit-None-None-None-None-None-None-narrow path,leave,exit-None-None
 ***
 Foyer
-hallway-None-None-None-exit-None-wooden door-None-staircase,stairs-None
+hallway-None-None-None-leave,exit-None-wooden door-None-staircase,stairs-None
 ***
 Upstairs Hallway 1
 None-None-None-None-None-None-wooden door-None-None-staircase,stairs
@@ -29,16 +30,16 @@ Upstairs Hallway 5
 open doorway,doorway-None-None-None-None-None-None-None-None-None
 ***
 Spare Room
-None-None-None-None-None-None-None-None-None-None
+None-None-leave,exit-None-None-None-None-None-None-None
 ***
 Small Lavatory
-None-None-None-None-None-None-None-None-None-None
+None-None-None-None-None-None-None-wooden door,leave,exit-None-None
 ***
 Bedroom
-None-None-None-None-None-None-None-None-None-None
+None-None-wooden door,leave,exit-None-None-None-None-None-None-None
 ***
 Library
-None-None-None-None-None-None-archway,wide archway-None-None-None
+None-None-None-None-None-None-archway,wide archway,leave,exit-None-None-None
 ***
 Study
 None-None-None-None-None-None-None-None-None-None
@@ -62,19 +63,19 @@ Downstairs Hallway 1
 None-None-archway-None-None-None-archway-None-None-None
 ***
 Kitchen
-None-None-None-None-None-None-None-None-None-None
+None-None-None-None-None-None-None-leave,exit-None-None
 ***
 Servants\' Quarters
 None-None-None-None-None-None-None-None-None-None
 ***
 Drawing Room
-None-None-archway-None-None-None-None-None-None-None
+None-None-archway,leave,exit-None-None-None-None-None-None-None
 ***
 Dining Room
-None-None-None-None-None-None-archway-None-None-None
+None-None-None-None-None-None-archway,leave,exit-None-None-None
 ***
 Cloakroom
-None-None-None-None-None-None-None-None-None-None
+None-None-leave,exit-None-None-None-None-None-None-None
 ***
 Ash Grove
 path-None-None-path-None-None-None-None-None-None
