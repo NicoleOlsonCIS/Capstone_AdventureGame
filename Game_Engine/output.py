@@ -494,6 +494,8 @@ class Output(object):
 
     @classmethod
     def doorIsLocked(self, placeName, hint):
+        # no hint of key we are not using keys
+        hint = False
         if sys.stdin.isatty():
             Output.approachDoor(_approachDoor2)
             time.sleep(1)
