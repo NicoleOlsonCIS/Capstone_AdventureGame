@@ -1,4 +1,3 @@
-n-ne-e-se-s-sw-w-u-d
 Train Platform
 None-leave,exit-None-None-None-None-None-leave,exit-None-None
 ***
