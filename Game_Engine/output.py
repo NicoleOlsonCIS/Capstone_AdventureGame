@@ -311,7 +311,7 @@ class Output(object):
     # helper functions, break up message to lines of specified length and whether it should be indented
     def break_up_long_message(self, extended_message, length, indent = None):
 
-        if indent = None:
+        if indent == None:
             indent = True
         # split at white space, turn it into an array of words
         words = extended_message.split()
