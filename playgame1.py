@@ -569,9 +569,17 @@ def buildGame():
 
     loadListens(place24, "drawinglisten.txt")
 
+<<<<<<< HEAD
     places = [place1, place2, place3, place4, place5, place6, place7, place8, place9, place10, place11, place12, place13, place14, place15, place16, place17, place18, place19, place20, place21, place22, place23, place24, place25, place26, place27, place28, place29]
 
     loadPassageData(places)
+=======
+
+    places = [place1, place2, place3, place4, place5, place6, place7, place8, place9, place10, place11, place12, place13, place14, place15, place16, place17, place18, place19, place20, place21, place22, place23, place24, place25, place26, place27, place28, place29]
+
+    loadPassageData(places)
+
+>>>>>>> b83de0e0a0f4daccc0384346c9d5603cc1a59eae
     # load narrative intro text
     with open("./Game_Files/intro.txt") as ifile:
         intro = ifile.read()

@@ -19,12 +19,11 @@
 # v11.6 --> implement insert, update error handling 
 # v11.7 --> implement listen 
 # v12   --> implement character, including edits to output
-<<<<<<< HEAD
-# v13   --> verbs with no objects condition, some have their own functions
-=======
 # v13   --> verbs with no objects condition, implementation added to "handle" functions
 # v13.1 --> sleep msg, exit msg from platform to fields, lock front door after user is inside, start impl. "open", expand help, add narrative intro 
->>>>>>> 4a0ecff4310be4449834fc95c38d7f3f0742796e
+# v13   --> verbs with no objects condition, implementation added to "handle" functions
+# v13.1 --> sleep msg, exit msg from platform to fields, lock front door after user is inside, start impl. "open", expand help, add narrative intro 
+
 
 # define the "Game" class
 
