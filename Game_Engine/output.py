@@ -579,7 +579,7 @@ class Output(object):
         if length > 60:
             placeDescription = Output.break_up_long_message(placeDescription, 60)
 
-        welcome = 'Welcome user. We wish you luck on your journey.\n\nStart of Day 1'
+        welcome = 'Welcome user. We wish you luck on your journey.'
 
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$147m')
@@ -599,6 +599,46 @@ class Output(object):
         else:
             print(welcome)
             print(placeDescription)
+
+    @classmethod
+    def printIntro(self, introList):
+        if len(introList) == 3: 
+            length = len(introList[0])
+            intro = ""
+            if length > 60:
+                intro = Output.break_up_long_message(introList[0], 60)
+
+            daymsg = introList[1]
+ 
+            length = len(introList[2])
+            nextText = ""
+            if length > 60:
+                nextText = Output.break_up_long_message(introList[2], 60) 
+      
+            if sys.stdin.isatty():
+                sys.stdout.write(u'\u001b[38;5;$69m')
+                for elem in intro:
+                    time.sleep(0.04)
+                    sys.stdout.write(elem)
+                    sys.stdout.flush()
+                sys.stdout.write("\n")
+                sys.stdout.write(u'\u001b[38;5;$61m')
+                sys.stdout.write("\n")
+                sys.stdout.write("\n")
+                for elem in daymsg:
+                    time.sleep(0.04)
+                    sys.stdout.write(elem)
+                    sys.stdout.flush()
+                sys.stdout.write("\n")
+                for elem in nextText:
+                    time.sleep(0.04)
+                    sys.stdout.write(elem)
+                    sys.stdout.flush() 
+                sys.stdout.write(u"\u001b[0m")
+                print("\n")
+                sys.stdout.flush()
+            else:
+                print(intro)
 
     @classmethod
     def searchForGameOutput(self, message):
