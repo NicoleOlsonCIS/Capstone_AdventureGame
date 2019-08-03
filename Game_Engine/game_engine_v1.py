@@ -19,7 +19,7 @@
 # v11.6 --> implement insert, update error handling 
 # v11.7 --> implement listen 
 # v12   --> implement character, including edits to output
-# v13   --> verbs with no objects condition, implementation added to "handle" functions
+# v13   --> verbs with no objects condition, some have their own functions
 
 # define the "Game" class
 
@@ -35,8 +35,6 @@ from output import *
 
 class Game:
 
-	# constructor expects: 
-	# day(int), time(int)
 	def __init__(self, day, time):
 		self.places = {}
 		self.isValid = {}
@@ -166,6 +164,99 @@ class Game:
 		# there are no features or objects or characters
 		else:
 			Output.print_error("This room is currently devoid of features, things and characters. It may be haunted, or someone has taken everything already.")
+
+	#v13 when only input is "move", it is valid when: there is only one way to move and door is not locked
+	def verbOnlyMove(self):
+		adjacent_places = self.user.current_place.adjacent_places
+		count = 0
+		i = 0
+		dir = -1
+		opposing_door_dict = {0: "s", 1: "sw", 2: "w", 3: "nw", 4: "n", 5: "ne", 6: "e", 7: "se", 8: "d", 9: "u"}
+		int_to_str_dict = {0: "n", 1: "ne", 2: "e", 3: "se", 4: "s", 5: "sw", 6: "w", 7: "nw", 8: "u", 9: "d"}
+
+		for a in adjacent_places:
+			if a is not None:
+				count += 1
+				dir = i   # if there is only 1 exit, dir will be the index of that exit
+			i += 1
+
+		# if more than one, output error message
+		if count > 1: 
+			Output.print_error("There are more than one ways to move from this place.")
+		# if one, determine if it is a locked door
+		if count == 1:
+			# get the corresponding door from the dictionary
+			doorDir = opposing_door_dict.get(dir)
+			if adjacent_places[dir].doors[doorDir] is not "locked":
+				# move user in that direction (sending string not int)
+				self.moveUser(int_to_str_dict.get(dir))
+				# otherwise this is not called
+				self.setIsValid()
+				self.user.current_place.printRoom(self.time)
+				self.user.current_place.updateNumEntries()
+			else:
+				# door is looked
+				self.handleLockedDoor(int_to_str_dict.get(dir))
+
+	#v15 singular objects, i.e. "wooden door", "archway", "north door", etc. 
+	def handleSingularObjectInput(self,direction, directObj, indirectObj):
+		compass = ["n", "ne", "e", "se", "s", "sw", "w", "nw", "u", "d"]
+		int_to_str_dict = {0: "n", 1: "ne", 2: "e", 3: "se", 4: "s", 5: "sw", 6: "w", 7: "nw", 8: "u", 9: "d"}
+		opposing_door_dict = {0: "s", 1: "sw", 2: "w", 3: "nw", 4: "n", 5: "ne", 6: "e", 7: "se", 8: "d", 9: "u"}
+		adjacent_places = self.user.current_place.adjacent_places
+		
+		dict_passages = self.user.current_place.passages
+		
+		current_place = self.user.current_place
+		
+		two_words = ""
+		combined = False
+		if directObj != None and indirectObj != None:
+			two_words = directObj + " " + indirectObj
+			combined = True
+
+		i = 0
+		match = False
+		match2 = False
+		direction = None
+		while i < 10:
+			#get the passage by key
+			passages = dict_passages.get(compass[i])
+			# check if the array has anything in it
+			if len(passages) > 0:
+				for p in passages:
+					if directObj == p:
+						if match == False:
+							match = True
+							direction = i # store number not string for lookup purposes
+						else:
+							match2 = True
+					elif combined:
+						if p == two_words:
+							if match == False:
+								match = True
+								direction = i # store number not string for lookup purposes
+							else:
+								match2 = True
+			i += 1
+
+		if match and match2:
+			Output.print_input_hint("There are more than one " + directObj + ". You must be more specific")
+		elif match and not match2:
+			# move the user 
+			# get the opposing door info
+			otherdoor = opposing_door_dict.get(direction)
+			if adjacent_places[direction].doors[otherdoor] is not "locked":
+				# move user in that direction (sending string not int)
+				self.moveUser(int_to_str_dict.get(direction))
+				# otherwise this is not called
+				self.setIsValid()
+				self.user.current_place.printRoom(self.time)
+				self.user.current_place.updateNumEntries()
+			else:
+				# door is looked
+				self.handleLockedDoor(int_to_str_dict.get(direction))
+
 
 	# v3: prints the description of a feature or object 
 	# v11.2: also prints description of other objects dependent on this one 
@@ -441,8 +532,17 @@ class Game:
 				self.user.current_place.updateNumEntries()
  
 		else: 
-			if action.verb == "move_user": # new in v9: check if move is invalid due to locked door
-				self.handleLockedDoor(action.direction)
+			if action.verb == "move_user": 
+				# if there's a direction that's invalid (and there are no other inputs)
+				if action.direction is not None and action.direct_obj == None and action.indirect_obj == None:
+					self.handleLockedDoor(action.direction)
+				# when the only input is "move"
+				elif action.direction == None and action.direct_obj == None and action.indirect_obj == None:
+					self.verbOnlyMove()
+				# when the user tries to move things
+				elif action.direct_obj is not None or action.indirect_obj is not None: 
+					print("You can't move things unless they are objects you can pick up and carry with you.") 
+
 			elif action.verb == "look":
 				self.handleLook(action.direct_obj, action.indirect_obj, False)
 			elif action.verb == "take":
@@ -461,6 +561,9 @@ class Game:
 				self.handleInsert(action.direct_obj, action.indirect_obj, False)
 			elif action.verb == "listen":
 				self.handleListen(action.direct_obj, action.indirect_obj, False)
+			#v15 handle inputs like "wooden door"
+			elif action.verb == None and action.direct_obj != None:
+				self.handleSingularObjectInput(action.direction, action.direct_obj, action.indirect_obj)
 			else:
 				if action.direct_obj == None or action.verb == None:
 					Output.print_error("You don\'t see the point of doing that right now.")
@@ -686,11 +789,9 @@ class Game:
 						return True
 					elif action.direct_obj in i.altNames:
 						return True
-
 		else:
 			print("returning false from checkIsValid")
 			return False	
-
 
 	# Precondition: called after checkIsValid() returns True
 	def executeRequest(self, action):
@@ -840,7 +941,7 @@ class Game:
 # define the "Place" class
 class Place:
 	# game(game object), name(string), day[], night[], adjacentPaceNames[10 strings], things[strings], doors{ })
-	def __init__(self, game, name, day, night, adjacentPlaceNames, things = None, doors = None):
+	def __init__(self, game, name, day, night, adjacentPlaceNames, things = None, doors = None, passages = None):
 		self.name = name
 		self.adjacent_place_names = adjacentPlaceNames 
 
@@ -855,7 +956,12 @@ class Place:
 		# dictionary: key is direction, value is either 'locked', 'unlocked', or None
 		self.doors = doors
 
-		# fixed constructor
+		# new in v14 special passages in a dictionary
+		# eg. {"ne": "archway"}
+		# look up passage type
+		# used for printing but also for special handling of input ex user input only "archway" or "wooden door"
+		self.passages = passages
+
 		if things is not None:
 			self.things = things
 		else:
@@ -885,6 +991,10 @@ class Place:
 	#  translates array to "adjacentplaces" array after all places created
 	def setAdjacentPlaces(self, game):
 		self.adjacent_places = list(map(game.getPlace, self.adjacent_place_names))
+
+	# v14 track passage types in a dictionary i.e. archway
+	def setPassages(self, passages):
+		self.passages = passages
 
 	# v11 return a description that also considers the how many times the user has been there
 	def getDescriptionBasedOnTimeAndVisitCount(self, time): 
@@ -926,11 +1036,6 @@ class Place:
 	# v5: update number of entries
 	def updateNumEntries(self):
 		self.numTimesEntered += 1
-
-	# v12 character related functions
-	# def addCharacter(self, thing):
-	#	self.character = thing
-	#	self.hasCharacter = True # character can be turned "off", so isValid can use hasCharacter to determine
 
 	# v5: display room description
 	def printRoom(self, time):
