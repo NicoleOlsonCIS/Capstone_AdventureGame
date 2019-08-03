@@ -204,7 +204,7 @@ class Game:
 				self.handleLockedDoor(int_to_str_dict.get(dir))
 
 	#v15 singular objects, i.e. "wooden door", "archway", "north door", etc. 
-	def handleSingularObjectInput(self,direction, directObj, indirectObj):
+	def handleSingularInput(self,direction, directObj, indirectObj):
 		compass = ["n", "ne", "e", "se", "s", "sw", "w", "nw", "u", "d"]
 		int_to_str_dict = {0: "n", 1: "ne", 2: "e", 3: "se", 4: "s", 5: "sw", 6: "w", 7: "nw", 8: "u", 9: "d"}
 		opposing_door_dict = {0: "s", 1: "sw", 2: "w", 3: "nw", 4: "n", 5: "ne", 6: "e", 7: "se", 8: "d", 9: "u"}
@@ -579,9 +579,10 @@ class Game:
 				self.handleInsert(action.direct_obj, action.indirect_obj, False)
 			elif action.verb == "listen":
 				self.handleListen(action.direct_obj, action.indirect_obj, False)
-			#v15 handle inputs like "wooden door"
 			elif action.verb == None and action.direct_obj != None:
-				self.handleSingularObjectInput(action.direction, action.direct_obj, action.indirect_obj)
+				self.handleSingularInput(action.direction, action.direct_obj, action.indirect_obj)
+			elif action.verb == "leave" and action.direct_obj == None and action.indirect_obj == None:
+				self.handleSingularInput(None, "leave", None)
 			else:
 				if action.direct_obj == None or action.verb == None:
 					Output.print_error("You don\'t see the point of doing that right now.")
