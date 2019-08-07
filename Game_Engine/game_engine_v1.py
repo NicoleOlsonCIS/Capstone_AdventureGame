@@ -23,7 +23,7 @@
 # v13.1 --> sleep msg, exit msg from platform to fields, lock front door after user is inside, start impl. "open", expand help, add narrative intro 
 # v13   --> verbs with no objects condition, implementation added to "handle" functions
 # v13.1 --> sleep msg, exit msg from platform to fields, lock front door after user is inside, start impl. "open", expand help, add narrative intro 
-
+# v13.2 --> restrict user movement until after speaking to Maude; error msgs for violent actions (e.g. kill) 
 
 # define the "Game" class
 
@@ -273,6 +273,12 @@ class Game:
 		else:
 			Output.print_error("That's not something you can do from here.")
 
+	#v13.2
+	def handleViolence(self, attemptObj, indirObj, canViolence):
+		if canViolence:
+			return
+		else:
+			Output.print_error("Such behavior is quite beyond you.")
 
 	# v3: prints the description of a feature or object 
 	# v11.2: also prints description of other objects dependent on this one 
@@ -512,9 +518,13 @@ class Game:
 			character = self.user.current_place.character
 			if character.name.lower() == attemptedObj.lower():
 				Output.print_talk(character.getCharacterSpeak(self.time), character.name)
+				if character.name.lower() == "maude":
+					self.user.hasMetMaude == True
 				return
 			if attemptedObj.lower() in character.altNames:
 				Output.print_talk(character.getCharacterSpeak(self.time), character.name)
+				if character.name.lower() == "maude":
+					self.user.hasMetMaude == True
 				return
 		else:
 			Output.print_error("You can not talk to " + attemptedObj)
@@ -527,16 +537,17 @@ class Game:
 		Output.print_input_hint("n, s, e, w, nw, ne, sw, se, u, d")
 		Output.print_input_hint("north, south, east, west, northwest, northeast, southwest, southeast, up, down, upstairs, downstairs")
 		print()
-		Output.print_input_hint("get, pick up, take, grab, keep, steal")
+		Output.print_input_hint("get, pick up, take, grab, keep, steal, acquire, collect")
 		print()
 		Output.print_input_hint("drop, put down, abandon, discard, trash")
 		Output.print_input_hint("insert, put in, put inside")
 		print()
 		Output.print_input_hint("look, l, look around")
-		Output.print_input_hint("look at, examine, x")
+		Output.print_input_hint("look at, examine, x, inspect, study, stare, gaze")
 		Output.print_input_hint("search, look in, look inside")
+		Output.print_input_hint("read")
 		print()
-		Output.print_input_hint("talk, say, greet, ask, chat, speak")
+		Output.print_input_hint("talk, say, greet, ask, chat, speak, tell, call")
 		print()
 		Output.print_input_hint("sleep, rest, relax, go to bed")
 		print()
@@ -594,6 +605,8 @@ class Game:
 				self.handleSingularInput(action.direction, action.direct_obj, action.indirect_obj)
 			elif action.verb == "leave" and action.direct_obj == None and action.indirect_obj == None:
 				self.handleSingularInput(None, "leave", None)
+			elif action.verb == "do_violence":
+				self.handleViolence(action.direct_obj, action.indirect_obj, False)
 			else:
 				if action.direct_obj == None or action.verb == None:
 					Output.print_error("You don\'t see the point of doing that right now.")
@@ -819,6 +832,9 @@ class Game:
 						return True
 					elif action.direct_obj in i.altNames:
 						return True
+		#v13.2. to be expanded later
+		elif action.verb == "do_violence":
+			return False 
 		else:
 			return False	
 
@@ -899,6 +915,10 @@ class Game:
 			self.handleListen(action.direct_obj, action.indirect_obj, True)
 			self.updateTime(1)
 			return
+		if action.verb == "do_violence":
+			self.handleViolence(action.direct_obj, action.indirect_obj, True)
+			self.updateTime(1)
+			return
 		else:
 			return
 
@@ -908,6 +928,11 @@ class Game:
 		user_place = self.user.current_place
 		adjacent_places = user_place.adjacent_places
 		is_door = False
+
+		#v13.2: restrict movement until after speaking to Maude
+		if user_place.name.lower() == "train platform" and self.user.hasMetMaude == False:
+			Output.print_talk("The stern woman on the platform stops you.#Just where do you think you're going without greeting your elders?#", "Maude")
+			return
 
 		if direction == "n":
 			self.user.updatePlace(adjacent_places[0])
@@ -1103,6 +1128,9 @@ class User:
 			self.name = name
 			self.current_place = game.getPlace(startingPlace)
 			self.direction = startingDirection
+			self.hasMetMaude = False
+			self.hasMetMina = False
+			self.hasMetDworkin = False
 
 			# new in v2
 			arr = []

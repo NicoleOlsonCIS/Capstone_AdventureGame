@@ -217,7 +217,7 @@ class Output(object):
                                     sys.stdout.write(lines[lcount])
                                     sys.stdout.write(u'\u001b[38;5;$244m')
                                     print(sb7)
-                                    time.sleep(0.7)
+                                    time.sleep(0.1)
                                     lcount += 1
                                 else: # in the event that the line needs spaces added up to len of 25
                                     while(len(lines[lcount]) < 24):
@@ -226,13 +226,13 @@ class Output(object):
                                         lines[lcount] = l
                                     # now that it is 24 long
                                     sys.stdout.write(lines[lcount])
-                                    time.sleep(0.7)
+                                    time.sleep(0.1)
                                     sys.stdout.write(u'\u001b[38;5;$244m')
                                     print(sb7)
                                     lcount += 1
                             # print the closing of the speech bubble
                             print(sb4)
-                            time.sleep(0.7)
+                            time.sleep(0.1)
                             print(sb5)
                             print(sb6)
                             str_inside = ""
@@ -248,14 +248,14 @@ class Output(object):
                             sys.stdout.write(u'\u001b[38;5;$244m')
                             print(sb1 + "\n" + sb2)
                             sys.stdout.write(sb3) # no newline
-                            time.sleep(0.7)
+                            time.sleep(0.1)
                             sys.stdout.write(u'\u001b[38;5;$157m') # change to text color
                             sys.stdout.write(str_inside)
-                            time.sleep(0.7)
+                            time.sleep(0.1)
                             sys.stdout.write(u'\u001b[38;5;$244m') # change back to bubble color
                             print(sb7)
                             print(sb4)
-                            time.sleep(0.7)
+                            time.sleep(0.1)
                             print(sb5)
                             print(sb6)
 
