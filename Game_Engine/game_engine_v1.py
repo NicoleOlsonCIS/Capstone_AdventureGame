@@ -75,7 +75,7 @@ class Game:
 		self.lastLooked = thing
 
 	# v13 handle when only thing input is "take"
-	# handles context of when user has just looked at somethign that reveals a takeable object not in room descriptoin
+	# handles context of when user has just looked at something that reveals a takeable object not in room descriptoin
 	def verbOnlyTake(self):
 		numThings = len(self.user.current_place.things)
 		takeable_things = []
@@ -125,7 +125,6 @@ class Game:
 				# thing AND it is takeable, then take it. Otherwise, tell user to look around more. 
 				else:
 					if self.lastLooked != None:
-						print(self.lastLooked.name)
 						ll = self.lastLooked
 						
 						# check if what the user last looked at was in this room
@@ -1364,7 +1363,6 @@ class Thing:
 		self.is_character = is_character
 		# set the day and night dialogue of the character
 		if is_character:
-			print(self.name)
 			self.char_day = char_day
 			self.char_night = char_night
 
