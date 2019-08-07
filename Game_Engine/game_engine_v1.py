@@ -23,7 +23,7 @@
 # v13.1 --> sleep msg, exit msg from platform to fields, lock front door after user is inside, start impl. "open", expand help, add narrative intro 
 # v13   --> verbs with no objects condition, implementation added to "handle" functions
 # v13.1 --> sleep msg, exit msg from platform to fields, lock front door after user is inside, start impl. "open", expand help, add narrative intro 
-# v13.2 --> restrict user movement until after speaking to Maude; error msgs for violent actions (e.g. kill) 
+# v13.2 --> restrict user movement until after speaking to Maude; error msgs for violent actions (e.g. kill), fromParserToGame fix 
 
 # define the "Game" class
 
@@ -556,7 +556,11 @@ class Game:
 	# point of entry from parser, game takes care of input from this point
 	# either by updating the game or sending error messages
 	def fromParserToGame(self, action): 
-		
+	
+		#v13.2: return cleanly if action is None
+		if action == None:
+			return
+	
 		valid = self.checkIsValid(action)
 
 		if(valid):
