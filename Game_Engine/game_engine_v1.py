@@ -23,7 +23,7 @@
 # v13.1 --> sleep msg, exit msg from platform to fields, lock front door after user is inside, start impl. "open", expand help, add narrative intro 
 # v13   --> verbs with no objects condition, implementation added to "handle" functions
 # v13.1 --> sleep msg, exit msg from platform to fields, lock front door after user is inside, start impl. "open", expand help, add narrative intro 
-# v13.2 --> restrict user movement until after speaking to Maude; error msgs for violent actions (e.g. kill), fromParserToGame fix 
+# v13.2 --> restrict user movement until after speaking to Maude; error msgs for violent actions (e.g. kill), fromParserToGame None check, verbOnlyTake fix 
 
 # define the "Game" class
 
@@ -88,7 +88,7 @@ class Game:
 					takeable_things.append(n)
 			# if there is something in the room that is takeable
 			available_takeable_things = []
-			if count is not 0:
+			if count > 0:
 				# now count of how many are takeable that are NOT in the "hasOtherItems" list of another
 				# create a list of items that are not on any hasOtherItems list
 				att = 0
@@ -96,7 +96,7 @@ class Game:
 					found_on_another_thing = False
 					for c in things:
 						# if this isn't the same thing
-						if c.name is not tt.name:
+						if c.name != tt.name:
 							# if the thing has other items
 							if len(c.hasOtherItems) > 0:
 								other_items = c.hasOtherItems
@@ -123,9 +123,8 @@ class Game:
 				# check what the user has just looked at. If there is one thing related to that 
 				# thing AND it is takeable, then take it. Otherwise, tell user to look around more. 
 				else:
-					if self.lastLooked is not None:
+					if self.lastLooked != None:
 						print(self.lastLooked.name)
-					if self.lastLooked is not None:
 						ll = self.lastLooked
 						
 						# check if what the user last looked at was in this room
@@ -164,7 +163,7 @@ class Game:
 					else:
 						Output.print_input_hint("Try looking around more. There may be things present that you can take.")
 			# there are things, but they are not takeable, so are features or characters
-			elif count is 0: 
+			elif count == 0: 
 				Output.print_input_hint("You see only things you can look at or talk to.")
 		# there are no features or objects or characters
 		else:
@@ -180,7 +179,7 @@ class Game:
 		int_to_str_dict = {0: "n", 1: "ne", 2: "e", 3: "se", 4: "s", 5: "sw", 6: "w", 7: "nw", 8: "u", 9: "d"}
 
 		for a in adjacent_places:
-			if a is not None:
+			if a != None:
 				count += 1
 				dir = i   # if there is only 1 exit, dir will be the index of that exit
 			i += 1
@@ -192,7 +191,7 @@ class Game:
 		if count == 1:
 			# get the corresponding door from the dictionary
 			doorDir = opposing_door_dict.get(dir)
-			if adjacent_places[dir].doors[doorDir] is not "locked":
+			if adjacent_places[dir].doors[doorDir] != "locked":
 				# move user in that direction (sending string not int)
 				self.moveUser(int_to_str_dict.get(dir))
 				# otherwise this is not called
@@ -260,7 +259,7 @@ class Game:
 			# move the user 
 			# get the opposing door info
 			otherdoor = opposing_door_dict.get(direction)
-			if adjacent_places[direction].doors[otherdoor] is not "locked":
+			if adjacent_places[direction].doors[otherdoor] != "locked":
 				# move user in that direction (sending string not int)
 				self.moveUser(int_to_str_dict.get(direction))
 				# otherwise this is not called
@@ -334,7 +333,7 @@ class Game:
 				# v13 get the obj and update lastLooked
 				things = self.user.current_place.things
 				for t in things:
-					if t.name == attemptedObj:
+					if t.name == attemptedObj or attemptedObj in t.altNames:
 						self.upDateLastLooked(t)
 		else:
 			# if user tries to examine a room that is not the current one, error
@@ -519,15 +518,15 @@ class Game:
 			if character.name.lower() == attemptedObj.lower():
 				Output.print_talk(character.getCharacterSpeak(self.time), character.name)
 				if character.name.lower() == "maude":
-					self.user.hasMetMaude == True
+					self.user.hasMetMaude = True
 				return
 			if attemptedObj.lower() in character.altNames:
 				Output.print_talk(character.getCharacterSpeak(self.time), character.name)
 				if character.name.lower() == "maude":
-					self.user.hasMetMaude == True
+					self.user.hasMetMaude = True
 				return
 		else:
-			Output.print_error("You can not talk to " + attemptedObj)
+			Output.print_error("You cannot talk to " + attemptedObj)
 
 
 	# v6: displays list of supported verbs
