@@ -24,15 +24,9 @@
 # v13   --> verbs with no objects condition, implementation added to "handle" functions
 # v13.1 --> sleep msg, exit msg from platform to fields, lock front door after user is inside, start impl. "open", expand help, add narrative intro 
 # v13.2 --> restrict user movement until after speaking to Maude; error msgs for violent actions (e.g. kill), fromParserToGame None check, verbOnlyTake fix 
+# v13.3 --> impl. looking out windows, opening vs. searching
 
 # define the "Game" class
-
-# import sys
-# sys.path.insert(0, '/path/to/application/app/folder')
-#
-# import file
-#
-#
 #
 import action
 from output import *
@@ -63,6 +57,13 @@ class Game:
 			self.time -= 39 
 			self.day = self.day + 1
 			Output.print_look("Start of Day {}".format(self.day))
+
+	# v13.3: tell whether it is day or night
+	def dayOrNight(self):
+		if self.time > 5 and self.time < 25:
+			return "day"
+		else:
+			return "night" 
 
 	def getPlace(self, name):
 		if name in self.places.keys():
@@ -186,7 +187,7 @@ class Game:
 
 		# if more than one, output error message
 		if count > 1: 
-			Output.print_error("There are more than one ways to move from this place.")
+			Output.print_error("There is more than one way to move from this place.")
 		# if one, determine if it is a locked door
 		if count == 1:
 			# get the corresponding door from the dictionary
@@ -275,9 +276,34 @@ class Game:
 	#v13.2
 	def handleViolence(self, attemptObj, indirObj, canViolence):
 		if canViolence:
+			# TODO: ending scene
 			return
 		else:
-			Output.print_error("Such behavior is quite beyond you.")
+			Output.print_error("Such unruly behavior is quite beyond you.")
+
+	#v13.3
+	def handleOpen(self, attemptedObj, indirObj, canOpen):
+		if indirObj != None:
+			attemptedObj = attemptedObj + " " + indirObj
+
+		if canOpen:
+			for t in self.user.current_place.things:
+				if t.name.lower() == attemptedObj or attemptedObj in t.altNames:
+					# if user opens a searchable thing, automatically search the thing 
+					if t.is_searchable:
+						self.handleSearch(attemptedObj, indirObj, True)
+					else:
+						Output.print_look(t.openDescrip)
+		else:
+			# if user tries to open a door
+			if "door" in attemptedObj:
+				Output.print_input_hint("You don't need to explicitly open or close doors in this game. Try simply going in the direction you want.")
+			# if user tries to open a book
+			elif "book" in attemptedObj:
+				Output.print_input_hint("You don't need to explicitly open books in this game. Try simply reading the book.")
+			# TODO: ending scene
+			else:
+				Output.print_error("You don't see a way to open that.") 
 
 	# v3: prints the description of a feature or object 
 	# v11.2: also prints description of other objects dependent on this one 
@@ -311,9 +337,10 @@ class Game:
 				Output.print_look(character.getDescription(self.time))
 			return
 
-    # v3: takes the thing the user wants to examine
-    # prints appropriate outputs
+	# v3: takes the thing the user wants to examine
+	# prints appropriate outputs
 	# v7: handle two-word obj names
+	#v13.3: handle looking outside
 	def handleLook(self, attemptedObj, indirObj, canLook):
 		if indirObj != None:
 			attemptedObj = attemptedObj + " " + indirObj
@@ -327,6 +354,14 @@ class Game:
 			elif attemptedObj == self.user.current_place.name.lower():
 				self.user.current_place.printRoom(self.time)
 				self.user.current_place.updateNumLooks()
+			# look outside
+			elif attemptedObj == "outside":
+				for t in self.user.current_place.things:
+					if t.is_window:
+						if self.dayOrNight() == "day":
+							Output.print_look(t.windowDescrips[0])
+						else:
+							Output.print_look(t.windowDescrips[1])
 			# print thing description if thing available for examining
 			else:
 				self.showThing(attemptedObj)
@@ -339,10 +374,16 @@ class Game:
 			# if user tries to examine a room that is not the current one, error
 			for placename in self.places.keys():
 				if attemptedObj == placename.lower():
-					Output.print_error("You can\'t look around a room if you aren\'t in it.")
+					Output.print_error("You can't look around a room if you aren't in it.")
 					return
+
+			# if user tries to look outside in a windowless room
+			if attemptedObj == "outside":
+				Output.print_error("You can't look outside in a windowless place.") 
+				return
+	
 			# otherwise print generic error msg
-			Output.print_error("You don\'t see that here.")
+			Output.print_error("You don't see that here.")
 
 
 	# v4: handle output for "take", "drop", "sleep"
@@ -353,7 +394,7 @@ class Game:
 
 		if takeable:
 			if self.user.userHasThing(attemptedObj): 
-				Output.print_error("You can\'t take what\'s already in your inventory.")
+				Output.print_error("You can't take what's already in your inventory.")
 			else:
 				Output.print_take(attemptedObj)
 
@@ -363,11 +404,12 @@ class Game:
 
 		# thing is in current room but not takeable
 		elif self.user.current_place.roomHasThing(attemptedObj): 
-			Output.print_error("You can\'t put that in your inventory.")
+			Output.print_error("You can't put that in your inventory.")
 			return
 		else:
 			# thing is not in current room
-			Output.print_error("You don\'t see a " + attemptedObj + " that you can take.")
+			Output.print_error("You don't see a " + attemptedObj + " that you can take.")
+
 
 	def handleDrop(self, attemptedObj, indirObj, canDrop):
 		if indirObj != None:
@@ -379,7 +421,7 @@ class Game:
 			if attemptedObj == None:
 				Output.print_input_hint("Try being more specific about what you want to drop.")
 			else:
-				Output.print_error("You can\'t drop something that\'s not in your inventory.")	
+				Output.print_error("You can't drop something that's not in your inventory.")	
 
 	def handleSleep(self, attemptedObj, canSleep):
 		if canSleep:
@@ -387,12 +429,12 @@ class Game:
 		else:
 			if self.user.current_place.name != "Spare Room":
 				Output.print_input_hint("You can only sleep in your room. You are not in your room at the moment.")
-			elif self.time > 5 and self.time < 25: 
+			elif self.dayOrNight() == "day": 
 				Output.print_input_hint("You can only sleep at night.")
 			elif attemptedObj != None and attemptedObj != "bed":
 				Output.print_input_hint("You can only sleep on a bed.") 
 			else:
-				Output.print_input_hint("You aren\'t sleepy right now.")
+				Output.print_input_hint("You aren't sleepy right now.")
 
 	# new in v11.1
 	def handleSearch(self, attemptedObj, indirObj, canSearch):
@@ -412,7 +454,7 @@ class Game:
 			if attemptedObj == None:
 				Output.print_input_hint("Try being more specific about what you want to search.")
 				return
-			Output.print_error("That\'s not something you can search.")
+			Output.print_error("That's not something you can search.")
 
 	def handleRead(self, attemptedObj, indirObj, canRead):
 		if indirObj != None:
@@ -448,7 +490,7 @@ class Game:
 			if "book" in attemptedObj:
 				Output.print_input_hint("Try being more specific about which book you want to read.")
 				return
-			Output.print_error("That\'s not something you can read.")
+			Output.print_error("That's not something you can read.")
 
 	# new in v11.6 
 	def handleInsert(self, attemptedObj, indirObj, canInsert):
@@ -460,13 +502,13 @@ class Game:
 				Output.print_input_hint("Try being more specific about what you want to put where.")
 			else:
 				if not self.user.userHasThing(attemptedObj):
-					Output.print_error("You can\'t drop something that\'s not in your inventory.")
+					Output.print_error("You can't drop something that's not in your inventory.")
 					return	
 				if not self.user.current_place.roomHasThing(indirObj):
-					Output.print_error("You don\'t see a " + indirObj + " here.")
+					Output.print_error("You don't see a " + indirObj + " here.")
 					return
 				if self.user.current_place.roomHasThing(indirObj):
-					Output.print_error("You can\'t put things inside the {}.".format(indirObj)) 
+					Output.print_error("You can't put things inside the {}.".format(indirObj)) 
 					return
 
 	#v11.7
@@ -474,14 +516,14 @@ class Game:
 		attemptedObj = obj1
 		if not canListen:
 			if attemptedObj == None:
-				Output.print_error("You don\'t hear anything out of the ordinary here.")
+				Output.print_error("You don't hear anything out of the ordinary here.")
 				return
 			if obj2 != None:
 				attemptedObj = attemptedObj + " " + obj2	
 			if self.user.current_place.roomHasThing(attemptedObj) or self.user.userHasThing(attemptedObj):
-				Output.print_error("That\'s not something you can listen to.")
+				Output.print_error("That's not something you can listen to.")
 			else:
-				Output.print_error("You don\'t see a {} to listen to here.".format(attemptedObj))
+				Output.print_error("You don't see a {} to listen to here.".format(attemptedObj))
 		else:
 			currRoom = self.user.current_place
 			# cycle through listen descriptions; when exhausted, start at first listen description
@@ -499,9 +541,8 @@ class Game:
 		doors = self.user.current_place.doors
 
 		# v11.1: fix "go to X" bug.
-		# If direction is None, attempting to access doors[direction] crashes the game.  
 		if direction == None:
-			Output.print_error("That\'s not somewhere you can go.")
+			Output.print_error("That's not somewhere you can go.")
 
 		# if there is a door, and the move is invalid, then "locked"
 		elif doors[direction] == "locked":
@@ -519,11 +560,19 @@ class Game:
 				Output.print_talk(character.getCharacterSpeak(self.time), character.name)
 				if character.name.lower() == "maude":
 					self.user.hasMetMaude = True
+				elif character.name.lower() == "dworkin":
+					self.user.hasMetDworkin = True
+				elif character.name.lower() == "mina":
+					self.user.hasMetMina = True 
 				return
 			if attemptedObj.lower() in character.altNames:
 				Output.print_talk(character.getCharacterSpeak(self.time), character.name)
 				if character.name.lower() == "maude":
 					self.user.hasMetMaude = True
+				elif character.name.lower() == "dworkin":
+					self.user.hasMetDworkin = True
+				elif character.name.lower() == "mina":
+					self.user.hasMetMina = True	 
 				return
 		else:
 			Output.print_error("You cannot talk to " + attemptedObj)
@@ -544,6 +593,7 @@ class Game:
 		Output.print_input_hint("look, l, look around")
 		Output.print_input_hint("look at, examine, x, inspect, study, stare, gaze")
 		Output.print_input_hint("search, look in, look inside")
+		Output.print_input_hint("open")
 		Output.print_input_hint("read")
 		print()
 		Output.print_input_hint("talk, say, greet, ask, chat, speak, tell, call")
@@ -577,13 +627,13 @@ class Game:
 		else: 
 			if action.verb == "move_user": 
 				# if there's a direction that's invalid (and there are no other inputs)
-				if action.direction is not None and action.direct_obj == None and action.indirect_obj == None:
+				if action.direction != None and action.direct_obj == None and action.indirect_obj == None:
 					self.handleLockedDoor(action.direction)
 				# when the only input is "move"
 				elif action.direction == None and action.direct_obj == None and action.indirect_obj == None:
 					self.verbOnlyMove()
 				# when the user tries to move things
-				elif action.direct_obj is not None or action.indirect_obj is not None: 
+				elif action.direct_obj != None or action.indirect_obj != None: 
 					print("You can't move things unless they are objects you can pick up and carry with you.") 
 
 			elif action.verb == "look":
@@ -591,7 +641,7 @@ class Game:
 			elif action.verb == "take":
 				self.handleTake(action.direct_obj, action.indirect_obj, False) 
 			elif action.verb == "move_user":
-				Output.print_error("You can\'t move in that direction. Try another.")
+				Output.print_error("You can't move in that direction. Try another.")
 			elif action.verb == "drop":
 				self.handleDrop(action.direct_obj, action.indirect_obj, False)
 			elif action.verb == "sleep":
@@ -610,21 +660,23 @@ class Game:
 				self.handleSingularInput(None, "leave", None)
 			elif action.verb == "do_violence":
 				self.handleViolence(action.direct_obj, action.indirect_obj, False)
+			elif action.verb == "open_thing":
+				self.handleOpen(action.direct_obj, action.indirect_obj, False)
 			else:
 				if action.direct_obj == None or action.verb == None:
-					Output.print_error("You don\'t see the point of doing that right now.")
+					Output.print_error("You don't see the point of doing that right now.")
 					return
 				attempted = action.direct_obj 
 				if action.indirect_obj != None: 
 					attempted = attempted + " " + action.indirect_obj
 				# thing is present, but action.verb doesn't work with the thing
 				if self.user.canAccessThing(attempted): 
-					Output.print_error("You can\'t " + action.verb + " the " + attempted + ". Try doing something else with it.")
+					Output.print_error("You can't " + action.verb + " the " + attempted + ". Try doing something else with it.")
 					return
 				else:
-					Output.print_error("You don\'t see a {} that you can {}.".format(attempted, action.verb))
+					Output.print_error("You don't see a {} that you can {}.".format(attempted, action.verb))
 					return
-				Output.print_error("You don\'t see the point of doing that right now.")
+				Output.print_error("You don't see the point of doing that right now.")
 
 	# called after every change in game state in preparation for next input from parser
 	def setIsValid(self):
@@ -682,6 +734,8 @@ class Game:
 			if item.is_readable:
 				valid_reads.append(item)
 
+		#v13.3
+		valid_opens = [item for item in user_place.things if item.is_openable]
 
 		# v12 add a character to the list of things to look at and talk with
 		valid_talks = []
@@ -690,7 +744,7 @@ class Game:
 			valid_talks.append(user_place.character) # you can also talk to characters
 
 		# set the dictionary with keys as actions and values as valid corresponding things
-		newdict = {"move_user": valid_moves, "take": valid_takes, "drop": valid_drops, "look": valid_looks, "search": valid_searches, "read": valid_reads, "talk_npc": valid_talks}
+		newdict = {"move_user": valid_moves, "take": valid_takes, "drop": valid_drops, "look": valid_looks, "search": valid_searches, "read": valid_reads, "talk_npc": valid_talks, "open_thing": valid_opens}
 
 		# set the "is valid" attribute to the current dictionary of valid game operations
 		self.isValid = newdict
@@ -752,13 +806,22 @@ class Game:
 					objName = action.direct_obj + " " + action.indirect_obj
 					if objName == i.name.lower() or objName in i.altNames:
 						return True
-            # if no object specified or current room specified, examine room
+			# if no object specified or current room specified, examine room
 			if action.direct_obj == None:
                         	return True
 			if action.direct_obj == "room":
                         	return True
 			if action.direct_obj == self.user.current_place.name.lower(): 
                         	return True
+
+			#v13.3 handle "look outside"
+			if action.direct_obj == "outside" and action.indirect_obj == None:
+				# check for a window in the room
+				for i in v:
+					if i.is_window:
+						return True
+				return False
+
 			return False
 
 		# new in v4 
@@ -835,9 +898,21 @@ class Game:
 						return True
 					elif action.direct_obj in i.altNames:
 						return True
-		#v13.2. to be expanded later
+		#v13.2. TODO: to be expanded later
 		elif action.verb == "do_violence":
 			return False 
+		#v13.3 
+		elif action.verb == "open_thing":
+			if action.direct_obj == None:
+				return False
+			v = self.isValid.get("open_thing")
+			for i in v:
+				if i.name.lower() == action.direct_obj or action.direct_obj in i.altNames:
+					return True
+				if action.indirect_obj != None:
+					objName = action.direct_obj + " " + action.indirect_obj
+					if objName == i.name.lower() or objName in i.altNames:
+						return True
 		else:
 			return False	
 
@@ -881,7 +956,7 @@ class Game:
 
 		if action.verb == "sleep":
 			self.handleSleep(action.direct_obj, True)
-			Output.print_look("Drained from the day’s activity, you shuck off your things and burrow under the covers. You\'re asleep by the time your head hits the pillow.")
+			Output.print_look("Drained from the day's activity, you shuck off your things and burrow under the covers. You're asleep by the time your head hits the pillow.")
 			# start new morning 
 			self.time = 6
 			self.day += 1
@@ -920,6 +995,10 @@ class Game:
 			return
 		if action.verb == "do_violence":
 			self.handleViolence(action.direct_obj, action.indirect_obj, True)
+			self.updateTime(1)
+			return
+		if action.verb == "open_thing":
+			self.handleOpen(action.direct_obj, action.indirect_obj, True)
 			self.updateTime(1)
 			return
 		else:
@@ -999,7 +1078,7 @@ class Game:
 		# 13.1: exit message from Train Platform to Fields
 		# only shows up on first entry into fields
 		if new_place.numTimesEntered == 0 and (user_place.name.lower() == "train platform" and new_place.name.lower() == "fields"): 
-			Output.print_look("Leaving the station behind, you trail doggedly after Maude, who doesn\'t spare so much as a backward glance. You mechanically put one foot in front of another, resigning yourself to what already feels like a long journey to the House.")
+			Output.print_look("Leaving the station behind, you trail doggedly after Maude, who doesn't spare so much as a backward glance. You mechanically put one foot in front of another, resigning yourself to what already feels like a long journey to the House.")
 	
 		if (is_door):
 			Output.newPlaceWithDoor(new_place.name)
@@ -1134,6 +1213,7 @@ class User:
 			self.hasMetMaude = False
 			self.hasMetMina = False
 			self.hasMetDworkin = False
+			self.foundStudyKey = False
 
 			# new in v2
 			arr = []
@@ -1270,7 +1350,7 @@ class Thing:
 		# v13.1: start implementing open (for openable things like windows) 
 		# (if an item is both openable and searchable, e.g. trunk, default to searching)  
 		self.is_openable = False
-		self.openDescrips = [] 
+		self.openDescrip = "" 
 
 		# v11.2
 		self.isHereDescription = "You see a " + self.name + " here."
@@ -1291,6 +1371,9 @@ class Thing:
 		#v11.4: search/read descriptions for searchable/readable items
 		self.searchDescrip = "" 
 		self.readDescrips = []
+		#v13.3
+		self.windowDescrips = [] 
+		self.is_window = False
 
 		# keep track of allowed verbs for each thing
 		self.permittedVerbs = [] 

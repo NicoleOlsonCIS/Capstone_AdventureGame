@@ -1046,5 +1046,9 @@ hardcodedPhrases = {
     "go to bed": Action("sleep"),
     "look in mirror": Action("look", None, "mirror"),
     "look out window": Action("look", None, "outside"),
-    "see out window": Action("look", None, "outside")
+    "see out window": Action("look", None, "outside"),
+    "look out windows": Action("look", None, "outside"),
+    "see out windows": Action("look", None, "outside"),
+    "look through window": Action("look", None, "outside"),
+    "look through windows": Action("look", None, "outside")
 }

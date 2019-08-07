@@ -16,6 +16,8 @@ tiny square window:tiny window,square window,window
 ***
 foyer windows:windows,window
 ***
+heavy iron bars:bar,bars,window bars,window bar,iron bars,iron bar,heavy iron,heavy bar,heavy bars
+***
 foyer staircase:polished staircase,staircase
 ***
 foyer curtains:curtains,curtain,drapes,drape,velvet curtains,velvet curtain,velvet drapes,velvet drape,black drapes,black drape,black curtains,black curtain,heavy velvet
@@ -41,6 +43,12 @@ wooden wardrobe:wardrobe
 writing desk:desk
 ***
 sheaf of papers:sheaf,papers,drawings,sketches,charcoal drawings,charcoal sketches,sheaf papers,paper,drawing,sketch,charcoal drawing,charcoal sketch
+***
+heavy blue drapes:drapes,curtains,drape,curtain,blue drapes,blue drape,blue curtains,blue curtain,heavy blue,heavy drapes,heavy drape,heavy curtain,heavy curtains
+***
+bedroom windows:windows,window,bedroom window
+***
+iron bars:bar,bars,window bars,window bar,iron bars,iron bar
 ***
 library tables:tables,table
 ***
@@ -72,4 +80,8 @@ intricate rug:rug
 ***
 long mahogany table:mahogany table,long table,long mahogany,table,dining table,dinner table
 ***
-maude:woman,person,female
+maude:woman,person,female,old woman,housekeeper
+***
+dworkin:man,old man,male,person
+***
+mina:wilhelmina,girl,person,dark-haired girl,female,young woman

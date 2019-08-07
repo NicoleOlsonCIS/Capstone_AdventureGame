@@ -46,6 +46,39 @@ def loadReadables(filename1, filename2, thing_obj):
                 thing_obj.is_readable = True
                 return
 
+# Loads information about openable features.
+def loadOpenables(filename, thing_obj):
+    fpath = "./Game_Files/" + filename
+    with open(fpath) as f:
+        read_data = f.read()
+        data_chunks = read_data.split("***\n")
+
+    for chunk in data_chunks:
+        chunk = chunk.rstrip("\n")
+        parts = chunk.split(":")
+        if parts[0].lower() == thing_obj.name.lower():
+            thing_obj.openDescrip = parts[1]
+            thing_obj.is_openable = True
+            return
+
+# Loads info about features that are windows.
+def loadWindows(filename, thing_obj):
+    fpath = "./Game_Files/" + filename
+    with open(fpath) as f:
+        read_data = f.read()
+        data_chunks = read_data.split("***\n")
+
+    for chunk in data_chunks:
+        chunk = chunk.rstrip("\n")
+        parts = chunk.split(":")
+        descrips = parts[1].split("###")
+
+        if parts[0].lower() == thing_obj.name.lower():
+            thing_obj.windowDescrips.append(descrips[0])
+            thing_obj.windowDescrips.append(descrips[1]) 
+            thing_obj.is_window = True
+            return 
+
 # Loads information about searchable features.
 def loadSearchables(filename, thing_obj):
     fpath = "./Game_Files/" + filename
@@ -59,6 +92,8 @@ def loadSearchables(filename, thing_obj):
         if parts[0].lower() == thing_obj.name.lower():
             thing_obj.searchDescrip = parts[1]
             thing_obj.is_searchable = True
+            # any searchable obj is also openable
+            thing_obj.is_openable = True
             return
 
 # Load text data for listenable conversation 
@@ -253,6 +288,10 @@ def loadPlaceData(place_obj, filename):
                 loadAltNames("objalternatenames.txt", newthing)
                 # load info about searchable features
                 loadSearchables("searchables.txt", newthing) 
+                # load info about openable features
+                loadOpenables("openables.txt", newthing)
+                # load info about windows
+                loadWindows("windowdescriptions.txt", newthing) 
 
                 count += 1
 
@@ -553,6 +592,7 @@ def buildGame():
     loadPlaceData(place12, "smalllavatory.txt")
     loadPlaceData(place13, "bedroom.txt")
     loadPlaceData(place14, "library.txt")
+    #loadPlaceData(place15, "study.txt")
     
     loadPlaceData(place17, "servantsstairtop.txt")
     loadPlaceData(place18, "servantsstairbottom.txt")

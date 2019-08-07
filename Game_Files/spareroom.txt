@@ -17,11 +17,11 @@ set of drawers
 ***
 The sheets smell freshly laundered.###The sheets smell freshly laundered.
 ***
-A plain, sturdy wooden dresser with four drawers.###A plain, sturdy wooden dresser with four drawers.
+A plain wooden dresser with four drawers.###A plain wooden dresser with four drawers.
 ***
-Unlike the rest of the room, which is exceedingly clean, the glass is clouded and dirty.###Unlike the rest of the room, which is exceedingly clean, the glass is clouded with a thick layer of dust. Through it, you see the murky silhouettes of treetops swaying in the downpour. The white mist fills the manor grounds, lending everything the aura of a hazy illusion.
+A square window barely bigger than your head. The glass seems extraordinarily thick and sturdy.###A square window barely bigger than your head. The glass seems extraordinarily thick and sturdy.
 ***
-Four sturdy dresser drawers.###No night
+Four simple, clean dresser drawers.###Four simple dresser drawers.
 ***
 flashlight
 ***
