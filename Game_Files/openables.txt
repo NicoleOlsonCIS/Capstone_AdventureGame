@@ -1,0 +1,9 @@
+foyer windows:You don’t see any means of opening them; you’re not sure they can be opened at all. You can only stare at the world outside like a prisoner in a cell.
+***
+foyer curtains:You pull the drapes open to find that the windows are blocked by heavy iron bars.
+***
+tiny square window:You turn the latch, which sticks a little from lack of use. But no matter how much you push and pull, the crusty old window doesn’t budge. It appears to be stuck closed.
+***
+bedroom windows:You don’t see any means of opening them; you’re not sure they can be opened at all. You can only stare at the world outside like a prisoner in a cell.
+***
+heavy blue drapes:You pull the drapes open to find that the windows are blocked by iron bars.

@@ -18,19 +18,19 @@ foyer chandelier
 foyer staircase
 weak glow
 ***
-It trails away into the gloom of the House.###No night
+It trails away into the gloom of the House.###It trails away into the gloom of the House.
 ***
-You pull the drapes open to find that the windows are blocked by heavy iron bars. You don’t see any means of opening them; you’re not sure they can be opened at all. You can only stare at the world outside like a prisoner in a cell. Through the windows, you see nothing but a stormy, fog-shrouded night.###As you squint into the night, you think you see something - a streak of movement in the mist, a dark shape - out of the corner of your eye. But when you blink and look again, it's gone. 
+Tall, imposing windows obscured by thick black drapes.###Tall, imposing windows obscured by thick black drapes.
 ***
-What are they meant to keep out, you wonder? In any case, they won't budge.###No night
+What are they meant to keep out, you wonder? In any case, they won't budge.###What are they meant to keep out, you wonder? In any case, they won't budge.
 ***
-The black drapes extend from floor to ceiling, giving the room an oddly muffled, muted quality.###No night
+The black drapes extend from floor to ceiling, giving the room an oddly muffled, muted quality.###The black drapes extend from floor to ceiling, giving the room an oddly muffled, muted quality.
 ***
-An ornate wrought-iron chandelier. Its dim light is swallowed up by the oppressive opulence of the room.###No night
+An ornate wrought-iron chandelier. Its dim light is swallowed up by the oppressive opulence of the room.###An ornate wrought-iron chandelier. 
 ***
-It's a bit grand for your liking. Feeling suddenly small and cold, you find yourself missing home.###No night
+It's a bit grand for your liking. Feeling suddenly small and cold, you find yourself missing home.###It's a bit grand for your liking.
 ***
-The dim light is swallowed up by the oppressive opulence of the room.###No night
+The dim light is swallowed up by the oppressive opulence of the room.###The dim light is swallowed up by the oppressive opulence of the room.
 ***
 no objects
 ***

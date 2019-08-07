@@ -1,0 +1,5 @@
+foyer windows:You look out upon the lightly wooded manor grounds, which seem curiously still. You can make out the fields in the distance.###Through the windows, you see a stormy, fog-shrouded night. As you squint into the night, you think you see something - a streak of movement in the mist, a dark shape - out of the corner of your eye. But when you blink and look again, it’s gone.
+***
+bedroom windows:You look out upon the lightly wooded manor grounds, which seem curiously still. You can make out the fields in the distance.###Through the thick glass, you see the murky silhouettes of treetops swaying in the downpour. White mist fills the manor grounds, lending everything the aura of a hazy illusion.
+***
+tiny square window:You look out upon the lightly wooded manor grounds, which seem curiously still. You can make out the fields in the distance.###Through the thick glass, you see the murky silhouettes of treetops swaying in the downpour. White mist fills the manor grounds, lending everything the aura of a hazy illusion.
