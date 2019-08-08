@@ -9,10 +9,15 @@ from parserWords import (verbDict,
                          prepositionsListUnused,
                          prepositionsListUsed,
                          hardcodedPhrases)
+import sys
+sys.path.insert(0, '../Game_Engine')
+from output import Output
 
 class Parser:
 
     # Default constructor - no instance variables
+    def __init__(self):
+        self.output = Output()
 
     # Load word dictionaries and lists into class variables
     verbDict = verbDict
@@ -59,8 +64,11 @@ class Parser:
 
         # Check if input is a hard-coded phrase
         userAction = self.parseHardCodePhrases(userInput)
-        if (userAction is not None):
+        if (isinstance(userAction, Action)):
             return userAction
+        elif (isinstance(userAction, str)):
+            self.output.print_error(userAction)
+            return None
 
         # Tokenize input 
         tokens = userInput.split()

@@ -671,8 +671,9 @@ def gameLoop(game):
         else:
             playaction = a.Action()
             playaction = playparser.parseInput(received)
-            print(playaction.verb, playaction.direction, playaction.direct_obj, playaction.indirect_obj) 
-            game.fromParserToGame(playaction)
+            if (isinstance(playaction, a.Action)):
+                print(playaction.verb, playaction.direction, playaction.direct_obj, playaction.indirect_obj) 
+                game.fromParserToGame(playaction)
 
 def main():
 

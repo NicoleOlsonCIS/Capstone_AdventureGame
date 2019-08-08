@@ -1050,5 +1050,6 @@ hardcodedPhrases = {
     "look out windows": Action("look", None, "outside"),
     "see out windows": Action("look", None, "outside"),
     "look through window": Action("look", None, "outside"),
-    "look through windows": Action("look", None, "outside")
+    "look through windows": Action("look", None, "outside"),
+    "pick nose": "That's gross."
 }
