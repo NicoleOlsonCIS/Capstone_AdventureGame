@@ -66,31 +66,6 @@ sb5 = "    | " + "/"
 sb6 = "    |" + "/"
 sb7 = "   |"
 
-##
-##
-## Strings for going up stairs
-##
-##
-##
-st16="            ___"
-st15="           |   |"
-st14="           |   |"
-st13="           |___|"
-st12="           /___\\"
-st11="          |_____|"
-st10="         /_______\\"
-st9 ="        |_________|"
-st8 ="       /___________\\"
-st7 ="      |_____________|"
-st6 ="     /_______________\\"
-st5 ="    |_________________|"
-st4 ="   /___________________\\"
-st3 ="  |_____________________|"
-st2 =" /_______________________\\"
-st1 ="|_________________________|"
-
-stairs = [st16, st15, st14, st13, st12, st11, st10, st9, st8, st7, st6, st5, st4, st3, st2, st1]
-
 # static class
 class Output(object):
 
@@ -175,7 +150,6 @@ class Output(object):
     #def move_NotDoor(self, direction, newPlaceName, oldPlaceName, passageType) # eg archway, stairs
 
 
-
     # print conversations
     @classmethod
     def print_talk(self, characters_message, person_name):
@@ -187,17 +161,18 @@ class Output(object):
             count = 0
             inside = False
 
-            str = "You talk to " + person_name + ": "
+            if person_name != None:
+                str = "You talk to " + person_name + ": "
 
-            print("\n")
-            sys.stdout.write(u'\u001b[38;5;$146m')
-            for elem in str:
-                time.sleep(0.04)
-                sys.stdout.write(elem)
-                sys.stdout.flush()
-            sys.stdout.write('\033[0m')
-            time.sleep(0.5)
-            print("\n")
+                print("\n")
+                sys.stdout.write(u'\u001b[38;5;$146m')
+                for elem in str:
+                    time.sleep(0.04)
+                    sys.stdout.write(elem)
+                    sys.stdout.flush()
+                sys.stdout.write('\033[0m')
+                time.sleep(0.5)
+                print("\n")
 
 
             for c in characters_message:
@@ -483,54 +458,6 @@ class Output(object):
             sys.stdout.write(elem)
             sys.stdout.flush()
         time.sleep(0.1)
-
-    @classmethod
-    # stairs = [st16, st15, st14, st13, st12, st11, st10, st9, st8, st7, st6, st5, st4, st3, st2, st1]
-    def goUpstairs(self):
-        #prints three stairs at a time, with odd stairs having darker color background than even
-        clear = "                                        "
-        i = 15
-        while i >= 4:
-            if i != 15:
-                sys.stdout.write(u"\u001b[1000D")
-                sys.stdout.write(u"\033[" + str(i+2) + "A") # move up i + 2
-                c = 16
-                while c > 0:
-                    print(clear)
-                    c -= 1
-                sys.stdout.write(u"\u001b[1000D")
-                sys.stdout.write(u"\033[16A") # move up 16
-            j = 0
-            while j <= i:
-                if sys.stdin.isatty():
-                    # change text color
-                    if j % 2 == 0:
-                        sys.stdout.write("\t")
-                        sys.stdout.write(u"\u001b[33;1m")
-                    else:
-                        sys.stdout.write("\t")
-                        sys.stdout.write(u"\u001b[35;1m")
-
-                    sys.stdout.write(stairs[j])
-                    #clear formating
-                    sys.stdout.write(u"\u001b[0m")
-                    sys.stdout.write("\n")
-                    
-                else:
-                    sys.stdout.write("\t" + stairs[j] + "\n")
-                j += 1
-            if j == 0:
-                time.sleep(1) # pause longer at the beginning of the stairs
-            time.sleep(0.4)
-            i -= 1
-        sys.stdout.write(u"\u001b[1000D")
-        sys.stdout.write(u"\033[" + str(i+2) + "A") # move up i + 2
-        c = 16
-        while c > 0:
-            print(clear)
-            c -= 1
-        sys.stdout.write(u"\u001b[1000D")
-        sys.stdout.write(u"\033[16A") # move up 16
 
     @classmethod
     def clearEntryWriting(self):

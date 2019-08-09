@@ -671,9 +671,6 @@ def saveGame(game):
 def gameLoop(game):
     # set up parser
     playparser = p.Parser()
-
-    Output.goUpstairs()
-
     # start playing
     while True:
         # flush standard in 
