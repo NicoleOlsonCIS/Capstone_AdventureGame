@@ -503,13 +503,13 @@ class Output(object):
             j = 0
             while j <= i:
                 if sys.stdin.isatty():
-                    # change background color
+                    # change text color
                     if j % 2 == 0:
                         sys.stdout.write("\t")
-                        sys.stdout.write(u"\u001b[41m")
+                        sys.stdout.write(u"\u001b[33;1m")
                     else:
                         sys.stdout.write("\t")
-                        sys.stdout.write(u"\u001b[44m")
+                        sys.stdout.write(u"\u001b[35;1m")
 
                     sys.stdout.write(stairs[j])
                     #clear formating
