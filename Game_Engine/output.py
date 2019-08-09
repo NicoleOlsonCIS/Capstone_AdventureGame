@@ -505,9 +505,9 @@ class Output(object):
                 if sys.stdin.isatty():
                     # change background color
                     if j % 2 == 0:
-                        sys.stdout.write(u"\u001b[242m")
+                        sys.stdout.write(u"\u001b[41m")
                     else:
-                        sys.stdout.write(u"\u001b[245m")
+                        sys.stdout.write(u"\u001b[44m")
                     sys.stdout.write("\t" + stairs[j] + "\n")
                     #clear formating
                     sys.stdout.write(u"\u001b[0m")
