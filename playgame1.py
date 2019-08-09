@@ -689,6 +689,9 @@ def main():
         if "y" in show_intro:
             Output.printIntro(game.narrativeIntro) 
         Output.welcomeToGame(game.user.current_place.day[0]) # start day first visit
+        # ensure characters show up in first room description
+        game.user.current_place.showCharacters()
+
         print("Enter \'quit\' at the prompt to quit the game at any time.")
         print("Once you quit, you will be asked if you want to save your game.")
         gameLoop(game)
