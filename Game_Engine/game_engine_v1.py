@@ -113,11 +113,11 @@ class Game:
 				if att > 0:
 					# if there is one thing, then take it
 					if att == 1:
+						self.handleTake(available_takeable_things[0].name, None, True)
 						self.user.pickUpObject(available_takeable_things[0].name)
 						# update the clock
-						self.updateTime(1)
-						# print about it
-						Output.print_take(available_takeable_things[0].name)
+						#self.updateTime(1)
+						self.setIsValid()
 					# if there is more than on thing, tell user to be more specific 
 					if att > 1: 
 						Output.print_input_hint("You see multiple things you could take. Be more specific.")
@@ -150,11 +150,11 @@ class Game:
 										if t.is_takeable:
 											# infer that user just looked at a hidden takeable thing (i.e. scrap of fabric)
 											# take the object
+											self.handleTake(t.name, None, True)
 											self.user.pickUpObject(t.name)
 											# update the clock
 											self.updateTime(1)
-											# print about it
-											Output.print_take(t.name)
+											self.setIsValid()
 											return
 							# last thing the user looked at is present but has nothing
 							elif len(ll.hasOtherItems) == 0:
@@ -217,7 +217,8 @@ class Game:
 				elif character.name.lower() == "dworkin":
 						self.user.hasMetDworkin = True
 				elif character.name.lower() == "mina":
-						self.user.hasMetMina = True 
+						self.user.hasMetMina = True
+				self.setIsValid()
 				return
 		else:
 			Output.print_input_hint("There is no one around and you are talking to yourself.")
