@@ -347,11 +347,12 @@ class Game:
 								Output.print_look(thingObj.isHereDescription)
 
 		#v12 character interaction for looking at character
-		if self.user.current_place.hasCharacter:
-			character = self.user.current_place.character
-			if character.name == itemname or itemname in character.altNames:
-				Output.print_look(character.getDescription(self.time))
-			return
+		if self.user.current_place.hasCharacters:
+			characters = self.user.current_place.characters
+			for c in characters:
+				if c.name == itemname or itemname in c.altNames:
+					Output.print_look(c.getDescription(self.time))
+				return
 
 	# v3: takes the thing the user wants to examine
 	# prints appropriate outputs
