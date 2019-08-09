@@ -1189,7 +1189,7 @@ class Place:
 	#v13.3: show characters in room description
 	#TODO: after place is updated to handle multiple characters, update this accordingly 
 	def showCharacters(self):
-		if self.hasCharacter:
+		if self.hasCharacters:
 			Output.print_look("You see a person here.")	
 
 	def showDroppedObjects(self):
