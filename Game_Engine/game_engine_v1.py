@@ -21,10 +21,11 @@
 # v12   --> implement character, including edits to output
 # v13   --> verbs with no objects condition, implementation added to "handle" functions
 # v13.1 --> sleep msg, exit msg from platform to fields, lock front door after user is inside, start impl. "open", expand help, add narrative intro 
-# v13   --> verbs with no objects condition, implementation added to "handle" functions
-# v13.1 --> sleep msg, exit msg from platform to fields, lock front door after user is inside, start impl. "open", expand help, add narrative intro 
 # v13.2 --> restrict user movement until after speaking to Maude; error msgs for violent actions (e.g. kill), fromParserToGame None check, verbOnlyTake fix 
 # v13.3 --> impl. looking out windows, opening vs. searching
+# v14   --> track whether or not user has seen the hint to find the key yet, correct talk_npc error output to "talk to"
+# v15   --> verb only "talk", transitions added to place
+# v16   --> transitions incorporated into move
 
 # define the "Game" class
 #
@@ -36,11 +37,12 @@ class Game:
 	def __init__(self, day, time):
 		self.places = {}
 		self.isValid = {}
-		self.day = day	# time component new in v1.1
+		self.day = day
 		self.time = time
-		# v13 Thing object (and only Thing objs) the user last looked at (for disambiguating verb without subject)
 		self.lastLooked = None 
-		self.narrativeIntro = [] 
+		self.narrativeIntro = []
+		#v14 - when false, print the key as a hint.
+		self.hasEncounteredALockedDoor = False
 
 	def setUser(self, user):
 		self.user = user
@@ -202,7 +204,25 @@ class Game:
 				# door is looked
 				self.handleLockedDoor(int_to_str_dict.get(dir))
 
-	#v15 singular objects, i.e. "wooden door", "archway", "north door", etc. 
+	def verbOnlyTalk(self):
+		if self.user.current_place.hasCharacters:
+			if len(self.user.current_place.characters) > 1:
+				Output.print_input_hint("There are multiple people here you can talk to. Be more specific.")
+			elif len(self.user.current_place.characters) == 1: 
+				# talk to the character
+				character = self.user.current_place.characters[0] # get the only character
+				Output.print_talk(character.getCharacterSpeak(self.time), character.name)
+				if character.name.lower() == "maude":
+						self.user.hasMetMaude = True
+				elif character.name.lower() == "dworkin":
+						self.user.hasMetDworkin = True
+				elif character.name.lower() == "mina":
+						self.user.hasMetMina = True 
+				return
+		else:
+			Output.print_input_hint("There is no one around and you are talking to yourself.")
+
+	#v13 singular objects, i.e. "wooden door", "archway", "north door", etc. 
 	def handleSingularInput(self,direction, directObj, indirectObj):
 		compass = ["n", "ne", "e", "se", "s", "sw", "w", "nw", "u", "d"]
 		int_to_str_dict = {0: "n", 1: "ne", 2: "e", 3: "se", 4: "s", 5: "sw", 6: "w", 7: "nw", 8: "u", 9: "d"}
@@ -210,8 +230,6 @@ class Game:
 		adjacent_places = self.user.current_place.adjacent_places
 		
 		dict_passages = self.user.current_place.passages
-		
-		current_place = self.user.current_place
 		
 		two_words = ""
 		combined = False
@@ -262,7 +280,6 @@ class Game:
 			if adjacent_places[direction].doors[otherdoor] != "locked":
 				# move user in that direction (sending string not int)
 				self.moveUser(int_to_str_dict.get(direction))
-				# otherwise this is not called
 				self.setIsValid()
 				self.user.current_place.printRoom(self.time)
 				self.user.current_place.updateNumEntries()
@@ -545,36 +562,39 @@ class Game:
 
 		# if there is a door, and the move is invalid, then "locked"
 		elif doors[direction] == "locked":
-			Output.doorIsLocked(self.user.current_place.name, True)
+			#v14: print key hint only the first time user encounters a locked door
+			if self.hasEncounteredALockedDoor == False:
+				self.hasEncounteredALockedDoor = True
+				Output.doorIsLocked(self.user.current_place.name, True)
+			else:
+				Output.doorIsLocked(self.user.current_place.name, False)
 
 		# otherwise, there is no place in that direction
 		else:
 			Output.print_error("There is no place in the " + direction + " direction")
 
 	# v12 handling talking to characters
-	def handleTalk(self, attemptedObj, canTalk):
+	# v15 revision for a place possibly having multiple characters
+	def handleTalk(self, attemptedObj, attemptedInd_Obj, canTalk):
 		if canTalk:
-			character = self.user.current_place.character
-			if character.name.lower() == attemptedObj.lower():
-				Output.print_talk(character.getCharacterSpeak(self.time), character.name)
-				if character.name.lower() == "maude":
-					self.user.hasMetMaude = True
-				elif character.name.lower() == "dworkin":
-					self.user.hasMetDworkin = True
-				elif character.name.lower() == "mina":
-					self.user.hasMetMina = True 
-				return
-			if attemptedObj.lower() in character.altNames:
-				Output.print_talk(character.getCharacterSpeak(self.time), character.name)
-				if character.name.lower() == "maude":
-					self.user.hasMetMaude = True
-				elif character.name.lower() == "dworkin":
-					self.user.hasMetDworkin = True
-				elif character.name.lower() == "mina":
-					self.user.hasMetMina = True	 
-				return
+			characters = self.user.current_place.characters
+			for c in characters:
+				if c.name.lower() == attemptedObj.lower() or attemptedObj.lower() in c.altNames:
+					Output.print_talk(c.getCharacterSpeak(self.time), c.name)
+					if c.name.lower() == "maude":
+						self.user.hasMetMaude = True
+					elif c.name.lower() == "dworkin":
+						self.user.hasMetDworkin = True
+					elif c.name.lower() == "mina":
+						self.user.hasMetMina = True 
+					return # return after finding a character in the place that matches the attemptedObj
 		else:
-			Output.print_error("You cannot talk to " + attemptedObj)
+			if attemptedObj == None and attemptedInd_Obj == None:
+				self.verbOnlyTalk()
+			else:
+				if attemptedInd_Obj != None:
+					attemptedObj = attemptedObj + " " + attemptedInd_Obj
+				Output.print_error("You cannot talk to " + attemptedObj)
 
 
 	# v6: displays list of supported verbs
@@ -632,8 +652,8 @@ class Game:
 				elif action.direction == None and action.direct_obj == None and action.indirect_obj == None:
 					self.verbOnlyMove()
 				# when the user tries to move things
-				elif action.direct_obj != None or action.indirect_obj != None: 
-					print("You can't move things unless they are objects you can pick up and carry with you.") 
+				# elif action.direct_obj != None or action.indirect_obj != None: 
+				#	Output.print_input_hint("You can't move things unless they are objects you can pick up and carry with you.") 
 
 			elif action.verb == "look":
 				self.handleLook(action.direct_obj, action.indirect_obj, False)
@@ -661,6 +681,8 @@ class Game:
 				self.handleViolence(action.direct_obj, action.indirect_obj, False)
 			elif action.verb == "open_thing":
 				self.handleOpen(action.direct_obj, action.indirect_obj, False)
+			elif action.verb == "talk_npc":
+				self.handleTalk(action.direct_obj, action.indirect_obj, False)
 			else:
 				if action.direct_obj == None or action.verb == None:
 					Output.print_error("You don't see the point of doing that right now.")
@@ -673,6 +695,9 @@ class Game:
 					Output.print_error("You can't " + action.verb + " the " + attempted + ". Try doing something else with it.")
 					return
 				else:
+					#v14 correct output 
+					if action.verb == "talk_npc":
+						action.verb = "talk to"
 					Output.print_error("You don't see a {} that you can {}.".format(attempted, action.verb))
 					return
 				Output.print_error("You don't see the point of doing that right now.")
@@ -685,40 +710,16 @@ class Game:
 		user_place = self.user.current_place
 		
 		adjacent_places = self.user.current_place.adjacent_places
-   
-		# create a list of available move locations
-		# new in v9, update to account for locked opposing doors (if going north, check place north south door is not locked)
+
+		dir_arr = [0,1,2,3,4,5,6,7,8,9]
+		directions = {0: "n", 1: "ne", 2: "e", 3: "se", 4: "s", 5: "sw", 6: "w", 7: "nw", 8: "u", 9: "d"}
+		opposing_dir_dict = {0: "s", 1: "sw", 2: "w", 3: "nw", 4: "n", 5: "ne", 6: "e", 7: "se", 8: "d", 9: "u"}
 		valid_moves = []
-		if adjacent_places[0] is not None:
-			if adjacent_places[0].doors["s"] is not "locked":
-				valid_moves.append("n")
-		if adjacent_places[1] is not None: 
-			if adjacent_places[1].doors["sw"] is not "locked":
-				valid_moves.append("ne")
-		if adjacent_places[2] is not None:
-			if adjacent_places[2].doors["w"] is not "locked":
-				valid_moves.append("e")
-		if adjacent_places[3] is not None: 
-			if adjacent_places[3].doors["nw"] is not "locked":
-				valid_moves.append("se")
-		if adjacent_places[4] is not None: 
-			if adjacent_places[4].doors["n"] is not "locked":
-				valid_moves.append("s")
-		if adjacent_places[5] is not None: 
-			if adjacent_places[5].doors["ne"] is not "locked":
-				valid_moves.append("sw")
-		if adjacent_places[6] is not None: 
-			if adjacent_places[6].doors["e"] is not "locked":
-				valid_moves.append("w")
-		if adjacent_places[7] is not None: 
-			if adjacent_places[7].doors["se"] is not "locked":
-				valid_moves.append("nw")
-		if adjacent_places[8] is not None: 
-			if adjacent_places[8].doors["d"] is not "locked":
-				valid_moves.append("u")
-		if adjacent_places[9] is not None: 
-			if adjacent_places[9].doors["u"] is not "locked":
-				valid_moves.append("d")
+
+		for d in dir_arr:
+			if adjacent_places[d] is not None:
+				if adjacent_places[d].doors[opposing_dir_dict[d]] is not "locked":
+					valid_moves.append(directions[d])
 
 		# v11.3: change from strings to objects 
 		valid_takes = [item for item in user_place.things if item.is_takeable]
@@ -738,9 +739,10 @@ class Game:
 
 		# v12 add a character to the list of things to look at and talk with
 		valid_talks = []
-		if user_place.hasCharacter: 
-			valid_looks.append(user_place.character) # character is a Thing obj
-			valid_talks.append(user_place.character) # you can also talk to characters
+		if user_place.hasCharacters:
+			for c in user_place.characters:
+				valid_looks.append(c)
+				valid_talks.append(c)
 
 		# set the dictionary with keys as actions and values as valid corresponding things
 		newdict = {"move_user": valid_moves, "take": valid_takes, "drop": valid_drops, "look": valid_looks, "search": valid_searches, "read": valid_reads, "talk_npc": valid_talks, "open_thing": valid_opens}
@@ -969,7 +971,7 @@ class Game:
 			self.showHelp()
 			return
 		if action.verb == "talk_npc":
-			self.handleTalk(action.direct_obj, True)
+			self.handleTalk(action.direct_obj, action.indirect_obj, True)
 			self.updateTime(1)
 			return 
 		if action.verb == "show_inventory":
@@ -1009,86 +1011,54 @@ class Game:
 		user_place = self.user.current_place
 		adjacent_places = user_place.adjacent_places
 		is_door = False
+		transition = ""
+		reverse_dict = {"n": 0, "ne": 1, "e": 2, "se": 3, "s": 4, "sw": 5, "w": 6, "nw": 7, "u": 8, "d": 9}
+		opposing_dir_dict = {0: "s", 1: "sw", 2: "w", 3: "nw", 4: "n", 5: "ne", 6: "e", 7: "se", 8: "d", 9: "u"}
+		exp_dict = {"n": "north", "ne": "north-east", "e": "east", "se": "south-east", "s": "south", "sw": "south-west", "w": "west", "nw": "north-west", "u": "upstairs", "d": "downstairs"}
 
 		#v13.2: restrict movement until after speaking to Maude
+		# question - we could restrict this to exiting ne, so that the user can look in the station house without talking to maude?
 		if user_place.name.lower() == "train platform" and self.user.hasMetMaude == False:
 			Output.print_talk("The stern woman on the platform stops you.#Just where do you think you're going without greeting your elders?#", "Maude")
 			return
+		
 
-		if direction == "n":
-			self.user.updatePlace(adjacent_places[0])
-			if adjacent_places[0].doors["s"] == "unlocked":
-				is_door = True
-		elif direction == "ne":
-			self.user.updatePlace(adjacent_places[1])
-			if adjacent_places[1].doors["sw"] == "unlocked":
-				is_door = True
-		elif direction == "e":
-			self.user.updatePlace(adjacent_places[2])
-			if adjacent_places[2].doors["w"] == "unlocked":
-				is_door = True
-		elif direction == "se":
-			self.user.updatePlace(adjacent_places[3])
-			if adjacent_places[3].doors["nw"] == "unlocked":
-				is_door = True
-		elif direction == "s":
-			self.user.updatePlace(adjacent_places[4])
-			if adjacent_places[4].doors["n"] == "unlocked":
-				is_door = True
-		elif direction == "sw":
-			self.user.updatePlace(adjacent_places[5])
-			if adjacent_places[5].doors["ne"] == "unlocked":
-				is_door = True
-		elif direction == "w":
-			self.user.updatePlace(adjacent_places[6])
-			if adjacent_places[6].doors["e"] == "unlocked":
-				is_door = True
-		elif direction == "nw":
-			self.user.updatePlace(adjacent_places[7])
-			if adjacent_places[7].doors["se"] == "unlocked":
-				is_door = True
-		elif direction == "u":
-			self.user.updatePlace(adjacent_places[8])
-			if adjacent_places[8].doors["d"] == "unlocked":
-				is_door = True
-		elif direction == "d":
-			self.user.updatePlace(adjacent_places[9])
-			if adjacent_places[9].doors["u"] == "unlocked":
-				is_door = True
+		self.user.updatePlace(adjacent_places[reverse_dict[direction]])
+		alt_dir = opposing_dir_dict[reverse_dict[direction]]
+		if adjacent_places[reverse_dict[direction]].doors[alt_dir] == "unlocked":
+			is_door = True
+		exit_idx = user_place.hasLeft[direction]
+		exit_arr = user_place.transitions[direction]
+		if exit_arr[exit_idx] != "None":
+			transition = exit_arr[exit_idx]
+		else:
+			transition = "You move " + exp_dict[direction]
 
-		# new in v9
-		# print door animation if there is a door
+		# either way, update the exit times
+		user_place.updateHasLeft(direction)
+
+		#print the transition
+		Output.print_look(transition)
+
 		new_place = self.user.current_place
+
+		if (is_door):
+			Output.newPlaceWithDoor(new_place.name)
 
 		#v11.7 make Fields take longer to cross
 		if user_place.name.lower() == "fields" and new_place.name.lower() != "fields":
 			self.updateTime(3)
 
-		# exit msg from Front Manor Grounds to Foyer
-		# only shows up on first entry into foyer
+		# v15 oprinting moved to transition functionality
 		if new_place.numTimesEntered == 0 and (user_place.name.lower() == "front manor grounds" and new_place.name.lower() == "foyer"):
-			Output.print_look("You hurl yourself up the path as it starts to rain in earnest. Maude follows right on your heels, fishing an iron keyring out of her pockets. At the front door, she shoulders you aside, unlocks the door, and heaves it open with a grunt of effort, dragging you inside by the wrist and dumping you in a rain-soaked heap on the floor.")
-
-			# 13.1: lock front door of house once user is inside foyer
-			# (lock north door of front manor grounds, lock south door of foyer) 
 			user_place.lockDoor("n")
 			new_place.lockDoor("s") 
-	
-		# 13.1: exit message from Train Platform to Fields
-		# only shows up on first entry into fields
-		if new_place.numTimesEntered == 0 and (user_place.name.lower() == "train platform" and new_place.name.lower() == "fields"): 
-			Output.print_look("Leaving the station behind, you trail doggedly after Maude, who doesn't spare so much as a backward glance. You mechanically put one foot in front of another, resigning yourself to what already feels like a long journey to the House.")
-	
-		if (is_door):
-			Output.newPlaceWithDoor(new_place.name)
-		else: # not a door
-			return
-			# print("You move to the " + new_place.name)
+
 
 # define the "Place" class
 class Place:
 	# game(game object), name(string), day[], night[], adjacentPaceNames[10 strings], things[strings], doors{ })
-	def __init__(self, game, name, day, night, adjacentPlaceNames, things = None, doors = None, passages = None):
+	def __init__(self, game, name, day, night, adjacentPlaceNames, things = None, doors = None, passages = None, transistions = None):
 		self.name = name
 		self.adjacent_place_names = adjacentPlaceNames 
 
@@ -1099,15 +1069,13 @@ class Place:
 		self.listenDescrips = [] 
 		self.numTimesListened = 0
 
-		# new in v9: a dictionary of doors tracking: whether there is a door, and whether it is locked or unlocked
-		# dictionary: key is direction, value is either 'locked', 'unlocked', or None
 		self.doors = doors
 
-		# new in v14 special passages in a dictionary
-		# eg. {"ne": "archway"}
-		# look up passage type
-		# used for printing but also for special handling of input ex user input only "archway" or "wooden door"
 		self.passages = passages
+
+		self.transitions = transistions 
+		# v15 track how many times the place has been left in diffrent directions
+		self.hasLeft = {"n": 0, "ne": 0, "e": 0, "se": 0, "s": 0, "sw": 0, "w": 0, "nw": 0, "u": 0, "d": 0}
 
 		if things is not None:
 			self.things = things
@@ -1116,16 +1084,14 @@ class Place:
 		
 		self.numTimesEntered = -1
 		self.numTimesLooked = -1	
-
-		# v11 day and night are arrays with different values based on "userVisitCount"
 		self.day = day
 		self.night = night
 
 		game.addPlace(self) # creates a map between name and place object in the game
 
 		# v12 characters as part of places
-		self.character = None
-		self.hasCharacter = False
+		self.characters = []
+		self.hasCharacters = False
 
 	# new in v9 update the doors dictionary when a door becomes locked
 	def lockDoor(self, direction):
@@ -1142,6 +1108,10 @@ class Place:
 	# v14 track passage types in a dictionary i.e. archway
 	def setPassages(self, passages):
 		self.passages = passages
+
+	# v16 transitions (dictionary of direction(str): []))
+	def setTransitions(self, transitions):
+		self.transitions = transitions
 
 	# v11 return a description that also considers the how many times the user has been there
 	def getDescriptionBasedOnTimeAndVisitCount(self, time): 
@@ -1162,8 +1132,13 @@ class Place:
 
 	# v12 adding character to place
 	def addCharacter(self, thing):
-		self.character = thing
-		self.hasCharacter = True
+		self.characters.append(thing)
+		self.hasCharacters = True
+
+	# expand to allow more than 1 character per place
+	def placeHasCharacters(self):
+		if len(self.characters) > 0:
+			return True
 
 	def removeThing(self, thing):
 		self.things.remove(thing)
@@ -1183,6 +1158,11 @@ class Place:
 	# v5: update number of entries
 	def updateNumEntries(self):
 		self.numTimesEntered += 1
+
+	# v15 update number of times exited in a particular direction
+	def updateHasLeft(self, direction):
+		if self.hasLeft[direction] < 2:
+			self.hasLeft[direction] += 1 # increase up to 2 (there are 3 different exit transitions)
 
 	# v5: display room description
 	def printRoom(self, time):

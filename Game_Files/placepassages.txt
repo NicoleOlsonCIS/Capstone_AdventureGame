@@ -32,7 +32,7 @@ Spare Room
 None-None-leave,exit-None-None-None-None-None-None-None
 ***
 Small Lavatory
-None-None-None-None-None-None-None-wooden door,leave,exit-None-None
+None-None-None-None-None-None-wooden door,leave,exit-None-None-None
 ***
 Bedroom
 None-None-wooden door,leave,exit-None-None-None-None-None-None-None
