@@ -505,15 +505,22 @@ class Output(object):
                 if sys.stdin.isatty():
                     # change background color
                     if j % 2 == 0:
+                        sys.stdout.write("\t")
                         sys.stdout.write(u"\u001b[41m")
                     else:
+                        sys.stdout.write("\t")
                         sys.stdout.write(u"\u001b[44m")
-                    sys.stdout.write("\t" + stairs[j] + "\n")
+
+                    sys.stdout.write(stairs[j])
                     #clear formating
                     sys.stdout.write(u"\u001b[0m")
+                    sys.stdout.write("\n")
+                    
                 else:
                     sys.stdout.write("\t" + stairs[j] + "\n")
                 j += 1
+            if j == 0:
+                time.sleep(1) # pause longer at the beginning of the stairs
             time.sleep(0.4)
             i -= 1
         sys.stdout.write(u"\u001b[1000D")
