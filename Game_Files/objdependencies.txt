@@ -27,3 +27,5 @@ library tables:faded blue book
 library armchairs:hefty black book
 ***
 library bookshelves:dull reddish book
+***
+long mahogany table:corkscrew

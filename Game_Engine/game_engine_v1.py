@@ -22,10 +22,14 @@
 # v13   --> verbs with no objects condition, implementation added to "handle" functions
 # v13.1 --> sleep msg, exit msg from platform to fields, lock front door after user is inside, start impl. "open", expand help, add narrative intro 
 # v13.2 --> restrict user movement until after speaking to Maude; error msgs for violent actions (e.g. kill), fromParserToGame None check, verbOnlyTake fix 
+
 # v13.3 --> impl. looking out windows, opening vs. searching
 # v14   --> track whether or not user has seen the hint to find the key yet, correct talk_npc error output to "talk to"
 # v15   --> verb only "talk", transitions added to place
 # v16   --> transitions incorporated into move
+
+# v13.3 --> impl. looking out windows, opening vs. searching, update lastLooked upon searching/opening
+
 
 # define the "Game" class
 #
@@ -40,9 +44,15 @@ class Game:
 		self.day = day
 		self.time = time
 		self.lastLooked = None 
+
 		self.narrativeIntro = []
 		#v14 - when false, print the key as a hint.
 		self.hasEncounteredALockedDoor = False
+
+		self.narrativeIntro = [] 
+		#v13.3
+		self.outsidePlaces = ["train platform", "fields", "front manor grounds", "ash grove", "rear manor grounds"]	
+
 
 	def setUser(self, user):
 		self.user = user
@@ -311,6 +321,8 @@ class Game:
 						self.handleSearch(attemptedObj, indirObj, True)
 					else:
 						Output.print_look(t.openDescrip)
+						#v13.3: update lastLooked upon opening thing
+						self.upDateLastLooked(t)
 		else:
 			# if user tries to open a door
 			if "door" in attemptedObj:
@@ -320,7 +332,7 @@ class Game:
 				Output.print_input_hint("You don't need to explicitly open books in this game. Try simply reading the book.")
 			# TODO: ending scene
 			else:
-				Output.print_error("You don't see a way to open that.") 
+				Output.print_error("That's not something you can open.") 
 
 	# v3: prints the description of a feature or object 
 	# v11.2: also prints description of other objects dependent on this one 
@@ -397,6 +409,10 @@ class Game:
 
 			# if user tries to look outside in a windowless room
 			if attemptedObj == "outside":
+				# tell user if they are already outside
+				if self.user.current_place.name.lower() in self.outsidePlaces:
+					Output.print_error("You are already outside.")
+					return
 				Output.print_error("You can't look outside in a windowless place.") 
 				return
 	
@@ -464,6 +480,9 @@ class Game:
 				if t.name.lower() == attemptedObj or attemptedObj in t.altNames:
 					t.hasBeenSearched = True
 					Output.print_look(t.searchDescrip)
+					#v13.3: update lastLooked
+					self.upDateLastLooked(t)
+
 					for obj in t.hasOtherItems:
 						for thingObj in self.user.current_place.things:
 							if obj.lower() == thingObj.name.lower():
@@ -1161,10 +1180,27 @@ class Place:
 	def updateNumEntries(self):
 		self.numTimesEntered += 1
 
+
 	# v15 update number of times exited in a particular direction
 	def updateHasLeft(self, direction):
 		if self.hasLeft[direction] < 2:
 			self.hasLeft[direction] += 1 # increase up to 2 (there are 3 different exit transitions)
+
+	#v13.3: show characters in room description
+	#TODO: after place is updated to handle multiple characters, update this accordingly 
+	def showCharacters(self):
+		if self.hasCharacter:
+			Output.print_look("You see a person here.")	
+
+	def showDroppedObjects(self):
+		features = [feat for feat in self.things if feat.is_searchable]
+		hiddenItems = []
+		for ft in features:
+			for hidden in ft.hasOtherItems:
+				hiddenItems.append(hidden)
+		for i in self.droppedHere:
+			if i.name not in hiddenItems: 
+				Output.print_look(i.isHereDescription)
 
 	# v5: display room description
 	def printRoom(self, time):
@@ -1172,16 +1208,21 @@ class Place:
 		place_description = self.getDescriptionBasedOnTimeAndVisitCount(time)
 		# v9: call output function to orient user 
 		Output.orientUser(place_name, place_description)
+
+		self.showCharacters()
+		self.showDroppedObjects()
+
 		# v11.5: show any dropped objects currently in the room
 		# (don't show objects that were dropped inside features)
-		features = [feat for feat in self.things if feat.is_searchable]
-		hiddenItems = []
-		for ft in features:
-			for hidden in ft.hasOtherItems:
-				hiddenItems.append(hidden) 
-		for i in self.droppedHere:
-			if i.name not in hiddenItems: 
-				Output.print_look(i.isHereDescription)
+		# v13.3: moved to its own function
+		#features = [feat for feat in self.things if feat.is_searchable]
+		#hiddenItems = []
+		#for ft in features:
+			#for hidden in ft.hasOtherItems:
+				#hiddenItems.append(hidden) 
+		#for i in self.droppedHere:
+			#if i.name not in hiddenItems: 
+				#Output.print_look(i.isHereDescription)
 
 # define the User class
 class User:
