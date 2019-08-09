@@ -150,7 +150,6 @@ class Output(object):
     #def move_NotDoor(self, direction, newPlaceName, oldPlaceName, passageType) # eg archway, stairs
 
 
-
     # print conversations
     @classmethod
     def print_talk(self, characters_message, person_name):
@@ -162,17 +161,18 @@ class Output(object):
             count = 0
             inside = False
 
-            str = "You talk to " + person_name + ": "
+            if person_name != None:
+                str = "You talk to " + person_name + ": "
 
-            print("\n")
-            sys.stdout.write(u'\u001b[38;5;$146m')
-            for elem in str:
-                time.sleep(0.04)
-                sys.stdout.write(elem)
-                sys.stdout.flush()
-            sys.stdout.write('\033[0m')
-            time.sleep(0.5)
-            print("\n")
+                print("\n")
+                sys.stdout.write(u'\u001b[38;5;$146m')
+                for elem in str:
+                    time.sleep(0.04)
+                    sys.stdout.write(elem)
+                    sys.stdout.flush()
+                sys.stdout.write('\033[0m')
+                time.sleep(0.5)
+                print("\n")
 
 
             for c in characters_message:
@@ -390,7 +390,6 @@ class Output(object):
 
         return lines
 
-
     # call when door is unlocked and you are moving into a new room
     @classmethod
     def newPlaceWithDoor(self, placeName):
@@ -416,7 +415,7 @@ class Output(object):
         sys.stdout.flush()
         i = 0
         for d in _approachDoor:
-            time.sleep(0.08)
+            time.sleep(0.05)
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u"\033[8A") # up 8
             sys.stdout.flush()
@@ -434,30 +433,14 @@ class Output(object):
             c = "[31;1m"
 
         while i < num:
-            time.sleep(speed)
-            sys.stdout.write(u"\u001b[1000D")
-            sys.stdout.write(u"\033[7A")
-            sys.stdout.flush()
-            sys.stdout.write(u"\u001b" + c) # color
-            # print("\t"+ door)
-            print(door)
-            sys.stdout.write(u"\u001b[0m") # reset
-            time.sleep(speed)
-            sys.stdout.write(u"\u001b[1000D")
-            sys.stdout.write(u"\033[7A")
-            sys.stdout.flush()
-            # print("\t" + door)
-            print(door)
-            time.sleep(speed)
-            sys.stdout.write(u"\u001b[1000D")
-            sys.stdout.write(u"\033[7A")
-            sys.stdout.flush()
-            sys.stdout.write(u"\u001b" + c) # color
-            # print("\t" + door)
-            print(door)
-            sys.stdout.write(u"\u001b[0m")
+            time.sleep(speed) # pause
+            sys.stdout.write(u"\u001b[1000D") # move cursor left
+            sys.stdout.write(u"\033[7A") # move cursor up
+            sys.stdout.flush() # clear std out
+            sys.stdout.write(u"\u001b" + c) # change color
+            print(door) # print the door
+            sys.stdout.write(u"\u001b[0m") # reset the color
             i += 1
-        sys.stdout.write(u"\u001b[0m") # reset
 
     @classmethod
     def openDoor(self,_openDoor, placeName):
@@ -497,12 +480,10 @@ class Output(object):
 
     @classmethod
     def doorIsLocked(self, placeName, hint):
-        # no hint of key we are not using keys
-        hint = False
         if sys.stdin.isatty():
             Output.approachDoor(_approachDoor2)
-            time.sleep(1)
-            Output.printFlashingDoor(od0, "red", 2, 0.4)
+            time.sleep(0.4)
+            Output.printFlashingDoor(od0, "red", 2, 0.2)
             str = "That door is locked."
             # sys.stdout.write("\t")
             for elem in str:
@@ -515,8 +496,6 @@ class Output(object):
 
             # for instance, if it's the first time the user encounters a locked door
             if hint:
-                # clear the door by moving up and printing clear lines 
-                #clearSpace("16")
                 print("\n")
                 strHint = "Hint:"
                 strHint2 = " You need a key\n"
@@ -539,15 +518,14 @@ class Output(object):
 
     @classmethod
     def printKey(self,keyline1, keyline2, keyline3):
-        # print keyline1 #226 and then reset
-        sys.stdout.write(u"\u001b[33;1m")
-        sys.stdout.write("\t" + keyline1[0])
+        sys.stdout.write(u"\u001b[250;1m")
+        sys.stdout.write(keyline1[0])
         sys.stdout.write(u"\u001b[0m") # reset
         sys.stdout.write("\n")
 
         # print keyline2
-        sys.stdout.write(u"\u001b[33;1m") # yellow text
-        sys.stdout.write("\t" + keyline2[0])
+        sys.stdout.write(u"\u001b[250;1m") # yellow text
+        sys.stdout.write(keyline2[0])
         sys.stdout.write(u"\u001b[0m") # reset
 
         sys.stdout.write(u"\u001b[47m") # white background
@@ -555,22 +533,21 @@ class Output(object):
         sys.stdout.write(keyline2[1])
         sys.stdout.write(u"\u001b[0m") # reset
 
-        sys.stdout.write(u"\u001b[33;1m") # yellow text
+        sys.stdout.write(u"\u001b[250;1m") # yellow text
         sys.stdout.write(keyline2[2])
         sys.stdout.write(u"\u001b[0m") # reset
         sys.stdout.write("\n")
 
         # print keyline3
-        sys.stdout.write(u"\u001b[33;1m") # yellow text
-        sys.stdout.write("\t" + keyline3[0])
+        sys.stdout.write(u"\u001b[250;1m") # yellow text
+        sys.stdout.write(keyline3[0])
         sys.stdout.write(u"\u001b[47m") # add white background
         sys.stdout.write(u"\u001b[30m") # change text black
         sys.stdout.write(keyline3[1])
         sys.stdout.write(keyline3[2])
-        #sys.stdout.write(u"\u001b[33;1m") # change back to yellow text
         sys.stdout.write(keyline3[3])
         sys.stdout.write(u"\u001b[0m") # reset
-        sys.stdout.write(u"\u001b[33;1m") # yellow text
+        sys.stdout.write(u"\u001b[250;1m") # yellow text
         sys.stdout.write(keyline3[4])
         sys.stdout.write(u"\u001b[0m") # reset
         sys.stdout.write("\n\n\n")

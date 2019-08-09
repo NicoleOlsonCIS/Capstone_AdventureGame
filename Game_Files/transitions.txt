@@ -1,0 +1,111 @@
+Train Platform
+ne#Leaving the station behind, you trail doggedly after Maude, who doesn't spare so much as a backward glance. You mechanically put one foot in front of another, resigning yourself to what already feels like a long journey to the House.--You step off the platform and onto grass--You leave the platform once again
+w#You move west towards the Station-House--You return to the Station-House--None
+***
+Station-House
+e#None--None--None
+***
+Fields
+n#You leave the fields on the north side--None--None
+sw#You exit the fields in the sw direction and step onto the Train Platform--None--None
+***
+Front Manor Grounds
+s#You go back into the fields
+n#You hurl yourself up the path as it starts to rain in earnest. Maude follows right on your heels, fishing an iron keyring out of her pockets. At the front door, she shoulders you aside, unlocks the door, and heaves it open with a grunt of effort, dragging you inside by the wrist and dumping you in a rain-soaked heap on the floor.--None--None
+nw#None--None--None
+***
+Foyer
+s#None--None--None
+w#None--None--None
+u#None--None--None
+n#None--None--None
+***
+Upstairs Hallway 1
+w#None--None--None
+n#None--None--None
+d#None--None--None
+***
+Upstairs Hallway 2
+e#None--None--None
+w#None--None--None
+n#None--None--None
+s#None--None--None
+***
+Upstairs Hallway 3
+e#None--None--None
+n#None--None--None
+s#None--None--None
+***
+Upstairs Hallway 4
+e#None--None--None
+w#None--None--None
+n#None--None--None
+s#None--None--None
+***
+Upstairs Hallway 5
+n#None--None--None
+s#None--None--None
+***
+Spare Room
+e#None--None--None
+***
+Small Lavatory
+w#None--None--None
+***
+Bedroom
+e#None--None--None
+***
+Library
+e#None--None--None
+***
+Study
+***
+Large Bedroom
+***
+Servants\' Stair Top
+s#None--None--None
+d#None--None--None
+***
+Servants\' Stair Bottom
+s#None--None--None
+u#None--None--None
+***
+Downstairs Hallway 3
+n#None--None--None
+s#None--None--None
+***
+Downstairs Hallway 2
+n#None--None--None
+s#None--None--None
+w#None--None--None
+e#None--None--None
+***
+Downstairs Hallway 1
+n#None--None--None
+s#None--None--None
+w#None--None--None
+e#None--None--None
+***
+Kitchen
+w#None--None--None
+***
+Servants\' Quarters
+***
+Drawing Room
+e#None--None--None
+***
+Dining Room
+w#None--None--None
+***
+Cloakroom
+e#None--None--None
+***
+Ash Grove
+n#None--None--None
+se#None--None--None
+***
+Rear Manor Grounds
+s#None--None--None
+e#None--None--None
+***
+Root Cellar

@@ -188,6 +188,34 @@ def loadPassageData(places):
         p.setPassages(passages_dict)
         i += 1
 
+# dependency: places array is in order created in main game building
+def loadTransitionData(places): 
+    # build path to data file
+    fpath = "./Game_Files/" + "transitions.txt"
+ 
+    # read file all in at once 
+    with open(fpath) as f:
+        read_data = f.read()
+        data_chunks = read_data.split("***\n")
+
+    i = 0
+    for p in places:
+        tr = data_chunks[i] # get the text for the section
+        lines = tr.split("\n") # divide up by line
+        eArr = ["None", "None", "None"]
+        transitions_dict = {"n": eArr, "ne": eArr, "e": eArr, "se": eArr, "s": eArr, "sw": eArr, "w": eArr, "nw": eArr, "u": eArr, "d": eArr}
+        arr = []
+        for l in lines:
+            div = l.split("#")
+            str = div[0] # represents the direction component
+            if(len(div) > 1):
+                arr = div[1].split("--") # represents each entry for that direction
+                p1 = {str: arr}
+                transitions_dict.update(p1)
+                # set the transitions on the place
+        p.setTransitions(transitions_dict)
+        i += 1
+
 def loadPlaceData(place_obj, filename):
 
     # build path to data file
@@ -197,7 +225,6 @@ def loadPlaceData(place_obj, filename):
     with open(fpath) as f:
         read_data = f.read()
         data_chunks = read_data.split("***\n")
-        
 
     # day and night descriptions
     dayDescrip1 = data_chunks[0].rstrip("\n")
@@ -612,10 +639,7 @@ def buildGame():
     places = [place1, place2, place3, place4, place5, place6, place7, place8, place9, place10, place11, place12, place13, place14, place15, place16, place17, place18, place19, place20, place21, place22, place23, place24, place25, place26, place27, place28, place29]
 
     loadPassageData(places)
-
-    places = [place1, place2, place3, place4, place5, place6, place7, place8, place9, place10, place11, place12, place13, place14, place15, place16, place17, place18, place19, place20, place21, place22, place23, place24, place25, place26, place27, place28, place29]
-
-    loadPassageData(places)
+    loadTransitionData(places)
 
     # load narrative intro text
     with open("./Game_Files/intro.txt") as ifile:
@@ -647,7 +671,6 @@ def saveGame(game):
 def gameLoop(game):
     # set up parser
     playparser = p.Parser()
-
     # start playing
     while True:
         # flush standard in 
