@@ -160,13 +160,14 @@ class Output(object):
             str_inside = ""
             count = 0
             inside = False
+            k = 0
 
             if person_name != None:
-                str = "You talk to " + person_name + ": "
-
+                intro = "You talk to " + person_name + ": "
+                k = 3
                 print("\n")
                 sys.stdout.write(u'\u001b[38;5;$146m')
-                for elem in str:
+                for elem in intro:
                     time.sleep(0.04)
                     sys.stdout.write(elem)
                     sys.stdout.flush()
@@ -174,7 +175,26 @@ class Output(object):
                 time.sleep(0.5)
                 print("\n")
 
+            nlc = 0
+            pc = "                                          "
 
+            # if the character's message starts outside of quotes, take the part off and print before the loop. Count the number of lines. 
+            if characters_message[0] != "#":
+                preTalk = ""
+                j = 0
+                while characters_message[j] != "#":
+                    preTalk = preTalk + characters_message[j]
+                    j += 1
+                
+                if len(preTalk) > 60:
+                    str_nl = Output.break_up_long_message(preTalk, 32, False)
+                    k += Output.countNewLines(str_nl) 
+                else:
+                    k += 1
+                # remove preTalk characters from character_message
+                characters_message.lstrip(preTalk)
+            fullPrint = ""
+            first = True
             for c in characters_message:
                 if c == "#":
                     count += 1
@@ -183,16 +203,23 @@ class Output(object):
                         if len(str_outside) is not 0:
                             if len(str_outside) > 60:
                                 str_outside = Output.break_up_long_message(str_outside, 32, False)
-                            #print("\n")
+                                nlc += Output.countNewLines(str_outside) # add the number of new lines to the count
                             sys.stdout.write(u'\u001b[38;5;$146m')
                             for elem in str_outside:
                                 time.sleep(0.04)
                                 sys.stdout.write(elem)
                                 sys.stdout.flush()
+                            fullPrint += str_outside
+                            Output.fadeString(fullPrint)
+                            fullPrint = ""
                             sys.stdout.write('\033[0m')
-                            time.sleep(1)
+                            #time.sleep(1)
                             str_outside = ""
                             print("\n")
+                            # clear after below bubble print
+                            nlc += 2
+                            Output.clearTalk(nlc,first,k)
+                            nlc = 0 # reset nlc
                             continue
                         continue
                     if count == 2:
@@ -203,21 +230,26 @@ class Output(object):
                         if length > 24:
                             lines = Output.getLines(str_inside, 24)
                             count = len(lines)
+                            nlc += count
                             # print a speech bubble with multiple lines
                             # color of speech bubble:
                             sys.stdout.write(u'\u001b[38;5;$244m')
+                            fullPrint += sb1 + "\n" + sb2 + "\n"
                             print(sb1 + "\n" + sb2)
                             lcount = 0
                             while lcount < count:
                                 sys.stdout.write(sb3) # no newline
-                                sys.stdout.write(u'\u001b[38;5;$157m') # change to text color
+                                fullPrint += sb3
+                                sys.stdout.write(u'\u001b[38;5;$206m') # change to text color
                                 # get number of characters in the line
                                 line_length = len(lines[lcount])
                                 if line_length == 24:
                                     sys.stdout.write(lines[lcount])
+                                    fullPrint += lines[lcount]
                                     sys.stdout.write(u'\u001b[38;5;$244m')
                                     print(sb7)
-                                    time.sleep(0.1)
+                                    fullPrint += sb7 + "\n"
+                                    time.sleep(0.2)
                                     lcount += 1
                                 else: # in the event that the line needs spaces added up to len of 25
                                     while(len(lines[lcount]) < 24):
@@ -226,39 +258,48 @@ class Output(object):
                                         lines[lcount] = l
                                     # now that it is 24 long
                                     sys.stdout.write(lines[lcount])
-                                    time.sleep(0.1)
+                                    fullPrint += lines[lcount]
+                                    time.sleep(0.2)
                                     sys.stdout.write(u'\u001b[38;5;$244m')
                                     print(sb7)
+                                    fullPrint += sb7 + "\n"
                                     lcount += 1
                             # print the closing of the speech bubble
                             print(sb4)
-                            time.sleep(0.1)
+                            time.sleep(0.2)
                             print(sb5)
                             print(sb6)
+                            fullPrint += sb4 + "\n" + sb5 + "\n" + sb6 + "\n"
                             str_inside = ""
                             time.sleep(1)
                             count = 0
+                            nlc += 5
                             continue
                         else:
                             # print a speech bubble with a single line
                             if length < 24:
+                                nlc += 1
                                 while(len(str_inside) < 24):
                                     str_inside = str_inside + " " # add a space
                             # print opening of speech bubble: 
                             sys.stdout.write(u'\u001b[38;5;$244m')
                             print(sb1 + "\n" + sb2)
+                            fullPrint += sb1 + "\n" + sb2 + "\n"
                             sys.stdout.write(sb3) # no newline
-                            time.sleep(0.1)
-                            sys.stdout.write(u'\u001b[38;5;$157m') # change to text color
+                            fullPrint += sb3
+                            time.sleep(0.2)
+                            sys.stdout.write(u'\u001b[38;5;$206m') # change to text color
                             sys.stdout.write(str_inside)
-                            time.sleep(0.1)
+                            fullPrint += str_inside
+                            time.sleep(0.2)
                             sys.stdout.write(u'\u001b[38;5;$244m') # change back to bubble color
                             print(sb7)
                             print(sb4)
-                            time.sleep(0.1)
+                            time.sleep(0.2)
                             print(sb5)
                             print(sb6)
-
+                            fullPrint += sb7 + "\n" + sb4 +"\n" + sb5 + "\n" + sb6 + "\n"
+                            nlc += 5
                             # reset inside variable
                             str_inside = ""
                             time.sleep(1)
@@ -274,19 +315,70 @@ class Output(object):
             if len(str_outside) is not 0:
                 if len(str_outside) > 60:
                     str_outside = Output.break_up_long_message(str_outside, 32, False)
+                    nlc += Output.countNewLines(str_outside) # add the number of new lines to the coun
                 sys.stdout.write(u'\u001b[38;5;$146m')
                 #sys.stdout.write(u'\e[3m')
                 for elem in str_outside:
                     time.sleep(0.04)
                     sys.stdout.write(elem)
                     sys.stdout.flush()
+                fullPrint += str_outside
+                Output.fadeString(fullPrint)
                 sys.stdout.write('\033[0m')
                 str_outside = ""
-                time.sleep(1)
-                print("\n")
+                #time.sleep(1)
+                # clear after below bubble print
+                nlc += 2
+                Output.clearTalk(nlc,first,k)
+                nlc = 0
+            else:
+                Output.clearTalk(nlc,first,k)
         else:
             print(characters_message)
 
+    # fade string to black
+    @classmethod
+    def fadeString(self, stringToFade):
+        time.sleep(1)
+        lineCount = Output.countNewLines(stringToFade)
+        sys.stdout.write(u"\u001b[1000D")
+        sys.stdout.write(u"\033[" + str(lineCount - 1) + "A") # up the line count
+        code = 255
+        while code > 233:
+            sys.stdout.write(u'\u001b[38;5;' + str(code) +'m')
+            sys.stdout.write(stringToFade)
+            sys.stdout.write(u"\u001b[1000D")
+            sys.stdout.write(u"\033[" + str(lineCount - 1) + "A") # up the line count
+            code -= 1
+            time.sleep(0.04)
+        sys.stdout.write(u'\u001b[38;5;232m')
+        sys.stdout.write(stringToFade)
+        #reset
+        sys.stdout.write(u"\u001b[0m")
+        
+
+    # clear number of lines (helper method)
+    @classmethod
+    def clearTalk(self,nlc,first,k):
+        pc = "                                                                     "
+        # clear after below bubble print
+        if first == True:
+            nlc += k
+            first = False
+        sys.stdout.write(u"\u001b[1000D")
+        sys.stdout.write(u"\033[" + str(nlc) + "A") # up nlc
+        nl2 = nlc
+        while nl2 > -1:
+            print(pc)
+            nl2 -= 1
+        sys.stdout.write(u"\u001b[1000D")
+        sys.stdout.write(u"\033[" + str(nlc) + "A") # up nlc
+
+    # count new lines in str (helper method)
+    @classmethod
+    def countNewLines(self, line):
+        numNewLines = line.split("\n")
+        return len(numNewLines)
 
     # print "drop"
     @classmethod
@@ -483,7 +575,7 @@ class Output(object):
         if sys.stdin.isatty():
             Output.approachDoor(_approachDoor2)
             time.sleep(0.4)
-            Output.printFlashingDoor(od0, "red", 2, 0.2)
+            Output.printFlashingDoor(od0, "red", 4, 0.2)
             str = "That door is locked."
             # sys.stdout.write("\t")
             for elem in str:
