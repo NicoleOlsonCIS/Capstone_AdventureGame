@@ -27,6 +27,10 @@
 # v14   --> track whether or not user has seen the hint to find the key yet, correct talk_npc error output to "talk to"
 # v15   --> verb only "talk", transitions added to place
 # v16   --> transitions incorporated into move
+# v17   --> convert time updates so that user can get time in 24 hour clock time
+#           To convert from 40 to 24, I multiplied all updates by 0.6
+#           Time is now a float. 
+
 
 # v13.3 --> impl. looking out windows, opening vs. searching, update lastLooked upon searching/opening
 
@@ -38,7 +42,7 @@ from output import *
 
 class Game:
 
-	def __init__(self, day, time):
+	def __init__(self, day, time): #v17 time is a float
 		self.places = {}
 		self.isValid = {}
 		self.day = day
@@ -64,18 +68,54 @@ class Game:
 	def updateTime(self, timeChange):
 		self.time += timeChange
 		
-		# v7: if we've crossed into a new 40-hr day
-		if self.time > 39: 
-			self.time -= 39 
+		# v7: if we've crossed into a new 40-hr day #v17 changed to 24 hour day
+		if self.time > 24: 
+			self.time -= 24 
 			self.day = self.day + 1
 			Output.print_look("Start of Day {}".format(self.day))
 
 	# v13.3: tell whether it is day or night
 	def dayOrNight(self):
-		if self.time > 5 and self.time < 25:
+		if self.time >= 5.00 and self.time <= 16.00:
 			return "day"
 		else:
 			return "night" 
+
+	#v17: get the time
+	def getTime(self):
+		curTime = self.time
+		curDay = self.day
+		descp = ""
+		if curTime >= 5.00 and curTime < 12.00:
+			descp = "morning"
+		elif curTime >= 12.00 and curTime < 13.00:
+			descp = "noon"
+		elif curTime >= 13.00 and curTime < 15.00:
+			descp = "afternoon"
+		elif curTime >= 15.00 and curTime < 17.00:
+			descp = "late afternoon"
+		elif curTime >= 17.00 and curTime < 19.00:
+			descp = "early evening"
+		elif curTime >=19.00 and curTime < 21.00:
+			descp = "evening"
+		elif curTime >= 21.00 and curTime < 24.00:
+			descp = "late evening"
+		elif curTime >= 24.00 and curTime < 1.00:
+			descp = "midnight"
+		elif curTime >= 1.00 and curTime < 5.00:
+			descp = "middle of night"
+		
+		#convert decimal to 60 min time: 
+		hours = int(curTime)
+		minutes = int((curTime*60) % 60)
+		if minutes < 10:
+			minstr = "0" + str(minutes)
+		else:
+			minstr = str(minutes)
+		time = str(hours) + ":" + minstr
+
+		print("It is day " + str(curDay) + " and it is " + descp)
+		print("The time is: " + time)
 
 	def getPlace(self, name):
 		if name in self.places.keys():
@@ -126,7 +166,7 @@ class Game:
 						self.handleTake(available_takeable_things[0].name, None, True)
 						self.user.pickUpObject(available_takeable_things[0].name)
 						# update the clock
-						#self.updateTime(1)
+						self.updateTime(0.6)
 						self.setIsValid()
 					# if there is more than on thing, tell user to be more specific 
 					if att > 1: 
@@ -163,7 +203,7 @@ class Game:
 											self.handleTake(t.name, None, True)
 											self.user.pickUpObject(t.name)
 											# update the clock
-											self.updateTime(1)
+											self.updateTime(0.6)
 											self.setIsValid()
 											return
 							# last thing the user looked at is present but has nothing
@@ -851,7 +891,7 @@ class Game:
 			# can only sleep on bed in Spare Room at night
 			correctRoom = (self.user.current_place.name == "Spare Room")
 			correctObj = (action.direct_obj == None or action.direct_obj == "bed")
-			correctTime = (self.time >= 25 or self.time <= 5)
+			correctTime = (self.time >= 22.00 or self.time <= 5.00)
 			if correctRoom and (correctObj and correctTime):
 				return True
 			else:
@@ -942,7 +982,7 @@ class Game:
 	def executeRequest(self, action):
 		if action.verb == "move_user":
 			self.moveUser(action.direction)
-			self.updateTime(1)
+			self.updateTime(0.6)
 			return
 
 		if action.verb == "take":
@@ -956,7 +996,7 @@ class Game:
 			self.user.pickUpObject(obj_name)
 
 			# time update of 1 hour 
-			self.updateTime(1)
+			self.updateTime(0.6)
 			return
 
 		if action.verb == "drop":
@@ -967,20 +1007,20 @@ class Game:
 				obj_name = action.direct_obj
 			self.user.dropObject(obj_name)
 			# add a time update
-			self.updateTime(1)
+			self.updateTime(0.6)
 			return
 
 		# updated to handle two-word object names 
 		if action.verb == "look":
 			self.handleLook(action.direct_obj, action.indirect_obj, True)
-			self.updateTime(1)
+			self.updateTime(0.6)
 			return
 
 		if action.verb == "sleep":
 			self.handleSleep(action.direct_obj, True)
 			Output.print_look("Drained from the day's activity, you shuck off your things and burrow under the covers. You're asleep by the time your head hits the pillow.")
 			# start new morning 
-			self.time = 6
+			self.time = 6.00
 			self.day += 1
 			# v11.4: wakeup message
 			Output.print_look("Start of Day {}".format(self.day))
@@ -993,35 +1033,35 @@ class Game:
 			return
 		if action.verb == "talk_npc":
 			self.handleTalk(action.direct_obj, action.indirect_obj, True)
-			self.updateTime(1)
+			self.updateTime(0.6)
 			return 
 		if action.verb == "show_inventory":
 			self.user.printInventory()
 			return
 		if action.verb == "search":
 			self.handleSearch(action.direct_obj, action.indirect_obj, True)
-			self.updateTime(1)
+			self.updateTime(0.6)
 			return
 		if action.verb == "read":
 			self.handleRead(action.direct_obj, action.indirect_obj, True)
-			self.updateTime(1)
+			self.updateTime(0.6)
 			return
 		if action.verb == "insert":
 			self.handleInsert(action.direct_obj, action.indirect_obj, True)
 			self.user.insertObject(action.direct_obj, action.indirect_obj)
-			self.updateTime(1)
+			self.updateTime(0.6)
 			return
 		if action.verb == "listen":
 			self.handleListen(action.direct_obj, action.indirect_obj, True)
-			self.updateTime(1)
+			self.updateTime(0.6)
 			return
 		if action.verb == "do_violence":
 			self.handleViolence(action.direct_obj, action.indirect_obj, True)
-			self.updateTime(1)
+			self.updateTime(0.6)
 			return
 		if action.verb == "open_thing":
 			self.handleOpen(action.direct_obj, action.indirect_obj, True)
-			self.updateTime(1)
+			self.updateTime(0.6)
 			return
 		else:
 			return
@@ -1068,7 +1108,7 @@ class Game:
 
 		#v11.7 make Fields take longer to cross
 		if user_place.name.lower() == "fields" and new_place.name.lower() != "fields":
-			self.updateTime(3)
+			self.updateTime(1.8)
 
 		# v15 oprinting moved to transition functionality
 		if new_place.numTimesEntered == 0 and (user_place.name.lower() == "front manor grounds" and new_place.name.lower() == "foyer"):
@@ -1405,7 +1445,7 @@ class Thing:
 
 	def getDescription(self, time):
 		self.numTimesExamined += 1
-		if time > 5 and time < 25:					# do we want this time of 5 - 25 here?
+		if time > 5 and time < 16:					# do we want this time of 5 - 25 here?
 			if self.numTimesExamined > 5:
 				return self.day[4]
 			else:
@@ -1441,13 +1481,13 @@ class Thing:
 	# characters have up to 5 different things to say in the day and night, and after that just say the last thing
 	def getCharacterSpeak(self, time):
 		self.numTimesTalked += 1
-		if time > 5 and time < 25:
-			if self.numTimesTalked > 5:
+		if time > 5 and time < 16:
+			if self.numTimesTalked >= 5:
 				return self.char_day[4]
 			else:
 				return self.char_day[self.numTimesTalked]
 		else:
-			if self.numTimesTalked > 5:
+			if self.numTimesTalked >= 5:
 				return self.char_night[4]
 			else:
 				return self.char_night[self.numTimesTalked]
