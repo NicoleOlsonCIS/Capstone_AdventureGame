@@ -22,6 +22,10 @@ cloakroom coats:military coat
 ***
 military coat:letter
 ***
+tweed coat:silver key
+***
+study desk:stack of notes
+***
 library tables:faded blue book
 ***
 library armchairs:hefty black book
