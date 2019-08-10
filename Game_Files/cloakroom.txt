@@ -24,7 +24,10 @@ An olive-green officer’s jacket, complete with shiny buttons and flap pockets.
 A thick gray tweed coat with brown elbow patches.###A thick gray tweed coat with brown elbow patches.
 ***
 letter
+silver key
 ***
 A handwritten letter, folded up and tucked deep into one of the pockets of the jacket.###A handwritten letter, folded up and tucked deep into one of the pockets of the jacket.
+***
+A bulky antique key, somewhat tarnished.###A bulky antique key, somewhat tarnished.
 ***
 no characters
