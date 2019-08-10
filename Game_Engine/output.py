@@ -240,7 +240,7 @@ class Output(object):
                             while lcount < count:
                                 sys.stdout.write(sb3) # no newline
                                 fullPrint += sb3
-                                sys.stdout.write(u'\u001b[38;5;$41m') # change to text color
+                                sys.stdout.write(u'\u001b[38;5;$206m') # change to text color
                                 # get number of characters in the line
                                 line_length = len(lines[lcount])
                                 if line_length == 24:
@@ -249,7 +249,7 @@ class Output(object):
                                     sys.stdout.write(u'\u001b[38;5;$244m')
                                     print(sb7)
                                     fullPrint += sb7 + "\n"
-                                    time.sleep(0.1)
+                                    time.sleep(0.2)
                                     lcount += 1
                                 else: # in the event that the line needs spaces added up to len of 25
                                     while(len(lines[lcount]) < 24):
@@ -259,14 +259,14 @@ class Output(object):
                                     # now that it is 24 long
                                     sys.stdout.write(lines[lcount])
                                     fullPrint += lines[lcount]
-                                    time.sleep(0.1)
+                                    time.sleep(0.2)
                                     sys.stdout.write(u'\u001b[38;5;$244m')
                                     print(sb7)
                                     fullPrint += sb7 + "\n"
                                     lcount += 1
                             # print the closing of the speech bubble
                             print(sb4)
-                            time.sleep(0.1)
+                            time.sleep(0.2)
                             print(sb5)
                             print(sb6)
                             fullPrint += sb4 + "\n" + sb5 + "\n" + sb6 + "\n"
@@ -287,15 +287,15 @@ class Output(object):
                             fullPrint += sb1 + "\n" + sb2 + "\n"
                             sys.stdout.write(sb3) # no newline
                             fullPrint += sb3
-                            time.sleep(0.1)
-                            sys.stdout.write(u'\u001b[38;5;$41m') # change to text color
+                            time.sleep(0.2)
+                            sys.stdout.write(u'\u001b[38;5;$206m') # change to text color
                             sys.stdout.write(str_inside)
                             fullPrint += str_inside
-                            time.sleep(0.1)
+                            time.sleep(0.2)
                             sys.stdout.write(u'\u001b[38;5;$244m') # change back to bubble color
                             print(sb7)
                             print(sb4)
-                            time.sleep(0.1)
+                            time.sleep(0.2)
                             print(sb5)
                             print(sb6)
                             fullPrint += sb7 + "\n" + sb4 +"\n" + sb5 + "\n" + sb6 + "\n"
@@ -339,7 +339,7 @@ class Output(object):
     # fade string to black
     @classmethod
     def fadeString(self, stringToFade):
-        time.sleep(1)
+        time.sleep(1.5)
         lineCount = Output.countNewLines(stringToFade)
         sys.stdout.write(u"\u001b[1000D")
         sys.stdout.write(u"\033[" + str(lineCount - 1) + "A") # up the line count
