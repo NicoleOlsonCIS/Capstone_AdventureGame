@@ -240,7 +240,7 @@ class Output(object):
                             while lcount < count:
                                 sys.stdout.write(sb3) # no newline
                                 fullPrint += sb3
-                                sys.stdout.write(u'\u001b[38;5;$214m') # change to text color
+                                sys.stdout.write(u'\u001b[38;5;$41m') # change to text color
                                 # get number of characters in the line
                                 line_length = len(lines[lcount])
                                 if line_length == 24:
@@ -288,7 +288,7 @@ class Output(object):
                             sys.stdout.write(sb3) # no newline
                             fullPrint += sb3
                             time.sleep(0.1)
-                            sys.stdout.write(u'\u001b[38;5;$214m') # change to text color
+                            sys.stdout.write(u'\u001b[38;5;$41m') # change to text color
                             sys.stdout.write(str_inside)
                             fullPrint += str_inside
                             time.sleep(0.1)
@@ -339,6 +339,7 @@ class Output(object):
     # fade string to black
     @classmethod
     def fadeString(self, stringToFade):
+        time.sleep(1)
         lineCount = Output.countNewLines(stringToFade)
         sys.stdout.write(u"\u001b[1000D")
         sys.stdout.write(u"\033[" + str(lineCount - 1) + "A") # up the line count
@@ -349,7 +350,7 @@ class Output(object):
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u"\033[" + str(lineCount - 1) + "A") # up the line count
             code -= 1
-            time.sleep(0.08)
+            time.sleep(0.04)
         sys.stdout.write(u'\u001b[38;5;232m')
         sys.stdout.write(stringToFade)
         #reset
