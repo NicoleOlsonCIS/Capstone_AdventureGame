@@ -477,7 +477,7 @@ def loadPlaceData(place_obj, filename):
                 char_day = []
                 char_night = []
                 for c in cdi_arr:
-                    day_night = c.split("###")
+                    day_night = c.split("&&&")
                     if day_night[1] != "No night":
                         char_night.append(day_night[1])
                     char_day.append(day_night[0])

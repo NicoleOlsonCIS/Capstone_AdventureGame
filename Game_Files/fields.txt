@@ -43,5 +43,5 @@ maude
 ***
 She looks frail and gray, but her bony frame seems to possess a kind of wiry strength. She stands ramrod straight, and her heavy black dress - buttoned long at the wrists and high at the neck - is spotless. Somehow, you know she’s waiting for you.###She looks frail and gray, but her bony frame seems to possess a kind of wiry strength. She stands ramrod straight, and her black dress - buttoned long at the wrists and high at the neck - is spotless.
 ***
-#"The storms here are different than your city showers. Don’t let yourself be caught in one. And never leave the House after dark.#She says###No night
-#"There’s no time for idling or chatter,” Maude says sharply. “We must reach the House before the storm.”#She says###No night
+#"The storms here are different than your city showers. Don’t let yourself be caught in one. And never leave the House after dark.#She says&&&No night
+#"There’s no time for idling or chatter,” Maude says sharply. “We must reach the House before the storm.”#She says&&&No night
