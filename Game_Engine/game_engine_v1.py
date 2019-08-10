@@ -114,7 +114,10 @@ class Game:
 			minstr = str(minutes)
 		time = str(hours) + ":" + minstr
 
-		print("It is day " + str(curDay) + " and it is " + descp)
+		if descp != "noon" and descp != "midnight":
+			print("It is the " + descp + " of day " + str(curDay))
+		else:
+			print("It is " + descp + " on day " + str(curDay))
 		print("The time is: " + time)
 
 	def getPlace(self, name):
@@ -246,10 +249,10 @@ class Game:
 			if adjacent_places[dir].doors[doorDir] != "locked":
 				# move user in that direction (sending string not int)
 				self.moveUser(int_to_str_dict.get(dir))
-				# otherwise this is not called
 				self.setIsValid()
 				self.user.current_place.printRoom(self.time)
 				self.user.current_place.updateNumEntries()
+				self.updateTime(0.6)
 			else:
 				# door is looked
 				self.handleLockedDoor(int_to_str_dict.get(dir))
@@ -262,6 +265,7 @@ class Game:
 				# talk to the character
 				character = self.user.current_place.characters[0] # get the only character
 				Output.print_talk(character.getCharacterSpeak(self.time), character.name)
+				self.updateTime(0.6)
 				if character.name.lower() == "maude":
 						self.user.hasMetMaude = True
 				elif character.name.lower() == "dworkin":
@@ -332,6 +336,7 @@ class Game:
 				# move user in that direction (sending string not int)
 				self.moveUser(int_to_str_dict.get(direction))
 				self.setIsValid()
+				self.updateTime(0.6)
 				self.user.current_place.printRoom(self.time)
 				self.user.current_place.updateNumEntries()
 			else:
@@ -1230,7 +1235,10 @@ class Place:
 	#TODO: after place is updated to handle multiple characters, update this accordingly 
 	def showCharacters(self):
 		if self.hasCharacters:
-			Output.print_look("You see a person here.")	
+			if len(self.characters) == 1:
+				Output.print_look("You see a person here.")
+			else:
+				Output.print_look("You see multiple people here.")
 
 	def showDroppedObjects(self):
 		features = [feat for feat in self.things if feat.is_searchable]
