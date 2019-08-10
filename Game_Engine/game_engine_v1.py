@@ -53,10 +53,12 @@ class Game:
 		#v14 - when false, print the key as a hint.
 		self.hasEncounteredALockedDoor = False
 
-		self.narrativeIntro = [] 
 		#v13.3
 		self.outsidePlaces = ["train platform", "fields", "front manor grounds", "ash grove", "rear manor grounds"]	
 
+		self.endingEvents = []
+		self.inEndgame = False
+		self.endgamePhase = -1
 
 	def setUser(self, user):
 		self.user = user
@@ -685,7 +687,7 @@ class Game:
 		print()
 		Output.print_input_hint("sleep, rest, relax, go to bed")
 		print()
-		Output.print_input_hint("help, inventory")
+		Output.print_input_hint("help, inventory, time")
 
 	# point of entry from parser, game takes care of input from this point
 	# either by updating the game or sending error messages
@@ -1280,10 +1282,15 @@ class User:
 			self.name = name
 			self.current_place = game.getPlace(startingPlace)
 			self.direction = startingDirection
+
 			self.hasMetMaude = False
 			self.hasMetMina = False
 			self.hasMetDworkin = False
-			self.foundStudyKey = False
+			self.hasBottle = False
+			self.hasMatchbook = False
+			self.hasCorkscrew = False
+			self.hasStudyKey = False
+			self.accumEndMoveCt = 0		
 
 			# new in v2
 			arr = []
@@ -1443,6 +1450,9 @@ class Thing:
 		#v13.3
 		self.windowDescrips = [] 
 		self.is_window = False
+
+		self.is_for_endgame = False
+		self.available_for_endgame = False
 
 		# keep track of allowed verbs for each thing
 		self.permittedVerbs = [] 
