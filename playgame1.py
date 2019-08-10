@@ -605,6 +605,7 @@ def buildGame():
     place29.setAdjacentPlaces(game)
 
     # load room data from files
+    # don't need to load place16, place23, or place29 (these stay locked forever) 
     loadPlaceData(place1, "trainplatform.txt") 
     loadPlaceData(place2, "stationhouse.txt")
     loadPlaceData(place3, "fields.txt")
@@ -619,7 +620,7 @@ def buildGame():
     loadPlaceData(place12, "smalllavatory.txt")
     loadPlaceData(place13, "bedroom.txt")
     loadPlaceData(place14, "library.txt")
-    #loadPlaceData(place15, "study.txt")
+    loadPlaceData(place15, "study.txt")
     
     loadPlaceData(place17, "servantsstairtop.txt")
     loadPlaceData(place18, "servantsstairbottom.txt")
@@ -648,6 +649,14 @@ def buildGame():
     intro_chunks = intro.split("***\n")
     for ichunk in intro_chunks: 
         game.narrativeIntro.append(ichunk)
+
+    # load ending event text
+    with open("./Game_Files/endingevents.txt") as efile:
+        endings = efile.read()
+
+    end_chunks = endings.split("***\n")
+    for echunk in end_chunks:
+        game.endingEvents.append(echunk) 
 
     # associate user with game 
     game.setUser(user)

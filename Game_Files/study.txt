@@ -1,0 +1,43 @@
+You find yourself in a large, silent study. One wall of the room is lined with bookshelves. A heavy wooden desk and chair take up another corner of the room. You also see an armchair next to a cold fireplace with a painting above it. There is a door to the west.
+***
+You find yourself in a large, silent study. One wall of the room is lined with bookshelves. A heavy wooden desk and chair take up another corner of the room. You also see an armchair next to a cold fireplace with a painting above it. There is a door to the west.
+***
+You find yourself in a large, silent study. One wall of the room is lined with bookshelves. A heavy wooden desk and chair take up another corner of the room. You also see an armchair next to a cold fireplace with a painting above it. There is a door to the west.
+***
+You stand in a large, gloomy study. One wall of the room is lined with bookshelves. A desk and chair take up another corner of the room. You also see an armchair next to a cold fireplace. There is a door to the west.
+***
+You stand in a dim, gloomy study. One wall of the room is lined with bookshelves. A desk and chair take up another corner of
+the room. There is a door to the west.
+***
+You stand in a dark study. There is a door to the west.
+***
+study chair
+study armchair
+study fireplace 
+study desk 
+study bookshelves
+marble bust
+painting
+silver orb
+***
+A stiff, high-backed wooden chair. It doesn’t look remotely comfortable.###A stiff, high-backed wooden chair. It doesn’t look remotely comfortable.
+***
+An ample brown leather armchair.###An ample brown leather armchair.
+***
+As cold and lifeless as stone.###As cold and lifeless as stone.
+***
+A rectangular behemoth of a desk.###A rectangular behemoth of a desk.
+***
+These are filled with dusty books and exotic curios, including a white marble bust.###These are filled with dusty books and exotic curios, including a white marble bust.
+***
+The head and upper torso of a Greek god, seemingly frozen in time. He wears a mantle draped over his shoulder and fastened with a brooch. His pupil-less white eyes stare sightlessly into empty space, and his stone lips are slightly parted, as if to speak a word of power.###The head and upper torso of a Greek god, seemingly frozen in time. He wears a mantle draped over his shoulder and fastened with a brooch. His pupil-less white eyes stare sightlessly into empty space, and his stone lips are slightly parted, as if to speak a word of power.
+***
+A large oil portrait of a proud-looking gray-haired man. He poses rigidly in his vest, necktie, and jacket, but wears power like a cloak.###A large oil portrait of a proud-looking gray-haired man. He poses rigidly in his vest, necktie, and jacket, but wears power like a cloak.
+***
+A round shape, iridescent and shifting, like a puddle of oil suspended in midair. As you look on, it expands, ballooning delicately outward like a bubble blown to full size. You feel a faint wave of nausea. Somehow, looking at the silvery shape feels like standing on the edge of a precipice, poised to fall.###A round shape, iridescent and shifting, like a puddle of oil suspended in midair. As you look on, it expands, ballooning delicately outward like a bubble blown to full size. You feel a faint wave of nausea. Somehow, looking at the silvery shape feels like standing on the edge of a precipice, poised to fall.
+***
+stack of notes
+***
+A pile of scribbled notes, written with a strong but impatient hand.###A pile of scribbled notes, written with a strong but impatient hand.
+***
+no characters

@@ -1,0 +1,38 @@
+The soft yet precise charcoal lines look more vibrant than ever, as if they could almost leap from the pages.
+
+You riffle through them - the old man, the field with its strange floating orb - gripped by the feeling that they're straining out of the paper at you, or else pulling you in. You find you can't look away from the portrait of the old man. A brief tugging sensation towards the page - a moment of suspension, of in-betweenness - and then you're there, or he is here. You see every wrinkle etched deep in his leathery skin.
+He turns his head and looks at you.
+***
+"Hello, little one," he says. If he's startled to see you, he gives no indication of it. "You must be a friend of Wilhelmina's. No others have contacted me through the drawing before."
+
+He regards you solemnly. "I am Dworkin."
+***
+"It astonished me too, the first time Wilhelmina spoke to me in this manner. To this day, I don't understand how it works. I can only guess that it's a distortion of reality, some side effect of the experimentation being performed at the laboratory in Greenridge."
+***
+laboratory###"The Greenridge National Laboratory is a military-owned facility. I mopped the floors there, once, before I saw too much of what they were doing. Before they carted me away to this asylum, where no secret I revealed would ever be taken for the truth."
+***
+experiment###"Wilhelmina's uncle, whose manor you live in, is the mind behind the work.
+There are powerful men and powerful ambitions driving this project, but it is Professor Hugh who sees what they cannot... 
+
+I speak of other worlds, little one. Not just one other, or two, but tens of thousands, clustered
+together like so many cosmic balloons. Some of them are beautiful. And others...others are horrible. To say nothing of the voids between them.
+
+I know what foul things they've dredged from the darkness. I've seen them. I - hope never to see them again."
+***
+distortion###"Have you not noticed the strangeness of the town, little one? The sudden, raging storms, bringing mists that always seem to take someone away with them. Children, animals. The new permissiveness of the laws that govern reality. Have you not looked in a mirror and seen your eyes somehow changed? Have you not counted the stones in Felton's Field, and seen how there are sometimes seven, sometimes eight?
+It's the darkness, little one. It presses in all around us, searching for a way in. And sometimes it finds one."
+***
+james###"Ah," Dworkin says sadly. "You will need to ask Wilhelmina if you wish to know about the boy. He lived in the Professor's house for a time, not long before you. Unaware of the danger, he filched a key and slipped outside into the fog. He was never found."
+***
+professor###He tenses suddenly, cocking his head as if listening. "Those damned nurses are coming to check on me," he mutters. "Quick - get back to where you were, and don't look at the drawing again for a while."
+***
+“Hello again, little one. Have you spoken with Wilhelmina? If you have, then you understand what’s at stake."
+***
+"The Professor means to rip the lid off the world, child. Not just poking peepholes here and there, not just making minuscule tears that appear and fade with every storm. No. He wants to rip the skin off entire. And if he succeeds...if it happens, our existence and the existence of everything you know - our very reality - will be flayed away. All there will be is endless howling, shrieking, gnashing voids, and our universe will tip like a great bowl, upending us naked and screaming and boiling into an endless emptiness, an old, old emptiness that has always been there, waiting.”
+
+He meets your eyes gravely. “We cannot let this happen, little one.”
+***
+“If I hadn’t revealed that I knew about their experiments - if I had pretended to be witless and kept my job at the laboratory - I might have learned more than I know now. But, here I am. And here you are. This is what we have to work with, so it will have to do. Take this, guard it well, and use it if you must. I hope you will not need to.”
+
+He holds a large glass bottle out to you.
+

@@ -5,3 +5,7 @@ wooden wardrobe:You open the doors of the wardrobe and peer inside.
 wooden trunk:You open the lid of the trunk to find orderly stacks of folded nightgowns and socks. At first glance, the trunk seems to contain nothing but clothes. Still, you rummage around at the bottom.
 ***
 military coat:You rummage in the pockets of the officer's jacket.
+***
+study desk:You paw through the drawers of the desk and the clutter on its surface.
+***
+tweed coat:With only the faintest twinge of guilt, you run your hands through all the flaps and pockets of the coat.
