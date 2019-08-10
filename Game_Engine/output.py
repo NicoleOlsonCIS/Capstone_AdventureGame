@@ -349,7 +349,7 @@ class Output(object):
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u"\033[" + str(lineCount - 1) + "A") # up the line count
             code -= 1
-            time.sleep(0.01)
+            time.sleep(0.04)
         sys.stdout.write(u'\u001b[38;5;232m')
         sys.stdout.write(stringToFade)
         #reset
@@ -359,7 +359,7 @@ class Output(object):
     # clear number of lines (helper method)
     @classmethod
     def clearTalk(self,nlc,first,k):
-        pc = "                                                          "
+        pc = "                                                                     "
         # clear after below bubble print
         if first == True:
             nlc += k
