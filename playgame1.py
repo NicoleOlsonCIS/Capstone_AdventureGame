@@ -498,7 +498,7 @@ def loadPlaceData(place_obj, filename):
 def buildGame():
 
     # start game at 8 am
-    game = g.Game(1,8)
+    game = g.Game(1,8.00) # time is now a float
 
     # v11: descriptions are now 2D array to capture the number of visits of user (first, second, all subsequent ...)
     day = ["place during day 1", "place during day 2", "place during day 3"]
@@ -676,6 +676,8 @@ def gameLoop(game):
         # flush standard in 
         termios.tcflush(sys.stdin, termios.TCIFLUSH)
         #sys.stdin.flush()
+
+        game.getTime()
 
         # game continues until user enters quit at the prompt 
         received = input("> ")
