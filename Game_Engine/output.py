@@ -213,7 +213,7 @@ class Output(object):
                             Output.fadeString(fullPrint)
                             fullPrint = ""
                             sys.stdout.write('\033[0m')
-                            time.sleep(1)
+                            #time.sleep(1)
                             str_outside = ""
                             print("\n")
                             # clear after below bubble print
@@ -326,7 +326,7 @@ class Output(object):
                 Output.fadeString(fullPrint)
                 sys.stdout.write('\033[0m')
                 str_outside = ""
-                time.sleep(1)
+                #time.sleep(1)
                 # clear after below bubble print
                 nlc += 2
                 Output.clearTalk(nlc,first,k)
@@ -344,14 +344,14 @@ class Output(object):
         sys.stdout.write(u"\u001b[1000D")
         sys.stdout.write(u"\033[" + str(lineCount - 1) + "A") # up the line count
         code = 255
-        while code > 236:
+        while code > 233:
             sys.stdout.write(u'\u001b[38;5;' + str(code) +'m')
             sys.stdout.write(stringToFade)
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u"\033[" + str(lineCount - 1) + "A") # up the line count
             code -= 1
             time.sleep(0.04)
-        sys.stdout.write(u'\u001b[38;5;235m')
+        sys.stdout.write(u'\u001b[38;5;232m')
         sys.stdout.write(stringToFade)
         #reset
         sys.stdout.write(u"\u001b[0m")
