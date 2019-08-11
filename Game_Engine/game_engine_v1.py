@@ -110,13 +110,13 @@ class Game:
 					for c in self.allCharacters:
 						if c.name.lower() == "maude":
 							m = c 
-					k.addCharacter(maude) 
+					k.addCharacter(m) 
 		else:
 			return
 
 	# TODO
 	# take care of mina's movement 
-	# start location is library, then follow user throughout endgame 
+	# start location is library, then bedroom at night, then follow user throughout endgame 
 	def updateMina(self):
 		print("updating mina location")
 
@@ -311,7 +311,7 @@ class Game:
 				# move user in that direction (sending string not int)
 				self.moveUser(int_to_str_dict.get(dir))
 				self.setIsValid()
-				self.user.current_place.printRoom(self.time)
+				self.user.current_place.printRoom(self.time, self.user.hasMetMaude, self.user.hasMetMina, self.user.hasMetDworkin)
 				self.user.current_place.updateNumEntries()
 				self.updateTime(0.6)
 			else:
@@ -399,7 +399,7 @@ class Game:
 				self.moveUser(int_to_str_dict.get(direction))
 				self.setIsValid()
 				self.updateTime(0.6)
-				self.user.current_place.printRoom(self.time)
+				self.user.current_place.printRoom(self.time, self.user.hasMetMaude, self.user.hasMetMina, self.user.hasMetDworkin)
 				self.user.current_place.updateNumEntries()
 			else:
 				# door is looked
@@ -485,11 +485,11 @@ class Game:
 		if canLook:
 			# if nothing or "room" specified, examine current room 
 			if attemptedObj == None or attemptedObj == "room":
-				self.user.current_place.printRoom(self.time)
+				self.user.current_place.printRoom(self.time, self.user.hasMetMaude, self.user.hasMetMina, self.user.hasMetDworkin)
 				self.user.current_place.updateNumLooks()
 			# if current room name specified, examine current room
 			elif attemptedObj == self.user.current_place.name.lower():
-				self.user.current_place.printRoom(self.time)
+				self.user.current_place.printRoom(self.time, self.user.hasMetMaude, self.user.hasMetMina, self.user.hasMetDworkin)
 				self.user.current_place.updateNumLooks()
 			# look outside
 			elif attemptedObj == "outside":
@@ -770,7 +770,7 @@ class Game:
 			
 			# if the user was moved, re-orient user
 			if action.verb == "move_user":
-				self.user.current_place.printRoom(self.time)
+				self.user.current_place.printRoom(self.time, self.user.hasMetMaude, self.user.hasMetMina, self.user.hasMetDworkin)
 				self.user.current_place.updateNumEntries()
  
 		else: 
@@ -957,10 +957,10 @@ class Game:
 
 		# new in v4 
 		elif action.verb == "sleep":
-			# can only sleep on bed in Spare Room at night
+			# can only sleep on bed in Spare Room at night, 7pm and after 
 			correctRoom = (self.user.current_place.name == "Spare Room")
 			correctObj = (action.direct_obj == None or action.direct_obj == "bed")
-			correctTime = (self.time >= 22.00 or self.time <= 5.00)
+			correctTime = (self.time >= 19.00 or self.time <= 5.00)
 			if correctRoom and (correctObj and correctTime):
 				return True
 			else:
@@ -1147,8 +1147,6 @@ class Game:
 		exp_dict = {"n": "north", "ne": "north-east", "e": "east", "se": "south-east", "s": "south", "sw": "south-west", "w": "west", "nw": "north-west", "u": "upstairs", "d": "downstairs"}
 
 		#v13.2: restrict movement until after speaking to Maude
-		# question - we could restrict this to exiting ne, so that the user can look in the station house without talking to maude?
-		# re above: yes, done!
 		isNortheast = False
 		if direction == "ne" or direction == "northeast":
 			isNortheast = True
@@ -1325,15 +1323,21 @@ class Place:
 
 	#v13.3: show characters in room description
 	#v17.1: make more specific 
-	def showCharacters(self):
+	def showCharacters(self, metMaude = False, metMina = False, metDworkin = False):
 		if self.hasCharacters:
 			for c in self.characters:
-				if c.name.lower() == "maude":
+				if c.name.lower() == "maude" and metMaude == False:
 					Output.print_look("You see a woman here.")
-				if c.name.lower() == "mina":
+				if c.name.lower() == "maude" and metMaude:
+					Output.print_look("You see Maude here.")
+				if c.name.lower() == "mina" and metMina == False:
 					Output.print_look("You see a girl here.")
-				if c.name.lower() == "dworkin":
-					Output.print_look("You see a man here.")	
+				if c.name.lower() == "mina" and metMina:
+					Output.print_look("You see Mina here.")
+				if c.name.lower() == "dworkin" and metDworkin == False:
+					Output.print_look("You see a man here.")
+				if c.name.lower() == "dworkin" and metDworkin:
+					Output.print_look("You see Dworkin here.")	
 
 
 	def showDroppedObjects(self):
@@ -1347,13 +1351,13 @@ class Place:
 				Output.print_look(i.isHereDescription)
 
 	# v5: display room description
-	def printRoom(self, time):
+	def printRoom(self, time, metMaude = False, metMina = False, metDworkin = False):
 		place_name = self.name
 		place_description = self.getDescriptionBasedOnTimeAndVisitCount(time)
 		# v9: call output function to orient user 
 		Output.orientUser(place_name, place_description)
 
-		self.showCharacters()
+		self.showCharacters(metMaude, metMina, metDworkin)
 		self.showDroppedObjects()
 
 		# v11.5: show any dropped objects currently in the room
@@ -1377,8 +1381,9 @@ class User:
 			self.current_place = game.getPlace(startingPlace)
 			self.direction = startingDirection
 
-			self.hasEnteredHouse = False
-	
+			#self.hasEnteredHouse = False
+			self.tookLetter = False
+			self.whenTookLetter = -1  
 			self.hasMetMaude = False
 			self.hasMetMina = False
 			self.hasMetDworkin = False
