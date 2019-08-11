@@ -89,9 +89,10 @@ class Game:
 			# maude is in kitchen at most hours 
 			k = None
 			m = None	
-			for room in self.places.keys():
-				if room == "kitchen" or room == "Kitchen":
-					k = self.places[room] 
+			if user_place.getPersonByName("maude") != None:
+				m = user_place.getPersonByName("maude")
+				user_place.removeCharacter(m)
+			k = self.places["Kitchen"]
 			if k != None:
 				if k.getPersonByName("maude") == None:
 					for c in self.allCharacters:
@@ -102,6 +103,13 @@ class Game:
 		elif self.frontDoorIsLocked and (self.time >= 22.00 or self.time < 5.00): 
 			k = None
 			m = None
+			if user_place.getPersonByName("maude") != None:
+				m = user_place.getPersonByName("maude")
+				user_place.removeCharacter(m)
+			pl = self.places["Kitchen"] 
+			personInPlace = pl.getPersonByName("maude")
+			if personInPlace != None:
+				pl.removeCharacter(personInPlace)
 			for room in self.places.keys():
 				if "servant" in room.lower() and "quarters" in room.lower():
 					k = self.places[room] 
