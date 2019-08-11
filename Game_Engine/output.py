@@ -316,7 +316,7 @@ class Output(object):
                     # print the speech bubble and a newline
                     bubble = Output.print_bubble(speaking_lines)
                     print("\n")
-                    time.sleep(1)
+                    time.sleep(0.3)
 
                     full = full + bubble + "\n\n"
                 
@@ -334,7 +334,7 @@ class Output(object):
                         sys.stdout.flush()
                     print("\n")
                     full = full + description + "\n\n"
-                    time.sleep(1)
+                    time.sleep(0.3)
                 
                 # fade the printed things
                 Output.fadeString(full)
