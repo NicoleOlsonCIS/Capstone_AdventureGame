@@ -258,11 +258,11 @@ class Output(object):
                 time.sleep(0.5)
                 # additional sleep for longer bubbles
                 if len(speaking_lines) < 4:
+                    time.sleep(0.3)
+                elif len(speaking_lines) < 8:
                     time.sleep(1)
-                if len(speaking_lines) < 8:
-                    time.sleep(2)
-                if len(speaking_lines) < 12:
-                    time.sleep(2.5)
+                elif len(speaking_lines) < 12:
+                    time.sleep(1.5)
 
                 full += bubble  + "\n\n"
 
@@ -328,9 +328,9 @@ class Output(object):
                     # additional sleep for longer bubbles
                     if len(speaking_lines) < 4:
                         time.sleep(0.3)
-                    if len(speaking_lines) < 8:
+                    elif len(speaking_lines) < 8:
                         time.sleep(1)
-                    if len(speaking_lines) < 12:
+                    elif len(speaking_lines) < 12:
                         time.sleep(1.5)
                     full = full + bubble + "\n\n"
                 
