@@ -22,9 +22,4 @@ A manor of ivy-choked stone broods alone in the countryside.###Shadows deepen ov
 ***
 no objects
 ***
-maude
-***
-She looks frail and gray, but her bony frame seems to possess a kind of wiry strength. She stands ramrod straight, and her heavy black dress - buttoned long at the wrists and high at the neck - is spotless. Somehow, you know she’s waiting for you.###She looks frail and gray, but her bony frame seems to possess a kind of wiry strength. She stands ramrod straight, and her black dress - buttoned long at the wrists and high at the neck - is spotless.
-***
-#"Enough of that. Hurry. Get to the House, now.”#^She points urgently to the House just ahead of you to the north, as the sky rumbles threateningly behind you.&&&No night
-#“Don’t be stupid!”#^Maude shouts over a rumble of thunder.|||#“Get inside!”#&&&No night
+no characters
