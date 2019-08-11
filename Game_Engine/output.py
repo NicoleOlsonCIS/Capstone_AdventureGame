@@ -255,7 +255,14 @@ class Output(object):
                 # print the speech bubble and a newline
                 bubble = Output.print_bubble(speaking_lines)
                 print("\n")
-                time.sleep(1)
+                time.sleep(0.5)
+                # additional sleep for longer bubbles
+                if len(speaking_lines) < 4:
+                    time.sleep(1)
+                if len(speaking_lines) < 8:
+                    time.sleep(2)
+                if len(speaking_lines) < 12:
+                    time.sleep(2.5)
 
                 full += bubble  + "\n\n"
 
@@ -317,7 +324,14 @@ class Output(object):
                     bubble = Output.print_bubble(speaking_lines)
                     print("\n")
                     time.sleep(0.3)
-
+                    
+                    # additional sleep for longer bubbles
+                    if len(speaking_lines) < 4:
+                        time.sleep(0.3)
+                    if len(speaking_lines) < 8:
+                        time.sleep(1)
+                    if len(speaking_lines) < 12:
+                        time.sleep(1.5)
                     full = full + bubble + "\n\n"
                 
                 else:
