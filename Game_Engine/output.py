@@ -223,13 +223,13 @@ class Output(object):
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             print("\n")
+            time.sleep(0.5)
 
         # break it up in terms of "|||" (these are conversation parts that go together)
         chunks = characters_message.split("|||")
 
         # for each piece, parse the pattern (in terms of ^)
         for c in chunks:
-            linesPrinted = 0
             # break up in terms of ^
             components = c.split("^")
 
@@ -255,6 +255,7 @@ class Output(object):
                 # print the speech bubble and a newline
                 bubble = Output.print_bubble(speaking_lines)
                 print("\n")
+                time.sleep(1)
 
                 full += bubble  + "\n\n"
 
@@ -303,6 +304,8 @@ class Output(object):
                 # do the printing
                 if comesFirst == "Description": 
                     # print the description with a newline
+                    # change color
+                    sys.stdout.write(u'\u001b[38;5;$206m')
                     for elem in description:
                         time.sleep(0.04)
                         sys.stdout.write(elem)
@@ -313,6 +316,7 @@ class Output(object):
                     # print the speech bubble and a newline
                     bubble = Output.print_bubble(speaking_lines)
                     print("\n")
+                    time.sleep(1)
 
                     full = full + bubble + "\n\n"
                 
@@ -323,15 +327,18 @@ class Output(object):
                     full += bubble + "\n\n"
 
                     # print the description with a newline
+                    sys.stdout.write(u'\u001b[38;5;$206m')
                     for elem in description:
                         time.sleep(0.04)
                         sys.stdout.write(elem)
                         sys.stdout.flush()
                     print("\n")
                     full = full + description + "\n\n"
+                    time.sleep(1)
                 
                 # fade the printed things
                 Output.fadeString(full)
+        sys.stdout.write(u"\u001b[0m") # reset
 
     # fade string to black
     @classmethod
