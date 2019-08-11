@@ -359,10 +359,9 @@ class Output(object):
     # clear number of lines (helper method)
     @classmethod
     def clearTalk(self, height):
-        height -= 2
         pc = "                                                                     "
         sys.stdout.write(u"\u001b[1000D")
-        sys.stdout.write(u"\033[" + str(height + 1) + "A") # up height
+        sys.stdout.write(u"\033[" + str(height) + "A") # up height
         # print clear lines
         for i in range(1, height):
             print(pc)
