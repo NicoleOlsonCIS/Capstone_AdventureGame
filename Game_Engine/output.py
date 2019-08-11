@@ -66,27 +66,6 @@ sb5 = "    | " + "/"
 sb6 = "    |" + "/"
 sb7 = "   |"
 
-
-# archway 1
-
-a1 ="          -__-___---_--_"
-a2 ="         -__--___--_--_-_"
-a3 ="        -__-___-___---_--_"
-a4 ="      -__-_-/////\\\\-_--__  "
-a5 ="     __--  /////\\\\\\\\-__--__"
-a6 ="    __--- ///// \\\\\\\\\\-__-_--_"
-a7 =" _-___---/////   \\\\\\\\\\--_--_-_"
-a8 ="-__-___--|||||   |||||-__-___-- "
-a9 ="-__--___-|||||   |||||-__---___-"
-a10="-__-_--_-|||||   |||||-__--__---"
-a11="-__-___--|||||   |||||-__--___--"
-a12="-__-_--_-||||/   \\||||-__-___--_"
-a13="_________|||/     \\|||__________"
-
-archway1 = [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13]
-
-
-
 # static class
 class Output(object):
 
@@ -414,57 +393,6 @@ class Output(object):
             print("\n")
         else:
             print(msg)
-
-#  @classmethod
-#    def print_archway(self):
-#        if sys.stdin.isatty():
-#            for a in archway1:
-#                # reset previous
-#                previousElem1 = " "
-#                previousElem2 = " "
-#                previousElem3 = " "
-#                previousElem4 = " "
-#                for elem in a:
-#                    # random (of 3) light color grey background
-#                    if elem == "-":
-#                        color = random.randint(1,4)
-#                        if color == 1:
-#                            # set background and text color #248
-#                        elif color == 2:
-#                            # set background and text color #249
-#                        elif color == 3:
-#                            # set background and text color #250
-#                        
-#                    # random (of 3) dark color grey background
-#                    elif elem == "_":
-#                        color = random.randint(1,4)
-#                        if color == 1:
-#                            # set background and text color #243
-#                        elif color == 2:
-#                            # set background and text color #244
-#                        elif color == 3: 
-#                            # set background and text color #245
-#
-#                    # color based on previous (darker color upon consequetive)
-#                    elif elem == "/":
-#
-#                    # color based on previous (lighter color upon consequtive)
-#                    elif elem == "\\":#
-#
-#                    # color based on previous (if previous was not space, then light to dark, else light to dark)
-#                   elif elem == "|":
-#                    
-#                    # shift the previous
-#                    previousElem4 = previousElem3
-#                    previousElem3 = previousElem2
-#                    previousElem2 = previousElem1
-#                    previousElem1 = elem#
-#
-#                print("\n") # new line
-#        else:
-#            for a in archway1:
-#            print(a)
-
 
     @classmethod
     # helper functions, break up message to lines of specified length and whether it should be indented
