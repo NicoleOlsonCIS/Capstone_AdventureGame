@@ -22,18 +22,14 @@
 # v13   --> verbs with no objects condition, implementation added to "handle" functions
 # v13.1 --> sleep msg, exit msg from platform to fields, lock front door after user is inside, start impl. "open", expand help, add narrative intro 
 # v13.2 --> restrict user movement until after speaking to Maude; error msgs for violent actions (e.g. kill), fromParserToGame None check, verbOnlyTake fix 
-
-# v13.3 --> impl. looking out windows, opening vs. searching
+# v13.3 --> impl. looking out windows, opening vs. searching,  update lastLooked upon searching/opening
 # v14   --> track whether or not user has seen the hint to find the key yet, correct talk_npc error output to "talk to"
 # v15   --> verb only "talk", transitions added to place
 # v16   --> transitions incorporated into move
 # v17   --> convert time updates so that user can get time in 24 hour clock time
 #           To convert from 40 to 24, I multiplied all updates by 0.6
 #           Time is now a float. 
-
-
-# v13.3 --> impl. looking out windows, opening vs. searching, update lastLooked upon searching/opening
-
+# v17.1 --> updating character location/movement from place to place for Maude; get dialogue by location
 
 # define the "Game" class
 #
@@ -55,6 +51,9 @@ class Game:
 
 		#v13.3
 		self.outsidePlaces = ["train platform", "fields", "front manor grounds", "ash grove", "rear manor grounds"]	
+		#v17.1
+		self.allCharacters = []
+		self.frontDoorIsLocked = False
 
 		self.endingEvents = []
 		self.inEndgame = False
@@ -65,6 +64,66 @@ class Game:
 
 	def addPlace(self, place):
 		self.places[place.name] = place
+
+	# v17.1 take care of maude's movement 
+	# starting location is train platform, then follow user to house, then kitchen/servant quarters 
+	def updateMaude(self, user_place, new_place): 
+		# still on train platform	
+		if self.user.hasMetMaude == False:
+			return
+		# after user meets maude, maude leads/follows user to house
+		if self.user.hasMetMaude and self.frontDoorIsLocked == False:
+			m = None
+			# remove maude from old location 
+			if user_place.getPersonByName("maude") != None:
+				m = user_place.getPersonByName("maude")
+				user_place.removeCharacter(m)
+			# add maude to new location 
+			if new_place.getPersonByName("maude") == None:
+				for c in self.allCharacters:
+					if c.name.lower() == "maude":
+						m = c 
+				new_place.addCharacter(m)
+		elif self.frontDoorIsLocked and (self.time >= 5.00 and self.time < 22.00):
+			# maude goes to kitchen after entering house and locking front door
+			# maude is in kitchen at most hours 
+			k = None
+			m = None	
+			for room in self.places.keys():
+				if room == "kitchen" or room == "Kitchen":
+					k = self.places[room] 
+			if k != None:
+				if k.getPersonByName("maude") == None:
+					for c in self.allCharacters:
+						if c.name.lower() == "maude":
+							m = c
+					k.addCharacter(m)
+		# maude will sleep at late hours
+		elif self.frontDoorIsLocked and (self.time >= 22.00 or self.time < 5.00): 
+			k = None
+			m = None
+			for room in self.places.keys():
+				if "servant" in room.lower() and "quarters" in room.lower():
+					k = self.places[room] 
+			if k != None:
+				if k.getPersonByName("maude") == None:
+					for c in self.allCharacters:
+						if c.name.lower() == "maude":
+							m = c 
+					k.addCharacter(maude) 
+		else:
+			return
+
+	# TODO
+	# take care of mina's movement 
+	# start location is library, then follow user throughout endgame 
+	def updateMina(self):
+		print("updating mina location")
+
+	# take care of dworkin's movement (inside sheaf of papers)
+	# start location is bedroom, then follow sheaf of papers 
+	def updateDworkin(self):
+		print("updating dworkin location")
 
 	# takes the change in hours per an event in the game
 	def updateTime(self, timeChange):
@@ -266,14 +325,15 @@ class Game:
 			elif len(self.user.current_place.characters) == 1: 
 				# talk to the character
 				character = self.user.current_place.characters[0] # get the only character
-				Output.print_talk(character.getCharacterSpeak(self.time), character.name)
+				#Output.print_talk(character.getCharacterSpeak(self.time), character.name)
 				self.updateTime(0.6)
 				if character.name.lower() == "maude":
-						self.user.hasMetMaude = True
+					Output.print_talk(character.getCharacterSpeak(self.user.current_place.name), character.name)
+					self.user.hasMetMaude = True
 				elif character.name.lower() == "dworkin":
-						self.user.hasMetDworkin = True
+					self.user.hasMetDworkin = True
 				elif character.name.lower() == "mina":
-						self.user.hasMetMina = True
+					self.user.hasMetMina = True
 				self.setIsValid()
 				return
 		else:
@@ -643,13 +703,15 @@ class Game:
 
 	# v12 handling talking to characters
 	# v15 revision for a place possibly having multiple characters
+	# v17.1: begin handling dialogue by location
 	def handleTalk(self, attemptedObj, attemptedInd_Obj, canTalk):
 		if canTalk:
 			characters = self.user.current_place.characters
 			for c in characters:
 				if c.name.lower() == attemptedObj.lower() or attemptedObj.lower() in c.altNames:
-					Output.print_talk(c.getCharacterSpeak(self.time), c.name)
+					#Output.print_talk(c.getCharacterSpeak(self.time), c.name)
 					if c.name.lower() == "maude":
+						Output.print_talk(c.getCharacterSpeak(self.user.current_place.name), c.name)
 						self.user.hasMetMaude = True
 					elif c.name.lower() == "dworkin":
 						self.user.hasMetDworkin = True
@@ -1086,7 +1148,11 @@ class Game:
 
 		#v13.2: restrict movement until after speaking to Maude
 		# question - we could restrict this to exiting ne, so that the user can look in the station house without talking to maude?
-		if user_place.name.lower() == "train platform" and self.user.hasMetMaude == False:
+		# re above: yes, done!
+		isNortheast = False
+		if direction == "ne" or direction == "northeast":
+			isNortheast = True
+		if user_place.name.lower() == "train platform" and (self.user.hasMetMaude == False and isNortheast):
 			Output.print_talk("The stern woman on the platform stops you.^#\"Just where do you think you're going without greeting your elders?\"#", None) #no "you talk to" message when you are not the person initiating converstaion
 			return
 		
@@ -1118,10 +1184,19 @@ class Game:
 		if user_place.name.lower() == "fields" and new_place.name.lower() != "fields":
 			self.updateTime(1.8)
 
+		#v17.1 update maude location
+		self.updateMaude(user_place, new_place)
+		
+		# reset numTimesTalked for each previously talked-to character to 0 (because new location)
+		for person in self.allCharacters:
+			if person.numTimesTalked > -1:
+				person.numTimesTalked = -1 
+
 		# v15 oprinting moved to transition functionality
 		if new_place.numTimesEntered == 0 and (user_place.name.lower() == "front manor grounds" and new_place.name.lower() == "foyer"):
 			user_place.lockDoor("n")
 			new_place.lockDoor("s") 
+			self.frontDoorIsLocked = True
 
 
 # define the "Place" class
@@ -1204,6 +1279,20 @@ class Place:
 		self.characters.append(thing)
 		self.hasCharacters = True
 
+	#v17.1 removing character from place
+	def removeCharacter(self, thing):
+		self.characters.remove(thing)
+		if len(self.characters) == 0:
+			self.hasCharacters = False
+
+	#v17.1 check if place has a particular person
+	# and return the thing object for that person
+	def getPersonByName(self, pname):
+		for c in self.characters:
+			if c.name.lower() == pname:
+				return c
+		return None 
+
 	# expand to allow more than 1 character per place
 	def placeHasCharacters(self):
 		if len(self.characters) > 0:
@@ -1235,13 +1324,17 @@ class Place:
 			self.hasLeft[direction] += 1 # increase up to 2 (there are 3 different exit transitions)
 
 	#v13.3: show characters in room description
-	#TODO: after place is updated to handle multiple characters, update this accordingly 
+	#v17.1: make more specific 
 	def showCharacters(self):
 		if self.hasCharacters:
-			if len(self.characters) == 1:
-				Output.print_look("You see a person here.")
-			else:
-				Output.print_look("You see multiple people here.")
+			for c in self.characters:
+				if c.name.lower() == "maude":
+					Output.print_look("You see a woman here.")
+				if c.name.lower() == "mina":
+					Output.print_look("You see a girl here.")
+				if c.name.lower() == "dworkin":
+					Output.print_look("You see a man here.")	
+
 
 	def showDroppedObjects(self):
 		features = [feat for feat in self.things if feat.is_searchable]
@@ -1284,6 +1377,8 @@ class User:
 			self.current_place = game.getPlace(startingPlace)
 			self.direction = startingDirection
 
+			self.hasEnteredHouse = False
+	
 			self.hasMetMaude = False
 			self.hasMetMina = False
 			self.hasMetDworkin = False
@@ -1414,7 +1509,7 @@ class User:
 
 #define the "Thing" class
 class Thing: 
-	def __init__(self, name, day, night, starting_location, is_takeable, is_character = False, char_day = None, char_night = None):
+	def __init__(self, name, day, night, starting_location, is_takeable, is_character = False, char_dict = None):
 		self.name = name
 		self.day = day     # size of 5
 		self.night = night # size of 5
@@ -1441,9 +1536,12 @@ class Thing:
 		# v12 things can now be characters 
 		self.is_character = is_character
 		# set the day and night dialogue of the character
+		#if is_character:
+			#self.char_day = char_day
+			#self.char_night = char_night
+
 		if is_character:
-			self.char_day = char_day
-			self.char_night = char_night
+			self.char_dict = char_dict
 
 		#v11.4: search/read descriptions for searchable/readable items
 		self.searchDescrip = "" 
@@ -1498,7 +1596,7 @@ class Thing:
 
 	# get the character's dialogue based on time of day and num of times talked prior
 	# characters have up to 5 different things to say in the day and night, and after that just say the last thing
-	def getCharacterSpeak(self, time):
+	'''def getCharacterSpeak(self, time):
 		self.numTimesTalked += 1
 		if time > 5 and time < 16:
 			if self.numTimesTalked >= 5:
@@ -1509,7 +1607,21 @@ class Thing:
 			if self.numTimesTalked >= 5:
 				return self.char_night[4]
 			else:
-				return self.char_night[self.numTimesTalked]
+				return self.char_night[self.numTimesTalked]'''
+
+	# v17.1: get character dialogue by location or topic 
+	def getCharacterSpeak(self, locationOrTopic):
+		self.numTimesTalked += 1
+		dialogList = None
+		if self.char_dict:
+			if locationOrTopic.lower() in self.char_dict.keys():
+				dialogList = self.char_dict[locationOrTopic.lower()]
+		if dialogList != None:
+			dlength = len(dialogList)
+			if self.numTimesTalked >= dlength:
+				return dialogList[dlength-1]
+			else:
+				return dialogList[self.numTimesTalked]	
 
 	# edit description
 	def editDescription(self, day, night):

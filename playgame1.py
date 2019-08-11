@@ -216,7 +216,7 @@ def loadTransitionData(places):
         p.setTransitions(transitions_dict)
         i += 1
 
-def loadPlaceData(place_obj, filename):
+def loadPlaceData(place_obj, filename, game_obj):
 
     # build path to data file
     fpath = "./Game_Files/" + filename
@@ -306,7 +306,7 @@ def loadPlaceData(place_obj, filename):
                 if len(night) == 0:
                     night = day
 
-                newthing = g.Thing(feature, day, night, place_obj, False, False, None, None)
+                newthing = g.Thing(feature, day, night, place_obj, False, False)
                 place_obj.addThing(newthing)
 
                 # load thing dependencies
@@ -383,7 +383,7 @@ def loadPlaceData(place_obj, filename):
                 if len(night) == 0:
                     night = day
 
-                newthing = g.Thing(obj, day, night, place_obj, True, False, None, None)
+                newthing = g.Thing(obj, day, night, place_obj, True, False)
                 place_obj.addThing(newthing)
              
                 # load alternate thing names
@@ -416,9 +416,9 @@ def loadPlaceData(place_obj, filename):
         while count < numCharacters: 
             characterDescriptions.append(data_chunks[idx + 1 + count])
             count += 1
-        while count < numCharacters * 2:
-            characterDialogue.append(data_chunks[idx + 1 + count])
-            count += 1
+        #while count < numCharacters * 2:
+            #characterDialogue.append(data_chunks[idx + 1 + count])
+            #count += 1
     
         count = 0
         for char in charnames:
@@ -455,6 +455,7 @@ def loadPlaceData(place_obj, filename):
                 if len(night) == 0:
                     night = day
 
+                ''' 
                 # Do the same now for dialogue
                 # get the description block for this character
                 cdi = characterDialogue[count]
@@ -487,14 +488,45 @@ def loadPlaceData(place_obj, filename):
                     char_night = char_day
 
                 newthing = g.Thing(char, day, night, place_obj, False, True, char_day, char_night)
-                place_obj.addThing(newthing)
+                ''' 
+       
+                # dialogue will be loaded separately
+                newthing = g.Thing(char, day, night, place_obj, False, True)
+
+                #place_obj.addThing(newthing)
                 place_obj.addCharacter(newthing)
+
+                game_obj.allCharacters.append(newthing)
 
                 # load alternate thing names
                 loadAltNames("objalternatenames.txt", newthing)
 
                 count += 1
-        
+    
+
+# load character dialog for various locations/topics
+def loadDialogDict(filename, character):
+
+    fpath = "./Game_Files/" + filename
+
+    with open(fpath) as mfile:
+        dialogues = mfile.read()
+
+    dm_chunks = dialogues.split("***\n")
+    dialogue_dict = {}
+
+    for dmchunk in dm_chunks:
+        dmpieces = dmchunk.split(":::")
+        placeOrTopic = dmpieces[0]
+        if placeOrTopic not in dialogue_dict:
+            dialogue_dict[placeOrTopic] = []
+            # key is place or topic name, value is list of dialogues for that place/topic
+            dialogue_dict[placeOrTopic].append(dmpieces[1])
+        else:
+            dialogue_dict[placeOrTopic].append(dmpieces[1])
+
+    character.char_dict = dialogue_dict
+    
 def buildGame():
 
     # start game at 8 am
@@ -606,34 +638,34 @@ def buildGame():
 
     # load room data from files
     # don't need to load place16, place23, or place29 (these stay locked forever) 
-    loadPlaceData(place1, "trainplatform.txt") 
-    loadPlaceData(place2, "stationhouse.txt")
-    loadPlaceData(place3, "fields.txt")
-    loadPlaceData(place4, "frontmanorgrounds.txt")
-    loadPlaceData(place5, "foyer.txt")
-    loadPlaceData(place6, "upstairshallway1.txt")
-    loadPlaceData(place7, "upstairshallway2.txt")
-    loadPlaceData(place8, "upstairshallway3.txt")
-    loadPlaceData(place9, "upstairshallway4.txt")
-    loadPlaceData(place10, "upstairshallway5.txt")
-    loadPlaceData(place11, "spareroom.txt")
-    loadPlaceData(place12, "smalllavatory.txt")
-    loadPlaceData(place13, "bedroom.txt")
-    loadPlaceData(place14, "library.txt")
-    loadPlaceData(place15, "study.txt")
+    loadPlaceData(place1, "trainplatform.txt", game) 
+    loadPlaceData(place2, "stationhouse.txt", game)
+    loadPlaceData(place3, "fields.txt", game)
+    loadPlaceData(place4, "frontmanorgrounds.txt", game)
+    loadPlaceData(place5, "foyer.txt", game)
+    loadPlaceData(place6, "upstairshallway1.txt", game)
+    loadPlaceData(place7, "upstairshallway2.txt", game)
+    loadPlaceData(place8, "upstairshallway3.txt", game)
+    loadPlaceData(place9, "upstairshallway4.txt", game)
+    loadPlaceData(place10, "upstairshallway5.txt", game)
+    loadPlaceData(place11, "spareroom.txt", game)
+    loadPlaceData(place12, "smalllavatory.txt", game)
+    loadPlaceData(place13, "bedroom.txt", game)
+    loadPlaceData(place14, "library.txt", game)
+    loadPlaceData(place15, "study.txt", game)
     
-    loadPlaceData(place17, "servantsstairtop.txt")
-    loadPlaceData(place18, "servantsstairbottom.txt")
-    loadPlaceData(place19, "downstairshallway3.txt")
-    loadPlaceData(place20, "downstairshallway2.txt")
-    loadPlaceData(place21, "downstairshallway1.txt")
-    loadPlaceData(place22, "kitchen.txt")
+    loadPlaceData(place17, "servantsstairtop.txt", game)
+    loadPlaceData(place18, "servantsstairbottom.txt", game)
+    loadPlaceData(place19, "downstairshallway3.txt", game)
+    loadPlaceData(place20, "downstairshallway2.txt", game)
+    loadPlaceData(place21, "downstairshallway1.txt", game)
+    loadPlaceData(place22, "kitchen.txt", game)
 
-    loadPlaceData(place24, "drawingroom.txt")
-    loadPlaceData(place25, "diningroom.txt")
-    loadPlaceData(place26, "cloakroom.txt")
-    loadPlaceData(place27, "ashgrove.txt")
-    loadPlaceData(place28, "rearmanorgrounds.txt")
+    loadPlaceData(place24, "drawingroom.txt", game)
+    loadPlaceData(place25, "diningroom.txt", game)
+    loadPlaceData(place26, "cloakroom.txt", game)
+    loadPlaceData(place27, "ashgrove.txt", game)
+    loadPlaceData(place28, "rearmanorgrounds.txt", game)
 
     loadListens(place24, "drawinglisten.txt")
 
@@ -642,10 +674,22 @@ def buildGame():
     loadPassageData(places)
     loadTransitionData(places)
 
+    # load maude dialogue for various locations
+    currChar = None
+    for char in game.allCharacters:
+        if char.name.lower() == "maude":
+            currChar = char
+
+    if currChar != None:
+        loadDialogDict("maude.txt", currChar) 
+
+    # TODO: load dworkin dialogue for various topics
+
+    # TODO: load mina dialogue for various locations and topics 
+
     # load narrative intro text
     with open("./Game_Files/intro.txt") as ifile:
         intro = ifile.read()
-
     intro_chunks = intro.split("***\n")
     for ichunk in intro_chunks: 
         game.narrativeIntro.append(ichunk)
@@ -653,7 +697,6 @@ def buildGame():
     # load ending event text
     with open("./Game_Files/endingevents.txt") as efile:
         endings = efile.read()
-
     end_chunks = endings.split("***\n")
     for echunk in end_chunks:
         game.endingEvents.append(echunk) 
