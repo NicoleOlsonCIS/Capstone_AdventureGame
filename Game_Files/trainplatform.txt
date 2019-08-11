@@ -27,4 +27,4 @@ Maude
 ***
 She looks frail and gray, but her bony frame seems to possess a kind of wiry strength. She stands ramrod straight, and her heavy black dress - buttoned long at the wrists and high at the neck - is spotless. Somehow, you know she’s waiting for you.###She looks frail and gray, but her bony frame seems to possess a kind of wiry strength. She stands ramrod straight, and her black dress - buttoned long at the wrists and high at the neck - is spotless.
 ***
-#“You’re the new one, then."#She looks you over impassively, her eyes giving nothing away.#“I am the Housekeeper, but you may call me Maude. The House is not far from here,”# Maude says briskly. #“Come along, and hurry. There’s a storm coming in.”# She turns without another word and strides purposefully away to the northeast.###No night
+#“You’re the new one, then."#^She looks you over impassively, her eyes giving nothing away.|||#“I am the Housekeeper, but you may call me Maude. The House is not far from here,”#^Maude says briskly. |||#“Come along, and hurry. There’s a storm coming in.”#^She turns without another word and strides purposefully away to the northeast.&&&No night

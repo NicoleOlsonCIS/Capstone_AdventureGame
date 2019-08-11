@@ -1087,7 +1087,7 @@ class Game:
 		#v13.2: restrict movement until after speaking to Maude
 		# question - we could restrict this to exiting ne, so that the user can look in the station house without talking to maude?
 		if user_place.name.lower() == "train platform" and self.user.hasMetMaude == False:
-			Output.print_talk("The stern woman on the platform stops you.#Just where do you think you're going without greeting your elders?#", None) #no "you talk to" message when you are not the person initiating converstaion
+			Output.print_talk("The stern woman on the platform stops you.^#\"Just where do you think you're going without greeting your elders?\"#", None) #no "you talk to" message when you are not the person initiating converstaion
 			return
 		
 
@@ -1112,6 +1112,7 @@ class Game:
 
 		if (is_door):
 			Output.newPlaceWithDoor(new_place.name)
+			print("\n")
 
 		#v11.7 make Fields take longer to cross
 		if user_place.name.lower() == "fields" and new_place.name.lower() != "fields":
