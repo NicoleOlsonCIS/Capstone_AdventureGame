@@ -349,7 +349,7 @@ class Output(object):
             sys.stdout.write(u"\033[" + str(lineCount-1) + "A") # up the line count
             code -= 1
             time.sleep(0.04)
-        sys.stdout.write(u'\u001b[38;5;232m')
+        sys.stdout.write(u'\u001b[38;5;0m')
         sys.stdout.write(stringToFade)
         #reset
         sys.stdout.write(u"\u001b[0m")
