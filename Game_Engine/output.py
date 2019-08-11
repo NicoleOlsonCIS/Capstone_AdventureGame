@@ -305,7 +305,7 @@ class Output(object):
                 if comesFirst == "Description": 
                     # print the description with a newline
                     # change color
-                    sys.stdout.write(u'\u001b[38;5;$63m')
+                    sys.stdout.write(u'\u001b[38;5;$146m')
                     for elem in description:
                         time.sleep(0.04)
                         sys.stdout.write(elem)
@@ -327,7 +327,7 @@ class Output(object):
                     full += bubble + "\n\n"
 
                     # print the description with a newline
-                    sys.stdout.write(u'\u001b[38;5;$63m')
+                    sys.stdout.write(u'\u001b[38;5;$146m')
                     for elem in description:
                         time.sleep(0.04)
                         sys.stdout.write(elem)
