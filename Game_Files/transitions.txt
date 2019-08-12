@@ -1,17 +1,17 @@
 Train Platform
-ne#Leaving the station behind, you trail doggedly after Maude, who doesn't spare so much as a backward glance. You mechanically put one foot in front of another, resigning yourself to what already feels like a long journey to the House.--You step off the platform and onto grass--You leave the platform once again
-w#You move west towards the Station-House--You return to the Station-House--None
+ne#Leaving the station behind, you trail doggedly after Maude, who doesn't spare so much as a backward glance. You resign yourself to what already feels like a long journey to the House.--None--None
+w#You move west towards the Station-House.--You return to the Station-House.--None
 ***
 Station-House
 e#None--None--None
 ***
 Fields
-n#You leave the fields on the north side--None--None
-sw#You exit the fields in the sw direction and step onto the Train Platform--None--None
+n#None--None--None
+sw#None--None--None
 ***
 Front Manor Grounds
-s#You go back into the fields
-n#You hurl yourself up the path as it starts to rain in earnest. Maude follows right on your heels, fishing an iron keyring out of her pockets. At the front door, she shoulders you aside, unlocks the door, and heaves it open with a grunt of effort, dragging you inside by the wrist and dumping you in a rain-soaked heap on the floor.--None--None
+s#None--None--None
+n#You hurl yourself up the path as it starts to rain in earnest. Maude follows right on your heels, fishing an iron keyring out of her pockets. She unlocks the door and heaves it open with a grunt of effort, dragging you inside by the wrist and dumping you in a rain-soaked heap on the floor.--None--None
 nw#None--None--None
 ***
 Foyer

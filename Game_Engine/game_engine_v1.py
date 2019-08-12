@@ -478,7 +478,7 @@ class Game:
 		if self.user.current_place.hasCharacters:
 			characters = self.user.current_place.characters
 			for c in characters:
-				if c.name == itemname or itemname in c.altNames:
+				if c.name.lower() == itemname or itemname in c.altNames:
 					Output.print_look(c.getDescription(self.time))
 				return
 
@@ -574,7 +574,8 @@ class Game:
 
 	def handleSleep(self, attemptedObj, canSleep):
 		if canSleep:
-			print("You sleep.")
+			#print("You sleep.")
+			return
 		else:
 			if self.user.current_place.name != "Spare Room":
 				Output.print_input_hint("You can only sleep in your room. You are not in your room at the moment.")
@@ -583,7 +584,7 @@ class Game:
 			elif attemptedObj != None and attemptedObj != "bed":
 				Output.print_input_hint("You can only sleep on a bed.") 
 			else:
-				Output.print_input_hint("You aren't sleepy right now.")
+				Output.print_input_hint("You aren't sleepy right now. Maybe later.")
 
 	# new in v11.1
 	def handleSearch(self, attemptedObj, indirObj, canSearch):

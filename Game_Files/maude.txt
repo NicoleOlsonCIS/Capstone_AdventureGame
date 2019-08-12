@@ -1,4 +1,4 @@
-train platform:::#“You’re the new one, then."#^She looks you over impassively, her eyes giving nothing away.|||#“I am the Housekeeper, but you may call me Maude. The House is not far from here,”#^Maude says briskly.|||#“Come along, and hurry. There’s a storm coming in.”#^She turns without another word and strides purposefully away to the northeast.
+train platform:::#“You’re the new one, then."#^She looks you over impassively.|||#“I am the Housekeeper, but you may call me Maude. The House is not far from here,”#^Maude says briskly.|||#“Come along, and hurry. There’s a storm coming in.”#^She turns and strides purposefully away to the northeast.
 ***
 front manor grounds:::#"Enough of that. Hurry. Get to the House, now.”#^She points urgently to the House just ahead of you to the north, as the sky rumbles threateningly behind you.
 ***

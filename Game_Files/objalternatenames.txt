@@ -2,13 +2,41 @@ newspaper:greenridge weekly gazette,weekly gazette,gazette,weekly,greenridge wee
 ***
 ticket counter:counter
 ***
+platform bench:bench
+***
 flash of color:flash,color,flash color
 ***
 scrap of fabric:scrap,fabric,scrap fabric,fabric scrap
 ***
-manor house:house,manor,building
+field sky:sky,clouds,storm,rain,cloud
 ***
-mist:fog
+field manor house:manor house,manor,house,hill,slope
+***
+grounds manor house:house,manor,manor house,building
+***
+grounds grounds:grounds
+***
+grounds mist:mist,fog
+***
+grounds sky:sky,clouds,storm
+***
+cluster of trees:trees,tree
+***
+field trees:trees,tree
+***
+field mist:mist,fog
+***
+field grass:grass
+***
+grassy mound:mound,small hill,hill,grassy hill,low slope,slope
+***
+rear grounds trees:trees,tree,woods
+***
+grove trees:ash trees,trees,tree,ash,canopy,cluster,dense cluster,cluster trees
+***
+grove ground:ground,dirt
+***
+grove shadows:shadows,shadow,dappled shadows,dappled shadow,light,sunlight
 ***
 porcelain doll:doll
 ***
@@ -64,7 +92,7 @@ hefty black book:first course,hatch theory,course hatch,course,hefty black,black
 ***
 dull reddish book:hatch mechanics,mechanics,interstices,mechanics interstices,red book,reddish book,dull reddish,dull book
 ***
-countertops:countertop,counters,counter,kitchen counter,kitchen counters
+countertops:countertop,counters,counter,kitchen counter,kitchen counters,flour-dusted countertops,flour-dusted countertop,flour-dusted counter,flour-dusted counters,flour
 ***
 cloakroom coats:coats,coat
 ***
@@ -105,3 +133,7 @@ maude:woman,person,female,old woman,housekeeper
 dworkin:man,old man,male,person
 ***
 mina:wilhelmina,girl,person,dark-haired girl,female,young woman
+***
+cook:stout cook,dour cook,dour-looking cook,stout dour,stout dour-looking
+***
+maid:flustered maid
