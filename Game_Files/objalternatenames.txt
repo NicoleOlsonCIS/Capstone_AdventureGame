@@ -36,6 +36,8 @@ grove trees:ash trees,trees,tree,ash,canopy,cluster,dense cluster,cluster trees
 ***
 grove ground:ground,dirt
 ***
+set of footprints:footprints,prints,footprint,print,tracks,set footprints,set tracks
+***
 grove shadows:shadows,shadow,dappled shadows,dappled shadow,light,sunlight
 ***
 porcelain doll:doll
