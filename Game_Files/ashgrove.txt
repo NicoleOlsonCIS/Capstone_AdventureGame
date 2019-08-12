@@ -1,16 +1,27 @@
-You follow the winding dirt path into a dense cluster of ash trees. The air grows cool and earthy with the smell of shade and growing things, and sunlight piercing the canopy makes dappled golden shadows on the ground. The path extends to the north and southeast.
+You follow the winding dirt path into a dense cluster of ash trees. The air grows cool and earthy with the smell of shade and growing things, and light piercing the canopy makes dappled shadows on the ground. The path extends to the north and southeast.
 ***
-You stand in a dense cluster of ash trees. The air is cool and earthy with the smell of shade and growing things, and sunlight piercing the canopy makes dappled golden shadows on the ground. The path extends to the north and southeast.
+You stand in a dense cluster of ash trees. The air is cool and earthy with the smell of shade and growing things, and light piercing the canopy makes dappled shadows on the ground. The path extends to the north and southeast.
 ***
-You stand in a dense cluster of ash trees. The air is cool and earthy with the smell of shade and growing things, and sunlight piercing the canopy makes dappled golden shadows on the ground. The path extends to the north and southeast.
+You stand in a dense cluster of ash trees. The air is cool and earthy with the smell of shade and growing things. The path extends to the north and southeast.
 ***
-You find yourself in a cluster of ash trees. The air is cool and earthy with the smell of shade and growing things, and the ground is dappled gold with the light of the setting sun. The path extends to the north and southeast.
+You find yourself in a cluster of ash trees. The air is cool and earthy with the smell of shade and growing things. The path extends to the north and southeast.
 ***
 You stand in a dense cluster of ash trees. It's quite dark in here, but you think the path extends to the north and southeast.
 ***
 It's getting too dark to see here. Best get back inside the House.
 ***
-no features
+grove trees
+grove ground
+grove shadows
+set of footprints
+***
+The branches interlace above you, forming a hushed refuge from the world outside.###The branches interlace above you, forming a hushed refuge from the world outside.
+***
+Ever on the lookout for fairies and toadstools, you poke around the base of each tree and among the dry leaves blanketing the ground.###You poke around the base of each tree and among the dry leaves blanketing the ground. 
+***
+The light is especially faint in here.###It's hard to see much in here.
+***
+Churned, messy tracks in the dirt. Looking closely, you see they're not footprints, but large gouges in the ground in sets of two. You count the pairs...one, two, three, four, five, six, seven, eight...###It's too dark to see these clearly. 
 ***
 no objects
 ***

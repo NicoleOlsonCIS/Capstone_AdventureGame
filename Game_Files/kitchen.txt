@@ -1,10 +1,10 @@
-You follow your nose into a large, tidy kitchen, where something in the oven is making the most delicious smell. A stout, dour-looking cook labors over a floured countertop, while a flustered maid scurries to and fro, fetching and carrying. Overseeing it all is Maude, who watches the proceedings with hawk-like attention.
+You follow your nose into a large, tidy kitchen, where something in the oven is making the most delicious smell. A stout, dour-looking cook labors over a floured countertop, while a flustered maid scurries to and fro, fetching and carrying. No one pays attention to you, except for the occasional disapproving glance. 
 There's an open doorway to the west.
 ***
-A spacious, tidy kitchen, where a stout, dour-looking cook and a flustered maid bustle to and fro, carrying out their duties. Overseeing it all is Maude, who watches the proceedings with hawk-like attention.
+A spacious, tidy kitchen, where a stout, dour-looking cook and a flustered maid bustle to and fro, carrying out their duties. 
 There's an open doorway to the west.
 ***
-A spacious, tidy kitchen, where a stout, dour-looking cook and a flustered maid bustle to and fro, carrying out their duties. Overseeing it all is Maude, who watches the proceedings with hawk-like attention.
+A spacious, tidy kitchen, where a stout, dour-looking cook and a flustered maid bustle to and fro, carrying out their duties. 
 There's an open doorway to the west.
 ***
 A spacious kitchen with flour-dusted countertops. There's an open doorway to the west.
@@ -19,11 +19,11 @@ countertops
 cook
 maid
 ***
-The smell reminds you of warm bread, honey, and butter. Your stomach rumbles. You barely remember the taste of butter. Is it as good as that distant memory tells you it is?###No night
+The smell reminds you of warm bread, honey, and butter. Your stomach rumbles. You barely remember the taste of butter. Is it as good as that distant memory tells you it is?###The smell reminds you of warm bread, honey, and butter.
 ***
-The smell reminds you of warm bread, honey, and butter. Your stomach rumbles. You barely remember the taste of butter. Is it as good as that distant memory tells you it is?###No night
+The smell reminds you of warm bread, honey, and butter. Your stomach rumbles. You barely remember the taste of butter. Is it as good as that distant memory tells you it is?###The smell reminds you of warm bread, honey, and butter.
 ***
-The cook seems to be working on an elaborate pastry dough, and doesn’t notice you.###No night
+The cook seems to be working on an elaborate pastry dough, and doesn’t notice you.###Dusted with flour, as if someone was just kneading bread a moment ago. 
 ***
 He’s hard at work and pays you no mind.###He’s hard at work and pays you no mind.
 ***
@@ -32,8 +32,8 @@ She’s hard at work and pays you no mind.###She’s hard at work and pays you n
 small knife
 matchbook
 ***
-A short but sharp-looking knife. It's only slightly unwieldy in your hand.###No night
+A short but sharp-looking knife. It's only slightly unwieldy in your hand.###A short but sharp-looking knife. It's only slightly unwieldy in your hand.
 ***
-A neat little book of matches.###No night 
+A neat little book of matches.###A neat little book of matches.
 ***
 no characters

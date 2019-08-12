@@ -1,4 +1,4 @@
-When you shake yourself out of your musing long enough to look around, you see that you’re passing through thick fields, full of damp grass that brushes against your knees with a soft shhhh. The fields stretch out wide in almost every direction, but you think the train station lies southwest of here, and to the north, you see a manor house on a low slope dotted with trees. Heavy clouds start to darken the sky. 
+When you shake yourself out of your musing and look around, you see that you’re passing through fields full of damp grass that brushes against your knees with a soft shhhh. The fields stretch out in every direction, but you think the train station is southwest of here, and to the north, you see a manor house on a slope dotted with trees. Clouds darken the sky. 
 ***
 You stand in a wide field, surrounded by knee-high grass that extends almost as far as you can see in most directions. The train station lies southwest of here. You can see the House to the north.
 ***
@@ -10,33 +10,24 @@ You stand alone and shivering in an empty field. The thunder sounds closer than 
 ***
 It's too dark to see here. Best get back to the House.
 ***
-sky
-clouds
-storm
-manor house
-hill
-slope
-mist
-grass
+field sky
+field manor house
+field trees
+field mist
+field grass
 flash of color
 ***
 Cool droplets of rain hit your face as you survey the sky. You see dense white mist rolling over the fields, obscuring everything behind you.###No night
 ***
-Cool droplets of rain hit your face as you survey the sky. You see dense white mist rolling over the fields, obscuring everything behind you.###No night
+An isolated country manor of ivy-choked gray stone. It’s the only building you see around here.###An isolated country manor of ivy-choked gray stone.
 ***
-Cool droplets of rain hit your face as you survey the sky. You see dense white mist rolling over the fields, obscuring everything behind you.###No night
+The low light of the stormy sky lends the trees an eerie fluorescence.###Dense green foliage, hazy in the mist.
 ***
-An isolated country manor of ivy-choked gray stone. It’s the only building you see around here.###No night
+If you got caught in it, you wouldn’t be able to see your own hand in front of your face.###Maude warned you not to get lost in it.
 ***
-An isolated country manor of ivy-choked gray stone. It’s the only building you see around here.###No night
+The grass ripples under a sudden light gust of wind. You glance down at the soil under your feet.###The grass ripples under a sudden light gust of wind. You glance down at the soil under your feet.
 ***
-An isolated country manor of ivy-choked gray stone. It’s the only building you see around here.###No night
-***
-If you got caught in it, you wouldn’t be able to see your own hand in front of your face.###No night
-***
-The grass ripples under a sudden light gust of wind. You glance down at the soil under your feet.###No night
-***
-You lean down and dig roughly with your fingers, wondering if you'll unearth something.###No night
+You lean down and dig roughly with your fingers, wondering if you'll unearth something.###You lean down and dig roughly with your fingers, wondering if you'll unearth something.
 ***
 porcelain doll
 ***

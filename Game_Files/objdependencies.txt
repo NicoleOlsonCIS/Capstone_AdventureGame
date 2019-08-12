@@ -1,10 +1,12 @@
-bench:newspaper
+platform bench:newspaper
 ***
 ticket counter:scrap of fabric
 ***
-grass:flash of color
+field grass:flash of color
 ***
 flash of color:porcelain doll
+***
+grove ground:set of footprints
 ***
 dresser:set of drawers
 ***
