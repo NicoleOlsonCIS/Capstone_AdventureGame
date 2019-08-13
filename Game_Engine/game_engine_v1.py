@@ -1550,6 +1550,13 @@ class Place:
 	#  translates array to "adjacentplaces" array after all places created
 	def setAdjacentPlaces(self, game):
 		self.adjacent_places = list(map(game.getPlace, self.adjacent_place_names))
+		print("Places adjacent to " + self.name)
+		for a in self.adjacent_places:
+			if a is None:
+				sys.stdout.write("None   ")
+			else:
+				sys.stdout.write(a.name + "   ")
+		print()
 
 	# v14 track passage types in a dictionary i.e. archway
 	def setPassages(self, passages):

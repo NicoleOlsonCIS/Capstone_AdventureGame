@@ -667,6 +667,7 @@ def gameLoop(game):
         # flush standard in 
         termios.tcflush(sys.stdin, termios.TCIFLUSH)
 
+        Output.print_archway_transition()
         # game.getTime() # uncomment this if you need it!
 
         # game continues until user enters quit at the prompt 
