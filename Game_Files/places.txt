@@ -3,7 +3,7 @@ None,Fields,None,None,None,None,Station-House,None,None,None
 None
 ***
 Station-House
-None,None,Train Platform,None,None,None,None,None,None
+None,None,Train Platform,None,None,None,None,None,None,None
 None,None,unlocked,None,None,None,None,None,None
 ***
 Fields
