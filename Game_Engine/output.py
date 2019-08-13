@@ -1030,20 +1030,21 @@ class Output(object):
 
                     # color based on previous (darker color upon consequetive)
                     elif elem == "/":
-                        if previousElem1 == "|":
-                            sys.stdout.write(u"\u001b[38;5;239m")
-                        if previousElem1 != "/":
+                        if previousElem1 != "/" and previousElem1 != "|":
                             sys.stdout.write(u"\u001b[38;5;244m") # lightest color
                         elif previousElem1 == "/" and previousElem2 != "/":
-                            sys.stdout.write(u"\u001b[38;5;243m")
-                        elif previousElem2 == "/" and previousElem3 != "/":
                             sys.stdout.write(u"\u001b[38;5;242m")
-                        elif previousElem3 == "/" and previousElem4 != "/":
-                            sys.stdout.write(u"\u001b[38;5;241m")
-                        elif previousElem4 == "/" and previousElem5 != "/":
+                        elif previousElem2 == "/" and previousElem3 != "/":
                             sys.stdout.write(u"\u001b[38;5;240m")
+                        elif previousElem3 == "/" and previousElem4 != "/":
+                            sys.stdout.write(u"\u001b[38;5;238m")
+                        elif previousElem4 == "/" and previousElem5 != "/":
+                            sys.stdout.write(u"\u001b[38;5;236m")
                         elif previousElem4 == "/" and previousElem5 == "/":
-                            sys.stdout.write(u"\u001b[38;5;239m")
+                            sys.stdout.write(u"\u001b[38;5;234m")
+                        else:
+                            #darkest color
+                            sys.stdout.write(u"\u001b[38;5;234m")
                         # print the element
                         sys.stdout.write(elem)
                         sys.stdout.write(u"\u001b[0m")
@@ -1051,15 +1052,15 @@ class Output(object):
                     # color based on previous (lighter color upon consequtive)
                     elif elem == "\\":
                         if previousElem1 != "\\":
-                            sys.stdout.write(u"\u001b[38;5;239m")
+                            sys.stdout.write(u"\u001b[38;5;234m") # darkest color
                         elif previousElem1 == "\\" and previousElem2 != "\\":
-                            sys.stdout.write(u"\u001b[38;5;240m")
+                            sys.stdout.write(u"\u001b[38;5;236m")
                         elif previousElem2 == "\\" and previousElem3 != "\\":
-                            sys.stdout.write(u"\u001b[38;5;241m")
+                            sys.stdout.write(u"\u001b[38;5;238m")
                         elif previousElem3 == "\\" and previousElem4 != "\\":
-                            sys.stdout.write(u"\u001b[38;5;242m")
+                            sys.stdout.write(u"\u001b[38;5;240m")
                         elif previousElem4 == "\\" and previousElem5 != "\\":
-                            sys.stdout.write(u"\u001b[38;5;243m")
+                            sys.stdout.write(u"\u001b[38;5;242m")
                         elif previousElem4 == "\\" and previousElem5 == "\\":
                             sys.stdout.write(u"\u001b[38;5;244m")
                         # print the element
@@ -1070,29 +1071,29 @@ class Output(object):
                         if previousElem1 != "|":
                             sys.stdout.write(u"\u001b[38;5;244m") # lightest color
                         elif previousElem1 == "|" and previousElem2 != "|":
-                            sys.stdout.write(u"\u001b[38;5;243m")
-                        elif previousElem2 == "|" and previousElem3 != "|":
                             sys.stdout.write(u"\u001b[38;5;242m")
-                        elif previousElem3 == "|" and previousElem4 != "|":
-                            sys.stdout.write(u"\u001b[38;5;241m")
-                        elif previousElem4 == "|" and previousElem5 != "|":
+                        elif previousElem2 == "|" and previousElem3 != "|":
                             sys.stdout.write(u"\u001b[38;5;240m")
+                        elif previousElem3 == "|" and previousElem4 != "|":
+                            sys.stdout.write(u"\u001b[38;5;238m")
+                        elif previousElem4 == "|" and previousElem5 != "|":
+                            sys.stdout.write(u"\u001b[38;5;236m")
                         elif previousElem4 == "|" and previousElem5 == "|":
-                            sys.stdout.write(u"\u001b[38;5;239m")
+                            sys.stdout.write(u"\u001b[38;5;224m")
                         # print the element
                         sys.stdout.write(elem)
                         sys.stdout.write(u"\u001b[0m")
                     elif elem == "+":
                         if previousElem1 != "+":
-                            sys.stdout.write(u"\u001b[38;5;239m")
+                            sys.stdout.write(u"\u001b[38;5;234m")
                         elif previousElem1 == "+" and previousElem2 != "+":
-                            sys.stdout.write(u"\u001b[38;5;240m")
+                            sys.stdout.write(u"\u001b[38;5;236m")
                         elif previousElem2 == "+" and previousElem3 != "+":
-                            sys.stdout.write(u"\u001b[38;5;241m")
+                            sys.stdout.write(u"\u001b[38;5;238m")
                         elif previousElem3 == "+" and previousElem4 != "+":
-                            sys.stdout.write(u"\u001b[38;5;242m")
+                            sys.stdout.write(u"\u001b[38;5;240m")
                         elif previousElem4 == "+" and previousElem5 != "+":
-                            sys.stdout.write(u"\u001b[38;5;243m")
+                            sys.stdout.write(u"\u001b[38;5;242m")
                         elif previousElem4 == "+" and previousElem5 == "+":
                             sys.stdout.write(u"\u001b[38;5;244m")
                         # print the element
