@@ -75,20 +75,20 @@ sb7 = "   |"
 
 # archway 1
 
-a ="--^-ii--i^.-^..i^-^-..^-..^i-.^i"
-a0 =".-iii--.^i--^-./\\-^-ii-i.^-..^-."
-a1 ="-i^.^-i..i^-^-//\\\\^-i.--.^i-.^-."
-a2 ="^-^-.i-^.^-i^///\\\\\\--i^.^-i..^i^"
-a3 ="-..ii-^-i^.^////\\\\\\\\.^-i..i^-^-."
-a4 ="-i..ii..i-/////  \\\\\\\\\\-^.^-i^-i."
-a5 ="-ii--.^i-/////    \\\\\\\\\\--i^.^-i."
-a6 ="-^.^-i^-/////      \\\\\\\\\\^i.-i.-^"
-a7 ="i^.--i./////        \\\\\\\\\\..ii--i"
-a8 =".i^i-i|||||          +++++--i..i"
-a9 ="-^.^-i|||||          +++++^i-i^."
-a10="^.^-i.|||||          +++++-.i-.^"
-a11="i-.^-i|||||          +++++-i^-i."
-a12="..ii--||||/          \\++++-i^-.i"
+a ="-!^-i!--i^.-^!.i^-!-..!-..^!-.^!"
+a0 =".-!ii!-.^i!-^-./\\-^-i!-i.^-!.^-."
+a1 ="-!^.!-i..i^!^!//\\\\^-!.-!.^i-.^!."
+a2 ="^-!-.i-!.^-i^///\\\\\\!-i^.!-i.!^i^"
+a3 ="-.!i!-^-i^.^////\\\\\\\\.^-i!.i^-^!."
+a4 ="-i.!!i..i-/////  \\\\\\\\\\-^!^!i^-i."
+a5 ="-i!!-.^i!/////    \\\\\\\\\\!!i!.!-i."
+a6 ="-^.^!i!-/////      \\\\\\\\\\^i.-!.-^"
+a7 ="i^.!-i./////        \\\\\\\\\\.!i!-!i"
+a8 ="!i^!-i|||||          +++++--!.!i"
+a9 ="-!.^-i|||||          +++++^i-!^."
+a10="^!^!i.|||||          +++++-.!-.^"
+a11="!-.^!i|||||          +++++-i^-!."
+a12=".!i!-!||||/          \\++++-i!-.i"
 a13="======||||/           \\+++======"
 
 welcome_archway = [a, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13]
@@ -1011,9 +1011,23 @@ class Output(object):
                         # print the element
                         sys.stdout.write(elem)
                         sys.stdout.write(u"\u001b[0m")
+                    elif elem == "!":
+                        sys.stdout.write(u"\u001b[48;5;235m")
+                        sys.stdout.write(u"\u001b[38;5;235m")
+                        # print the element
+                        sys.stdout.write(elem)
+                        sys.stdout.write(u"\u001b[0m")
+                    elif elem == "@":
+                        sys.stdout.write(u"\u001b[48;5;72m")
+                        sys.stdout.write(u"\u001b[38;5;72m")
+                        # print the element
+                        sys.stdout.write("_")
+                        sys.stdout.write(u"\u001b[0m")
 
                     # color based on previous (darker color upon consequetive)
                     elif elem == "/":
+                        if previousElem1 == "|":
+                            sys.stdout.write(u"\u001b[38;5;239m")
                         if previousElem1 != "/":
                             sys.stdout.write(u"\u001b[38;5;244m") # lightest color
                         elif previousElem1 == "/" and previousElem2 != "/":
