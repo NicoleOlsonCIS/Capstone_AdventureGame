@@ -1438,6 +1438,12 @@ class Game:
 					Output.print_look(self.endingEvents[1])
 				return
 
+		# arch transition
+		dict_passages = self.user.current_place.passages
+		# if there is an archway in that direction, print the arch transition
+		if dict_passages[direction] == "archway":
+			Output.print_archway_transition()
+
 		self.user.updatePlace(adjacent_places[reverse_dict[direction]])
 		alt_dir = opposing_dir_dict[reverse_dict[direction]]
 		if adjacent_places[reverse_dict[direction]].doors[alt_dir] == "unlocked":
@@ -1510,9 +1516,6 @@ class Place:
 		self.numTimesListened = 0
 
 		self.doors = doors
-		#print("\nDoors being set for " + self.name)
-		#print(doors)
-		#print()
 
 		self.passages = passages
 
