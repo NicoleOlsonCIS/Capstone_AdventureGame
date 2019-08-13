@@ -965,10 +965,10 @@ class Output(object):
     def print_archway_transition(self):
         print("\n")
         for a in archways:
-            Output.print_archway(a, True)
+            Output.print_archway(a, False)
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u"\033[7A") # up height
-            time.sleep(0.1)
+            time.sleep(0.3)
         i = 0
         while i < 7:
             print("                                           ")
