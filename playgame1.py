@@ -35,6 +35,9 @@ def parsePlaces(game):
         l = p.split("\n")
         name = l[0]
         adjacent_places = l[1].split(",")
+        for a in adjacent_places:
+            if a == "None":
+                a = None
         doors_arr = l[2].split(",")
         if len(doors_arr) == 1:
             doors = no_doors
