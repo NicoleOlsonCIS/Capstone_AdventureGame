@@ -654,7 +654,7 @@ def saveGame(game):
     pickle_out = open("savedGame.pickle", "wb")
     pickle.dump(game, pickle_out)
     pickle_out.close()
-    time.sleep(0.5)
+    #time.sleep(0.5)
     print("your game has been saved")
 
 
