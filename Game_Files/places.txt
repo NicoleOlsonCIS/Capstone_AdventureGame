@@ -1,0 +1,110 @@
+Train Platform
+None,Fields,None,None,None,None,Station-House,None,None,None
+None
+***
+Station-House
+None,None,Train Platform,None,None,None,None,None,None
+None,None,unlocked,None,None,None,None,None,None
+***
+Fields
+Front Manor Grounds,None,None,None,None,Train Platform,None,None,None,None
+None
+***
+Front Manor Grounds
+Foyer,None,None,None,Fields,None,None,Ash Grove,None,None
+None
+***
+Foyer
+Downstairs Hallway 1,None,None,None,Front Manor Grounds,None,Cloackroom,None,Upstairs Hallway 1,None
+None,None,None,None,unlocked,None,None,None,None,None
+***
+Upstairs Hallway 1
+Upstairs Hallway 2,None,None,None,None,None,Spare Room,None,None,Foyer
+None
+***
+Upstairs Hallway 2
+Upstairs Hallway 3,None,Small Lavatory,None,Upstairs Hallway 1,None,Bedroom,None,None,None
+None
+***
+Upstairs Hallway 3
+Upstairs Hallway 4,None,Library,None,Upstairs Hallway 2,None,None,None,None,None
+None
+***
+Upstairs Hallway 4
+Upstairs Hallway 5,None,Study,None,Upstairs Hallway 3,None,Large Bedroom,None,None,None
+None,None,locked,NOne,None,None,locked,None,None,None
+***
+Upstairs Hallway 5
+Servants\' Stair Top,None,None,None,Upstairs Hallway 4,None,None,None,None,None
+None
+***
+Spare Room
+None,None,Upstairs Hallway 1,None,None,None,None,None,None,None
+None,None,unlocked,None,None,None,None,None,None,None
+***
+Small Lavatory
+None,None,None,None,None,None,Upstairs Hallway 2,None,None,None
+None,None,None,None,None,None,unlocked,None,None,None
+***
+Bedroom
+None,None,Upstairs Hallway 2,None,None,None,None,None,None,None
+None,None,unlocked,None,None,None,None,None,None,None
+***
+Library
+None,None,None,None,None,None,Upstairs Hallway 3,None,None,None
+None
+***
+Study
+None,None,None,None,None,None,Upstairs Hallway 4,None,None,None
+None,None,None,None,None,None,unlocked,None,None,None
+***
+Large Bedroom
+None,None,Upstairs Hallway 4,None,None,None,None,None,None,None
+None,None,unlocked,None,None,None,None,None,None,None
+***
+Servants\' Stair Top
+None,None,None,None,Upstairs Hallway 5,None,None,None,None,Servants\' Stair Bottom
+None
+***
+Servants\' Stair Bottom
+None,None,None,None,Downstairs Hallway 3,None,None,None,Servants\' Stair Top,None
+***
+Downstairs Hallway 3
+Servants\' Stair Bottom,None,None,None,Downstairs Hallway 2,None,None,None,None,None
+None
+***
+Downstairs Hallway 2
+Downstairs Hallway 2,None,Dining Room,None,Foyer,None,Drawing Room,None,None,None
+None,None,None,None,None,None,locked,None,None,None
+***
+Kitchen
+None,None,None,None,None,None,Downstairs Hallway 2,None,None,None
+None
+***
+Servants\' Quarters
+None,None,Downstairs Hallway 2,None,None,None,None,None,None,None
+None,None,locked,None,None,None,None,None,None,None
+***
+Drawing Room
+None,None,"Downstairs Hallway 1",None,None,None,None,None,None,None
+None
+***
+Dining Room
+None,None,None,None,None,None,Downstairs Hallway 1,None,None,None
+None
+***
+Cloakroom
+None,None,Foyer,None,None,None,None,None,None,None
+None,None,unlocked,None,None,None,None,None,None,None
+***
+Ash Grove
+Rear Manor Grounds,None,None,Front Manor Grounds,None,None,None,None,None,None
+None
+***
+Rear Manor Grounds
+None,None,Root Cellar,None,Ash Grove,None,None,None,None,None
+None,None,locked,None,None,None,None,None,None,None
+***
+Root Cellar
+None,None,None,None,None,None,Rear Manor Grounds,None,None,None
+None,None,None,None,None,None,locked,None,None,None

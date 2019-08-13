@@ -4,7 +4,7 @@
 # v2  --> add "Thing" class
 # v3 --> add support and error handling for "look" action
 # v4 --> finish support and error handling for "take", "drop", "look", "sleep"
-# v5 --> additional error handling. refine sleep action
+# v5 --> additional error handling. refine sleep  action
 # v6 --> implement show_help and show_inventory
 # v7 --> update "look"/"take"/"drop" and time with integration/gameplay issue fixes
 # v8 --> change print statements to incorporate formatted output
@@ -30,6 +30,7 @@
 #           To convert from 40 to 24, I multiplied all updates by 0.6
 #           Time is now a float. 
 # v17.1 --> updating character location/movement from place to place for Maude; get dialogue by location
+# v18   --> move by room name, user gets 'time', also handling for 'go <passage>', and error messages 'go <non-sense'. 
 
 # define the "Game" class
 #
@@ -782,17 +783,22 @@ class Game:
 				self.user.current_place.printRoom(self.time, self.user.hasMetMaude, self.user.hasMetMina, self.user.hasMetDworkin)
 				self.user.current_place.updateNumEntries()
  
-		else: 
-			if action.verb == "move_user": 
+		else:
+			if action.direct_obj.lower() or action.indirect_obj.lower() == "time":
+				self.getTime()
+				return
+			if action.verb == "move_user":
 				# if there's a direction that's invalid (and there are no other inputs)
 				if action.direction != None and action.direct_obj == None and action.indirect_obj == None:
 					self.handleLockedDoor(action.direction)
+				
+				# ex "go archway", "go wooden door"
+				elif action.direction == None and action.direct_obj != None:
+					self.handleSingularInput(None, action.direct_obj, action.indirect_obj)
+
 				# when the only input is "move"
 				elif action.direction == None and action.direct_obj == None and action.indirect_obj == None:
 					self.verbOnlyMove()
-				# when the user tries to move things
-				# elif action.direct_obj != None or action.indirect_obj != None: 
-				#	Output.print_input_hint("You can't move things unless they are objects you can pick up and carry with you.") 
 
 			elif action.verb == "look":
 				self.handleLook(action.direct_obj, action.indirect_obj, False)

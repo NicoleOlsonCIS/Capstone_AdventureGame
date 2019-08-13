@@ -674,7 +674,7 @@ class Output(object):
         if length > 60:
             placeDescription = Output.break_up_long_message(placeDescription, 60, True)
 
-        welcome = 'Welcome user. We wish you luck on your journey.'
+        welcome = "Welcome user. We wish you luck on your journey. \nEnter \'quit\' or \'savegame\' at the prompt to quit the game at any time. \n"
 
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$147m')
@@ -737,7 +737,7 @@ class Output(object):
 
     @classmethod
     def searchForGameOutput(self, message):
-        dots = " . . . . "
+        dots = " . . . "
         if sys.stdin.isatty():
             #sys.stdout.write(u'\u001b[38;5;$10m')
             for elem in message:
@@ -746,7 +746,7 @@ class Output(object):
                 sys.stdout.flush()
                 #sys.stdout.write(u'\u001b[38;5;$10m')
             for elem in dots:
-                time.sleep(0.5)
+                time.sleep(0.3)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
         else:
@@ -768,7 +768,6 @@ class Output(object):
         welcome = 'Welcome back user!'
         welcome2 = " A recap of where you are: "
 
-
         if sys.stdin.isatty():
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(printClear)
@@ -787,7 +786,7 @@ class Output(object):
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             for elem in pl3:
-                time.sleep(0.5)
+                time.sleep(0.3)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             time.sleep(1)
@@ -815,7 +814,9 @@ class Output(object):
             sys.stdout.write(u"\u001b[0m")
             print("\n")
             sys.stdout.flush()
+            print("Reminder: Enter \'quit\' or \'savegame\' at the prompt to quit the game at any time. \n")
         else:
             print(pl1 + pl2 + pl3)
             print(welcome)
             print(placeDescription)
+            print("Reminder: Enter \'quit\' or \'savegame\' at the prompt to quit the game at any time. \n")

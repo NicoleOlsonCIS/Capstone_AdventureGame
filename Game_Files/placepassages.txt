@@ -1,8 +1,8 @@
 Train Platform
-None-leave,exit-None-None-None-None-None-leave,exit-None-None
+None-leave,exit-None-None-None-None-leave,exit,door-None-None-None
 ***
 Station-House
-None-None-leave,exit-None-None-None-None-None-None-None
+None-None-leave,exit,door-None-None-None-None-None-None-None
 ***
 Fields
 leave,exit-None-None-None-None-None-leave,exit-None-None-None
@@ -11,31 +11,31 @@ Front Manor Grounds
 wide path,leave,exit-None-None-None-None-None-None-narrow path,leave,exit-None-None
 ***
 Foyer
-hallway-None-None-None-leave,exit-None-wooden door,leave,exit-None-staircase,stairs-None
+hallway-None-None-None-leave,exit,door-None-wooden door,leave,exit,door-None-staircase,stairs-None
 ***
 Upstairs Hallway 1
-None-None-None-None-None-None-wooden door,leave,exit-None-None-staircase,stairs,leave,exit
+None-None-None-None-None-None-wooden door,leave,exit,door-None-None-staircase,stairs,leave,exit
 ***
 Upstairs Hallway 2
-None-None-wooden door,leave,exit-None-None-None-wooden door,leave,exit-None-None-None
+None-None-wooden door,leave,exit,door-None-None-None-wooden door,leave,exit,door-None-None-None
 ***
 Upstairs Hallway 3
 leave,exit-None-archway,wide archway,leave,exit-None-None-None-None-None-None-None
 ***
 Upstairs Hallway 4
-leave,exit-None-wooden door,leave,exit-None-None-None-wooden door,leave,exit-None-None-None
+leave,exit-None-wooden door,leave,exit,door-None-None-None-wooden door,leave,exit,door-None-None-None
 ***
 Upstairs Hallway 5
 open doorway,doorway,leave,exit-None-None-None-leave,exit-None-None-None-None-None
 ***
 Spare Room
-None-None-leave,exit-None-None-None-None-None-None-None
+None-None-leave,exit,door-None-None-None-None-None-None-None
 ***
 Small Lavatory
-None-None-None-None-None-None-wooden door,leave,exit-None-None-None
+None-None-None-None-None-None-wooden door,leave,exit,door-None-None-None
 ***
 Bedroom
-None-None-wooden door,leave,exit-None-None-None-None-None-None-None
+None-None-wooden door,leave,exit,door-None-None-None-None-None-None-None
 ***
 Library
 None-None-None-None-None-None-archway,wide archway,leave,exit-None-None-None
@@ -56,13 +56,13 @@ Downstairs Hallway 3
 leave,exit-None-None-None-leave,exit-None-None-None-None-None
 ***
 Downstairs Hallway 2
-leave,exit-None-None-None-leave,exit-None-None-None-None-None
+leave,exit-None-doorway,open doorway,door-None-leave,exit-None-wooden door,door-None-None-None
 ***
 Downstairs Hallway 1
 leave,exit-None-archway-None-leave,exit-None-archway-None-None-None
 ***
 Kitchen
-None-None-None-None-None-None-None-leave,exit-None-None
+None-None-None-None-None-None-None-leave,exit,door-None-None
 ***
 Servants\' Quarters
 None-None-None-None-None-None-None-None-None-None
@@ -74,7 +74,7 @@ Dining Room
 None-None-None-None-None-None-archway,leave,exit-None-None-None
 ***
 Cloakroom
-None-None-leave,exit-None-None-None-None-None-None-None
+None-None-leave,exit,door-None-None-None-None-None-None-None
 ***
 Ash Grove
 path,leave,exit-None-None-path,leave,exit-None-None-None-None-None-None

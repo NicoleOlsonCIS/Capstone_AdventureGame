@@ -15,7 +15,44 @@ import pickle
 import os.path
 from os import path
 
-# playgame1.py works with v13 of game engine
+
+# Place parser, returns an array of place objects
+def parsePlaces(game):
+
+    arr_of_places = []
+
+    fpath = "./Game_Files/places.txt"
+    with open(fpath) as f:
+        read_data = f.read()
+        data_chunks = read_data.split("***\n")
+    
+    no_doors = {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None}
+    ref_direction = {0: "n", 1: "ne", 2: "e", 3: "se", 4: "s", 5: "sw", 6: "w", 7:"nw", 8: "u", 9: "d"}
+    doors = {}
+
+    for p in data_chunks:
+        doors = {}
+        l = p.split("\n")
+        name = l[0]
+        adjacent_places = l[1].split(",")
+        doors_arr = l[2].split(",")
+        if len(doors_arr) == 1:
+            doors = no_doors
+        else:
+            door_dict = no_doors
+            i = 0
+            for d in doors_arr:
+                if d != "None":
+                    dir = ref_direction[i]
+                    door_dict[dir] = d
+                i += 1
+            doors = door_dict
+        
+        # create a place object add it to array
+        place = g.Place(game,name,"day","night",adjacent_places,None,doors)
+        arr_of_places.append(place)
+
+    return arr_of_places
 
 # Loads information about readable objects.
 def loadReadables(filename1, filename2, thing_obj):
@@ -532,146 +569,27 @@ def buildGame():
     # start game at 8 am
     game = g.Game(1,8.00) # time is now a float
 
-    # v11: descriptions are now 2D array to capture the number of visits of user (first, second, all subsequent ...)
-    day = ["place during day 1", "place during day 2", "place during day 3"]
-    night = ["place during night 1", "place during night 2", "place during night 3"]
-    no_doors = {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None}
-
-
-    # populate room topology 
-    place1 = g.Place(
-        game,
-        "Train Platform",
-        day, 
-        night,
-        [None, "Fields", None, None, None, None, "Station-House", None, None, None],
-        None,
-        no_doors)
-
-    place2 = g.Place(
-        game,
-        "Station-House",
-        day,
-        night,
-        [None, None, "Train Platform", None, None, None, None, None, None, None],
-        None,
-        {"n": None, "ne": None, "e": "unlocked", "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-
-    place3 = g.Place(
-        game,
-        "Fields",
-        day,
-        night,
-        ["Front Manor Grounds", None, None, None, None, "Train Platform", None, None, None, None],
-        None,
-        {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-
-    place4 = g.Place(
-        game,
-        "Front Manor Grounds",
-        day,
-        night,
-        ["Foyer", None, None, None, "Fields", None, None, "Ash Grove", None, None],
-        None,
-        {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-
-
-    place5 = g.Place(game, "Foyer", day, night, ["Downstairs Hallway 1", None, None, None, "Front Manor Grounds", None, "Cloakroom", None, "Upstairs Hallway 1", None], None, {"n": None, "ne": None, "e": None, "se": None, "s": "unlocked", "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place6 = g.Place(game, "Upstairs Hallway 1", day, night, ["Upstairs Hallway 2", None, None, None, None, None, "Spare Room", None, None, "Foyer"], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place7 = g.Place(game, "Upstairs Hallway 2", day, night, ["Upstairs Hallway 3", None, "Small Lavatory", None, "Upstairs Hallway 1", None, "Bedroom", None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place8 = g.Place(game, "Upstairs Hallway 3", day, night, ["Upstairs Hallway 4", None, "Library", None, "Upstairs Hallway 2", None, None, None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place9 = g.Place(game, "Upstairs Hallway 4", day, night, ["Upstairs Hallway 5", None, "Study", None, "Upstairs Hallway 3", None, "Large Bedroom", None, None, None], None, {"n": None, "ne": None, "e": "locked", "se": None, "s": None, "sw": None, "w": "locked", "nw": None, "u": None, "d": None})
-    place10 = g.Place(game, "Upstairs Hallway 5", day, night, ["Servants\' Stair Top", None, None, None, "Upstairs Hallway 4", None, None, None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place11 = g.Place(game, "Spare Room", day, night, [None, None, "Upstairs Hallway 1", None, None, None, None, None, None, None], None, {"n": None, "ne": None, "e": "unlocked", "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})  
-    place12 = g.Place(game, "Small Lavatory", day, night, [None, None, None, None, None, None, "Upstairs Hallway 2", None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": "unlocked", "nw": None, "u": None, "d": None})
-    place13 = g.Place(game, "Bedroom", day, night, [None, None, "Upstairs Hallway 2", None, None, None, None, None, None, None], None, {"n": None, "ne": None, "e": "unlocked", "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None}) 
-    place14 = g.Place(game, "Library", day, night, [None, None, None, None, None, None, "Upstairs Hallway 3", None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place15 = g.Place(game, "Study", day, night, [None, None, None, None, None, None, "Upstairs Hallway 4", None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": "locked", "nw": None, "u": None, "d": None})
-    place16 = g.Place(game, "Large Bedroom", day, night, [None, None, "Upstairs Hallway 4", None, None, None, None, None, None, None], None, {"n": None, "ne": None, "e": "locked", "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place17 = g.Place(game, "Servants\' Stair Top", day, night, [None, None, None, None, "Upstairs Hallway 5", None, None, None, None, "Servants\' Stair Bottom"], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place18 = g.Place(game, "Servants\' Stair Bottom", day, night, [None, None, None, None, "Downstairs Hallway 3", None, None, None, "Servants\' Stair Top", None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})    
-    place19 = g.Place(game, "Downstairs Hallway 3", day, night, ["Servants\' Stair Bottom", None, None, None, "Downstairs Hallway 2", None, None, None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place20 = g.Place(game, "Downstairs Hallway 2", day, night, ["Downstairs Hallway 3", None, "Kitchen", None, "Downstairs Hallway 1", None, "Servants\' Quarters", None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": "locked", "nw": None, "u": None, "d": None})
-    place21 = g.Place(game, "Downstairs Hallway 1", day, night, ["Downstairs Hallway 2", None, "Dining Room", None, "Foyer", None, "Drawing Room", None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place22 = g.Place(game, "Kitchen", day, night, [None, None, None, None, None, None, "Downstairs Hallway 2", None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place23 = g.Place(game, "Servants\' Quarters", day, night, [None, None, "Downstairs Hallway 2", None, None, None, None, None, None, None], None, {"n": None, "ne": None, "e": "locked", "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place24 = g.Place(game, "Drawing Room", day, night, [None, None, "Downstairs Hallway 1", None, None, None, None, None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place25 = g.Place(game, "Dining Room", day, night, [None, None, None, None, None, None, "Downstairs Hallway 1", None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place26 = g.Place(game, "Cloakroom", day, night, [None, None, "Foyer", None, None, None, None, None, None, None], None, {"n": None, "ne": None, "e": "unlocked", "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place27 = g.Place(game, "Ash Grove", day, night, ["Rear Manor Grounds", None, None, "Front Manor Grounds", None, None, None, None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None}) 
-    place28 = g.Place(game, "Rear Manor Grounds", day, night, [None, None, "Root Cellar", None, "Ash Grove", None, None, None, None, None], None, {"n": None, "ne": None, "e": "locked", "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None}) 
-    place29 = g.Place(game, "Root Cellar", day, night, [None, None, None, None, None, None, "Rear Manor Grounds", None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": "locked", "nw": None, "u": None, "d": None})
+    places = parsePlaces(game)
 
     # set up the user 
     user = g.User(game, "user1", "Train Platform", "n", False) 
 
     # finish populating room topology
-    place1.setAdjacentPlaces(game)
-    place2.setAdjacentPlaces(game)
-    place3.setAdjacentPlaces(game)
-    place4.setAdjacentPlaces(game)
-    place5.setAdjacentPlaces(game)
-    place6.setAdjacentPlaces(game)
-    place7.setAdjacentPlaces(game)
-    place8.setAdjacentPlaces(game)
-    place9.setAdjacentPlaces(game)
-    place10.setAdjacentPlaces(game)
-    place11.setAdjacentPlaces(game)
-    place12.setAdjacentPlaces(game)
-    place13.setAdjacentPlaces(game)
-    place14.setAdjacentPlaces(game)
-    place15.setAdjacentPlaces(game)
-    place16.setAdjacentPlaces(game)
-    place17.setAdjacentPlaces(game)
-    place18.setAdjacentPlaces(game)
-    place19.setAdjacentPlaces(game) 
-    place20.setAdjacentPlaces(game)
-    place21.setAdjacentPlaces(game)
-    place22.setAdjacentPlaces(game)
-    place23.setAdjacentPlaces(game)
-    place24.setAdjacentPlaces(game)
-    place25.setAdjacentPlaces(game)
-    place26.setAdjacentPlaces(game)
-    place27.setAdjacentPlaces(game)
-    place28.setAdjacentPlaces(game)
-    place29.setAdjacentPlaces(game)
+    for p in places:
+        p.setAdjacentPlaces(game)
 
-    # load room data from files
-    # don't need to load place16, place23, or place29 (these stay locked forever) 
-    loadPlaceData(place1, "trainplatform.txt", game) 
-    loadPlaceData(place2, "stationhouse.txt", game)
-    loadPlaceData(place3, "fields.txt", game)
-    loadPlaceData(place4, "frontmanorgrounds.txt", game)
-    loadPlaceData(place5, "foyer.txt", game)
-    loadPlaceData(place6, "upstairshallway1.txt", game)
-    loadPlaceData(place7, "upstairshallway2.txt", game)
-    loadPlaceData(place8, "upstairshallway3.txt", game)
-    loadPlaceData(place9, "upstairshallway4.txt", game)
-    loadPlaceData(place10, "upstairshallway5.txt", game)
-    loadPlaceData(place11, "spareroom.txt", game)
-    loadPlaceData(place12, "smalllavatory.txt", game)
-    loadPlaceData(place13, "bedroom.txt", game)
-    loadPlaceData(place14, "library.txt", game)
-    loadPlaceData(place15, "study.txt", game)
+    place_data_files = ["trainplatform.txt","stationhouse.txt","fields.txt","frontmanorgrounds.txt","foyer.txt","upstairshallway1.txt","upstairshallway2.txt","upstairshallway3.txt","upstairshallway4.txt","upstairshallway5.txt","spareroom.txt","smalllavatory.txt","bedroom.txt","library.txt","study.txt","servantsstairtop.txt","servantsstairbottom.txt","downstairshallway3.txt","downstairshallway2.txt","downstairshallway1.txt","kitchen.txt","drawingroom.txt","diningroom.txt","cloakroom.txt","ashgrove.txt","rearmanorgrounds.txt"]
     
-    loadPlaceData(place17, "servantsstairtop.txt", game)
-    loadPlaceData(place18, "servantsstairbottom.txt", game)
-    loadPlaceData(place19, "downstairshallway3.txt", game)
-    loadPlaceData(place20, "downstairshallway2.txt", game)
-    loadPlaceData(place21, "downstairshallway1.txt", game)
-    loadPlaceData(place22, "kitchen.txt", game)
+    i = 0
+    for data in place_data_files:
+        loadPlaceData(places[i], data, game)
+        i += 1
 
-    loadPlaceData(place24, "drawingroom.txt", game)
-    loadPlaceData(place25, "diningroom.txt", game)
-    loadPlaceData(place26, "cloakroom.txt", game)
-    loadPlaceData(place27, "ashgrove.txt", game)
-    loadPlaceData(place28, "rearmanorgrounds.txt", game)
+    loadListens(places[23], "drawinglisten.txt")
 
-    loadListens(place24, "drawinglisten.txt")
-
-    places = [place1, place2, place3, place4, place5, place6, place7, place8, place9, place10, place11, place12, place13, place14, place15, place16, place17, place18, place19, place20, place21, place22, place23, place24, place25, place26, place27, place28, place29]
-
+    # load passage data
     loadPassageData(places)
+    # load transition data
     loadTransitionData(places)
 
     # load maude dialogue for various locations
@@ -715,9 +633,12 @@ def fromSave():
     return game
 
 def saveGame(game):
+    print("saving game . . . ")
     pickle_out = open("savedGame.pickle", "wb")
     pickle.dump(game, pickle_out)
     pickle_out.close()
+    time.sleep(0.5)
+    print("your game has been saved")
 
 
 def gameLoop(game):
@@ -727,9 +648,8 @@ def gameLoop(game):
     while True:
         # flush standard in 
         termios.tcflush(sys.stdin, termios.TCIFLUSH)
-        #sys.stdin.flush()
 
-        game.getTime()
+        # game.getTime() # uncomment this if you need it!
 
         # game continues until user enters quit at the prompt 
         received = input("> ")
@@ -741,10 +661,9 @@ def gameLoop(game):
                 return
             else:
                 break
-        elif "save" in received:
-            print("Saving game ... ")
-            saveGame(game)
-            return
+        elif "savegame" in received:
+                saveGame(game)
+                return
         else:
             playaction = a.Action()
             playaction = playparser.parseInput(received)
@@ -754,48 +673,65 @@ def gameLoop(game):
 
 def main():
 
-    print("Welcome! Would you like to start a new game or load a saved game? (new/load)")
-    new_or_save = input("> ")
-
-    if "new" in new_or_save:  
-        game = buildGame()
-        game.setIsValid()
-        # prompt user to indicate whether they want to see intro narrative text
-        print("Starting new game. Display narrative intro? Recommended on first play only. (y/n)")
-        show_intro = input("> ")
-        if "y" in show_intro:
-            Output.printIntro(game.narrativeIntro) 
-        Output.welcomeToGame(game.user.current_place.day[0]) # start day first visit
-        # ensure characters show up in first room description
-        game.user.current_place.showCharacters()
-
-        print("Enter \'quit\' at the prompt to quit the game at any time.")
-        print("Once you quit, you will be asked if you want to save your game.")
-        gameLoop(game)
-        print("Goodbye!")
+    ts = os.get_terminal_size()
+    if ts.columns < 70:
+        print("Error: Please expand the width of your console window. Min width of 70 columns required for game!")
         return
- 
-    elif "load" in new_or_save:
-        print("\n")
-        Output.searchForGameOutput("Checking for existing saves")
+    if ts.lines < 20:
+        print("Error: Please expand the height of your console window. Min height of 20 lines required for game!")
+        return
 
-        if path.exists("savedGame.pickle"):
-            game = fromSave()
+    if sys.stdin.isatty():
+
+        print("Welcome! Would you like to start a new game or load a saved game? (new/loadgame)")
+        new_or_save = input("> ")
+
+        if "new" in new_or_save:  
+            game = buildGame()
             game.setIsValid()
+            # prompt user to indicate whether they want to see intro narrative text
+            print("Starting new game. Display narrative intro? Recommended on first play only. (y/n)")
+            show_intro = input("> ")
+            if "y" in show_intro:
+                game.getTime()
+                Output.printIntro(game.narrativeIntro) 
+            Output.welcomeToGame(game.user.current_place.day[0]) # start day first visit
+            # ensure characters show up in first room description
+            game.user.current_place.showCharacters()
 
-            time = game.time
-            Output.welcomeBackToGame(game.user.current_place.getDescriptionBasedOnTimeAndVisitCount(time))
-
-            print("Enter \'quit\' at the prompt to quit the game at any time.")
             gameLoop(game)
-            print("Goodbye again!")
+            print("Goodbye!")
+            print("\n")
             return
-        else: 
-            print("No saves found. Exiting...")
-            return
+    
+        elif "loadgame" in new_or_save:
+            print("Loadgame selected. Is this correct? (y/n)")
+            confirm = input("> ")
+            print("\n")
+            if confirm == 'y':
+                Output.searchForGameOutput("Checking for existing saves")
 
+                if path.exists("savedGame.pickle"):
+                    game = fromSave()
+                    game.setIsValid()
+
+                    time = game.time
+                    Output.welcomeBackToGame(game.user.current_place.getDescriptionBasedOnTimeAndVisitCount(time))
+                    game.getTime()
+                    gameLoop(game)
+                    print("Goodbye again!")
+                    return
+                else: 
+                    print("No saves found. Exiting...")
+                    return
+            else:
+                print("Loadgame not confirmed. Exiting ... ")
+                return
+
+        else:
+            print("You did not choose to start a new game or load a saved game. Exiting...") 
+            return
     else:
-        print("You did not choose to start a new game or load a saved game. Exiting...") 
+        print("Error: You must play this game on a command line interface (no simulated terminals)")
         return
-
 main()
