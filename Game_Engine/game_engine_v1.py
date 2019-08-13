@@ -169,8 +169,20 @@ class Game:
 					elif inBedroom != None:
 						bedroom.removeCharacter(m)
 					study.addCharacter(m)
-				
-				
+			
+			# goes to foyer after game is won and user leaves study 
+			else:
+				foyer = self.places["Foyer"]
+				fgrounds = self.places["Front Manor Grounds"]
+				inFoyer = foyer.getPersonByName("mina")
+				if inStudy != None and self.user.current_place.name != "Study":
+					study.removeCharacter(m)	
+					foyer.addCharacter(m)
+				# follow user from foyer to outside
+				elif inFoyer != None and self.user.current_place.name == "Front Manor Grounds":
+					foyer.removeCharacter(m)
+					fgrounds.addCharacter(m)
+	
 	# takes the change in hours per an event in the game
 	def updateTime(self, timeChange):
 		self.time += timeChange
@@ -1397,7 +1409,7 @@ class Game:
 		if user_place.name.lower() == "train platform" and (self.user.hasMetMaude == False and isNortheast):
 			Output.print_talk("The stern woman on the platform stops you.^#\"Just where do you think you're going without greeting your elders?\"#", None) #no "you talk to" message when you are not the person initiating converstaion
 			return
-		
+	
 		#v17.3: no entering drawing room/kitchen once game is won
 		if self.endgameEnded:
 			if user_place.name.lower() == "downstairs hallway 1" and (direction == "w" or direction == "west"):
