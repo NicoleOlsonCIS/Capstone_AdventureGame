@@ -952,8 +952,12 @@ class Output(object):
 
     @classmethod
     def welcomePage(self):
+        print("Running Adventure Game: Capstone Project by Leslie Shen, Coby Lee Hartman and Nicole Olson")
         print("\n\n")
         Output.print_archway(welcome_archway, True)
+        sys.stdout.write(u'\u001b[38;5;$48m')
+        print("\n\t\t\t" + "  Welcome user!\n")
+        sys.stdout.write(u"\u001b[0m")
         print()
     
     @classmethod

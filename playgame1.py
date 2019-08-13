@@ -701,9 +701,7 @@ def main():
     if sys.stdin.isatty():
 
         Output.welcomePage()
-        sys.stdout.write(u'\u001b[38;5;$48m')
-        print("Welcome! Would you like to start a new game or load a saved game? (new/loadgame)")
-        sys.stdout.write(u"\u001b[0m")
+        print("Would you like to start a new game or load a saved game? (new/loadgame)")
         new_or_save = input("> ")
 
         if "new" in new_or_save:  
