@@ -18,7 +18,7 @@ from os import path
 # playgame1.py works with v13 of game engine
 
 # Loads information about readable objects.
-def loadReadables(filename1, filename2, thing_obj):
+def loadReadables(filename1, filename2, filename3, thing_obj):
     if thing_obj.name == "newspaper":
         fpath = "./Game_Files/" + filename2
         with open(fpath) as f:
@@ -26,6 +26,19 @@ def loadReadables(filename1, filename2, thing_obj):
             data_chunks = read_data.split("***\n")
 
         for chunk in data_chunks: 
+            chunk = chunk.rstrip("\n")
+            thing_obj.readDescrips.append(chunk)
+
+        thing_obj.is_readable = True
+        return
+
+    elif thing_obj.name == "sheaf of papers":
+        fpath = "./Game_Files/" + filename3 
+        with open(fpath) as f:
+            read_data = f.read()
+            data_chunks = read_data.split("***\n")
+
+        for chunk in data_chunks:
             chunk = chunk.rstrip("\n")
             thing_obj.readDescrips.append(chunk)
 
@@ -389,7 +402,7 @@ def loadPlaceData(place_obj, filename, game_obj):
                 # load alternate thing names
                 loadAltNames("objalternatenames.txt", newthing)
                 # load readable  things
-                loadReadables("readables.txt", "newspaper.txt", newthing)
+                loadReadables("readables.txt", "newspaper.txt", "sheafpapers.txt", newthing)
 
                 count += 1 
     
@@ -591,10 +604,10 @@ def buildGame():
     place17 = g.Place(game, "Servants\' Stair Top", day, night, [None, None, None, None, "Upstairs Hallway 5", None, None, None, None, "Servants\' Stair Bottom"], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
     place18 = g.Place(game, "Servants\' Stair Bottom", day, night, [None, None, None, None, "Downstairs Hallway 3", None, None, None, "Servants\' Stair Top", None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})    
     place19 = g.Place(game, "Downstairs Hallway 3", day, night, ["Servants\' Stair Bottom", None, None, None, "Downstairs Hallway 2", None, None, None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place20 = g.Place(game, "Downstairs Hallway 2", day, night, ["Downstairs Hallway 3", None, "Kitchen", None, "Downstairs Hallway 1", None, "Servants\' Quarters", None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": "locked", "nw": None, "u": None, "d": None})
+    place20 = g.Place(game, "Downstairs Hallway 2", day, night, ["Downstairs Hallway 3", None, "Kitchen", None, "Downstairs Hallway 1", None, "Servant Quarters", None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": "locked", "nw": None, "u": None, "d": None})
     place21 = g.Place(game, "Downstairs Hallway 1", day, night, ["Downstairs Hallway 2", None, "Dining Room", None, "Foyer", None, "Drawing Room", None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
     place22 = g.Place(game, "Kitchen", day, night, [None, None, None, None, None, None, "Downstairs Hallway 2", None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
-    place23 = g.Place(game, "Servants\' Quarters", day, night, [None, None, "Downstairs Hallway 2", None, None, None, None, None, None, None], None, {"n": None, "ne": None, "e": "locked", "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
+    place23 = g.Place(game, "Servant Quarters", day, night, [None, None, "Downstairs Hallway 2", None, None, None, None, None, None, None], None, {"n": None, "ne": None, "e": "locked", "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
     place24 = g.Place(game, "Drawing Room", day, night, [None, None, "Downstairs Hallway 1", None, None, None, None, None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
     place25 = g.Place(game, "Dining Room", day, night, [None, None, None, None, None, None, "Downstairs Hallway 1", None, None, None], None, {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
     place26 = g.Place(game, "Cloakroom", day, night, [None, None, "Foyer", None, None, None, None, None, None, None], None, {"n": None, "ne": None, "e": "unlocked", "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None})
@@ -683,9 +696,13 @@ def buildGame():
     if currChar != None:
         loadDialogDict("maude.txt", currChar) 
 
-    # TODO: load dworkin dialogue for various topics
-
-    # TODO: load mina dialogue for various locations and topics 
+    # load mina dialogue for various locations
+    currChar = None
+    for char in game.allCharacters:
+        if char.name.lower() == "mina":
+            currChar = char
+    if currChar != None:
+        loadDialogDict("mina.txt", currChar) 
 
     # load narrative intro text
     with open("./Game_Files/intro.txt") as ifile:

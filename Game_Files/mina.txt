@@ -1,29 +1,17 @@
-She doesn’t look like a servant, and Maude never mentioned other children living here. You introduce yourself, unsure what to make of her. 
-
-“Oh, you’re from the city,” she says, understanding. “Uncle didn’t tell me about you. My name is Wilhelmina - Mina for short. This is my uncle’s house.”
+intro:::^She doesn’t look like a servant, and Maude never mentioned other children living here. You introduce yourself, unsure what to make of her.|||#“Oh, you’re from the city,” she says, understanding. “Uncle didn’t tell me about you. My name is Wilhelmina - Mina for short. This is my uncle’s house.”# 
 ***
-“My parents died when I was small,” Mina explains matter-of-factly. “Uncle and I don’t have any other living family. It’s just him and the House, and me and Maude and the servants. I’m his heir - that’s why he tolerates me.”
+bedroom:::#It's very rude to linger in someone's room when they're trying to sleep, you know.#
+*** 
+library:::#“My parents died when I was small,”#^Mina explains matter-of-factly.|||#“Uncle and I don’t have any other living family. It’s just him and the House, and me and Maude and the servants. I’m his heir - that’s why he tolerates me."#
 ***
-drawings###“It’s very rude, you know, going through someone else’s things without asking first. I’ll forgive you, but only because you’re cute as a button.
-
-I don’t know what possessed me to draw these pictures. I only knew I had to get the dreams out of my head. I was having the same dreams, night after night, and they didn’t stop until I put them on paper.”
+library:::#“I look out my window every night, trying to see what’s out there in the storms. Sometimes I think I see things, horrible shapes, moving in the mist - but I don’t know if they’re really there. I must be going mad from being locked inside all the time."#
 ***
-mist###“I look out my window every night, trying to see what’s out there in the storms. Sometimes I think I see things, horrible shapes, moving in the mist - but I don’t know if they’re really there. I must be going mad from being locked inside all the time.”
+library:::#“A little boy used to live here, you know. His name was James. I doted on him, the poor motherless child. He was too curious for his own good...One day, there was this awful storm, and that cursed mist wrapping everything up in white… I was sure he was somewhere in the House, just hiding to play a trick on me...but he'd filched a key and gotten outside. I never saw him again."#^She swipes away a tear, hoping you haven't noticed. 
 ***
-dworkin###“You talked to Mr. Dworkin? I thought only I knew how to do that. Well, it doesn’t matter. You can join us in our top-secret mission to foil my uncle’s experiments. Unless you have something better to do, which I’m quite certain you don’t.”
+library:::#"Here’s what I've figured out - well, what my pen pal Dworkin and I figured out. He's very important - he used to work at the Greenridge lab. Anyway, with Uncle’s help, the people at the lab are opening doors - hatches, they’re called - into the spaces between dimensions. Every time they open one, the mist rolls in, and there’s a storm. They don’t know how to predict where the hatch will appear, or for how long. Uncle’s the only person who understands how any of it works. We think he’s working on opening a permanent hatch somewhere, to try to talk to whatever’s out there, mad as that sounds. Only, we don’t know where."#
 ***
-mission###“Here’s what Dworkin and I have figured out,” Mina says, no-nonsense. “With Uncle’s help, the people at the lab are opening doors - hatches, they’re called - into the spaces between dimensions. Every time they open one, the mist rolls in, and there’s a storm that’s gone the next day. They don’t know how to predict where in Greenridge the hatch will appear, or for how long. Uncle’s the only person who understands how any of it works. We think he’s working on opening a permanent hatch somewhere, to - to try to talk to whatever’s out there, mad as that sounds. Only, we don’t know where Uncle’s going to do this, or how.”
+library:::#"You're very chatty, you know, even for a child."#
 ***
-james###“Oh,” she says, her face falling. “You know about James? He was...such a precious little thing. I doted on him, the poor motherless child. Uncle didn’t care, of course - probably didn’t so much as look at him the entire time he lived with us. No one was watching James, except me, when I could. But I’m just me, and he was so curious, always wanting to explore when we’d told him a hundred times to stay put... One day, there was this awful storm, and that cursed mist wrapping everything up in white… I was sure he was inside, hiding to play a trick on me. That weather - no one would want to be out of doors. No one except that silly boy.”
-
-She swipes angrily at her wet eyes. “That’s why I have to stop Uncle, no matter what. The things he’s letting into our world - even if they’d help win the war - they’re evil, and they hurt people. Men like my uncle shouldn’t have these things. No one should have these things.”
+study:::#“We have to stop Uncle, no matter what. The things he’s letting into our world - even if they’d help win the war - they’re evil, and they hurt people. Men like my uncle shouldn’t have these things. No one should have these things."#
 ***
-uncle###“I do love my uncle, you know. I mean, I hate him because he’s cold and mean, and he doesn’t care what happens to anyone else as long as he gets what he wants. He hasn’t said a kind word to me in my life. But...I love him. I just do. I think if I could choose not to, I would - but that’s just the problem. I don’t have a choice.”
-***
-doll###“That was my doll, before I gave it to James. He took it everywhere he went. I don’t want to look at it anymore. It reminds me of him."
-***
-“Jiminy cricket!” Mina says in a hushed, excited whisper. “You found the key to my uncle’s secret study? No one’s allowed in here, and I mean no one. Quick - let’s see what we can find, before he finds out we’re here."
-***
-painting###“Hmm, I’m not certain. I think that’s my grandfather."
-***
-grandfather###“I never met him - he died before I was born. My uncle said Grandfather wouldn’t have wanted to see me anyway, since he disapproved of Mother’s marriage.”
+study:::#“I do love my uncle, you know. I mean, I hate him because he’s cold and mean, and he doesn’t care what happens to anyone else as long as he gets what he wants. He hasn’t said a kind word to me in my life. But...I love him. I just do. I think if I could choose not to, I would - but that’s just the problem. I don’t have a choice."#

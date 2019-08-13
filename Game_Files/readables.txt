@@ -26,4 +26,10 @@ letter###You unfold the letter and begin to read.
 
 “...The value of Professor Hugh’s research, to us and to the war effort, is not to be understated. With that in mind, if he appears neglectful in his responsibility to his servants and to the children in his care, you will not mention it. Likewise, you will not mention last month’s regrettable accident to Hugh or anyone else you meet in Greenridge. Though I recognize it is difficult to be unemotional where children are concerned, the future of our empire may rest on the work we conduct with the Professor’s assistance. We cannot allow the loss of one orphan boy to shake our resolve. After all, when this war is won, we will use our new-discovered strength to bring the light of civilization to all the orphans of the world..."
 ***
-stack of notes###You struggle to decipher the writing, which is not only messy, but also full of symbols you don’t recognize. If you had to guess, you’d say they were calculations.
+stack of notes###You struggle to decipher the writing, which is not only messy, but also full of symbols you don’t recognize. If you had to guess, you’d say they were calculations, but nothing like what you've learned in school.
+***
+page of instructions###You uncurl the odd little scroll and begin to decipher the inky scrawl: 
+
+"...hope Maude has delivered this to you safely. I hate that you must bear this burden, young as you are, but only you are close enough to the Professor to spy on him unnoticed - and only you, as his niece and sole heir, will be spared his wrath when he sees his work destroyed...
+
+Should he succeed in opening his hatch or communicating with what lies beyond it, you will know. That is when you must act. Open the bottle, cast it into the hatch...You will need a flame to go with it. Be very careful. This is HIGHLY FLAMMABLE."

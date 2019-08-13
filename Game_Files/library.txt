@@ -32,10 +32,12 @@ faded blue book
 hefty black book
 dull reddish book
 ***
-A well-worn volume bound in navy blue cloth. You can tell there were once golden letters stamped on the spine, but they've faded away.###No night
+A well-worn volume bound in navy blue cloth. You can tell there were once golden letters stamped on the spine, but they've faded away.###A well-worn volume bound in navy blue cloth.
 ***
-A sensible-looking black book. It has a nice weight to it.###No night
+A sensible-looking black book. It has a nice weight to it.###A sensible-looking black book. It has a nice weight to it.
 ***
-A dull reddish book as big as a dictionary.###No night
+A dull reddish book as big as a dictionary.###A dull reddish book as big as a dictionary.
 ***
-no characters
+Mina
+***
+A dark-haired girl several years your senior, regarding you curiously with bright eyes. Her white poplin dress is wrinkled from sitting on the floor, and her bare feet are dusty.###A dark-haired girl several years your senior.

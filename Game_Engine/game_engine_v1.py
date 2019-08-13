@@ -30,6 +30,7 @@
 #           To convert from 40 to 24, I multiplied all updates by 0.6
 #           Time is now a float. 
 # v17.1 --> updating character location/movement from place to place for Maude; get dialogue by location
+# v17.2 --> character locations for Mina; dialogue by location; remove Dworkin from game
 
 # define the "Game" class
 #
@@ -99,9 +100,8 @@ class Game:
 						if c.name.lower() == "maude":
 							m = c
 					k.addCharacter(m)
-		# maude will sleep at late hours
+		# maude will sleep at late hours (makes her off-limits to user)
 		elif self.frontDoorIsLocked and (self.time >= 22.00 or self.time < 5.00): 
-			k = None
 			m = None
 			if user_place.getPersonByName("maude") != None:
 				m = user_place.getPersonByName("maude")
@@ -110,28 +110,46 @@ class Game:
 			personInPlace = pl.getPersonByName("maude")
 			if personInPlace != None:
 				pl.removeCharacter(personInPlace)
-			for room in self.places.keys():
-				if "servant" in room.lower() and "quarters" in room.lower():
-					k = self.places[room] 
-			if k != None:
-				if k.getPersonByName("maude") == None:
+			sq = self.places["Servant Quarters"]
+			if sq != None:
+				if sq.getPersonByName("maude") == None:
 					for c in self.allCharacters:
 						if c.name.lower() == "maude":
 							m = c 
-					k.addCharacter(m) 
+					sq.addCharacter(m) 
 		else:
 			return
 
-	# TODO
-	# take care of mina's movement 
-	# start location is library, then bedroom at night, then follow user throughout endgame 
+	# 17.2: take care of mina's movement 
+	# start location is library, then bedroom at night 7pm onward, library during day 7am onward
 	def updateMina(self):
-		print("updating mina location")
+		library = self.places["Library"]
+		bedroom = self.places["Bedroom"]
+		study = self.places["Study"]
+		inLibrary = library.getPersonByName("mina")
+		inBedroom = bedroom.getPersonByName("mina") 
+		inStudy = study.getPersonByName("mina") 
 
-	# take care of dworkin's movement (inside sheaf of papers)
-	# start location is bedroom, then follow sheaf of papers 
-	def updateDworkin(self):
-		print("updating dworkin location")
+		m = None
+		for c in self.allCharacters:
+			if c.name.lower() == "mina":
+				m = c
+
+		# keep mina in library between 7am and 7pm
+		if self.time >= 7.00 and self.time < 19.00:
+			if library.getPersonByName("mina") == None:
+				if bedroom.getPersonByName("mina") != None:
+					bedroom.removeCharacter(m)
+					library.addCharacter(m)
+		# put mina in her bedroom between 7pm and 7am
+		elif self.time >= 19.00 or self.time < 7.00:
+			if bedroom.getPersonByName("mina") == None:
+				if library.getPersonByName("mina") != None:
+					library.removeCharacter(m)
+					bedroom.addCharacter(m) 
+
+		else:
+			return
 
 	# takes the change in hours per an event in the game
 	def updateTime(self, timeChange):
@@ -165,11 +183,11 @@ class Game:
 			descp = "late afternoon"
 		elif curTime >= 17.00 and curTime < 19.00:
 			descp = "early evening"
-		elif curTime >=19.00 and curTime < 21.00:
+		elif curTime >= 19.00 and curTime < 21.00:
 			descp = "evening"
 		elif curTime >= 21.00 and curTime < 24.00:
 			descp = "late evening"
-		elif curTime >= 24.00 and curTime < 1.00:
+		elif curTime >= 24.00 or curTime < 1.00:
 			descp = "midnight"
 		elif curTime >= 1.00 and curTime < 5.00:
 			descp = "middle of night"
@@ -319,7 +337,7 @@ class Game:
 				# move user in that direction (sending string not int)
 				self.moveUser(int_to_str_dict.get(dir))
 				self.setIsValid()
-				self.user.current_place.printRoom(self.time, self.user.hasMetMaude, self.user.hasMetMina, self.user.hasMetDworkin)
+				self.user.current_place.printRoom(self.time, self.user.hasMetMaude, self.user.hasMetMina)
 				self.user.current_place.updateNumEntries()
 				self.updateTime(0.6)
 			else:
@@ -338,10 +356,13 @@ class Game:
 				if character.name.lower() == "maude":
 					Output.print_talk(character.getCharacterSpeak(self.user.current_place.name), character.name)
 					self.user.hasMetMaude = True
-				elif character.name.lower() == "dworkin":
-					self.user.hasMetDworkin = True
 				elif character.name.lower() == "mina":
-					self.user.hasMetMina = True
+					if self.user.hasMetMina == False:
+						Output.print_talk(character.char_dict["intro"])
+						self.user.hasMetMina = True
+					else:	
+						Output.print_talk(character.getCharacterSpeak(self.user.current_place.name), character.name)
+						self.user.hasMetMina = True
 				self.setIsValid()
 				return
 		else:
@@ -407,7 +428,7 @@ class Game:
 				self.moveUser(int_to_str_dict.get(direction))
 				self.setIsValid()
 				self.updateTime(0.6)
-				self.user.current_place.printRoom(self.time, self.user.hasMetMaude, self.user.hasMetMina, self.user.hasMetDworkin)
+				self.user.current_place.printRoom(self.time, self.user.hasMetMaude, self.user.hasMetMina)
 				self.user.current_place.updateNumEntries()
 			else:
 				# door is looked
@@ -418,7 +439,7 @@ class Game:
 	#v13.2
 	def handleViolence(self, attemptObj, indirObj, canViolence):
 		if canViolence:
-			# TODO: ending scene
+			# TODO: ending - destroy orb 
 			return
 		else:
 			Output.print_error("Such unruly behavior is quite beyond you.")
@@ -445,7 +466,16 @@ class Game:
 			# if user tries to open a book
 			elif "book" in attemptedObj:
 				Output.print_input_hint("You don't need to explicitly open books in this game. Try simply reading the book.")
-			# TODO: ending scene
+			# if user tries to open bottle before ending or without corkscrew 
+			elif "bottle" in attemptedObj:
+				if self.user.userHasThing("bottle") and not self.user.userHasThing("corkscrew"):
+					Output.print_error("You don't have a corkscrew.")
+				elif self.user.userHasThing("bottle") and self.inEndgame == False:
+					Output.print_input_hint("Something tells you it's not quite time for that.")
+				elif not self.user.userHasThing("bottle"):
+					Output.print_error("You don't have a bottle to open.")
+				else:
+					Output.print_error("You don't see the point of doing that right now.")
 			else:
 				Output.print_error("That's not something you can open.") 
 
@@ -493,11 +523,11 @@ class Game:
 		if canLook:
 			# if nothing or "room" specified, examine current room 
 			if attemptedObj == None or attemptedObj == "room":
-				self.user.current_place.printRoom(self.time, self.user.hasMetMaude, self.user.hasMetMina, self.user.hasMetDworkin)
+				self.user.current_place.printRoom(self.time, self.user.hasMetMaude, self.user.hasMetMina)
 				self.user.current_place.updateNumLooks()
 			# if current room name specified, examine current room
 			elif attemptedObj == self.user.current_place.name.lower():
-				self.user.current_place.printRoom(self.time, self.user.hasMetMaude, self.user.hasMetMina, self.user.hasMetDworkin)
+				self.user.current_place.printRoom(self.time, self.user.hasMetMaude, self.user.hasMetMina)
 				self.user.current_place.updateNumLooks()
 			# look outside
 			elif attemptedObj == "outside":
@@ -687,6 +717,7 @@ class Game:
 					currRoom.numTimesListened -= len(currRoom.listenDescrips)
 					Output.print_look(currRoom.listenDescrips[currRoom.numTimesListened])
 				currRoom.numTimesListened += 1
+				self.user.hasEavesdropped = True
 
 	# new in v9: print special error message for locked door
 	def handleLockedDoor(self, direction):
@@ -722,10 +753,13 @@ class Game:
 					if c.name.lower() == "maude":
 						Output.print_talk(c.getCharacterSpeak(self.user.current_place.name), c.name)
 						self.user.hasMetMaude = True
-					elif c.name.lower() == "dworkin":
-						self.user.hasMetDworkin = True
 					elif c.name.lower() == "mina":
-						self.user.hasMetMina = True 
+						if self.user.hasMetMina == False:
+							Output.print_talk(c.char_dict["intro"])
+							self.user.hasMetMina = True
+						else:	
+							Output.print_talk(c.getCharacterSpeak(self.user.current_place.name), c.name)
+							self.user.hasMetMina = True 
 					return # return after finding a character in the place that matches the attemptedObj
 		else:
 			if attemptedObj == None and attemptedInd_Obj == None:
@@ -753,6 +787,7 @@ class Game:
 		Output.print_input_hint("search, look in, look inside")
 		Output.print_input_hint("open")
 		Output.print_input_hint("read")
+		Output.print_input_hint("listen")
 		print()
 		Output.print_input_hint("talk, say, greet, ask, chat, speak, tell, call")
 		print()
@@ -779,7 +814,7 @@ class Game:
 			
 			# if the user was moved, re-orient user
 			if action.verb == "move_user":
-				self.user.current_place.printRoom(self.time, self.user.hasMetMaude, self.user.hasMetMina, self.user.hasMetDworkin)
+				self.user.current_place.printRoom(self.time, self.user.hasMetMaude, self.user.hasMetMina)
 				self.user.current_place.updateNumEntries()
  
 		else: 
@@ -888,6 +923,38 @@ class Game:
 
 		# set the "is valid" attribute to the current dictionary of valid game operations
 		self.isValid = newdict
+
+		# make endgame items (bottle and instructions) available
+		# these were previously "hidden" in the Study; they will now appear in the Small Lavatory cabinet
+		if self.user.hasEavesdropped and self.user.hasMetMina:
+			study = self.places["Study"]
+			lavatory = self.places["Small Lavatory"]
+			if study != None and lavatory != None:
+				cabinet =  lavatory.getThingByName("undersink cabinet")
+				bottle = study.getThingByName("bottle")
+				if bottle != None:
+					study.removeThing(bottle)
+					lavatory.addThing(bottle)
+					if cabinet != None:
+						cabinet.hasOtherItems.append(bottle)
+				page = study.getThingByName("page of instructions")
+				if page != None:
+					study.removeThing(page)
+					lavatory.addThing(page)
+					if cabinet != None:
+						cabinet.hasOtherItems.append(page)
+
+		# unlock Study once needed endgame items are in inventory
+		condition1 = self.user.userHasThing("bottle") 
+		condition2 = self.user.userHasThing("matchbook")
+		condition3 = self.user.userHasThing("corkscrew")
+		if condition1 and (condition2 and condition3):
+			study = self.places["Study"]
+			hallway = self.places["Upstairs Hallway 4"]
+			if study != None and hallway != None:
+				study.unlockDoor("w")
+				hallway.unlockDoor("e")
+
 
 	# take action object and consult "isValid" dictionary 
 	def checkIsValid(self, action): 
@@ -1026,7 +1093,7 @@ class Game:
 			return True
 		#v11.7
 		elif action.verb == "listen":
-			if self.user.current_place.name == "Drawing Room" and (self.day == 2 or self.day == 3):
+			if self.user.current_place.name == "Drawing Room" and self.day >= 2:
 				return True
 			return False
 		# v12 talking to things (characters)
@@ -1038,7 +1105,7 @@ class Game:
 						return True
 					elif action.direct_obj in i.altNames:
 						return True
-		#v13.2. TODO: to be expanded later
+		#v13.2. TODO: "destroy orb" 
 		elif action.verb == "do_violence":
 			return False 
 		#v13.3 
@@ -1193,7 +1260,9 @@ class Game:
 
 		#v17.1 update maude location
 		self.updateMaude(user_place, new_place)
-		
+		#v17.2 update mina location
+		self.updateMina() 
+	
 		# reset numTimesTalked for each previously talked-to character to 0 (because new location)
 		for person in self.allCharacters:
 			if person.numTimesTalked > -1:
@@ -1283,11 +1352,15 @@ class Place:
 
 	# v12 adding character to place
 	def addCharacter(self, thing):
+		if thing == None:
+			return 
 		self.characters.append(thing)
 		self.hasCharacters = True
 
 	#v17.1 removing character from place
 	def removeCharacter(self, thing):
+		if thing == None:
+			return
 		self.characters.remove(thing)
 		if len(self.characters) == 0:
 			self.hasCharacters = False
@@ -1332,7 +1405,7 @@ class Place:
 
 	#v13.3: show characters in room description
 	#v17.1: make more specific 
-	def showCharacters(self, metMaude = False, metMina = False, metDworkin = False):
+	def showCharacters(self, metMaude = False, metMina = False):
 		if self.hasCharacters:
 			for c in self.characters:
 				if c.name.lower() == "maude" and metMaude == False:
@@ -1343,10 +1416,6 @@ class Place:
 					Output.print_look("You see a girl here.")
 				if c.name.lower() == "mina" and metMina:
 					Output.print_look("You see Mina here.")
-				if c.name.lower() == "dworkin" and metDworkin == False:
-					Output.print_look("You see a man here.")
-				if c.name.lower() == "dworkin" and metDworkin:
-					Output.print_look("You see Dworkin here.")	
 
 
 	def showDroppedObjects(self):
@@ -1360,26 +1429,21 @@ class Place:
 				Output.print_look(i.isHereDescription)
 
 	# v5: display room description
-	def printRoom(self, time, metMaude = False, metMina = False, metDworkin = False):
+	def printRoom(self, time, metMaude = False, metMina = False):
 		place_name = self.name
 		place_description = self.getDescriptionBasedOnTimeAndVisitCount(time)
 		# v9: call output function to orient user 
 		Output.orientUser(place_name, place_description)
 
-		self.showCharacters(metMaude, metMina, metDworkin)
+		self.showCharacters(metMaude, metMina)
 		self.showDroppedObjects()
 
-		# v11.5: show any dropped objects currently in the room
-		# (don't show objects that were dropped inside features)
-		# v13.3: moved to its own function
-		#features = [feat for feat in self.things if feat.is_searchable]
-		#hiddenItems = []
-		#for ft in features:
-			#for hidden in ft.hasOtherItems:
-				#hiddenItems.append(hidden) 
-		#for i in self.droppedHere:
-			#if i.name not in hiddenItems: 
-				#Output.print_look(i.isHereDescription)
+	#v17.2 get thing obj by name
+	def getThingByName(self, tname):
+		for t in self.things:
+			if t.name.lower() == tname:
+				return t
+		return None
 
 # define the User class
 class User:
@@ -1391,15 +1455,16 @@ class User:
 			self.direction = startingDirection
 
 			#self.hasEnteredHouse = False
-			self.tookLetter = False
-			self.whenTookLetter = -1  
+			#self.tookLetter = False
+			#self.whenTookLetter = -1  
 			self.hasMetMaude = False
 			self.hasMetMina = False
-			self.hasMetDworkin = False
+			#self.hasMetDworkin = False
 			self.hasBottle = False
 			self.hasMatchbook = False
 			self.hasCorkscrew = False
-			self.hasStudyKey = False
+			self.hasEavesdropped = False
+			#self.hasStudyKey = False
 			self.accumEndMoveCt = 0		
 
 			# new in v2
