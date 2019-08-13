@@ -20,4 +20,8 @@ study:::#“I do love my uncle, you know. I mean, I hate him because he’s cold
 ***
 study:::#"What we've done...it's for the best, isn't it?"#
 ***
-study:::#"It'd be nice to go outside for a change, wouldn't it?"#
+study:::#"It'd be nice to go outside for a change, wouldn't it? Usually the door's locked, but it's worth a try, surely."#
+***
+foyer:::#"It'd be nice to go outside for a change, wouldn't it? Usually the door's locked, but it's worth a try, surely."#
+***
+front manor grounds:::#"I've just realized...we're friends, aren't we?"#
