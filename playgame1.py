@@ -6,7 +6,7 @@ import sys
 sys.path.insert(0, './Parser')
 sys.path.insert(0, './Game_Engine')
 import game_engine_v1 as g
-import action as a
+import action
 import parser as p
 from output import *
 import termios
@@ -682,9 +682,9 @@ def gameLoop(game):
                 saveGame(game)
                 return
         else:
-            playaction = a.Action()
+            playaction = action.Action()
             playaction = playparser.parseInput(received)
-            if (isinstance(playaction, a.Action)):
+            if (isinstance(playaction, action.Action)):
                 print(playaction.verb, playaction.direction, playaction.direct_obj, playaction.indirect_obj) 
                 game.fromParserToGame(playaction)
 
