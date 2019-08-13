@@ -916,9 +916,10 @@ class Game:
 				self.user.current_place.updateNumEntries()
  
 		else:
-			if action.direct_obj.lower() or action.indirect_obj.lower() == "time":
-				self.getTime()
-				return
+			if action.direct_obj != None:
+				if action.direct_obj == "time":
+					self.getTime()
+					return
 			if action.verb == "move_user":
 				# if there's a direction that's invalid (and there are no other inputs)
 				if action.direction != None and action.direct_obj == None and action.indirect_obj == None:
