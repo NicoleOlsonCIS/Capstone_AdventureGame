@@ -75,10 +75,10 @@ sb7 = "   |"
 
 # archway 1
 
-a ="--^-ii--i^.-^..i^-^-..^--.^i-.^-"
-a0 =".-iii--.^i--^-./\\-^-ii--.^i-.^-."
-a1 ="-i^.^-i..i^-^-//\\\\^-ii--.^i-.^-."
-a2 ="^-^-.i-^.^-i^///\\\\\\--i^.^-i..ii^"
+a ="--^-ii--i^.-^..i^-^-..^-..^i-.^i"
+a0 =".-iii--.^i--^-./\\-^-ii-i.^-..^-."
+a1 ="-i^.^-i..i^-^-//\\\\^-i.--.^i-.^-."
+a2 ="^-^-.i-^.^-i^///\\\\\\--i^.^-i..^i^"
 a3 ="-..ii-^-i^.^////\\\\\\\\.^-i..i^-^-."
 a4 ="-i..ii..i-/////  \\\\\\\\\\-^.^-i^-i."
 a5 ="-ii--.^i-/////    \\\\\\\\\\--i^.^-i."
@@ -86,9 +86,9 @@ a6 ="-^.^-i^-/////      \\\\\\\\\\^i.-i.-^"
 a7 ="i^.--i./////        \\\\\\\\\\..ii--i"
 a8 =".i^i-i|||||          +++++--i..i"
 a9 ="-^.^-i|||||          +++++^i-i^."
-a10="^.^-i.|||||          +++++-.i--^"
-a11="i-.^-i|||||          +++++-ii--."
-a12="..ii--||||/          \\++++-ii-ii"
+a10="^.^-i.|||||          +++++-.i-.^"
+a11="i-.^-i|||||          +++++-i^-i."
+a12="..ii--||||/          \\++++-i^-.i"
 a13="======||||/           \\+++======"
 
 welcome_archway = [a, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13]
@@ -215,17 +215,21 @@ class Output(object):
         # if message is long, break up into lines of ~60 characters 
         if length > 60:
             hint_message = Output.break_up_long_message(hint_message, 60, False)
-
+        
+        sys.stdout.write(u'\u001b[38;5;$220m')
+        print(hint_message)
+        print('\033[0m') # reset color
+        
         # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
-        if sys.stdin.isatty():
-            sys.stdout.write(u'\u001b[38;5;$220m')
-            for elem in hint_message:
-                sys.stdout.write(elem)
-                time.sleep(0.04)
-                sys.stdout.flush()
-            print('\033[0m') # reset color
-        else:
-            print(hint_message)
+        #if sys.stdin.isatty():
+        #    sys.stdout.write(u'\u001b[38;5;$220m')
+        #    for elem in hint_message:
+        #        sys.stdout.write(elem)
+        #        time.sleep(0.04)
+        #        sys.stdout.flush()
+        #    print('\033[0m') # reset color
+        #else:
+        #    print(hint_message)
 
     # print "look"
     @classmethod
@@ -236,17 +240,21 @@ class Output(object):
         if length > 60:
             look_description = Output.break_up_long_message(look_description, 60, False)
 
+        sys.stdout.write(u'\u001b[38;5;$31m')
+        print(look_description)
+        sys.stdout.write('\033[0m')
+
         # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
-        if sys.stdin.isatty():
-            sys.stdout.write(u'\u001b[38;5;$31m')
-            for elem in look_description:
-                time.sleep(0.04)
-                sys.stdout.write(elem)
-                sys.stdout.flush()
-            sys.stdout.write('\033[0m')
-            print("\n")
-        else:
-            print(look_description)
+        #if sys.stdin.isatty():
+        #    sys.stdout.write(u'\u001b[38;5;$31m')
+        #    for elem in look_description:
+        #        time.sleep(0.04)
+        #        sys.stdout.write(elem)
+        #        sys.stdout.flush()
+        #    sys.stdout.write('\033[0m')
+        #    print("\n")
+        #else:
+        #    print(look_description)
 
     # print "take"
     @classmethod

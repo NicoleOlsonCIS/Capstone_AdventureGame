@@ -692,16 +692,18 @@ def main():
 
     ts = os.get_terminal_size()
     if ts.columns < 70:
-        print("Error: Please expand the width of your console window. Min width of 70 columns required for game!")
+        Output.print_error("Error: Please expand the width of your console window. Min width of 70 columns required for game!")
         return
     if ts.lines < 20:
-        print("Error: Please expand the height of your console window. Min height of 20 lines required for game!")
+        Output.print_error("Error: Please expand the height of your console window. Min height of 20 lines required for game!")
         return
 
     if sys.stdin.isatty():
 
         Output.welcomePage()
+        sys.stdout.write(u'\u001b[38;5;$48m')
         print("Welcome! Would you like to start a new game or load a saved game? (new/loadgame)")
+        sys.stdout.write(u"\u001b[0m")
         new_or_save = input("> ")
 
         if "new" in new_or_save:  
