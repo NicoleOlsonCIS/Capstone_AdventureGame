@@ -9,3 +9,5 @@ military coat:You rummage in the pockets of the officer's jacket.
 study desk:You paw through the drawers of the desk and the clutter on its surface.
 ***
 tweed coat:With only the faintest twinge of guilt, you run your hands through all the flaps and pockets of the coat.
+***
+undersink cabinet:You peer into the little cabinet, not expecting much.

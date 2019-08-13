@@ -55,7 +55,7 @@ def parsePlaces(game):
     return arr_of_places
 
 # Loads information about readable objects.
-def loadReadables(filename1, filename2, thing_obj):
+def loadReadables(filename1, filename2, filename3, thing_obj):
     if thing_obj.name == "newspaper":
         fpath = "./Game_Files/" + filename2
         with open(fpath) as f:
@@ -63,6 +63,19 @@ def loadReadables(filename1, filename2, thing_obj):
             data_chunks = read_data.split("***\n")
 
         for chunk in data_chunks: 
+            chunk = chunk.rstrip("\n")
+            thing_obj.readDescrips.append(chunk)
+
+        thing_obj.is_readable = True
+        return
+
+    elif thing_obj.name == "sheaf of papers":
+        fpath = "./Game_Files/" + filename3 
+        with open(fpath) as f:
+            read_data = f.read()
+            data_chunks = read_data.split("***\n")
+
+        for chunk in data_chunks:
             chunk = chunk.rstrip("\n")
             thing_obj.readDescrips.append(chunk)
 
@@ -426,7 +439,7 @@ def loadPlaceData(place_obj, filename, game_obj):
                 # load alternate thing names
                 loadAltNames("objalternatenames.txt", newthing)
                 # load readable  things
-                loadReadables("readables.txt", "newspaper.txt", newthing)
+                loadReadables("readables.txt", "newspaper.txt", "sheafpapers.txt", newthing)
 
                 count += 1 
     
@@ -601,9 +614,13 @@ def buildGame():
     if currChar != None:
         loadDialogDict("maude.txt", currChar) 
 
-    # TODO: load dworkin dialogue for various topics
-
-    # TODO: load mina dialogue for various locations and topics 
+    # load mina dialogue for various locations
+    currChar = None
+    for char in game.allCharacters:
+        if char.name.lower() == "mina":
+            currChar = char
+    if currChar != None:
+        loadDialogDict("mina.txt", currChar) 
 
     # load narrative intro text
     with open("./Game_Files/intro.txt") as ifile:

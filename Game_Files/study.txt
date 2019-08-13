@@ -19,7 +19,6 @@ study bookshelves
 marble bust
 painting
 silver orb
-tweed coat
 ***
 A stiff, high-backed wooden chair. It doesn’t look remotely comfortable.###A stiff, high-backed wooden chair. It doesn’t look remotely comfortable.
 ***
@@ -37,13 +36,17 @@ A large oil portrait of a proud-looking gray-haired man. He poses rigidly in his
 ***
 A round shape, iridescent and shifting, like a puddle of oil suspended in midair. As you look on, it expands, ballooning delicately outward like a bubble blown to full size. You feel a faint wave of nausea. Somehow, looking at the silvery shape feels like standing on the edge of a precipice, poised to fall.###A round shape, iridescent and shifting, like a puddle of oil suspended in midair. As you look on, it expands, ballooning delicately outward like a bubble blown to full size. You feel a faint wave of nausea. Somehow, looking at the silvery shape feels like standing on the edge of a precipice, poised to fall.
 ***
-A thick gray tweed coat with brown elbow patches.###A gray tweed coat with brown elbow patches.
-***
 stack of notes
-silver key
+bottle
+page of instructions
+tweed coat
 ***
 A pile of scribbled notes, written with a strong but impatient hand.###A pile of scribbled notes, written with a strong but impatient hand.
 ***
-A bulky antique key, somewhat tarnished.###A bulky antique key, somewhat tarnished.
+A glass bottle full of viscous, oily-looking black liquid.###A glass bottle full of viscous, oily-looking black liquid. 
+***
+A narrow but very long piece of paper, rolled up like a scroll. It's covered in thick, inky writing.###A narrow but very long piece of paper, rolled up like a scroll. It's covered in thick, inky writing. 
+***
+A thick gray tweed coat with brown elbow patches.###A gray tweed coat with brown elbow patches.
 ***
 no characters

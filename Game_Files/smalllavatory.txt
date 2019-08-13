@@ -14,6 +14,7 @@ white porcelain toilet
 white porcelain bathtub
 white porcelain sink
 mirror
+undersink cabinet
 ***
 You’re fairly certain you know what this is for.###Its function seems straightforward.
 ***
@@ -22,6 +23,8 @@ A white porcelain clawfoot tub.###A white porcelain clawfoot tub.
 A white porcelain sink with a mirror above it.###A porcelain sink with a mirror above it.
 ***
 You peruse your reflection in the mirror. Looking good.###Your eyes don’t quite seem to match each other’s color today. Something off about one of them...but never mind, you tell yourself. A trick of the dim light.
+***
+A small wooden cabinet, tucked under the sink.###A small wooden cabinet, tucked under the sink.
 ***
 no objects 
 ***

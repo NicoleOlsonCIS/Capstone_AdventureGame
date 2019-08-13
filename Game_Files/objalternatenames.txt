@@ -58,6 +58,8 @@ set of drawers:drawers,dresser drawers,drawer,dresser drawer
 ***
 white porcelain sink:sink,porcelain sink,white sink
 ***
+undersink cabinet:undersink,cabinet,sink cabinet,cabinets,wooden cabinet,small wooden,small cabinet,small wooden cabinet
+***
 white porcelain bathtub:tub,bathtub,porcelain tub,porcelain bathtub,white bathtub,white tub,clawfoot tub,clawfoot bathtub
 ***
 white porcelain toilet:toilet,white toilet,porcelain toilet
@@ -72,7 +74,7 @@ wooden wardrobe:wardrobe
 ***
 writing desk:desk
 ***
-sheaf of papers:sheaf,papers,drawings,sketches,charcoal drawings,charcoal sketches,sheaf papers,paper,drawing,sketch,charcoal drawing,charcoal sketch
+sheaf of papers:sheaf,papers,sheaf papers,paper,thick writing,inky writing,thick inky,writing
 ***
 heavy blue drapes:drapes,curtains,drape,curtain,blue drapes,blue drape,blue curtains,blue curtain,heavy blue,heavy drapes,heavy drape,heavy curtain,heavy curtains
 ***
@@ -126,9 +128,13 @@ marble bust:bust,marble,white marble bust,white marble,statue,marble statue,gree
 ***
 silver orb:silvery bubble,silver bubble,bubble,orb,silver,hatch,quicksilver,floating orb,floating bubble
 ***
-bottle of black liquid:bottle,glass bottle,black liquid,dark liquid,liquid,bottle liquid,bottle black 
+bottle:glass bottle,black liquid,dark liquid,liquid,bottle liquid,bottle black 
 ***
-stack of notes:notes,stack,pile notes,stack notes 
+tweed coat:tweed,coat
+***
+stack of notes:notes,stack,pile notes,stack notes,pile
+***
+page of instructions:page,instructions,instruction,scroll,paper,piece paper 
 ***
 maude:woman,person,female,old woman,housekeeper
 ***
