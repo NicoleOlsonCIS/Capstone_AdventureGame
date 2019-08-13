@@ -700,6 +700,7 @@ def main():
 
     if sys.stdin.isatty():
 
+        Output.welcomePage()
         print("Welcome! Would you like to start a new game or load a saved game? (new/loadgame)")
         new_or_save = input("> ")
 

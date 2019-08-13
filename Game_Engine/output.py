@@ -66,6 +66,127 @@ sb5 = "    | " + "/"
 sb6 = "    |" + "/"
 sb7 = "   |"
 
+
+##
+##
+## Welcome archway
+##
+##
+
+# archway 1
+
+a ="--^-ii--i^.-^..i^-^-..^--.^i-.^-"
+a0 =".-iii--.^i--^-./\\-^-ii--.^i-.^-."
+a1 ="-i^.^-i..i^-^-//\\\\^-ii--.^i-.^-."
+a2 ="^-^-.i-^.^-i^///\\\\\\--i^.^-i..ii^"
+a3 ="-..ii-^-i^.^////\\\\\\\\.^-i..i^-^-."
+a4 ="-i..ii..i-/////  \\\\\\\\\\-^.^-i^-i."
+a5 ="-ii--.^i-/////    \\\\\\\\\\--i^.^-i."
+a6 ="-^.^-i^-/////      \\\\\\\\\\^i.-i.-^"
+a7 ="i^.--i./////        \\\\\\\\\\..ii--i"
+a8 =".i^i-i|||||          +++++--i..i"
+a9 ="-^.^-i|||||          +++++^i-i^."
+a10="^.^-i.|||||          +++++-.i--^"
+a11="i-.^-i|||||          +++++-ii--."
+a12="..ii--||||/          \\++++-ii-ii"
+a13="======||||/           \\+++======"
+
+welcome_archway = [a, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13]
+
+##
+## Strings for archway transition
+##
+##
+
+archways = []
+
+a1 = "^.-i.^^ii.--i.-"
+a2 = "--i.-^/ \\i.^^i."
+a3 = "i.--//   \\\\-i.-"
+a4 = ".-i//     \\\\.-i"
+a5 = "^i-||     ||-i^"
+a6 = "i.^||     ||-i."
+a7 = "===||/   \\||==="
+
+arch1 = [a1, a2, a3, a4, a5, a6, a7]
+archways.append(arch1)
+
+a1 = "^.-i.^/ \\--i.-^"
+a2 = "-i.-^/   \\i.^^i"
+a3 = ".--//     \\\\-i."
+a4 = "-i//       \\\\.-"
+a5 = "^i||       ||-i"
+a6 = "i.||       ||-i"
+a7 = "==||/     \\||=="
+
+arch2 = [a1, a2, a3, a4, a5, a6, a7]
+archways.append(arch2)
+
+a1 = ".-i.^/   \\--i.-"
+a2 = "i.-^/     \\i.^^"
+a3 = "--//       \\\\-i"
+a4 = "i//         \\\\."
+a5 = "i||         ||-"
+a6 = ".||         ||-"
+a7 = "=||/       \\||="
+
+arch3 = [a1, a2, a3, a4, a5, a6, a7]
+archways.append(arch3)
+
+a1 = "-i.^/     \\--i."
+a2 = ".-^/       \\i.^"
+a3 = "-//         \\\\-"
+a4 = "//           \\\\"
+a5 = "||           ||"
+a6 = "||           ||"
+a7 = "||/         \\||"
+
+arch4 = [a1, a2, a3, a4, a5, a6, a7]
+archways.append(arch4)
+
+a1 = "i.^/       \\--i"
+a2 = "-^/         \\i."
+a3 = "-/           \\-"
+a4 = "/             \\ "
+a5 = "|             |  "
+a6 = "|             |  "
+a7 = "|             |  "
+
+arch5 = [a1, a2, a3, a4, a5, a6, a7]
+archways.append(arch5)
+
+a1 = "i.^/       \\--i"
+a2 = "-^/         \\i."
+a3 = "-/           \\-"
+a4 = "|             |"
+a5 = "|             |"
+a6 = "|             |"
+a7 = "|             |"
+
+arch7 = [a1, a2, a3, a4, a5, a6, a7]
+archways.append(arch7)
+a1 = ".^/         \\--  "
+a2 = "^/           \\i  "
+a3 = "|             |"
+a4 = "|             |"
+a5 = "|             |"
+a6 = "|             |"
+a7 = "|             |"
+
+arch8 = [a1, a2, a3, a4, a5, a6, a7]
+archways.append(arch8)
+
+a1 = "|             |"
+a2 = "|             |"
+a3 = "|             |"
+a4 = "|             |"
+a5 = "|             |"
+a6 = "|             |"
+a7 = "|             |"
+
+arch9 = [a1, a2, a3, a4, a5, a6, a7]
+archways.append(arch9)
+
 # static class
 class Output(object):
 
@@ -820,3 +941,151 @@ class Output(object):
             print(welcome)
             print(placeDescription)
             print("Reminder: Enter \'quit\' or \'savegame\' at the prompt to quit the game at any time. \n")
+
+    @classmethod
+    def welcomePage(self):
+        print("\n\n")
+        Output.print_archway(welcome_archway, True)
+        print()
+    
+    @classmethod
+    def print_archway_transition(self):
+        print("\n")
+        for a in archways:
+            Output.print_archway(a, True)
+            sys.stdout.write(u"\u001b[1000D")
+            sys.stdout.write(u"\033[7A") # up height
+            time.sleep(0.1)
+        i = 0
+        while i < 7:
+            print("                                           ")
+            i += 1
+        sys.stdout.write(u"\u001b[1000D")
+        sys.stdout.write(u"\033[7A") # up height
+
+    @classmethod
+    def print_archway(self,archway, center):
+        if sys.stdin.isatty():
+            for a in archway:
+                if center:
+                    sys.stdout.write("\t\t") # 2 tab in
+                else:
+                    sys.stdout.write("\t") # 1 tab in
+                # reset previous
+                previousElem1 = " "
+                previousElem2 = " "
+                previousElem3 = " "
+                previousElem4 = " "
+                previousElem5 = " "
+                for elem in a:
+                    # random (of 3) light color grey background
+                    if elem == "-":
+                        sys.stdout.write(u"\u001b[48;5;239m")
+                        sys.stdout.write(u"\u001b[38;5;239m")
+                        # print the element
+                        sys.stdout.write(elem)
+                        sys.stdout.write(u"\u001b[0m")
+                    elif elem == "i":
+                        sys.stdout.write(u"\u001b[48;5;238m")
+                        sys.stdout.write(u"\u001b[38;5;238m")
+                        # print the element
+                        sys.stdout.write(elem)
+                        sys.stdout.write(u"\u001b[0m")
+                    elif elem == "^":
+                        sys.stdout.write(u"\u001b[48;5;237m")
+                        sys.stdout.write(u"\u001b[38;5;237m")
+                        # print the element
+                        sys.stdout.write(elem)
+                        sys.stdout.write(u"\u001b[0m")
+                    elif elem == ".":
+                        sys.stdout.write(u"\u001b[48;5;236m")
+                        sys.stdout.write(u"\u001b[38;5;236m")
+                        # print the element
+                        sys.stdout.write(elem)
+                        sys.stdout.write(u"\u001b[0m")
+
+                    # color based on previous (darker color upon consequetive)
+                    elif elem == "/":
+                        if previousElem1 != "/":
+                            sys.stdout.write(u"\u001b[38;5;244m") # lightest color
+                        elif previousElem1 == "/" and previousElem2 != "/":
+                            sys.stdout.write(u"\u001b[38;5;243m")
+                        elif previousElem2 == "/" and previousElem3 != "/":
+                            sys.stdout.write(u"\u001b[38;5;242m")
+                        elif previousElem3 == "/" and previousElem4 != "/":
+                            sys.stdout.write(u"\u001b[38;5;241m")
+                        elif previousElem4 == "/" and previousElem5 != "/":
+                            sys.stdout.write(u"\u001b[38;5;240m")
+                        elif previousElem4 == "/" and previousElem5 == "/":
+                            sys.stdout.write(u"\u001b[38;5;239m")
+                        # print the element
+                        sys.stdout.write(elem)
+                        sys.stdout.write(u"\u001b[0m")
+
+                    # color based on previous (lighter color upon consequtive)
+                    elif elem == "\\":
+                        if previousElem1 != "\\":
+                            sys.stdout.write(u"\u001b[38;5;239m")
+                        elif previousElem1 == "\\" and previousElem2 != "\\":
+                            sys.stdout.write(u"\u001b[38;5;240m")
+                        elif previousElem2 == "\\" and previousElem3 != "\\":
+                            sys.stdout.write(u"\u001b[38;5;241m")
+                        elif previousElem3 == "\\" and previousElem4 != "\\":
+                            sys.stdout.write(u"\u001b[38;5;242m")
+                        elif previousElem4 == "\\" and previousElem5 != "\\":
+                            sys.stdout.write(u"\u001b[38;5;243m")
+                        elif previousElem4 == "\\" and previousElem5 == "\\":
+                            sys.stdout.write(u"\u001b[38;5;244m")
+                        # print the element
+                        sys.stdout.write(elem)
+                        sys.stdout.write(u"\u001b[0m")
+                    # color based on previous (if previous was not space, then light to dark, else light to dark)
+                    elif elem == "|":
+                        if previousElem1 != "|":
+                            sys.stdout.write(u"\u001b[38;5;244m") # lightest color
+                        elif previousElem1 == "|" and previousElem2 != "|":
+                            sys.stdout.write(u"\u001b[38;5;243m")
+                        elif previousElem2 == "|" and previousElem3 != "|":
+                            sys.stdout.write(u"\u001b[38;5;242m")
+                        elif previousElem3 == "|" and previousElem4 != "|":
+                            sys.stdout.write(u"\u001b[38;5;241m")
+                        elif previousElem4 == "|" and previousElem5 != "|":
+                            sys.stdout.write(u"\u001b[38;5;240m")
+                        elif previousElem4 == "|" and previousElem5 == "|":
+                            sys.stdout.write(u"\u001b[38;5;239m")
+                        # print the element
+                        sys.stdout.write(elem)
+                        sys.stdout.write(u"\u001b[0m")
+                    elif elem == "+":
+                        if previousElem1 != "+":
+                            sys.stdout.write(u"\u001b[38;5;239m")
+                        elif previousElem1 == "+" and previousElem2 != "+":
+                            sys.stdout.write(u"\u001b[38;5;240m")
+                        elif previousElem2 == "+" and previousElem3 != "+":
+                            sys.stdout.write(u"\u001b[38;5;241m")
+                        elif previousElem3 == "+" and previousElem4 != "+":
+                            sys.stdout.write(u"\u001b[38;5;242m")
+                        elif previousElem4 == "+" and previousElem5 != "+":
+                            sys.stdout.write(u"\u001b[38;5;243m")
+                        elif previousElem4 == "+" and previousElem5 == "+":
+                            sys.stdout.write(u"\u001b[38;5;244m")
+                        # print the element
+                        sys.stdout.write("|")
+                        sys.stdout.write(u"\u001b[0m")
+                    elif elem == " " or elem == "=":
+                        sys.stdout.write(u"\u001b[0m")
+                        sys.stdout.write(elem)
+                    elif elem == "_":
+                        sys.stdout.write(u"\u001b[38;5;239m")
+                        sys.stdout.write(elem)
+                    # shift the previous
+                    previousElem5 = previousElem4
+                    previousElem4 = previousElem3
+                    previousElem3 = previousElem2
+                    previousElem2 = previousElem1
+                    previousElem1 = elem
+
+                sys.stdout.write("\n") # new line
+        else:
+            for a in archway:
+                print(a)
