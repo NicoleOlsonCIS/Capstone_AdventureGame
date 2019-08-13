@@ -32,7 +32,7 @@ None
 ***
 Upstairs Hallway 4
 Upstairs Hallway 5,None,Study,None,Upstairs Hallway 3,None,Large Bedroom,None,None,None
-None,None,locked,NOne,None,None,locked,None,None,None
+None
 ***
 Upstairs Hallway 5
 Servants\' Stair Top,None,None,None,Upstairs Hallway 4,None,None,None,None,None

@@ -1510,6 +1510,9 @@ class Place:
 		self.numTimesListened = 0
 
 		self.doors = doors
+		#print("\nDoors being set for " + self.name)
+		#print(doors)
+		#print()
 
 		self.passages = passages
 

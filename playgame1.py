@@ -26,12 +26,10 @@ def parsePlaces(game):
         read_data = f.read()
         data_chunks = read_data.split("***\n")
     
-    no_doors = {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None}
     ref_direction = {0: "n", 1: "ne", 2: "e", 3: "se", 4: "s", 5: "sw", 6: "w", 7:"nw", 8: "u", 9: "d"}
-    doors = {}
 
     for p in data_chunks:
-        doors = {}
+        doors = {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None}
         l = p.split("\n")
         name = l[0]
         adjacent_places = l[1].split(",")
@@ -39,10 +37,11 @@ def parsePlaces(game):
             if a == "None":
                 a = None
         doors_arr = l[2].split(",")
+
         if len(doors_arr) == 1:
-            doors = no_doors
+            doors = {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None}
         else:
-            door_dict = no_doors
+            door_dict = {"n": None, "ne": None, "e": None, "se": None, "s": None, "sw": None, "w": None, "nw": None, "u": None, "d": None}
             i = 0
             for d in doors_arr:
                 if d != "None":
@@ -51,7 +50,6 @@ def parsePlaces(game):
                 i += 1
             doors = door_dict
         
-        # create a place object add it to array
         place = g.Place(game,name,"day","night",adjacent_places,None,doors)
         arr_of_places.append(place)
 
