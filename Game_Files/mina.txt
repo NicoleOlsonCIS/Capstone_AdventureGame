@@ -12,6 +12,12 @@ library:::#"Here’s what I've figured out - well, what my pen pal Dworkin and I
 ***
 library:::#"You're very chatty, you know, even for a child."#
 ***
+study:::#"Jiminy cricket!"#^Mina says in a hushed, excited whisper.|||#"You found a way into my uncle's secret study? No one's allowed in here. Quick - let’s see what we can find, before he finds out we’re here."#
+*** 
 study:::#“We have to stop Uncle, no matter what. The things he’s letting into our world - even if they’d help win the war - they’re evil, and they hurt people. Men like my uncle shouldn’t have these things. No one should have these things."#
 ***
 study:::#“I do love my uncle, you know. I mean, I hate him because he’s cold and mean, and he doesn’t care what happens to anyone else as long as he gets what he wants. He hasn’t said a kind word to me in my life. But...I love him. I just do. I think if I could choose not to, I would - but that’s just the problem. I don’t have a choice."#
+***
+study:::#"What we've done...it's for the best, isn't it?"#
+***
+study:::#"It'd be nice to go outside for a change, wouldn't it?"#

@@ -58,19 +58,24 @@ class Game:
 		self.frontDoorIsLocked = False
 
 		self.endingEvents = []
-		#self.inEndgame = False
 		self.endgameBegun = False
-		self.endgamePhase = -1
 		self.endgameEnded = False
 		self.readyToDestroy = False
 		self.bottleOpened = False
 		self.matchLit = False
+		self.cutsceneDone = False
+		self.phaseOneDone = False
 
 	def setUser(self, user):
 		self.user = user
 
 	def addPlace(self, place):
 		self.places[place.name] = place
+
+	#17.3: update user's accumulated number of endgame actions 
+	def updateEndgame(self):
+		if self.endgameBegun and not self.endgameEnded:
+			self.user.accumEndMoveCt += 1
 
 	# v17.1 take care of maude's movement 
 	# starting location is train platform, then follow user to house, then kitchen/servant quarters 
@@ -164,6 +169,7 @@ class Game:
 					elif inBedroom != None:
 						bedroom.removeCharacter(m)
 					study.addCharacter(m)
+				
 				
 	# takes the change in hours per an event in the game
 	def updateTime(self, timeChange):
@@ -450,11 +456,40 @@ class Game:
 		else:
 			Output.print_error("That's not something you can do from here.")
 
+	#17.3
+	def destroyOrb(self):
+		# show description of orb destruction
+		numEnds = len(self.endingEvents)
+		if numEnds >= 4:
+			Output.print_look(self.endingEvents[numEnds-4])
+		# game is now "won"
+		self.endgameEnded = True
+		# remove bottle from inventory (it was used up)
+		if self.user.userHasThing("bottle"):
+			toRemove = None
+			for t in self.user.things:
+				if t.name == "bottle":
+					toRemove = t
+			if toRemove != None:
+				# remove rather than dropObject (don't want bottle to be available again)
+				self.user.things.remove(toRemove)
+		# remove orb from Study (it was destroyed)
+		study = self.places["Study"]
+		orb = study.getThingByName("silver orb")
+		if orb != None:
+			study.removeThing(orb)
+		# start new day
+		self.day += 1
+		self.time = 6.00
+		Output.print_look("Start of Day {}".format(self.day))
+		# description of new day
+		if numEnds >= 3:
+			Output.print_look(self.endingEvents[numEnds-3]) 
+
 	#v17.3
 	def handleViolence(self, attemptObj, indirObj, canViolence):
 		if canViolence:
-			# ending - destroy orb 
-			Output.print_input_hint("You know you must destroy it, but you aren't sure how. You think fire could work, if you can manage to start one.") 
+			self.destroyOrb()
 			return
 		else:
 			if indirObj != None:
@@ -476,7 +511,7 @@ class Game:
 	def handleActivate(self, attemptedObj, canActivate):
 		if canActivate:
 			Output.print_look("You strike a match against the rough side of the matchbook. The match flares immediately to life.") 
-			Output.print_look(self.endingEvents[1])
+			self.matchLit = True
 		else:
 			if attemptedObj == "matchbook" and (self.endgameBegun and self.bottleOpened == False):
 				Output.print_input_hint("You should open your bottle first.")
@@ -504,9 +539,12 @@ class Game:
 						Output.print_look(t.openDescrip)
 						#v13.3: update lastLooked upon opening thing
 						self.upDateLastLooked(t)
-						#v17.3
-						if t.name == "bottle":
+						#v17.3: special event on opening bottle in endgame
+						if t.name == "bottle" and (self.endgameBegun and not self.endgameEnded):
 							self.bottleOpened = True
+							ends = len(self.endingEvents)
+							if ends >= 5:
+								Output.print_look(self.endingEvents[ends-5])
 		else:
 			# if user tries to open a door
 			if "door" in attemptedObj:
@@ -1004,7 +1042,6 @@ class Game:
 			if study != None and hallway != None:
 				study.unlockDoor("w")
 				hallway.unlockDoor("e")
-			self.endgameBegun = True
 
 		#17.3: ready to destroy orb after match is lit and bottle is open 
 		if self.matchLit and self.bottleOpened:
@@ -1013,6 +1050,27 @@ class Game:
 		# 17.2: update mina location
 		self.updateMina() 
 
+		# 17.3 display endgame events
+		# will display more events as the user spends longer in the Study 
+		mcount = self.user.accumEndMoveCt
+		numends = len(self.endingEvents)
+		if mcount == 2 and not self.phaseOneDone:
+			if numends >= 1:
+				Output.print_look(self.endingEvents[0])
+				self.phaseOneDone = True	
+		elif mcount == 8 and not self.cutsceneDone:
+			# long cutscene here
+			if numends >= 14:
+				for endpiece in range(2,14): 
+					Output.print_look(self.endingEvents[endpiece])
+				self.cutsceneDone = True	
+
+		#17.3 front doors unlock after game is won
+		if self.endgameEnded:
+			frontgrounds = self.places["Front Manor Grounds"]
+			foyer = self.places["Foyer"]
+			frontgrounds.unlockDoor("n")
+			foyer.unlockDoor("s")
 
 	# take action object and consult "isValid" dictionary 
 	def checkIsValid(self, action): 
@@ -1201,6 +1259,12 @@ class Game:
 				return False
 			v = self.isValid.get("open_thing")
 			for i in v:
+				# special case for "bottle"
+				# bottle can only be opened during endgame 
+				if i.name == "bottle":
+					if i.name.lower() == action.direct_obj or action.direct_obj in i.altNames:
+						if not (self.endgameBegun and not self.endgameEnded):
+							return False 
 				if i.name.lower() == action.direct_obj or action.direct_obj in i.altNames:
 					return True
 				if action.indirect_obj != None:
@@ -1215,6 +1279,8 @@ class Game:
 		if action.verb == "move_user":
 			self.moveUser(action.direction)
 			self.updateTime(0.6)
+			# update endgame accumulated move count
+			self.updateEndgame()
 			return
 
 		if action.verb == "take":
@@ -1227,8 +1293,8 @@ class Game:
 				obj_name = action.direct_obj
 			self.user.pickUpObject(obj_name)
 
-			# time update of 1 hour 
 			self.updateTime(0.6)
+			self.updateEndgame()
 			return
 
 		if action.verb == "drop":
@@ -1240,12 +1306,14 @@ class Game:
 			self.user.dropObject(obj_name)
 			# add a time update
 			self.updateTime(0.6)
+			self.updateEndgame()
 			return
 
 		# updated to handle two-word object names 
 		if action.verb == "look":
 			self.handleLook(action.direct_obj, action.indirect_obj, True)
 			self.updateTime(0.6)
+			self.updateEndgame()
 			return
 
 		if action.verb == "sleep":
@@ -1257,6 +1325,7 @@ class Game:
 			# v11.4: wakeup message
 			Output.print_look("Start of Day {}".format(self.day))
 			Output.print_look("You awake to morning light streaming softly into the room. The House is still and silent around you as you climb out of bed, walking gingerly on frigid floorboards.")
+			self.updateEndgame()
 			return
 		# don't increment time for help/inventory
 		# since these are not "in-game" actions 
@@ -1266,6 +1335,7 @@ class Game:
 		if action.verb == "talk_npc":
 			self.handleTalk(action.direct_obj, action.indirect_obj, True)
 			self.updateTime(0.6)
+			self.updateEndgame()
 			return 
 		if action.verb == "show_inventory":
 			self.user.printInventory()
@@ -1273,30 +1343,39 @@ class Game:
 		if action.verb == "search":
 			self.handleSearch(action.direct_obj, action.indirect_obj, True)
 			self.updateTime(0.6)
+			self.updateEndgame()
 			return
 		if action.verb == "read":
 			self.handleRead(action.direct_obj, action.indirect_obj, True)
 			self.updateTime(0.6)
+			self.updateEndgame()
 			return
 		if action.verb == "insert":
 			self.handleInsert(action.direct_obj, action.indirect_obj, True)
 			self.user.insertObject(action.direct_obj, action.indirect_obj)
 			self.updateTime(0.6)
+			self.updateEndgame()
 			return
 		if action.verb == "listen":
 			self.handleListen(action.direct_obj, action.indirect_obj, True)
 			self.updateTime(0.6)
+			self.updateEndgame()
 			return
 		if action.verb == "do_violence":
 			self.handleViolence(action.direct_obj, action.indirect_obj, True)
 			self.updateTime(0.6)
+			self.updateEndgame()
 			return
 		if action.verb == "open_thing":
 			self.handleOpen(action.direct_obj, action.indirect_obj, True)
 			self.updateTime(0.6)
+			self.updateEndgame()
 			return
 		if action.verb == "activate":
 			self.handleActivate(action.direct_obj, True)
+			self.updateTime(0.6)
+			self.updateEndgame()
+			return
 		else:
 			return
 
@@ -1319,16 +1398,26 @@ class Game:
 			Output.print_talk("The stern woman on the platform stops you.^#\"Just where do you think you're going without greeting your elders?\"#", None) #no "you talk to" message when you are not the person initiating converstaion
 			return
 		
-		#v17.3: no entering drawing room once game is won
+		#v17.3: no entering drawing room/kitchen once game is won
 		if self.endgameEnded:
+			if user_place.name.lower() == "downstairs hallway 1" and (direction == "w" or direction == "west"):
+				Output.print_look("You glance into the drawing room as you pass by. It's as placid and boring as can be.")
+				return 
+			elif user_place.name.lower() == "downstairs hallway 2" and (direction == "e" or direction == "east"):
+				Output.print_look("You glance into the kitchen as you pass by. It's as placid and boring as can be.")
+				return
+		# can't enter drawing room on day 1
+		if self.day == 1:
 			if user_place.name.lower() == "downstairs hallway 1" and (direction == "w" or direction == "west"):
 				Output.print_look("You glance into the drawing room as you pass by. It's as placid and boring as can be.")
 				return 
 
 		#force user to complete endgame in Study once started
+		# cannot leave Study until orb is destroyed
 		if self.endgameBegun and not self.endgameEnded:
 			if user_place.name.lower() == "study" and (direction == "w" or direction == "west"):
-				Output.print_look("Your legs won’t seem to obey you. They only take you closer to the floating orb, which is strangely entrancing.")
+				if len(self.endingEvents) >= 2:
+					Output.print_look(self.endingEvents[1])
 				return
 
 		self.user.updatePlace(adjacent_places[reverse_dict[direction]])
@@ -1372,6 +1461,21 @@ class Game:
 			new_place.lockDoor("s") 
 			self.frontDoorIsLocked = True
 
+		# v17.3 begin endgame upon entering Study
+		if new_place.name.lower() == "study":
+			self.endgameBegun = True
+
+		#v17.3 final ending
+		if new_place.name.lower() == "front manor grounds" and user_place.name.lower() == "foyer":
+			if self.endgameEnded:
+				n_ends = len(self.endingEvents)
+				if n_ends >= 2:
+					Output.print_look(self.endingEvents[n_ends-2])
+					Output.print_look(self.endingEvents[n_ends-1])
+					print()
+					Output.print_look("THE END")
+					print()
+					print("Congratulations! You've completed the game. Please enter 'quit'") 
 
 # define the "Place" class
 class Place:
@@ -1558,17 +1662,9 @@ class User:
 			self.current_place = game.getPlace(startingPlace)
 			self.direction = startingDirection
 
-			#self.hasEnteredHouse = False
-			#self.tookLetter = False
-			#self.whenTookLetter = -1  
 			self.hasMetMaude = False
 			self.hasMetMina = False
-			#self.hasMetDworkin = False
-			self.hasBottle = False
-			self.hasMatchbook = False
-			self.hasCorkscrew = False
 			self.hasEavesdropped = False
-			#self.hasStudyKey = False
 			self.accumEndMoveCt = 0		
 
 			# new in v2
