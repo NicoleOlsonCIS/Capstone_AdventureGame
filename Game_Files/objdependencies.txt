@@ -8,6 +8,8 @@ flash of color:porcelain doll
 ***
 grove ground:set of footprints
 ***
+white porcelain sink:undersink cabinet
+***
 dresser:set of drawers
 ***
 set of drawers:flashlight
@@ -24,9 +26,9 @@ cloakroom coats:military coat
 ***
 military coat:letter
 ***
-tweed coat:silver key
-***
 study desk:stack of notes
+***
+study chair:tweed coat 
 ***
 library tables:faded blue book
 ***
