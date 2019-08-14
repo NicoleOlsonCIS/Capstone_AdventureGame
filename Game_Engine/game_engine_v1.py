@@ -121,7 +121,11 @@ class Game:
 			personInPlace = pl.getPersonByName("maude")
 			if personInPlace != None:
 				pl.removeCharacter(personInPlace)
-			sq = self.places["Servant Quarters"]
+			sq = None
+			for rm in self.places:
+				if "Quarters" in rm.name:
+					sq = rm	
+			#sq = self.places["Servant Quarters"]
 			if sq != None:
 				if sq.getPersonByName("maude") == None:
 					for c in self.allCharacters:
@@ -1674,7 +1678,7 @@ class Place:
 		self.showDroppedObjects()
 
 		#17.3: see orb in Study before game is won 
-		if self.name == "Study" and (self.endgameEnded == False and self.roomHasThing("silver orb")):
+		if self.name == "Study" and self.roomHasThing("silver orb"):
 			orb = self.getThingByName("silver orb")
 			if orb != None:
 				Output.print_look(orb.isHereDescription)
