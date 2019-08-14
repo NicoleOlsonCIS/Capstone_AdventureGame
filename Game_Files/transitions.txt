@@ -62,11 +62,11 @@ Study
 ***
 Large Bedroom
 ***
-Servants\' Stair Top
+Servant Stair Top
 s#None--None--None
 d#None--None--None
 ***
-Servants\' Stair Bottom
+Servant Stair Bottom
 s#None--None--None
 u#None--None--None
 ***
@@ -89,7 +89,7 @@ e#None--None--None
 Kitchen
 w#None--None--None
 ***
-Servants\' Quarters
+Servant Quarters
 ***
 Drawing Room
 e#None--None--None
