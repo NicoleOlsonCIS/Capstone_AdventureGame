@@ -46,10 +46,10 @@ None-None-None-None-None-None-None-None-None-None
 Large Bedroom
 None-None-None-None-None-None-None-None-None-None
 ***
-Servants\' Stair Top
+Servant Stair Top
 None-None-None-None-open door,leave,exit-None-None-None-None-staircase,stairs,downstairs,leave,exit
 ***
-Servants\' Stair Bottom
+Servant Stair Bottom
 None-None-None-None-open door,leave,exit-None-None-None-upstairs,stairs,staircase,leave,exit-None
 ***
 Downstairs Hallway 3
@@ -64,7 +64,7 @@ leave,exit-None-archway-None-leave,exit-None-archway-None-None-None
 Kitchen
 None-None-None-None-None-None-None-leave,exit,door-None-None
 ***
-Servants\' Quarters
+Servant Quarters
 None-None-None-None-None-None-None-None-None-None
 ***
 Drawing Room
