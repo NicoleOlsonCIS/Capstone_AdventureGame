@@ -611,13 +611,13 @@ def buildGame():
     Library
     Study
     Large Bedroom
-    Servants\' Stair Top
-    Servants\' Stair Bottom
+    Servant Stair Top
+    Servant Stair Bottom
     Downstairs Hallway 3
     Downstairs Hallway 2
     Downstairs Hallway 1
     Kitchen
-    Servants\' Quarters
+    Servant Quarters
     Drawing Room
     Dining Room
     Cloakroom
