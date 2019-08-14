@@ -172,7 +172,7 @@ a6 = "|             |"
 a7 = "|             |"
 
 arch7 = [a1, a2, a3, a4, a5, a6, a7]
-archways.append(arch7)
+#archways.append(arch7)
 a1 = ".^/         \\--  "
 a2 = "^/           \\i  "
 a3 = "|             |"
@@ -977,6 +977,7 @@ class Output(object):
             sys.stdout.write(u"\033[7A") # up height
             time.sleep(0.3)
         i = 0
+        time.sleep(0.3)
         while i < 7:
             print("                                           ")
             i += 1
