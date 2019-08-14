@@ -592,12 +592,82 @@ def buildGame():
     for p in places:
         p.setAdjacentPlaces(game)
 
-    place_data_files = ["trainplatform.txt","stationhouse.txt","fields.txt","frontmanorgrounds.txt","foyer.txt","upstairshallway1.txt","upstairshallway2.txt","upstairshallway3.txt","upstairshallway4.txt","upstairshallway5.txt","spareroom.txt","smalllavatory.txt","bedroom.txt","library.txt","study.txt","servantsstairtop.txt","servantsstairbottom.txt","downstairshallway3.txt","downstairshallway2.txt","downstairshallway1.txt","kitchen.txt","drawingroom.txt","diningroom.txt","cloakroom.txt","ashgrove.txt","rearmanorgrounds.txt"]
+    
+    # Order of places: 
+    '''
+    Train Platform
+    Station-House
+    Fields
+    Front Manor Grounds
+    Foyer
+    Upstairs Hallway 1
+    Upstairs Hallway 2
+    Upstairs Hallway 3
+    Upstairs Hallway 4
+    Upstairs Hallway 5
+    Spare Room
+    Small Lavatory
+    Bedroom
+    Library
+    Study
+    Large Bedroom
+    Servants\' Stair Top
+    Servants\' Stair Bottom
+    Downstairs Hallway 3
+    Downstairs Hallway 2
+    Downstairs Hallway 1
+    Kitchen
+    Servants\' Quarters
+    Drawing Room
+    Dining Room
+    Cloakroom
+    Ash Grove
+    Rear Manor Grounds
+    Root Cellar'''
+
+
+
+    place_data_files = [
+        "trainplatform.txt",
+        "stationhouse.txt",
+        "fields.txt",
+        "frontmanorgrounds.txt",
+        "foyer.txt",
+        "upstairshallway1.txt",
+        "upstairshallway2.txt",
+        "upstairshallway3.txt",
+        "upstairshallway4.txt",
+        "upstairshallway5.txt",
+        "spareroom.txt",
+        "smalllavatory.txt",
+        "bedroom.txt",
+        "library.txt",
+        "study.txt",
+        "None",
+        "servantsstairtop.txt",
+        "servantsstairbottom.txt",
+        "downstairshallway3.txt",
+        "downstairshallway2.txt",
+        "downstairshallway1.txt",
+        "kitchen.txt",
+        "None",
+        "drawingroom.txt",
+        "diningroom.txt",
+        "cloakroom.txt",
+        "ashgrove.txt",
+        "rearmanorgrounds.txt",
+        "None"
+        ]
     
     i = 0
     for data in place_data_files:
-        loadPlaceData(places[i], data, game)
-        i += 1
+        # provisions for places that don't have text files
+        if data != "None":
+            loadPlaceData(places[i], data, game)
+            #print("place name " + places[i].name + " data file: " + data)
+            i += 1
+        else:
+            i += 1
 
     loadListens(places[23], "drawinglisten.txt")
 
