@@ -1438,11 +1438,11 @@ class Game:
 					Output.print_look(self.endingEvents[1])
 				return
 
-		# arch transition CURRENTLY TAKES 8 MIN TO GET TO AN ARCH
-		# dict_passages = self.user.current_place.passages
-		# if there is an archway in that direction, print the arch transition
-		#if dict_passages[direction] == "archway":
-		#	Output.print_archway_transition()
+		# arch transition 
+		dict_passages = self.user.current_place.passages
+		#if there is an archway in that direction, print the arch transition
+		if dict_passages[direction] == "archway":
+			Output.print_archway_transition()
 
 		self.user.updatePlace(adjacent_places[reverse_dict[direction]])
 		alt_dir = opposing_dir_dict[reverse_dict[direction]]

@@ -175,7 +175,7 @@ a6 = "|             |"
 a7 = "|             |"
 
 arch8 = [a1, a2, a3, a4, a5, a6, a7]
-archways.append(arch8)
+#archways.append(arch8)
 
 a1 = "|             |"
 a2 = "|             |"
@@ -186,7 +186,7 @@ a6 = "|             |"
 a7 = "|             |"
 
 arch9 = [a1, a2, a3, a4, a5, a6, a7]
-archways.append(arch9)
+#archways.append(arch9)
 
 # static class
 class Output(object):
