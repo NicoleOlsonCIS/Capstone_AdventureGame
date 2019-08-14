@@ -1441,8 +1441,10 @@ class Game:
 		# arch transition 
 		dict_passages = self.user.current_place.passages
 		#if there is an archway in that direction, print the arch transition
-		if dict_passages[direction] == "archway":
-			Output.print_archway_transition()
+		arr = dict_passages[direction]
+		for o in arr:
+			if o == "archway":
+				Output.print_archway_transition()
 
 		self.user.updatePlace(adjacent_places[reverse_dict[direction]])
 		alt_dir = opposing_dir_dict[reverse_dict[direction]]
@@ -1550,13 +1552,13 @@ class Place:
 	#  translates array to "adjacentplaces" array after all places created
 	def setAdjacentPlaces(self, game):
 		self.adjacent_places = list(map(game.getPlace, self.adjacent_place_names))
-		print("Places adjacent to " + self.name)
-		for a in self.adjacent_places:
-			if a is None:
-				sys.stdout.write("None   ")
-			else:
-				sys.stdout.write(a.name + "   ")
-		print()
+		#print("Places adjacent to " + self.name)
+		#for a in self.adjacent_places:
+		#	if a is None:
+	#			sys.stdout.write("None   ")
+	#		else:
+	#			sys.stdout.write(a.name + "   ")
+	#	print()
 
 	# v14 track passage types in a dictionary i.e. archway
 	def setPassages(self, passages):

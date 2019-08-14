@@ -664,6 +664,9 @@ def buildGame():
         # provisions for places that don't have text files
         if data != "None":
             loadPlaceData(places[i], data, game)
+            #print("place name " + places[i].name + " data file: " + data)
+            i += 1
+        else:
             i += 1
 
     loadListens(places[23], "drawinglisten.txt")
@@ -734,7 +737,6 @@ def gameLoop(game):
         # flush standard in 
         termios.tcflush(sys.stdin, termios.TCIFLUSH)
 
-        Output.print_archway_transition()
         # game.getTime() # uncomment this if you need it!
 
         # game continues until user enters quit at the prompt 
