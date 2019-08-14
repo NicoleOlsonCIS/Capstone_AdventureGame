@@ -15,7 +15,7 @@ Foyer,None,None,None,Fields,None,None,Ash Grove,None,None
 None
 ***
 Foyer
-Downstairs Hallway 1,None,None,None,Front Manor Grounds,None,Cloackroom,None,Upstairs Hallway 1,None
+Downstairs Hallway 1,None,None,None,Front Manor Grounds,None,Cloakroom,None,Upstairs Hallway 1,None
 None,None,None,None,unlocked,None,None,None,None,None
 ***
 Upstairs Hallway 1
@@ -35,7 +35,7 @@ Upstairs Hallway 5,None,Study,None,Upstairs Hallway 3,None,Large Bedroom,None,No
 None
 ***
 Upstairs Hallway 5
-Servants\' Stair Top,None,None,None,Upstairs Hallway 4,None,None,None,None,None
+Servant Stair Top,None,None,None,Upstairs Hallway 4,None,None,None,None,None
 None
 ***
 Spare Room
@@ -62,19 +62,19 @@ Large Bedroom
 None,None,Upstairs Hallway 4,None,None,None,None,None,None,None
 None,None,unlocked,None,None,None,None,None,None,None
 ***
-Servants\' Stair Top
-None,None,None,None,Upstairs Hallway 5,None,None,None,None,Servants\' Stair Bottom
+Servant Stair Top
+None,None,None,None,Upstairs Hallway 5,None,None,None,None,Servant Stair Bottom
 None
 ***
-Servants\' Stair Bottom
-None,None,None,None,Downstairs Hallway 3,None,None,None,Servants\' Stair Top,None
+Servant Stair Bottom
+None,None,None,None,Downstairs Hallway 3,None,None,None,Servant Stair Top,None
 ***
 Downstairs Hallway 3
-Servants\' Stair Bottom,None,None,None,Downstairs Hallway 2,None,None,None,None,None
+Servant Stair Bottom,None,None,None,Downstairs Hallway 2,None,None,None,None,None
 None
 ***
 Downstairs Hallway 2
-Downstairs Hallway 3,None,Kitchen,None,Downstairs Hallway 1,None,Servants\' Quarters,None,None,None
+Downstairs Hallway 3,None,Kitchen,None,Downstairs Hallway 1,None,Servant Quarters,None,None,None
 None,None,None,None,None,None,locked,None,None,None
 ***
 Downstairs Hallway 1
@@ -85,12 +85,12 @@ Kitchen
 None,None,None,None,None,None,Downstairs Hallway 2,None,None,None
 None
 ***
-Servants\' Quarters
+Servant Quarters
 None,None,Downstairs Hallway 2,None,None,None,None,None,None,None
 None,None,locked,None,None,None,None,None,None,None
 ***
 Drawing Room
-None,None,"Downstairs Hallway 1",None,None,None,None,None,None,None
+None,None,Downstairs Hallway 1,None,None,None,None,None,None,None
 None
 ***
 Dining Room
