@@ -504,10 +504,6 @@ class Game:
 		orb = study.getThingByName("silver orb")
 		if orb != None:
 			study.removeThing(orb)
-		# remove professor from Study (he got abducted by eldritch beings)
-		prof = study.getThingByName("professor")
-		if prof != None:
-			study.removeThing(prof)
 		# start new day
 		self.day += 1
 		self.time = 6.00
@@ -910,18 +906,23 @@ class Game:
 		Output.print_look("go, move, run, walk, head, hurry")
 		Output.print_look("n, s, e, w, nw, ne, sw, se, u, d")
 		Output.print_look("north, south, east, west, northwest, northeast, southwest, southeast, up, down, upstairs, downstairs")
+		print()
 		Output.print_look("get, pick up, take, grab, keep, steal, acquire, collect")
 		Output.print_look("drop, put down, abandon, discard, trash")
 		Output.print_look("insert, put in, put inside")
+		print()
 		Output.print_look("look, l, look around")
 		Output.print_look("look at, examine, x, inspect, study, stare, gaze")
 		Output.print_look("search, look in, look inside")
 		Output.print_look("look outside, look out window, look through window")
+		print()
 		Output.print_look("open")
 		Output.print_look("read")
 		Output.print_look("listen")
 		Output.print_look("talk, greet, chat, speak")
 		Output.print_look("sleep, rest, relax, go to bed")
+		Output.print_look("destroy")
+		print()
 		Output.print_look("help, inventory, time")
 
 	# point of entry from parser, game takes care of input from this point

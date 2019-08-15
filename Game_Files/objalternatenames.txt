@@ -126,7 +126,7 @@ study fireplace:cold fireplace,fireplace
 ***
 painting:portrait
 ***
-marble bust:bust,marble,white marble bust,white marble,statue,marble statue,greek bust,greek statue,greek god
+bust:marble,marble bust,white marble bust,white marble,statue,marble statue,greek bust,greek statue,greek god
 ***
 silver orb:silvery bubble,silver bubble,bubble,orb,silver,hatch,quicksilver,floating orb,floating bubble
 ***
