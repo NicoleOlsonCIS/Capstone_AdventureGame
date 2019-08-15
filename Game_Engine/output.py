@@ -470,6 +470,7 @@ class Output(object):
                 # fade the printed things
                 Output.fadeString(full)
         sys.stdout.write(u"\u001b[0m") # reset
+        sys.stdout.write(u"\033[2A") # up the last two spaces
 
     # fade string to black
     @classmethod
