@@ -56,11 +56,11 @@ None
 ***
 Study
 None,None,None,None,None,None,Upstairs Hallway 4,None,None,None
-None,None,None,None,None,None,unlocked,None,None,None
+None,None,None,None,None,None,locked,None,None,None
 ***
 Large Bedroom
 None,None,Upstairs Hallway 4,None,None,None,None,None,None,None
-None,None,unlocked,None,None,None,None,None,None,None
+None,None,locked,None,None,None,None,None,None,None
 ***
 Servant Stair Top
 None,None,None,None,Upstairs Hallway 5,None,None,None,None,Servant Stair Bottom
