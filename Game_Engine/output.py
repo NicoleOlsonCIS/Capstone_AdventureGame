@@ -470,7 +470,8 @@ class Output(object):
                 # fade the printed things
                 Output.fadeString(full)
         sys.stdout.write(u"\u001b[0m") # reset
-        sys.stdout.write(u"\033[1A") # up the last two spaces
+        if person_name != None:
+            sys.stdout.write(u"\033[1A") # up the last two spaces
 
     # fade string to black
     @classmethod
