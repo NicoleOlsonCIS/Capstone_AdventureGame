@@ -79,7 +79,7 @@ None,None,None,None,None,None,locked,None,None,None
 ***
 Downstairs Hallway 1
 Downstairs Hallway 2,None,Dining Room,None,Foyer,None,Drawing Room,None,None,None
-None,None,None,None,None,None,locked,None,None,None
+None,None,None,None,None,None,None,None,None,None
 ***
 Kitchen
 None,None,None,None,None,None,Downstairs Hallway 2,None,None,None
