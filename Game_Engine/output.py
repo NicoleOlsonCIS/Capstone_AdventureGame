@@ -329,8 +329,6 @@ class Output(object):
     @classmethod
     def print_talk(self, characters_message, person_name):
 
-        print("\n")
-
         # if there is a person name, print that first
         if person_name != None: 
             d = "You talk to " + person_name
@@ -453,18 +451,21 @@ class Output(object):
                 else:
                     # print the speech bubble with a newline
                     bubble = Output.print_bubble(speaking_lines)
-                    print("\n") # print "\n" 
-                    full += bubble + "\n\n"
+                    print() # print "\n" 
+                    full += bubble + "\n"
 
                     # print the description with a newline
                     sys.stdout.write(u'\u001b[38;5;$146m')
+                    length = len(description)
+                    count_p = 0
                     for elem in description:
                         time.sleep(0.04)
                         sys.stdout.write(elem)
                         sys.stdout.flush()
-                    print("\n")
-                    full = full + description + "\n\n"
-                    time.sleep(0.3)
+                        count_p += 1
+                        if count_p == length:
+                            time.sleep(0.7)
+                    full = full + description
                 
                 # fade the printed things
                 Output.fadeString(full)
@@ -641,7 +642,7 @@ class Output(object):
         Output.openDoor(_openDoor, placeName)
         time.sleep(0.1)
         Output.clearEntryWriting()
-        sys.stdout.write(u"\033[1A") # move cursor up
+        sys.stdout.write(u"\033[2A") # move cursor up
         sys.stdout.write(u"\u001b[0m") # reset
 
     @classmethod
@@ -692,7 +693,7 @@ class Output(object):
             time.sleep(0.04)
             sys.stdout.write(elem)
             sys.stdout.flush()
-        time.sleep(0.3)
+        time.sleep(0.5)
 
     @classmethod
     def clearEntryWriting(self):
