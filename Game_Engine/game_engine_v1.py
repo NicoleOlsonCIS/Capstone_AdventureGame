@@ -390,13 +390,19 @@ class Game:
 				#Output.print_talk(character.getCharacterSpeak(self.time), character.name)
 				self.updateTime(0.6)
 				if character.name.lower() == "maude":
+					if character.getCharacterSpeak(self.user.current_place.name) == None:
+						Output.print_error("She has nothing more to say to you at the moment.")
+						return
 					Output.print_talk(character.getCharacterSpeak(self.user.current_place.name), character.name)
 					self.user.hasMetMaude = True
 				elif character.name.lower() == "mina":
 					if self.user.hasMetMina == False:
 						Output.print_talk(character.getCharacterSpeak("intro"), character.name)
 						self.user.hasMetMina = True
-					else:	
+					else:
+						if character.getCharacterSpeak(self.user.current_place.name) == None:
+							Output.print_error("She has nothing more to say to you at the moment.")
+							return	
 						Output.print_talk(character.getCharacterSpeak(self.user.current_place.name), character.name)
 						self.user.hasMetMina = True
 				self.setIsValid()
@@ -853,13 +859,19 @@ class Game:
 				if c.name.lower() == attemptedObj.lower() or attemptedObj.lower() in c.altNames:
 					#Output.print_talk(c.getCharacterSpeak(self.time), c.name)
 					if c.name.lower() == "maude":
+						if c.getCharacterSpeak(self.user.current_place.name) == None:
+							Output.print_error("She has nothing more to say to you at the moment.")
+							return
 						Output.print_talk(c.getCharacterSpeak(self.user.current_place.name), c.name)
 						self.user.hasMetMaude = True
 					elif c.name.lower() == "mina":
 						if self.user.hasMetMina == False:
 							Output.print_talk(c.getCharacterSpeak("intro"), c.name)
 							self.user.hasMetMina = True
-						else:	
+						else:
+							if c.getCharacterSpeak(self.user.current_place.name) == None:
+								Output.print_error("She has nothing more to say to you at the moment.")
+								return	
 							Output.print_talk(c.getCharacterSpeak(self.user.current_place.name), c.name)
 							self.user.hasMetMina = True 
 					return # return after finding a character in the place that matches the attemptedObj
