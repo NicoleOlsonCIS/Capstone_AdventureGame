@@ -134,6 +134,10 @@ bottle:glass bottle,black liquid,dark liquid,liquid,bottle liquid,bottle black
 ***
 tweed coat:tweed,coat
 ***
+drawing room armchairs:armchairs,armchair,chairs,chair
+***
+grand fireplace:fireplace,fire
+*** 
 tall couch:couch
 ***
 stack of notes:notes,stack,pile notes,stack notes,pile

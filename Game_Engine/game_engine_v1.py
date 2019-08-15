@@ -1315,7 +1315,7 @@ class Game:
 				# special case for "bottle"
 				# bottle can only be opened during endgame 
 				if i.name == "bottle":
-					if "bottle" in action.direct_obj or action.direct_obj in i.altNames:
+					if "bottle" == action.direct_obj or action.direct_obj in i.altNames:
 						if self.endgameBegun and not self.endgameEnded:
 							return True
 						else:
