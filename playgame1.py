@@ -567,9 +567,10 @@ def loadDialogDict(filename, character):
     dialogue_dict = {}
 
     for dmchunk in dm_chunks:
+        dmchunk = dmchunk.rstrip("\n")
         dmpieces = dmchunk.split(":::")
         placeOrTopic = dmpieces[0]
-        if placeOrTopic not in dialogue_dict:
+        if placeOrTopic not in dialogue_dict.keys():
             dialogue_dict[placeOrTopic] = []
             # key is place or topic name, value is list of dialogues for that place/topic
             dialogue_dict[placeOrTopic].append(dmpieces[1])

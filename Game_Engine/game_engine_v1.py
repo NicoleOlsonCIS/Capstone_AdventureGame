@@ -387,14 +387,15 @@ class Game:
 			elif len(self.user.current_place.characters) == 1: 
 				# talk to the character
 				character = self.user.current_place.characters[0] # get the only character
-				#Output.print_talk(character.getCharacterSpeak(self.time), character.name)
 				self.updateTime(0.6)
 				if character.name.lower() == "maude":
 					if character.getCharacterSpeak(self.user.current_place.name) == None:
 						Output.print_error("She has nothing more to say to you at the moment.")
+						return
 					else:
 						Output.print_talk(character.getCharacterSpeak(self.user.current_place.name), character.name)
 						self.user.hasMetMaude = True
+						return
 				elif character.name.lower() == "mina":
 					if self.user.hasMetMina == False:
 						Output.print_talk(character.getCharacterSpeak("intro"), character.name)
@@ -402,9 +403,11 @@ class Game:
 					else:
 						if character.getCharacterSpeak(self.user.current_place.name) == None:
 							Output.print_error("She has nothing more to say to you at the moment.")
+							return
 						else:
 							Output.print_talk(character.getCharacterSpeak(self.user.current_place.name), character.name)
 							self.user.hasMetMina = True
+							return
 				self.setIsValid()
 				return
 		else:
@@ -541,8 +544,10 @@ class Game:
 				Output.print_input_hint("Something tells you it's not quite time for that yet.")
 			elif attemptedObj == "matchbook" and self.endgameEnded:
 				Output.print_input_hint("There's no need for any more explosions, you hope.")
-			elif attemptedObj == "flashlight":
+			elif attemptedObj == "flashlight" and self.user.userHasThing("flashlight"):
 				Output.print_error("The flashlight has no batteries.")
+			elif attemptedObj == "flashlight" and not self.user.userHasThing("flashlight"):
+				Output.print_error("You do not have a flashlight.") 
 			else:
 				Output.print_error("You don't see the point of doing that right now.")
 
@@ -857,23 +862,27 @@ class Game:
 			characters = self.user.current_place.characters
 			for c in characters:
 				if c.name.lower() == attemptedObj.lower() or attemptedObj.lower() in c.altNames:
-					#Output.print_talk(c.getCharacterSpeak(self.time), c.name)
 					if c.name.lower() == "maude":
 						if c.getCharacterSpeak(self.user.current_place.name) == None:
 							Output.print_error("She has nothing more to say to you at the moment.")
+							return
 						else:
 							Output.print_talk(c.getCharacterSpeak(self.user.current_place.name), c.name)
 							self.user.hasMetMaude = True
+							return
 					elif c.name.lower() == "mina":
 						if self.user.hasMetMina == False:
 							Output.print_talk(c.getCharacterSpeak("intro"), c.name)
 							self.user.hasMetMina = True
+							return
 						else:
 							if c.getCharacterSpeak(self.user.current_place.name) == None:
 								Output.print_error("She has nothing more to say to you at the moment.")
+								return
 							else:	
 								Output.print_talk(c.getCharacterSpeak(self.user.current_place.name), c.name)
-								self.user.hasMetMina = True 
+								self.user.hasMetMina = True
+								return 
 					return # return after finding a character in the place that matches the attemptedObj
 		else:
 			if attemptedObj == None and attemptedInd_Obj == None:
@@ -1256,6 +1265,11 @@ class Game:
 						return True
 					elif action.direct_obj in i.altNames:
 						return True
+			if action.direct_obj == None and action.indirect_obj == None:
+				return False
+			if self.user.current_place.hasCharacters == False:
+				return False
+
 		#v17.3 "destroy orb" for endgame only 
 		elif action.verb == "do_violence":
 			if action.direct_obj == None:
@@ -1495,8 +1509,8 @@ class Game:
 	
 		# reset numTimesTalked for each previously talked-to character to 0 (because new location)
 		for person in self.allCharacters:
-			if person.numTimesTalked > -1:
-				person.numTimesTalked = -1 
+			if person.numTimesTalked > 0: 
+				person.numTimesTalked = 0 
 
 		# v15 oprinting moved to transition functionality
 		if new_place.numTimesEntered == 0 and (user_place.name.lower() == "front manor grounds" and new_place.name.lower() == "foyer"):
@@ -1887,7 +1901,7 @@ class Thing:
 
 		self.numTimesRead = 0
 		self.numTimesExamined = -1 # start at -1 to account for "+1" at beginning of getDescription/array indexing
-		self.numTimesTalked = -1
+		self.numTimesTalked = 0 
 
 	def getDescription(self, time):
 		self.numTimesExamined += 1
@@ -1940,17 +1954,27 @@ class Thing:
 
 	# v17.1: get character dialogue by location or topic 
 	def getCharacterSpeak(self, locationOrTopic):
-		self.numTimesTalked += 1
+		#print(self.numTimesTalked)
+		oldnum = self.numTimesTalked 
 		dialogList = None
 		if self.char_dict:
 			if locationOrTopic.lower() in self.char_dict.keys():
 				dialogList = self.char_dict[locationOrTopic.lower()]
+
+		if dialogList == None:
+			#print("no dialoglist")
+			return None 
 		if dialogList != None:
 			dlength = len(dialogList)
-			if self.numTimesTalked >= dlength:
+			if dlength == 0:
+				#print("empty dialoglist")
+				return None
+			if oldnum >= dlength:
+				self.numTimesTalked += 1
 				return dialogList[dlength-1]
 			else:
-				return dialogList[self.numTimesTalked]	
+				self.numTimesTalked += 1
+				return dialogList[oldnum]	
 
 	# edit description
 	def editDescription(self, day, night):

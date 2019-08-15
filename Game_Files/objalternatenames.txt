@@ -56,6 +56,8 @@ foyer chandelier:chandelier,wrought-iron chandelier,iron chandelier,ornate chand
 ***
 set of drawers:drawers,dresser drawers,drawer,dresser drawer
 ***
+liquor cabinet:cabinet,liquor
+***
 white porcelain sink:sink,porcelain sink,white sink
 ***
 undersink cabinet:undersink,cabinet,sink cabinet,cabinets,wooden cabinet,small wooden,small cabinet,small wooden cabinet
