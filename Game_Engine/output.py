@@ -436,7 +436,7 @@ class Output(object):
 
                     # print the speech bubble and a newline
                     bubble = Output.print_bubble(speaking_lines)
-                    print("\n")
+                    print()
                     time.sleep(0.3)
                     
                     # additional sleep for longer bubbles
@@ -446,7 +446,7 @@ class Output(object):
                         time.sleep(1)
                     elif len(speaking_lines) < 12:
                         time.sleep(1.5)
-                    full = full + bubble + "\n\n"
+                    full = full + bubble + "\n"
                 
                 else:
                     # print the speech bubble with a newline
@@ -501,7 +501,7 @@ class Output(object):
         sys.stdout.write(u"\u001b[1000D")
         sys.stdout.write(u"\033[" + str(height - 1) + "A") # up height
         # print clear lines
-        for i in range(1, height):
+        for i in range(1, height + 1):
             print(pc)
         sys.stdout.write(u"\u001b[1000D")
         sys.stdout.write(u"\033[" + str(height - 1) + "A") # up height
