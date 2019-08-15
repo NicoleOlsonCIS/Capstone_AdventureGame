@@ -760,7 +760,7 @@ class Output(object):
         sys.stdout.write("\n")
 
         # print keyline2
-        sys.stdout.write(u"\u001b[250;1m") # yellow text
+        sys.stdout.write(u"\u001b[250;1m") # silver text
         sys.stdout.write(keyline2[0])
         sys.stdout.write(u"\u001b[0m") # reset
 
@@ -769,13 +769,13 @@ class Output(object):
         sys.stdout.write(keyline2[1])
         sys.stdout.write(u"\u001b[0m") # reset
 
-        sys.stdout.write(u"\u001b[250;1m") # yellow text
+        sys.stdout.write(u"\u001b[250;1m") # silver text
         sys.stdout.write(keyline2[2])
         sys.stdout.write(u"\u001b[0m") # reset
         sys.stdout.write("\n")
 
         # print keyline3
-        sys.stdout.write(u"\u001b[250;1m") # yellow text
+        sys.stdout.write(u"\u001b[250;1m") # silver text
         sys.stdout.write(keyline3[0])
         sys.stdout.write(u"\u001b[47m") # add white background
         sys.stdout.write(u"\u001b[30m") # change text black
@@ -783,7 +783,7 @@ class Output(object):
         sys.stdout.write(keyline3[2])
         sys.stdout.write(keyline3[3])
         sys.stdout.write(u"\u001b[0m") # reset
-        sys.stdout.write(u"\u001b[250;1m") # yellow text
+        sys.stdout.write(u"\u001b[250;1m") # silver text
         sys.stdout.write(keyline3[4])
         sys.stdout.write(u"\u001b[0m") # reset
         sys.stdout.write("\n\n\n")
