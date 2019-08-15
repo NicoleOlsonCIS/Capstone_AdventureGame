@@ -1,7 +1,7 @@
 intro:::#“Oh, you’re from the city,”#^she says after you introduce yourself.|||#“Uncle didn’t tell me about you. My name is Wilhelmina - Mina for short. This is my uncle’s house.”# 
 ***
 bedroom:::#“It's very rude to linger in someone's room when they're trying to sleep, you know.“#
-*** 
+***
 library:::#“My parents died when I was small,”#^she explains matter-of-factly.|||#“Uncle and I don’t have any other living family. It’s just him and the House, and me and Maude and the servants. I’m his heir - that’s why he tolerates me.“#
 ***
 library:::#“My parents died when I was small,”#^she explains matter-of-factly.|||#“Uncle and I don’t have any other living family. It’s just him and the House, and me and Maude and the servants. I’m his heir - that’s why he tolerates me.“#
