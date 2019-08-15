@@ -1,6 +1,6 @@
 Train Platform
 None,Fields,None,None,None,None,Station-House,None,None,None
-None
+None,None,None,None,None,None,unlocked,None,None,None
 ***
 Station-House
 None,None,Train Platform,None,None,None,None,None,None,None
@@ -12,19 +12,19 @@ None
 ***
 Front Manor Grounds
 Foyer,None,None,None,Fields,None,None,Ash Grove,None,None
-None
+unlocked,None,None,None,None,None,None,None,None,None
 ***
 Foyer
 Downstairs Hallway 1,None,None,None,Front Manor Grounds,None,Cloakroom,None,Upstairs Hallway 1,None
-None,None,None,None,unlocked,None,None,None,None,None
+None,None,None,None,unlocked,None,unlocked,None,None,None
 ***
 Upstairs Hallway 1
 Upstairs Hallway 2,None,None,None,None,None,Spare Room,None,None,Foyer
-None
+None,None,None,None,None,None,unlocked,None,None,None
 ***
 Upstairs Hallway 2
 Upstairs Hallway 3,None,Small Lavatory,None,Upstairs Hallway 1,None,Bedroom,None,None,None
-None
+None,None,unlocked,None,None,None,unlocked,None,None,None
 ***
 Upstairs Hallway 3
 Upstairs Hallway 4,None,Library,None,Upstairs Hallway 2,None,None,None,None,None
@@ -32,7 +32,7 @@ None
 ***
 Upstairs Hallway 4
 Upstairs Hallway 5,None,Study,None,Upstairs Hallway 3,None,Large Bedroom,None,None,None
-None
+None,None,locked,None,None,None,locked,None,None,None
 ***
 Upstairs Hallway 5
 Servant Stair Top,None,None,None,Upstairs Hallway 4,None,None,None,None,None
