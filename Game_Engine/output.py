@@ -833,6 +833,26 @@ class Output(object):
             print(placeDescription)
 
     @classmethod
+    def print_ending(self, endingstring):
+        length = len(endingstring)
+        ending = ""
+        if length > 60:
+            ending = Output.break_up_long_message(endingstring, 60)
+
+        if sys.stdin.isatty():
+            sys.stdout.write(u'\u001b[38;5;$69m')
+            for elem in ending:
+                time.sleep(0.04)
+                sys.stdout.write(elem)
+                sys.stdout.flush()
+            sys.stdout.write("\n")
+            sys.stdout.write(u"\u001b[0m")
+            print("\n")
+            sys.stdout.flush()
+        else:
+            print(ending)    
+
+    @classmethod
     def printIntro(self, introList):
         if len(introList) == 3: 
             length = len(introList[0])

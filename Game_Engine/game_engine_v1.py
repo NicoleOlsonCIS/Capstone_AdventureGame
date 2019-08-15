@@ -566,12 +566,16 @@ class Game:
 						Output.print_look(t.openDescrip)
 						#v13.3: update lastLooked upon opening thing
 						self.upDateLastLooked(t)
-						#v17.3: special event on opening bottle in endgame
-						if t.name == "bottle" and (self.endgameBegun and not self.endgameEnded):
-							self.bottleOpened = True
-							ends = len(self.endingEvents)
-							if ends >= 5:
-								Output.print_look(self.endingEvents[ends-5])
+			for i in self.user.things:
+				if i.name == "bottle" and (attemptedObj == "bottle" or attemptedObj in i.altNames):
+					#v17.3: special event on opening bottle in endgame
+					Output.print_look(i.openDescrip)
+					self.upDateLastLooked(i)
+					if self.endgameBegun and not self.endgameEnded:
+						self.bottleOpened = True
+						ends = len(self.endingEvents)
+						if ends >= 5:
+							Output.print_ending(self.endingEvents[ends-5])
 		else:
 			# if user tries to open a door
 			if "door" in attemptedObj:
@@ -1042,6 +1046,9 @@ class Game:
 
 		#v13.3
 		valid_opens = [item for item in user_place.things if item.is_openable]
+		for ownedItem in self.user.things:
+			if ownedItem.is_openable:
+				valid_opens.append(ownedItem)
 
 		# v12 add a character to the list of things to look at and talk with
 		valid_talks = []
@@ -1098,15 +1105,16 @@ class Game:
 		# will display more events as the user spends longer in the Study 
 		mcount = self.user.accumEndMoveCt
 		numends = len(self.endingEvents)
-		if mcount == 2 and not self.phaseOneDone:
-			if numends >= 1:
-				Output.print_look(self.endingEvents[0])
-				self.phaseOneDone = True	
-		elif mcount == 8 and not self.cutsceneDone:
+		#if mcount == 2 and not self.phaseOneDone:
+			#if numends >= 1:
+				#Output.print_ending(self.endingEvents[0])
+				#self.phaseOneDone = True	
+		#elif mcount == 8 and not self.cutsceneDone:
+		if mcount == 8 and not self.cutsceneDone:
 			# long cutscene here
 			if numends >= 14:
 				for endpiece in range(2,14): 
-					Output.print_look(self.endingEvents[endpiece])
+					Output.print_ending(self.endingEvents[endpiece])
 				self.cutsceneDone = True	
 
 		#17.3 front doors unlock after game is won
@@ -1450,15 +1458,15 @@ class Game:
 		#v17.3: no entering drawing room/kitchen once game is won
 		if self.endgameEnded:
 			if user_place.name.lower() == "downstairs hallway 1" and (direction == "w" or direction == "west"):
-				Output.print_look("You glance into the drawing room as you pass by. It's as placid and boring as can be.")
+				Output.print_look("You glance into the drawing room as you pass by. It's as placid and boring as can be. You think you'll come back when there's something to see.")
 				return 
 			elif user_place.name.lower() == "downstairs hallway 2" and (direction == "e" or direction == "east"):
-				Output.print_look("You glance into the kitchen as you pass by. It's as placid and boring as can be.")
+				Output.print_look("You glance into the kitchen as you pass by. It's as placid and boring as can be. You think you'll come back when there's something to see.")
 				return
 		# can't enter drawing room on day 1
 		if self.day == 1:
 			if user_place.name.lower() == "downstairs hallway 1" and (direction == "w" or direction == "west"):
-				Output.print_look("You glance into the drawing room as you pass by. It's as placid and boring as can be.")
+				Output.print_look("You glance into the drawing room as you pass by. It's as placid and boring as can be. You think you'll come back when there's something to see.")
 				return 
 
 		#force user to complete endgame in Study once started
@@ -1527,11 +1535,9 @@ class Game:
 			if self.endgameEnded:
 				n_ends = len(self.endingEvents)
 				if n_ends >= 2:
-					Output.print_look(self.endingEvents[n_ends-2])
-					Output.print_look(self.endingEvents[n_ends-1])
-					print()
-					Output.print_look("THE END")
-					print()
+					Output.print_ending(self.endingEvents[n_ends-2])
+					Output.print_ending(self.endingEvents[n_ends-1])
+					Output.print_ending("THE END")
 					print("Congratulations! You've completed the game. Please enter 'quit'") 
 
 # define the "Place" class
