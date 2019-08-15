@@ -368,7 +368,7 @@ class Output(object):
                 # send to print function
                 # print the speech bubble and a newline
                 bubble = Output.print_bubble(speaking_lines)
-                print("\n")
+                print()
                 time.sleep(0.5)
                 # additional sleep for longer bubbles
                 if len(speaking_lines) < 4:
@@ -378,7 +378,7 @@ class Output(object):
                 elif len(speaking_lines) < 12:
                     time.sleep(1.5)
 
-                full += bubble  + "\n\n"
+                full += bubble  + "\n"
 
                 # fade the printed things
                 Output.fadeString(full)
@@ -475,7 +475,7 @@ class Output(object):
     @classmethod
     def fadeString(self, stringToFade):
         #print(stringToFade)
-        time.sleep(1)
+        time.sleep(0.8)
         lineCount = Output.countNewLines(stringToFade)
         sys.stdout.write(u"\u001b[1000D")
         sys.stdout.write(u"\033[" + str(lineCount-1) + "A") # up the line count
@@ -670,14 +670,20 @@ class Output(object):
             c = "[31;1m"
 
         while i < num:
+            sys.stdout.write(u"\u001b[0m") # reset the color
+            sys.stdout.write(u"\u001b[1000D") # move cursor left
+            sys.stdout.write(u"\033[7A") # move cursor up
+            sys.stdout.flush() # clear std out
+            print(door) # print the door
             time.sleep(speed) # pause
             sys.stdout.write(u"\u001b[1000D") # move cursor left
             sys.stdout.write(u"\033[7A") # move cursor up
             sys.stdout.flush() # clear std out
             sys.stdout.write(u"\u001b" + c) # change color
             print(door) # print the door
-            sys.stdout.write(u"\u001b[0m") # reset the color
+            time.sleep(speed) # pause
             i += 1
+        sys.stdout.write(u"\u001b[0m") # reset the color
 
     @classmethod
     def openDoor(self,_openDoor, placeName):
@@ -718,8 +724,8 @@ class Output(object):
     def doorIsLocked(self, placeName, hint):
         if sys.stdin.isatty():
             Output.approachDoor(_approachDoor2)
-            time.sleep(0.4)
-            Output.printFlashingDoor(od0, "red", 4, 0.2)
+            time.sleep(0.05)
+            Output.printFlashingDoor(od0, "red", 2, 0.4)
             str = "That door is locked."
             # sys.stdout.write("\t")
             for elem in str:
@@ -748,7 +754,7 @@ class Output(object):
                 time.sleep(1) # pause before printing key
                 Output.printKey(keyline1, keyline2, keyline3)
             else:
-                print("\n\n\n")
+                print("\n")
         else:
             print("The door to the " + placeName + " is locked.")
 
@@ -786,7 +792,7 @@ class Output(object):
         sys.stdout.write(u"\u001b[250;1m") # silver text
         sys.stdout.write(keyline3[4])
         sys.stdout.write(u"\u001b[0m") # reset
-        sys.stdout.write("\n\n\n")
+        sys.stdout.write("\n\n")
 
     @classmethod
     def orientUser(self, placeName, placeDescription):
