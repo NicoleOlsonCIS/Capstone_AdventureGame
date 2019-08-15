@@ -775,6 +775,8 @@ def main():
 
     if sys.stdin.isatty():
 
+        Output.printTrees()
+
         Output.welcomePage()
         print("Would you like to start a new game or load a saved game? (new/loadgame)")
         new_or_save = input("> ")
