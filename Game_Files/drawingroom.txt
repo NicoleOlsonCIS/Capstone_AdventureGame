@@ -15,6 +15,7 @@ liquor cabinet
 fireplace
 amber liquid
 glasses
+tall couch
 ***
 One is graying and bespectacled, the other younger and dressed in military garb. They drink slowly from their glasses as they converse quietly.###No night
 ***
@@ -25,6 +26,8 @@ A fireplace with a gray marble mantel. Currently filled with logs and a cracklin
 You don't think it looks tasty.###You don't think it looks tasty.
 ***
 Grownups seem to like this sort of thing.###Grownups seem to like this sort of thing.
+***
+It's taller than you are.###It's taller than you are.
 ***
 no objects
 ***
