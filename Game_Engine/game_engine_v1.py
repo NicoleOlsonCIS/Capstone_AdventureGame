@@ -394,7 +394,7 @@ class Game:
 					self.user.hasMetMaude = True
 				elif character.name.lower() == "mina":
 					if self.user.hasMetMina == False:
-						Output.print_talk(character.char_dict["intro"], character.name)
+						Output.print_talk(character.getCharacterSpeak("intro"), character.name)
 						self.user.hasMetMina = True
 					else:	
 						Output.print_talk(character.getCharacterSpeak(self.user.current_place.name), character.name)
@@ -857,7 +857,7 @@ class Game:
 						self.user.hasMetMaude = True
 					elif c.name.lower() == "mina":
 						if self.user.hasMetMina == False:
-							Output.print_talk(c.char_dict["intro"], c.name)
+							Output.print_talk(c.getCharacterSpeak("intro"), c.name)
 							self.user.hasMetMina = True
 						else:	
 							Output.print_talk(c.getCharacterSpeak(self.user.current_place.name), c.name)
