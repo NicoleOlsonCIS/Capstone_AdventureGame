@@ -637,14 +637,11 @@ class Output(object):
         if not sys.stdin.isatty():
             return
 
-        # otherwise, do animation
-        # Output.approachDoor(_approachDoor2)
-        # Output.printFlashingDoor(od0, "green", 1, 0.1)
         print("\n\n\n\n\n\n")
         Output.openDoor(_openDoor, placeName)
-        # Output.printFlashingDoor(od9, "green", 1, 0.1)
         time.sleep(0.1)
         Output.clearEntryWriting()
+        sys.stdout.write(u"\033[1A") # move cursor up
         sys.stdout.write(u"\u001b[0m") # reset
 
     @classmethod
@@ -689,14 +686,13 @@ class Output(object):
             sys.stdout.flush()
             print(d) 
             time.sleep(0.09) # slow part is door opening
-            str = "Entering " + placeName
         str = "Entering " + placeName
         sys.stdout.flush()
         for elem in str:
             time.sleep(0.04)
             sys.stdout.write(elem)
             sys.stdout.flush()
-        time.sleep(0.1)
+        time.sleep(0.3)
 
     @classmethod
     def clearEntryWriting(self):
