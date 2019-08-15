@@ -16,7 +16,11 @@ library:::#“James was too curious for his own good...One day, there was this a
 ***
 library:::#“Here’s what I've figured out with my pen pal Dworkin. He used to work at the Greenridge lab. With Uncle’s help, the people at the lab are opening doors - hatches, they’re called - into the spaces between dimensions.“#
 ***
+library:::#“Here’s what I've figured out with my pen pal Dworkin. He used to work at the Greenridge lab. With Uncle’s help, the people at the lab are opening doors - hatches, they’re called - into the spaces between dimensions.“#
+***
 library:::#“Every time they open a hatch, the mist rolls in and there’s a storm. They don’t know how to predict where the hatch will appear, or for how long. Only Uncle understands how it works. We think he’s working on opening a permanent hatch somewhere, to try to talk to whatever’s out there, mad as that sounds.“#
+***
+library:::#"We think my uncle is trying to open a permanent hatch to another dimension and talk with whatever's out there."#  
 ***
 library:::#“You're very chatty, you know, even for a child.“#
 ***
@@ -24,11 +28,15 @@ study:::#“Jiminy cricket!“#^Mina whispers excitedly.|||#“You found a way i
 ***
 study:::#“Jiminy cricket!“#^Mina whispers excitedly.|||#“You found a way into my uncle's secret study? No one's allowed in here. Quick - let’s see what we can find.“#
 ***
-study:::#“We have to stop Uncle, no matter what. The things he’s letting into our world - even if they’d help win the war - they’re evil, and they hurt people. Men like my uncle shouldn’t have these things. No one should have these things."#
+study:::#“The things Uncle let into our world - even if they’d help win the war - they’re evil, and they hurt people. Men like my uncle shouldn’t have these things. No one should have these things."#
 ***
-study:::#“We have to stop Uncle, no matter what. The things he’s letting into our world - even if they’d help win the war - they’re evil, and they hurt people. Men like my uncle shouldn’t have these things. No one should have these things."#
+study:::#“The things Uncle let into our world - even if they’d help win the war - they’re evil, and they hurt people. Men like my uncle shouldn’t have these things. No one should have these things."#
 ***
-study:::#“I do love my uncle. I hate him because he’s cold and mean, and he doesn’t care what happens to anyone so long as he gets what he wants. He hasn’t said a kind word to me in my life. But I love him. I just do. If I could choose not to, I would - but I don’t have a choice."#
+study:::#“I do love my uncle, you know. He hasn’t said a kind word to me in my life. But I love him. I just do. If I could choose not to, I would - but I don’t have a choice."#
+***
+study:::#“I do love my uncle, you know. He hasn’t said a kind word to me in my life. But I love him. I just do. If I could choose not to, I would - but I don’t have a choice."#
+***
+study:::#"What we've done...it's for the best, isn't it?"#
 ***
 study:::#"What we've done...it's for the best, isn't it?"#
 ***
@@ -37,5 +45,3 @@ study:::#"It'd be nice to go outside for a change, wouldn't it? Usually the door
 foyer:::#"It'd be nice to go outside for a change, wouldn't it? Usually the door's locked, but it's worth a try, surely."#
 ***
 front manor grounds:::#“I've just realized...we're friends, aren't we?“#
-***
-front manor grounds:::#"I've just realized...we're friends, aren't we?"#
