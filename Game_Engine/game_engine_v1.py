@@ -123,8 +123,8 @@ class Game:
 				pl.removeCharacter(personInPlace)
 			sq = None
 			for rm in self.places:
-				if "Quarters" in rm.name:
-					sq = rm	
+				if "Quarters" in rm:
+					sq = self.places[rm]
 			#sq = self.places["Servant Quarters"]
 			if sq != None:
 				if sq.getPersonByName("maude") == None:
