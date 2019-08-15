@@ -1,4 +1,4 @@
-platform bench:newspaper
+bench:newspaper
 ***
 ticket counter:scrap of fabric
 ***
