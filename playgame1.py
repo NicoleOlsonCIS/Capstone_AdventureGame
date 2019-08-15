@@ -710,11 +710,6 @@ def buildGame():
     for echunk in end_chunks:
         game.endingEvents.append(echunk) 
 
-    #debug
-    study = game.places["Study"]
-    bottle = study.getThingByName("bottle")
-    print(bottle.is_openable)
-    print(bottle.openDescrip)
 
     # associate user with game 
     game.setUser(user)
@@ -765,7 +760,7 @@ def gameLoop(game):
             playaction = action.Action()
             playaction = playparser.parseInput(received)
             if (isinstance(playaction, action.Action)):
-                print(playaction.verb, playaction.direction, playaction.direct_obj, playaction.indirect_obj) 
+                #print(playaction.verb, playaction.direction, playaction.direct_obj, playaction.indirect_obj) 
                 game.fromParserToGame(playaction)
 
 def main():
