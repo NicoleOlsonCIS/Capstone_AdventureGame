@@ -1,8 +1,0 @@
-[
-  "Game_Engine/test_pytest.py::test_setPlaceName",
-  "Game_Engine/test_pytest.py::test_setPlaceDescription",
-  "Game_Engine/test_pytest.py::test_setPlaceAdjacentNames",
-  "Game_Engine/test_pytest.py::test_setUserName",
-  "Game_Engine/test_pytest.py::test_setStartingPlace",
-  "Game_Engine/test_pytest.py::test_setStartingDirection"
-]
