@@ -31,6 +31,7 @@ od7 = "      ______\n     | |    |\n     | |    |\n     | |    |\n     | /    |\
 od8 = "      /_____\n     ||     |\n     ||     |\n     ||     |\n     ||     |\n     ||     |\n"
 od9 = "      ______\n     |      |\n     |      |\n     |      |\n     |      |\n     |      |\n"
 _openDoor = [od0, od1, od2, od3, od4, od5, od6, od7, od8, od9]
+_closeDoor = [od9,od8,od7,od6,od5,od4,od3,od2,od1,od1]
 
 ##
 ##
@@ -670,6 +671,8 @@ class Output(object):
              c = "[32;1m"
         elif color == "red":
             c = "[31;1m"
+        elif color == "brown":
+            c = "[38;5;94m"
 
         while i < num:
             sys.stdout.write(u"\u001b[0m") # reset the color
@@ -702,6 +705,18 @@ class Output(object):
             sys.stdout.write(elem)
             sys.stdout.flush()
         time.sleep(0.5)
+        if placeName == "Foyer":
+            Output.closeDoor(_closeDoor)
+
+    @classmethod
+    def closeDoor(self,_closeDoor):
+        for d in _closeDoor:
+            sys.stdout.write(u"\u001b[1000D")
+            sys.stdout.write(u"\033[7A")
+            sys.stdout.flush()
+            print(d) 
+            time.sleep(0.09) # slow part is door closing
+        Output.printFlashingDoor(od0, "brown", 1, 0.2)
 
     @classmethod
     def clearEntryWriting(self):
