@@ -688,6 +688,12 @@ class Output(object):
             print(door) # print the door
             time.sleep(speed) # pause
             i += 1
+        #if color == "brown": # end on grey
+        #    sys.stdout.write(u"\u001b[0m") # reset the color
+        #    sys.stdout.write(u"\u001b[1000D") # move cursor left
+        #    sys.stdout.write(u"\033[7A") # move cursor up
+        #    sys.stdout.flush() # clear std out
+        #    print(door) # print the door
         sys.stdout.write(u"\u001b[0m") # reset the color
 
     @classmethod
@@ -716,7 +722,7 @@ class Output(object):
             sys.stdout.flush()
             print(d) 
             time.sleep(0.09) # slow part is door closing
-        Output.printFlashingDoor(od0, "brown", 1, 0.2)
+        Output.printFlashingDoor(od0, "brown", 3, 0.15)
 
     @classmethod
     def clearEntryWriting(self):
@@ -936,7 +942,6 @@ class Output(object):
         else:
             message = message + dots
             print(message)
-
 
     @classmethod
     def welcomeBackToGame(self, placeDescription):
