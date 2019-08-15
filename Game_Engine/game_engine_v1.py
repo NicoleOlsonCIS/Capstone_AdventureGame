@@ -196,6 +196,7 @@ class Game:
 			self.time -= 24 
 			self.day = self.day + 1
 			Output.print_look("Start of Day {}".format(self.day))
+			print()
 
 	# v13.3: tell whether it is day or night
 	def dayOrNight(self):
@@ -527,7 +528,7 @@ class Game:
 				orb = study.getThingByName("silver orb")
 				if orb != None:
 					if attemptObj == orb.name or attemptObj in orb.altNames:
-						Output.print_input_hint("Something tells you it's not quite time for that yet.")
+						Output.print_input_hint("Something tells you it's not quite time for that yet. There might be something you need to do first.")
 					else:
 						Output.print_input_hint("Something tells you you're misdirecting your destructive efforts.")
 				else:
@@ -548,6 +549,8 @@ class Game:
 				Output.print_error("The flashlight has no batteries.")
 			elif attemptedObj == "flashlight" and not self.user.userHasThing("flashlight"):
 				Output.print_error("You do not have a flashlight.") 
+			elif attemptedObj == None:
+				Output.print_input_hint("Try being more specific about what you want to activate.")
 			else:
 				Output.print_error("You don't see the point of doing that right now.")
 
@@ -899,29 +902,22 @@ class Game:
 
 	# v6: displays list of supported verbs
 	def showHelp(self):
-		Output.print_input_hint("go, move, run, walk, head, hurry")
-		print()
-		Output.print_input_hint("n, s, e, w, nw, ne, sw, se, u, d")
-		Output.print_input_hint("north, south, east, west, northwest, northeast, southwest, southeast, up, down, upstairs, downstairs")
-		print()
-		Output.print_input_hint("get, pick up, take, grab, keep, steal, acquire, collect")
-		print()
-		Output.print_input_hint("drop, put down, abandon, discard, trash")
-		Output.print_input_hint("insert, put in, put inside")
-		print()
-		Output.print_input_hint("look, l, look around")
-		Output.print_input_hint("look at, examine, x, inspect, study, stare, gaze")
-		Output.print_input_hint("search, look in, look inside")
-		Output.print_input_hint("look outside, look out window, look through window")
-		Output.print_input_hint("open")
-		Output.print_input_hint("read")
-		Output.print_input_hint("listen")
-		print()
-		Output.print_input_hint("talk, greet, chat, speak")
-		print()
-		Output.print_input_hint("sleep, rest, relax, go to bed")
-		print()
-		Output.print_input_hint("help, inventory, time")
+		Output.print_look("go, move, run, walk, head, hurry")
+		Output.print_look("n, s, e, w, nw, ne, sw, se, u, d")
+		Output.print_look("north, south, east, west, northwest, northeast, southwest, southeast, up, down, upstairs, downstairs")
+		Output.print_look("get, pick up, take, grab, keep, steal, acquire, collect")
+		Output.print_look("drop, put down, abandon, discard, trash")
+		Output.print_look("insert, put in, put inside")
+		Output.print_look("look, l, look around")
+		Output.print_look("look at, examine, x, inspect, study, stare, gaze")
+		Output.print_look("search, look in, look inside")
+		Output.print_look("look outside, look out window, look through window")
+		Output.print_look("open")
+		Output.print_look("read")
+		Output.print_look("listen")
+		Output.print_look("talk, greet, chat, speak")
+		Output.print_look("sleep, rest, relax, go to bed")
+		Output.print_look("help, inventory, time")
 
 	# point of entry from parser, game takes care of input from this point
 	# either by updating the game or sending error messages
@@ -1319,8 +1315,10 @@ class Game:
 				# special case for "bottle"
 				# bottle can only be opened during endgame 
 				if i.name == "bottle":
-					if i.name.lower() == action.direct_obj or action.direct_obj in i.altNames:
-						if not (self.endgameBegun and not self.endgameEnded):
+					if "bottle" in action.direct_obj or action.direct_obj in i.altNames:
+						if self.endgameBegun and not self.endgameEnded:
+							return True
+						else:
 							return False 
 				if i.name.lower() == action.direct_obj or action.direct_obj in i.altNames:
 					return True
@@ -1380,8 +1378,11 @@ class Game:
 			self.time = 6.00
 			self.day += 1
 			# v11.4: wakeup message
+			print()
 			Output.print_look("Start of Day {}".format(self.day))
+			print()
 			Output.print_look("You awake to morning light streaming softly into the room. The House is still and silent around you as you climb out of bed, walking gingerly on frigid floorboards.")
+			print()
 			self.updateEndgame()
 			return
 		# don't increment time for help/inventory
@@ -1849,9 +1850,9 @@ class User:
                 if len(self.things) == 0:
                         Output.print_input_hint("You currently have nothing in your inventory.")
                 else:
-                	Output.print_input_hint("You have, in various locations on your person:")
+                	Output.print_look("You have, in various locations on your person:")
                 	for t in self.things:
-                        	Output.print_input_hint(t.name)
+                        	Output.print_look(t.name)
 
 	def getAllThingsInPlace(self):
 		return self.things
