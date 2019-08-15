@@ -28,7 +28,7 @@ military coat:letter
 ***
 study desk:stack of notes
 ***
-study chair:tweed coat 
+study armchair:tweed coat 
 ***
 library tables:faded blue book
 ***
