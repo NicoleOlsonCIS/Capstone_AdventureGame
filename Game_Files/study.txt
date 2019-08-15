@@ -19,6 +19,7 @@ study bookshelves
 marble bust
 painting
 silver orb
+professor
 ***
 A stiff, high-backed wooden chair. It doesn’t look remotely comfortable.###A stiff, high-backed wooden chair. It doesn’t look remotely comfortable.
 ***
@@ -35,6 +36,8 @@ The head and upper torso of a Greek god, seemingly frozen in time. He wears a ma
 A large oil portrait of a proud-looking gray-haired man. He poses rigidly in his vest, necktie, and jacket, but wears power like a cloak.###A large oil portrait of a proud-looking gray-haired man. He poses rigidly in his vest, necktie, and jacket, but wears power like a cloak.
 ***
 A round shape, iridescent and shifting, like a puddle of oil suspended in midair. As you look on, it expands, ballooning delicately outward like a bubble blown to full size. You feel a faint wave of nausea. Somehow, looking at the silvery shape feels like standing on the edge of a precipice, poised to fall.###A round shape, iridescent and shifting, like a puddle of oil suspended in midair. As you look on, it expands, ballooning delicately outward like a bubble blown to full size. You feel a faint wave of nausea. Somehow, looking at the silvery shape feels like standing on the edge of a precipice, poised to fall.
+***
+A grim, bespectacled man. He seems to be in an ill humor.###A grim, bespectacled man. 
 ***
 stack of notes
 bottle
