@@ -12,10 +12,11 @@ You stand in a splendid drawing room with a fireplace, several armchairs, and a 
 ***
 men
 liquor cabinet
-fireplace
+grand fireplace
 amber liquid
 glasses
 tall couch
+drawing room armchairs
 ***
 One is graying and bespectacled, the other younger and dressed in military garb. They drink slowly from their glasses as they converse quietly.###No night
 ***
@@ -28,6 +29,8 @@ You don't think it looks tasty.###You don't think it looks tasty.
 Grownups seem to like this sort of thing.###Grownups seem to like this sort of thing.
 ***
 It's taller than you are.###It's taller than you are.
+***
+They look reasonably cozy.###They look reasonably cozy to sit in.
 ***
 no objects
 ***

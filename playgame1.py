@@ -439,8 +439,10 @@ def loadPlaceData(place_obj, filename, game_obj):
              
                 # load alternate thing names
                 loadAltNames("objalternatenames.txt", newthing)
-                # load readable  things
+                # load readable things
                 loadReadables("readables.txt", "newspaper.txt", "sheafpapers.txt", newthing)
+                # load openable things
+                loadOpenables("openables.txt", newthing)
 
                 count += 1 
     
@@ -707,6 +709,12 @@ def buildGame():
     end_chunks = endings.split("***\n")
     for echunk in end_chunks:
         game.endingEvents.append(echunk) 
+
+    #debug
+    study = game.places["Study"]
+    bottle = study.getThingByName("bottle")
+    print(bottle.is_openable)
+    print(bottle.openDescrip)
 
     # associate user with game 
     game.setUser(user)
