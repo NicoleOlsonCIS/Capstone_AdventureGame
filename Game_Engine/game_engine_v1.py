@@ -487,7 +487,7 @@ class Game:
 		# show description of orb destruction
 		numEnds = len(self.endingEvents)
 		if numEnds >= 4:
-			Output.print_look(self.endingEvents[numEnds-4])
+			Output.print_ending(self.endingEvents[numEnds-4])
 		# game is now "won"
 		self.endgameEnded = True
 		# remove bottle from inventory (it was used up)
@@ -504,13 +504,17 @@ class Game:
 		orb = study.getThingByName("silver orb")
 		if orb != None:
 			study.removeThing(orb)
+		# remove professor from Study (he got abducted by eldritch beings)
+		prof = study.getThingByName("professor")
+		if prof != None:
+			study.removeThing(prof)
 		# start new day
 		self.day += 1
 		self.time = 6.00
 		Output.print_look("Start of Day {}".format(self.day))
 		# description of new day
 		if numEnds >= 3:
-			Output.print_look(self.endingEvents[numEnds-3]) 
+			Output.print_ending(self.endingEvents[numEnds-3]) 
 
 	#v17.3
 	def handleViolence(self, attemptObj, indirObj, canViolence):
@@ -897,7 +901,7 @@ class Game:
 			else:
 				if attemptedInd_Obj != None:
 					attemptedObj = attemptedObj + " " + attemptedInd_Obj
-				Output.print_error("You cannot talk to " + attemptedObj)
+				Output.print_error("You find you have nothing to say.")
 
 
 	# v6: displays list of supported verbs
@@ -1101,12 +1105,7 @@ class Game:
 		# will display more events as the user spends longer in the Study 
 		mcount = self.user.accumEndMoveCt
 		numends = len(self.endingEvents)
-		#if mcount == 2 and not self.phaseOneDone:
-			#if numends >= 1:
-				#Output.print_ending(self.endingEvents[0])
-				#self.phaseOneDone = True	
-		#elif mcount == 8 and not self.cutsceneDone:
-		if mcount == 8 and not self.cutsceneDone:
+		if mcount == 7 and not self.cutsceneDone:
 			# long cutscene here
 			if numends >= 14:
 				for endpiece in range(2,14): 
