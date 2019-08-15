@@ -1068,13 +1068,13 @@ class Game:
 					study.removeThing(bottle)
 					lavatory.addThing(bottle)
 					if cabinet != None:
-						cabinet.hasOtherItems.append(bottle)
+						cabinet.hasOtherItems.append("bottle")
 				page = study.getThingByName("page of instructions")
 				if page != None:
 					study.removeThing(page)
 					lavatory.addThing(page)
 					if cabinet != None:
-						cabinet.hasOtherItems.append(page)
+						cabinet.hasOtherItems.append("page of instructions")
 
 		# 17.3: unlock Study once needed endgame items are in inventory
 		condition1 = self.user.userHasThing("bottle") 
