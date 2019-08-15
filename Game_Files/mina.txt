@@ -24,9 +24,9 @@ library:::#"We think my uncle is trying to open a permanent hatch to another dim
 ***
 library:::#“You're very chatty, you know, even for a child.“#
 ***
-study:::#“Jiminy cricket!“#^Mina whispers excitedly.|||#“You found a way into my uncle's secret study? No one's allowed in here. Quick - let’s see what we can find, before he finds out we’re here.“#
+study:::#“We're definitely not supposed to be in here. Uncle must've forgotten to lock the door.“#
 ***
-study:::#“Jiminy cricket!“#^Mina whispers excitedly.|||#“You found a way into my uncle's secret study? No one's allowed in here. Quick - let’s see what we can find.“#
+study:::#“We're definitely not supposed to be in here. Uncle must've forgotten to lock the door.“#
 ***
 study:::#“The things Uncle let into our world - even if they’d help win the war - they’re evil, and they hurt people. Men like my uncle shouldn’t have these things. No one should have these things."#
 ***

@@ -512,6 +512,7 @@ class Game:
 		self.day += 1
 		self.time = 6.00
 		Output.print_look("Start of Day {}".format(self.day))
+		print()
 		# description of new day
 		if numEnds >= 3:
 			Output.print_ending(self.endingEvents[numEnds-3]) 
@@ -1031,6 +1032,9 @@ class Game:
 				if adjacent_places[d].doors[opposing_dir_dict[d]] != "locked":
 					valid_moves.append(directions[d])
 
+		# update mina location
+		self.updateMina()
+
 		# v11.3: change from strings to objects 
 		valid_takes = [item for item in user_place.things if item.is_takeable]
 		valid_drops = [item for item in self.user.things]
@@ -1098,8 +1102,7 @@ class Game:
 		if self.matchLit and self.bottleOpened:
 			self.readyToDestroy = True		
 
-		# 17.2: update mina location
-		self.updateMina() 
+		#self.updateMina() 
 
 		# 17.3 display endgame events
 		# will display more events as the user spends longer in the Study 
