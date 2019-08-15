@@ -392,9 +392,9 @@ class Game:
 				if character.name.lower() == "maude":
 					if character.getCharacterSpeak(self.user.current_place.name) == None:
 						Output.print_error("She has nothing more to say to you at the moment.")
-						return
-					Output.print_talk(character.getCharacterSpeak(self.user.current_place.name), character.name)
-					self.user.hasMetMaude = True
+					else:
+						Output.print_talk(character.getCharacterSpeak(self.user.current_place.name), character.name)
+						self.user.hasMetMaude = True
 				elif character.name.lower() == "mina":
 					if self.user.hasMetMina == False:
 						Output.print_talk(character.getCharacterSpeak("intro"), character.name)
@@ -402,9 +402,9 @@ class Game:
 					else:
 						if character.getCharacterSpeak(self.user.current_place.name) == None:
 							Output.print_error("She has nothing more to say to you at the moment.")
-							return	
-						Output.print_talk(character.getCharacterSpeak(self.user.current_place.name), character.name)
-						self.user.hasMetMina = True
+						else:
+							Output.print_talk(character.getCharacterSpeak(self.user.current_place.name), character.name)
+							self.user.hasMetMina = True
 				self.setIsValid()
 				return
 		else:
@@ -861,9 +861,9 @@ class Game:
 					if c.name.lower() == "maude":
 						if c.getCharacterSpeak(self.user.current_place.name) == None:
 							Output.print_error("She has nothing more to say to you at the moment.")
-							return
-						Output.print_talk(c.getCharacterSpeak(self.user.current_place.name), c.name)
-						self.user.hasMetMaude = True
+						else:
+							Output.print_talk(c.getCharacterSpeak(self.user.current_place.name), c.name)
+							self.user.hasMetMaude = True
 					elif c.name.lower() == "mina":
 						if self.user.hasMetMina == False:
 							Output.print_talk(c.getCharacterSpeak("intro"), c.name)
@@ -871,9 +871,9 @@ class Game:
 						else:
 							if c.getCharacterSpeak(self.user.current_place.name) == None:
 								Output.print_error("She has nothing more to say to you at the moment.")
-								return	
-							Output.print_talk(c.getCharacterSpeak(self.user.current_place.name), c.name)
-							self.user.hasMetMina = True 
+							else:	
+								Output.print_talk(c.getCharacterSpeak(self.user.current_place.name), c.name)
+								self.user.hasMetMina = True 
 					return # return after finding a character in the place that matches the attemptedObj
 		else:
 			if attemptedObj == None and attemptedInd_Obj == None:
@@ -899,11 +899,12 @@ class Game:
 		Output.print_input_hint("look, l, look around")
 		Output.print_input_hint("look at, examine, x, inspect, study, stare, gaze")
 		Output.print_input_hint("search, look in, look inside")
+		Output.print_input_hint("look outside, look out window, look through window")
 		Output.print_input_hint("open")
 		Output.print_input_hint("read")
 		Output.print_input_hint("listen")
 		print()
-		Output.print_input_hint("talk, say, greet, ask, chat, speak, tell, call")
+		Output.print_input_hint("talk, greet, chat, speak")
 		print()
 		Output.print_input_hint("sleep, rest, relax, go to bed")
 		print()
@@ -1013,8 +1014,8 @@ class Game:
 		valid_moves = []
 
 		for d in dir_arr:
-			if adjacent_places[d] is not None:
-				if adjacent_places[d].doors[opposing_dir_dict[d]] is not "locked":
+			if adjacent_places[d] != None:
+				if adjacent_places[d].doors[opposing_dir_dict[d]] != "locked":
 					valid_moves.append(directions[d])
 
 		# v11.3: change from strings to objects 
