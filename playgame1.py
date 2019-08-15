@@ -775,7 +775,7 @@ def main():
 
     if sys.stdin.isatty():
 
-        Output.printTrees()
+        Output.print_end_screen()
 
         Output.welcomePage()
         print("Would you like to start a new game or load a saved game? (new/loadgame)")
