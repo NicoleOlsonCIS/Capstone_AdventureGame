@@ -13,12 +13,18 @@ You stand in a splendid drawing room with a fireplace, several armchairs, and a 
 men
 liquor cabinet
 fireplace
+amber liquid
+glasses
 ***
 One is graying and bespectacled, the other younger and dressed in military garb. They drink slowly from their glasses as they converse quietly.###No night
 ***
 To your inexperienced eyes, it seems well stocked.###To your inexperienced eyes, it seems well stocked.
 ***
 A fireplace with a gray marble mantel. Currently filled with logs and a crackling fire.###A fireplace with a gray marble mantel.
+***
+You don't think it looks tasty.###You don't think it looks tasty.
+***
+Grownups seem to like this sort of thing.###Grownups seem to like this sort of thing.
 ***
 no objects
 ***
