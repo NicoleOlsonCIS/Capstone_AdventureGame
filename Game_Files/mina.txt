@@ -2,7 +2,7 @@ intro:::#“Oh, you’re from the city,”#^she says after you introduce yoursel
 ***
 bedroom:::#“It's very rude to linger in someone's room when they're trying to sleep, you know.“#
 *** 
-library:::#“You're very chatty, you know, even for a child.“#
+library:::#“My parents died when I was small,”#^she explains matter-of-factly.|||#“Uncle and I don’t have any other living family. It’s just him and the House, and me and Maude and the servants. I’m his heir - that’s why he tolerates me.“#
 ***
 library:::#“My parents died when I was small,”#^she explains matter-of-factly.|||#“Uncle and I don’t have any other living family. It’s just him and the House, and me and Maude and the servants. I’m his heir - that’s why he tolerates me.“#
 ***
