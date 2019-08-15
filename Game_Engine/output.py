@@ -362,8 +362,8 @@ class Output(object):
                 # separate into lines of length <= 24 if necessary
                 length = len(speech)
                 speaking_lines = []
-                if length > 24:
-                    speaking_lines = Output.getLines(speech, 24)
+                if length > 23:
+                    speaking_lines = Output.getLines(speech, 23)
                 else:
                     speaking_lines.append(speech)
                 
@@ -419,8 +419,8 @@ class Output(object):
                 # the width of the text inside speach bubbles is 32 characters
                 length = len(speech)
                 speaking_lines = []
-                if length > 24:
-                    speaking_lines = Output.getLines(speech, 24)
+                if length > 23:
+                    speaking_lines = Output.getLines(speech, 23)
                 else:
                     speaking_lines.append(speech)
 
@@ -595,6 +595,7 @@ class Output(object):
         # split at white space, turn it into an array of words
         words = message.split()
         count = len(words)
+        first = True
 
         lines = []
         line = ""
@@ -613,12 +614,18 @@ class Output(object):
                 count -= 1
             # otherwise, add the word to the line
             else:
-                line = line + " " + w
-                count -= 1
+                if first == True:
+                    line = w
+                    first = False
+                    count -= 1
+                else:
+                    line = line + " " + w
+                    count -= 1
 
             # If that was the last word, append this line
             if count == 0:
                 lines.append(line)
+                first = True
 
         return lines
 
