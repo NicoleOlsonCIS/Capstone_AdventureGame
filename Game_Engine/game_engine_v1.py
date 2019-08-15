@@ -1541,7 +1541,7 @@ class Game:
 					Output.print_ending(self.endingEvents[n_ends-2])
 					Output.print_ending(self.endingEvents[n_ends-1])
 					print("\nTHE END\n")
-					print("Congratulations! You've completed the game. Please enter 'quit'") 
+					print("Congratulations! You've completed the game. Please enter 'quit'.\n") 
 
 # define the "Place" class
 class Place:
