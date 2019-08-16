@@ -1021,7 +1021,7 @@ class Output(object):
         for a in archways:
             Output.print_archway(a, False)
             sys.stdout.write(u"\u001b[1000D")
-            sys.stdout.write(u"\033[7A") # up height
+            sys.stdout.write(u"\033[9A") # up 9
             time.sleep(0.3)
         i = 0
         time.sleep(0.3)
