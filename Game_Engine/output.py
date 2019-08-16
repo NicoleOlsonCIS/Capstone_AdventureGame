@@ -1029,7 +1029,7 @@ class Output(object):
             print("                                           ")
             i += 1
         sys.stdout.write(u"\u001b[1000D")
-        sys.stdout.write(u"\033[10A") # up height
+        sys.stdout.write(u"\033[9A") # up height
 
     @classmethod
     def print_archway(self,archway, center):
