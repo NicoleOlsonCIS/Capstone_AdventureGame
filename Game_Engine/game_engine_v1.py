@@ -1541,8 +1541,7 @@ class Game:
 				if n_ends >= 2:
 					Output.print_ending(self.endingEvents[n_ends-2])
 					Output.print_ending(self.endingEvents[n_ends-1])
-					print("\nTHE END\n")
-					print("Congratulations! You've completed the game. Please enter 'quit'.\n") 
+					Output.print_end_screen() 
 
 # define the "Place" class
 class Place:
@@ -1916,12 +1915,12 @@ class Thing:
 	def getDescription(self, time):
 		self.numTimesExamined += 1
 		if time > 5 and time < 16:					# do we want this time of 5 - 25 here?
-			if self.numTimesExamined > 5:
+			if self.numTimesExamined >= 5:
 				return self.day[4]
 			else:
 				return self.day[self.numTimesExamined]
 		else:
-			if self.numTimesExamined > 5:
+			if self.numTimesExamined >= 5:
 				return self.night[4]
 			else:
 				return self.night[self.numTimesExamined]
