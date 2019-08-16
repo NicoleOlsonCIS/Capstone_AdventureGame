@@ -281,7 +281,7 @@ class Output(object):
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$12m')
             for elem in msg:
-                time.sleep(0.02) # CHANGE FASTER
+                time.sleep(0.03) # CHANGE FASTER
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write('\033[0m')
@@ -336,7 +336,7 @@ class Output(object):
         if person_name != None: 
             d = "You talk to " + person_name
             for elem in d:
-                time.sleep(0.02)
+                time.sleep(0.03)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             print("\n")
@@ -431,7 +431,7 @@ class Output(object):
                     # change color
                     sys.stdout.write(u'\u001b[38;5;$146m')
                     for elem in description:
-                        time.sleep(0.02)
+                        time.sleep(0.03)
                         sys.stdout.write(elem)
                         sys.stdout.flush()
                     print("\n")
@@ -462,7 +462,7 @@ class Output(object):
                     length = len(description)
                     count_p = 0
                     for elem in description:
-                        time.sleep(0.02)
+                        time.sleep(0.03)
                         sys.stdout.write(elem)
                         sys.stdout.flush()
                         count_p += 1
@@ -527,7 +527,7 @@ class Output(object):
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$11m')
             for elem in msg:
-                time.sleep(0.02)
+                time.sleep(0.03)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write('\033[0m')
@@ -761,12 +761,12 @@ class Output(object):
                 strHint2 = " You need a key\n"
                 # sys.stdout.write("\t")
                 for elem in strHint:
-                    time.sleep(0.02)
+                    time.sleep(0.03)
                     sys.stdout.write(elem)
                     sys.stdout.flush()
                 time.sleep(1) # pause after printing "hint"
                 for elem in strHint2:
-                    time.sleep(0.02)
+                    time.sleep(0.03)
                     sys.stdout.write(elem)
                     sys.stdout.flush()
                 time.sleep(1) # pause before printing key
@@ -823,7 +823,7 @@ class Output(object):
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$146m')
             for elem in placeDescription:
-                time.sleep(0.02)
+                time.sleep(0.03)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write(u"\u001b[0m")
@@ -844,13 +844,13 @@ class Output(object):
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$147m')
             for elem in welcome:
-                time.sleep(0.02)
+                time.sleep(0.03)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write("\n")
             sys.stdout.write(u'\u001b[38;5;$146m')
             for elem in placeDescription:
-                time.sleep(0.02)
+                time.sleep(0.03)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write(u"\u001b[0m")
@@ -870,7 +870,7 @@ class Output(object):
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$69m')
             for elem in ending:
-                time.sleep(0.02)
+                time.sleep(0.03)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write("\n")
@@ -898,7 +898,7 @@ class Output(object):
             if sys.stdin.isatty():
                 sys.stdout.write(u'\u001b[38;5;$69m')
                 for elem in intro:
-                    time.sleep(0.02)
+                    time.sleep(0.03)
                     sys.stdout.write(elem)
                     sys.stdout.flush()
                 sys.stdout.write("\n")
@@ -906,12 +906,12 @@ class Output(object):
                 sys.stdout.write("\n")
                 sys.stdout.write("\n")
                 for elem in daymsg:
-                    time.sleep(0.02)
+                    time.sleep(0.03)
                     sys.stdout.write(elem)
                     sys.stdout.flush()
                 sys.stdout.write("\n")
                 for elem in nextText:
-                    time.sleep(0.02)
+                    time.sleep(0.03)
                     sys.stdout.write(elem)
                     sys.stdout.flush() 
                 sys.stdout.write(u"\u001b[0m")
@@ -926,7 +926,7 @@ class Output(object):
         if sys.stdin.isatty():
             #sys.stdout.write(u'\u001b[38;5;$10m')
             for elem in message:
-                time.sleep(0.02)
+                time.sleep(0.03)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
                 #sys.stdout.write(u'\u001b[38;5;$10m')
@@ -958,7 +958,7 @@ class Output(object):
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u'\u001b[38;5;252m')
             for elem in pl1:
-                time.sleep(0.02)
+                time.sleep(0.03)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             time.sleep(1)
@@ -966,7 +966,7 @@ class Output(object):
             sys.stdout.write(printClear)
             sys.stdout.write(u"\u001b[1000D")
             for elem in pl2:
-                time.sleep(0.02)
+                time.sleep(0.03)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             for elem in pl3:
@@ -980,19 +980,19 @@ class Output(object):
             # welcome message 
             sys.stdout.write(u'\u001b[38;5;$51m')
             for elem in welcome:
-                time.sleep(0.02)
+                time.sleep(0.03)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             time.sleep(1)
             for elem in welcome2:
-                time.sleep(0.02)
+                time.sleep(0.03)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             time.sleep(0.5)
             sys.stdout.write("\n")
             sys.stdout.write(u'\u001b[38;5;$146m')
             for elem in placeDescription:
-                time.sleep(0.02)
+                time.sleep(0.03)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write(u"\u001b[0m")
