@@ -196,6 +196,36 @@ a7 = "|             |"
 arch9 = [a1, a2, a3, a4, a5, a6, a7]
 #archways.append(arch9)
 
+##
+##
+## Strings for trees
+##
+##
+
+t0 = "\t>>>>>>>>>>>.'.'/'-.'.'"
+t1 = "\t>>>>>>>>>>''.\\. -/.'.'_';"
+t2 = "\t>>>>>>>'\\';\\/-/.| /'.\\/-"
+t3 = "\t>>>>>>'\\/\\./\\/ \\|//-;/.''/"
+t4 = "\t>>>>>>/'/ .\\'\\'\\-\\/--/-/-/-"
+t5 = "\t>>>>'\\/'-\\/\\;\\/.|'/'\\/./-/"
+t6 = "\t>>>>>\\-'\\\\-.-'\\-\\//./;\\/\\/_'" 
+t7 = "\t>>>>>--\\/--\\-\\-\\|\\/--/-/_. !/\\@"
+t8 = "\t>>>>>.-\\/-'-\\'\\-|/./'\\/-- !/  \\@"
+t9 = "\t>>>>>>>\\-'_\\'\\ \\|//-\\//.-!/ /\\ \\@"
+t10= "\t>>>>>>>>'\\'\\'|'/|'/_./-/ !/    \\@"
+t11= "\t>>>>>>>>>>>>>\\_\\|/_/.   !//   \\ \\@            '.'"
+t12= "\t>>>>>>>>>>>>>>>>|      !/_  /   _\\@          ;';\\'"
+t13= "\t>>>>>>>>>>>>';'>|;      !/      \\@           /-'/;-'"
+t14= "\t>>>>>>>>>> ;'-/-\\/;    !/ / / \\  \\@        ;'-/-\\/;"
+t15= "\t>>>>>>>>>>-;-\\|;/-.   !/_  /     _\\@        -;-\\|;/-."
+t16= "\t>>>>>>>>>>>>;\\-|/;-'   !/      \\  \\@        ;\\-|/;-'"
+t17= "\t>>>>>>>>>>>>'_\\|/-'   !/ / /     \\ \\@        _\\|/-"
+t18= "\t>>>>>>>>>>>>>  ||    !/_____   _____\\@         |"
+t19= "\t>>>;';.';';._.'||__',;'.';_| |_ ;;';.''.'.';..';'."
+
+trees = [t0,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19]
+
+
 # static class
 class Output(object):
 
@@ -1177,3 +1207,77 @@ class Output(object):
         else:
             for a in archway:
                 print(a)
+    @classmethod
+    def print_end_screen(self):
+        print("\n\t\t\t\tTHE END\n")
+        Output.printTrees()
+        print("\n\tCongratulations! You've completed the game. Please enter 'quit'.\n")
+
+    @classmethod
+    def printTrees(self):
+        # colors
+        light_purple = "189"
+        medium_purple = "183"
+        dark_purple = "99"
+        light_green = "34"
+        light_green_two = "35"
+        medium_green = "36"
+        dark_green = "37"
+        brown = "130"
+        wildcard = "223"
+
+        height = 0
+        for treeline in trees:
+            pN = True # track when we are dealing with the dark tree
+            for t in treeline:
+                #  print space and carry on
+                if t == ">" or t == " ":
+                    sys.stdout.write(" ")
+                    continue
+                elif t == "!":
+                    pN = False
+                    continue
+                elif t == "@":
+                    pN = True
+                    continue
+                elif t == "/" or t == "\\":
+                    if pN == True:
+                        if height < 7:
+                            sys.stdout.write(u"\u001b[38;5;" + light_purple + "m")
+                            # print light purple
+                        elif height < 12:
+                            # print medium purple
+                            sys.stdout.write(u"\u001b[38;5;" + medium_purple + "m")
+                        else:
+                            # print dark purple
+                            sys.stdout.write(u"\u001b[38;5;" + dark_purple + "m")
+                    else:
+                        # print dark green
+                        sys.stdout.write(u"\u001b[38;5;" + dark_green + "m")
+                elif t == "_":
+                    if pN == True:
+                        # print brown
+                        sys.stdout.write(u"\u001b[38;5;" + brown + "m")
+                    else:
+                        # print dark green
+                        sys.stdout.write(u"\u001b[38;5;" + dark_green + "m")
+                elif t == "'":
+                    # leaf/grass 1
+                    sys.stdout.write(u"\u001b[38;5;" + light_green + "m")
+                elif t == ".":
+                    # leaf/grass 2
+                    sys.stdout.write(u"\u001b[38;5;" + light_green_two + "m")
+                elif t == ";":
+                    # leaf/grass 3
+                    sys.stdout.write(u"\u001b[38;5;" + medium_green + "m")
+                elif t == "-":
+                    # twig 4
+                    sys.stdout.write(u"\u001b[38;5;" + wildcard + "m")
+                elif t == "|":
+                    sys.stdout.write(u"\u001b[38;5;" + brown + "m")
+                
+                # actually print
+                sys.stdout.write(t)
+            height += 1
+            print()
+        sys.stdout.write(u"\u001b[0m") #reset
