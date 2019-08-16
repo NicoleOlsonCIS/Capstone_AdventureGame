@@ -225,7 +225,6 @@ t19= "\t>>>;';.';';._.'||__',;'.';_| |_ ;;';.''.'.';..';'."
 
 trees = [t0,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19]
 
-
 # static class
 class Output(object):
 
@@ -1211,7 +1210,8 @@ class Output(object):
     def print_end_screen(self):
         print("\n\t\t\t\tTHE END\n")
         Output.printTrees()
-        print("\n\tCongratulations! You've completed the game. Please enter 'quit'.\n")
+        print("\n\t    Congratulations! You've completed the game. \n\n\n")
+        exit(1)
 
     @classmethod
     def printTrees(self):

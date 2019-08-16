@@ -766,8 +766,8 @@ def gameLoop(game):
 def main():
 
     ts = os.get_terminal_size()
-    if ts.columns < 70:
-        Output.print_error("Error: Please expand the width of your console window. Min width of 70 columns required for game!")
+    if ts.columns < 80:
+        Output.print_error("Error: Please expand the width of your console window. Min width of 80 columns required for game!")
         return
     if ts.lines < 30:
         Output.print_error("Error: Please expand the height of your console window. Min height of 30 lines required for game!")
