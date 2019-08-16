@@ -234,9 +234,9 @@ class Output(object):
 
         length = len(error_message)
 
-        # if message is long, break up into lines of ~70 characters 
-        if length > 70:
-            error_message = Output.break_up_long_message(error_message, 70, False)
+        # if message is long, break up into lines of ~75 characters 
+        if length > 75:
+            error_message = Output.break_up_long_message(error_message, 75, False)
 
         # when not using a proper terminal (such as a GUI i.e. vscode), print in plain text
         if sys.stdin.isatty():
@@ -250,9 +250,9 @@ class Output(object):
         # hint_message = "Hint: " + hint_message
         length = len(hint_message)
 
-        # if message is long, break up into lines of ~70 characters 
-        if length > 70:
-            hint_message = Output.break_up_long_message(hint_message, 70, False)
+        # if message is long, break up into lines of ~75 characters 
+        if length > 75:
+            hint_message = Output.break_up_long_message(hint_message, 75, False)
         
         sys.stdout.write(u'\u001b[38;5;$220m')
         print(hint_message)
@@ -263,9 +263,9 @@ class Output(object):
     def print_look(self, look_description):
         length = len(look_description)
 
-        # if message is long, break up into lines of ~70 characters 
-        if length > 70:
-            look_description = Output.break_up_long_message(look_description, 70, False)
+        # if message is long, break up into lines of ~75 characters 
+        if length > 75:
+            look_description = Output.break_up_long_message(look_description, 75, False)
 
         sys.stdout.write(u'\u001b[38;5;$31m')
         print(look_description)
@@ -281,7 +281,7 @@ class Output(object):
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$12m')
             for elem in msg:
-                time.sleep(0.06) # CHANGE FASTER
+                time.sleep(0.02) # CHANGE FASTER
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write('\033[0m')
@@ -336,7 +336,7 @@ class Output(object):
         if person_name != None: 
             d = "You talk to " + person_name
             for elem in d:
-                time.sleep(0.06)
+                time.sleep(0.02)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             print("\n")
@@ -431,7 +431,7 @@ class Output(object):
                     # change color
                     sys.stdout.write(u'\u001b[38;5;$146m')
                     for elem in description:
-                        time.sleep(0.06)
+                        time.sleep(0.02)
                         sys.stdout.write(elem)
                         sys.stdout.flush()
                     print("\n")
@@ -462,7 +462,7 @@ class Output(object):
                     length = len(description)
                     count_p = 0
                     for elem in description:
-                        time.sleep(0.06)
+                        time.sleep(0.02)
                         sys.stdout.write(elem)
                         sys.stdout.flush()
                         count_p += 1
@@ -527,7 +527,7 @@ class Output(object):
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$11m')
             for elem in msg:
-                time.sleep(0.06)
+                time.sleep(0.02)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write('\033[0m')
@@ -546,7 +546,7 @@ class Output(object):
         words = extended_message.split()
         count = len(words)
 
-        # array of lines, where lines are max 70 characters
+        # array of lines, where lines are max 75 characters
         lines = []
         line = ""
         first = True
@@ -703,7 +703,7 @@ class Output(object):
         str = "Entering " + placeName
         sys.stdout.flush()
         for elem in str:
-            time.sleep(0.06)
+            time.sleep(0.02)
             sys.stdout.write(elem)
             sys.stdout.flush()
         time.sleep(0.5)
@@ -747,7 +747,7 @@ class Output(object):
             Output.printFlashingDoor(od0, "red", 2, 0.4)
             str = "That door is locked."
             for elem in str:
-                time.sleep(0.06)
+                time.sleep(0.02)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             time.sleep(1)
@@ -761,12 +761,12 @@ class Output(object):
                 strHint2 = " You need a key\n"
                 # sys.stdout.write("\t")
                 for elem in strHint:
-                    time.sleep(0.06)
+                    time.sleep(0.02)
                     sys.stdout.write(elem)
                     sys.stdout.flush()
                 time.sleep(1) # pause after printing "hint"
                 for elem in strHint2:
-                    time.sleep(0.06)
+                    time.sleep(0.02)
                     sys.stdout.write(elem)
                     sys.stdout.flush()
                 time.sleep(1) # pause before printing key
@@ -815,15 +815,15 @@ class Output(object):
     @classmethod
     def orientUser(self, placeName, placeDescription):
         length = len(placeDescription)
-        if length > 70:
-            placeDescription = Output.break_up_long_message(placeDescription, 70, True)
+        if length > 75:
+            placeDescription = Output.break_up_long_message(placeDescription, 75, True)
 
         welcome = "You are now in the " + placeName
 
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$146m')
             for elem in placeDescription:
-                time.sleep(0.06)
+                time.sleep(0.02)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write(u"\u001b[0m")
@@ -836,21 +836,21 @@ class Output(object):
     @classmethod
     def welcomeToGame(self, placeDescription):
         length = len(placeDescription)
-        if length > 70:
-            placeDescription = Output.break_up_long_message(placeDescription, 70, True)
+        if length > 75:
+            placeDescription = Output.break_up_long_message(placeDescription, 75, True)
 
         welcome = "Welcome user. We wish you luck on your journey. \nEnter \'quit\' or \'savegame\' at the prompt to quit the game at any time. \n"
 
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$147m')
             for elem in welcome:
-                time.sleep(0.06)
+                time.sleep(0.02)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write("\n")
             sys.stdout.write(u'\u001b[38;5;$146m')
             for elem in placeDescription:
-                time.sleep(0.06)
+                time.sleep(0.02)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write(u"\u001b[0m")
@@ -864,13 +864,13 @@ class Output(object):
     def print_ending(self, endingstring):
         length = len(endingstring)
         ending = ""
-        if length > 70:
-            ending = Output.break_up_long_message(endingstring, 70)
+        if length > 75:
+            ending = Output.break_up_long_message(endingstring, 75)
 
         if sys.stdin.isatty():
             sys.stdout.write(u'\u001b[38;5;$69m')
             for elem in ending:
-                time.sleep(0.06)
+                time.sleep(0.02)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write("\n")
@@ -885,20 +885,20 @@ class Output(object):
         if len(introList) == 3: 
             length = len(introList[0])
             intro = ""
-            if length > 70:
-                intro = Output.break_up_long_message(introList[0], 70)
+            if length > 75:
+                intro = Output.break_up_long_message(introList[0], 75)
 
             daymsg = introList[1]
  
             length = len(introList[2])
             nextText = ""
-            if length > 70:
-                nextText = Output.break_up_long_message(introList[2], 70) 
+            if length > 75:
+                nextText = Output.break_up_long_message(introList[2], 75) 
       
             if sys.stdin.isatty():
                 sys.stdout.write(u'\u001b[38;5;$69m')
                 for elem in intro:
-                    time.sleep(0.06)
+                    time.sleep(0.02)
                     sys.stdout.write(elem)
                     sys.stdout.flush()
                 sys.stdout.write("\n")
@@ -906,12 +906,12 @@ class Output(object):
                 sys.stdout.write("\n")
                 sys.stdout.write("\n")
                 for elem in daymsg:
-                    time.sleep(0.06)
+                    time.sleep(0.02)
                     sys.stdout.write(elem)
                     sys.stdout.flush()
                 sys.stdout.write("\n")
                 for elem in nextText:
-                    time.sleep(0.06)
+                    time.sleep(0.02)
                     sys.stdout.write(elem)
                     sys.stdout.flush() 
                 sys.stdout.write(u"\u001b[0m")
@@ -926,7 +926,7 @@ class Output(object):
         if sys.stdin.isatty():
             #sys.stdout.write(u'\u001b[38;5;$10m')
             for elem in message:
-                time.sleep(0.06)
+                time.sleep(0.02)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
                 #sys.stdout.write(u'\u001b[38;5;$10m')
@@ -941,8 +941,8 @@ class Output(object):
     @classmethod
     def welcomeBackToGame(self, placeDescription):
         length = len(placeDescription)
-        if length > 70:
-            placeDescription = Output.break_up_long_message(placeDescription, 70, True)
+        if length > 75:
+            placeDescription = Output.break_up_long_message(placeDescription, 75, True)
 
         pl1 = "Saved game found!"
         pl2 = "Loading . "
@@ -958,7 +958,7 @@ class Output(object):
             sys.stdout.write(u"\u001b[1000D")
             sys.stdout.write(u'\u001b[38;5;252m')
             for elem in pl1:
-                time.sleep(0.06)
+                time.sleep(0.02)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             time.sleep(1)
@@ -966,7 +966,7 @@ class Output(object):
             sys.stdout.write(printClear)
             sys.stdout.write(u"\u001b[1000D")
             for elem in pl2:
-                time.sleep(0.06)
+                time.sleep(0.02)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             for elem in pl3:
@@ -980,19 +980,19 @@ class Output(object):
             # welcome message 
             sys.stdout.write(u'\u001b[38;5;$51m')
             for elem in welcome:
-                time.sleep(0.06)
+                time.sleep(0.02)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             time.sleep(1)
             for elem in welcome2:
-                time.sleep(0.06)
+                time.sleep(0.02)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             time.sleep(0.5)
             sys.stdout.write("\n")
             sys.stdout.write(u'\u001b[38;5;$146m')
             for elem in placeDescription:
-                time.sleep(0.06)
+                time.sleep(0.02)
                 sys.stdout.write(elem)
                 sys.stdout.flush()
             sys.stdout.write(u"\u001b[0m")
