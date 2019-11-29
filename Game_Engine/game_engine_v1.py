@@ -350,7 +350,7 @@ class Game:
 
 	#v13 when only input is "move", it is valid when: there is only one way to move and door is not locked
 	def verbOnlyMove(self):
-		adjacent_places = self.user.current_place.adjacent_places
+		#adjacent_places = self.user.current_place.adjacent_places
 		count = 0
 		i = 0
 		dir = -1
